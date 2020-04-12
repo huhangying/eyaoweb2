@@ -1,0 +1,22 @@
+<nb-card [formGroup]="form">
+  <nb-card-header>编辑医院设置: {{data.desc}}</nb-card-header>
+  <nb-card-body>
+    <div class="field row">
+      <label for="inputType" class="label required col-sm-2"> 类型 </label>
+      <nb-select class="col-sm-10" id="inputType" formControlName="type">
+        <nb-option *ngFor="let _type of Types; let i=index" [value]="i">{{_type}}</nb-option>
+      </nb-select>
+    </div>
+    <div class="field row">
+      <label for="inputValue" class="label required col-sm-2"> 设置值 </label>
+      <textarea nbInput fullWidth class="col-sm-10" id="inputValue" formControlName="value" [rows]="data.type === 1 ? 10 : 1"></textarea>
+    </div>
+  </nb-card-body>
+
+  <nb-card-footer class="d-block">
+    <button nbButton mat-dialog-close>取消</button>
+    <button nbButton status="primary" class="float-right" cdkFocusInitial [disabled]="form.invalid" (click)="update()">
+      <nb-icon icon="checkmark-circle"></nb-icon>更新
+    </button>
+  </nb-card-footer>
+</nb-card>

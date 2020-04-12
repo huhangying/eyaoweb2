@@ -1,0 +1,96 @@
+// themes - our custom or/and out of the box themes
+@import "themes";
+
+// framework component themes (styles tied to theme variables)
+@import "~@nebular/theme/styles/globals";
+// @import '~@nebular/auth/styles/all';
+
+@import "~bootstrap/scss/functions";
+@import "~bootstrap/scss/variables";
+@import "~bootstrap/scss/mixins";
+@import "~bootstrap/scss/grid";
+
+// loading progress bar theme
+@import "./pace.theme";
+
+@import "./layout";
+@import "./overrides";
+
+// install the framework and custom global styles
+@include nb-install() {
+  // framework global styles
+  @include nb-theme-global();
+  // @include nb-auth-global();
+
+  @include ngx-layout();
+  // loading progress bar
+  @include ngx-pace-theme();
+
+  @include nb-overrides();
+}
+
+// form
+.field {
+  padding: 2px 1rem;
+
+  .label {
+    padding: 0.7rem 0 0 0;
+  }
+  .required::after {
+    color: red;
+    content: "*" !important;
+    padding-left: 0.25rem;
+  }
+  nb-select {
+    padding: 0;
+  }
+}
+
+.underline {
+  border-bottom: 1px solid #d6d6d6;
+  color: #666;
+  font-weight: 400;
+  width: 100%;
+}
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: "Helvetica Neue", sans-serif;
+}
+
+.mat-table {
+  th.mat-header-cell {
+    font-weight: bolder;
+    min-width: 3.2rem;
+    padding-right: 0.5rem;
+  }
+  td.mat-cell {
+    padding-right: 0.5rem;
+    button {
+      min-width: 1rem;
+      padding: 0 0.5rem;
+    }
+  }
+
+  td.mat-cell.actions {
+    min-width: 4.3rem;
+    text-align: center;
+    padding-right: 0.5rem;
+  }
+}
+
+.mat-dialog-container {
+  padding: 0!important;
+  mat-dialog-content  {
+    padding: 1rem 0;
+    margin: 0;
+    overflow-x: hidden;
+  }
+  nb-card {
+    margin: 0;
+  }
+}
+

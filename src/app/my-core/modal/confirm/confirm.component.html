@@ -1,0 +1,10 @@
+<nb-card>
+  <nb-card-header class="h4">{{ data.title }}</nb-card-header>
+  <nb-card-body>
+    {{data.content}}
+  </nb-card-body>
+  <nb-card-footer  class="d-block">
+    <button nbButton status="basic" mat-dialog-close>取消</button>
+    <button nbButton status="primary" class="float-right" [mat-dialog-close]="true" cdkFocusInitial>确定</button>
+  </nb-card-footer>
+</nb-card>
