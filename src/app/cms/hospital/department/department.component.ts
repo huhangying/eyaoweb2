@@ -23,6 +23,7 @@ export class DepartmentComponent implements OnInit, OnDestroy {
   dataSource: MatTableDataSource<Department>;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
+  departments: Department[];
 
   constructor(
     private fb: FormBuilder,
@@ -32,6 +33,7 @@ export class DepartmentComponent implements OnInit, OnDestroy {
   ) {
     this.hospitalService.getDepartments().subscribe(
       data => {
+        this.departments = data; // for test
         this.loadData(data);
       }
     );
