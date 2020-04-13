@@ -9,6 +9,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { DepartmentEditComponent } from './department-edit/department-edit.component';
 
 @Component({
   selector: 'ngx-department',
@@ -54,16 +55,23 @@ export class DepartmentComponent implements OnInit, OnDestroy {
   }
 
   add() {
-
+    this.edit();
   }
 
-  edit(id: string) {}
+  edit(data?: Department) {
+    this.dialog.open(DepartmentEditComponent, {
+      data: data
+    });
+  }
 
   delete(id: string) {
     this.dialogService?.deleteConfirm()
       .subscribe(result => {
         if (result) {
-          alert('deleted');
+          this.hospitalService.deleteDepartmentById(id)
+            .subscribe(result => {
+              console.log(result);
+            });
         }
       });
   }

@@ -16,6 +16,7 @@ export class HospitalService {
     private config: ConfigService,
   ) { }
 
+  // Department
   getDepartments(hid?: string) {
     return this.http.get<Department[]>(this.config.baseApiUrl + 'departments/');
   }
@@ -24,10 +25,24 @@ export class HospitalService {
     return this.http.get<Department>(this.config.baseApiUrl + 'department/' + id);
   }
 
+  createDepartment(data: any) {
+    return this.http.post<Department>(this.config.baseApiUrl + 'department', data);
+  }
+
+  deleteDepartmentById(id: string) {
+    return this.http.delete<any>(this.config.baseApiUrl + 'department/' + id);
+  }
+
+  updateDepartment(data: Department) {
+    return this.http.patch<Department>(this.config.baseApiUrl + 'department/' + data._id, data);
+  }
+
+  // Disease
   getDiseases(hid?: string) {
     return this.http.get<Disease[]>(this.config.baseApiUrl + 'diseases/');
   }
 
+  // Medicine
   getMedicines(hid?: string) {
     return this.http.get<Medicine[]>(this.config.baseApiUrl + 'medicines/');
   }

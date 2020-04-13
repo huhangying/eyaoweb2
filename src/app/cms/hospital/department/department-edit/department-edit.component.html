@@ -1,0 +1,39 @@
+<nb-card [status]="data ? 'info' : 'success'" [formGroup]="form">
+  <nb-card-header>
+    {{data? '编辑医院科室' : '新增医院科室'}}
+    <button nbButton shape="round" size="small" class="float-right" mat-dialog-close>
+      <nb-icon icon="close"></nb-icon>
+    </button>
+  </nb-card-header>
+
+  <mat-dialog-content class="container px-3">
+    <div class="field row">
+      <label for="name" class="label required"> 名称 </label>
+      <input nbInput fullWidth id="name" formControlName="name">
+    </div>
+
+    <div class="field row">
+      <label for="desc" class="label"> 描述 </label>
+      <textarea nbInput fullWidth id="desc" formControlName="desc" rows="2"></textarea>
+    </div>
+    <div class="field row">
+      <label for="assetFolder" class="label"> 专属目录名 </label>
+      <input nbInput fullWidth id="assetFolder" formControlName="assetFolder">
+    </div>
+    <div class="field row">
+      <label for="order" class="label"> 顺序 </label>
+      <input nbInput type="number" fullWidth id="order" formControlName="order">
+    </div>
+    <div class="field row pt-3">
+      <nb-checkbox fullWidth formControlName="apply">开关</nb-checkbox>
+    </div>
+
+  </mat-dialog-content>
+
+  <nb-card-footer class="d-block">
+    <button nbButton mat-dialog-close>取消</button>
+    <button nbButton status="primary" class="float-right" cdkFocusInitial [disabled]="form.invalid" (click)="update()">
+      <nb-icon icon="checkmark-circle"></nb-icon>更新
+    </button>
+  </nb-card-footer>
+</nb-card>
