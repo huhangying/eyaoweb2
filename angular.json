@@ -26,7 +26,7 @@
             ],
             "styles": [
               "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
-              "node_modules/bootstrap/dist/css/bootstrap.css",
+              "node_modules/bootstrap/dist/css/bootstrap.min.css",
               "node_modules/pace-js/templates/pace-theme-flash.tmpl.css",
               "node_modules/ngx-toastr/toastr.css",
               "src/app/@theme/styles/styles.scss"

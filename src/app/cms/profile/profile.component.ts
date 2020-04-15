@@ -6,6 +6,9 @@ import { Subject } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { mustMatch } from '../../my-core/helper/must-match.validator';
 import { Department } from '../../models/hospital/department.model';
+import { UploadService } from '../../my-core/service/upload.service';
+import { map } from 'rxjs/operators';
+import { HttpEventType } from '@angular/common/http';
 
 @Component({
   selector: 'ngx-profile',
@@ -16,11 +19,13 @@ export class ProfileComponent implements OnInit, OnDestroy {
   form: FormGroup;
   destroy$ = new Subject<void>();
   departments: Department[];
+  avatar;
 
   constructor(
     private fb: FormBuilder,
     private route: ActivatedRoute,
     private doctorService: DoctorService,
+    private uploadService: UploadService,
   ) {
     this.departments = this.route.snapshot.data.departments;
     this.form = this.fb.group({
@@ -86,4 +91,30 @@ export class ProfileComponent implements OnInit, OnDestroy {
     this.doctorService.updateProfile(profile.user_id, profile)
       .subscribe();
   }
+
+  onFileSelected(event) {
+    if (event.target.files?.length) {
+      const [file] = event.target.files;
+
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => {
+        this.avatar = reader.result;
+        const formData = new FormData();
+        formData.append('file', file, file.name);
+        this.uploadService.upload(formData).pipe(
+          map(event => {
+            switch (event.type) {
+              case HttpEventType.UploadProgress:
+                file.progress = Math.round(event.loaded * 100 / event.total);
+                break;
+              case HttpEventType.Response:
+                return event;
+            }
+          })
+        ).subscribe();
+      };
+    }
+  }
+
 }

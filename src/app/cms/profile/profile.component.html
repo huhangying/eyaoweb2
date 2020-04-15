@@ -35,20 +35,14 @@
             <label class="label col-sm-3">头像</label>
 
             <div class="col-sm-9">
+              <img src="{{avatar || '/assets/avatars/avatar-placeholder.gif'}}" class="img-fluid img-thumbnail z-depth-1 rounded-circle" alt="">
               <div>
-
-                <span class="material-icons">
-                  close
-                </span>
-                <span class="change-userpic">
-                  选择头像<input type="file" style="visibility: hidden; position: absolute;"></span>
-                <span class="change-userpic">更改头像<input type="file"
-                    style="visibility: hidden; position: absolute;"></span>
+                <input hidden="true" type="file" accept="image/*" (change)="onFileSelected($event)" #fileInput>
+                <button mat-flat-button color="primary" class="w-75" (click)="fileInput.click()"
+                  class="UppyModalOpenerBtn">
+                  更改头像
+                </button>
               </div>
-              <p>
-                后台不支持更新头像，请在药师端更新。
-                <!--支持 PNG,GIF,JPG,JEPG 类型的图片.-->
-              </p>
             </div>
           </div>
         </nb-card-body>
