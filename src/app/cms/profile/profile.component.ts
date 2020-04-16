@@ -9,6 +9,7 @@ import { Department } from '../../models/hospital/department.model';
 import { UploadService } from '../../my-core/service/upload.service';
 import { map } from 'rxjs/operators';
 import { HttpEventType } from '@angular/common/http';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'ngx-profile',
@@ -19,7 +20,8 @@ export class ProfileComponent implements OnInit, OnDestroy {
   form: FormGroup;
   destroy$ = new Subject<void>();
   departments: Department[];
-  avatar;
+  avatar: any;
+  id: string;
 
   constructor(
     private fb: FormBuilder,
@@ -46,12 +48,15 @@ export class ProfileComponent implements OnInit, OnDestroy {
     }, {
       validators: [mustMatch('password', 'passwordConfirm')]
     });
-    this.doctorService.getDoctorById('57458db10791dcb26e74cb5a')
-      .subscribe(data => {
-        const _data: any = data;
+    this.doctorService.getDoctorById('57458db10791dcb26e74cb5a') // for test
+      .subscribe(_data => {
+        const data: any = _data;
         // leave password to empty
-        _data.password = '';
-        this.form.patchValue(_data);
+        data.password = '';
+        if (data.icon) {
+          data.icon = environment.imageServer + data.icon;
+        }
+        this.form.patchValue(data);
       });
   }
 
@@ -101,6 +106,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
       reader.onload = () => {
         this.avatar = reader.result;
         const formData = new FormData();
+        // formData.append('id', this.id); // pass in id
         formData.append('file', file, file.name);
         this.uploadService.upload(formData).pipe(
           map(event => {

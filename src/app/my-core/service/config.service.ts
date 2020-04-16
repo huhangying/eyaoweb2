@@ -5,11 +5,6 @@ import { AppStoreService } from '../store/app-store.service';
   providedIn: 'root',
 })
 export class ConfigService {
-  baseApiUrl = 'http://localhost:3000/';
-  // baseApiUrl = 'http://192.168.87.250:3000/';
-  // baseApiUrl = 'http://139.224.68.92:3000/';
-  baseImageServer: 'http://139.224.68.92:81/';
-  peerPageUrl: 'http://yyl.rostensoft.com/zhaoys/';
   imageRoot: 'assets/images/';
   surveyTypes = [
     { id: 1, name: '初诊问卷' },

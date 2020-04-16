@@ -5,4 +5,7 @@
  */
 export const environment = {
   production: true,
+  apiUrl: 'http://139.224.68.92:3000/',
+  imageServer: 'http://139.224.68.92:81/',
+  peerPageUrl: 'http://yyl.rostensoft.com/zhaoys/'
 };
