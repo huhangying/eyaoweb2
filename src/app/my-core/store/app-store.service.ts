@@ -11,6 +11,9 @@ export class AppStoreService extends Store<AppState> {
     super(new AppState());
   }
 
+  // select
+  get user() { return this.state?.user; }
+
   updateUser(user: User) {
     this.setState({
       ...this.state,

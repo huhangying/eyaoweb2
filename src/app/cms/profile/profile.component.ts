@@ -10,6 +10,7 @@ import { UploadService } from '../../my-core/service/upload.service';
 import { map } from 'rxjs/operators';
 import { HttpEventType } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
+import { AppStoreService } from '../../my-core/store/app-store.service';
 
 @Component({
   selector: 'ngx-profile',
@@ -21,16 +22,17 @@ export class ProfileComponent implements OnInit, OnDestroy {
   destroy$ = new Subject<void>();
   departments: Department[];
   avatar: any;
-  id: string;
 
   constructor(
     private fb: FormBuilder,
     private route: ActivatedRoute,
     private doctorService: DoctorService,
     private uploadService: UploadService,
+    private appStore: AppStoreService,
   ) {
     this.departments = this.route.snapshot.data.departments;
     this.form = this.fb.group({
+      _id: '',
       user_id: [{ value: '', disabled: true }, Validators.required],
       name: ['', Validators.required],
       department: ['', Validators.required],
@@ -48,13 +50,13 @@ export class ProfileComponent implements OnInit, OnDestroy {
     }, {
       validators: [mustMatch('password', 'passwordConfirm')]
     });
-    this.doctorService.getDoctorById('57458db10791dcb26e74cb5a') // for test
+    this.doctorService.getDoctorById(this.appStore.user?._id || '57458db10791dcb26e74cb5a') // for test
       .subscribe(_data => {
         const data: any = _data;
         // leave password to empty
         data.password = '';
         if (data.icon) {
-          data.icon = environment.imageServer + data.icon;
+          this.avatar = environment.imageServer + data.icon;
         }
         this.form.patchValue(data);
       });
@@ -85,12 +87,12 @@ export class ProfileComponent implements OnInit, OnDestroy {
   }
 
   updatePassword(passwd: string) {
-    this.doctorService.updateProfile(this.form.value.user_id, { password: passwd })
+    this.doctorService.updateProfile(this.form.getRawValue().user_id, { password: passwd })
       .subscribe();
   }
 
   updateProfile() {
-    const profile = { ...this.form.value };
+    const profile = { ...this.form.getRawValue() };
     delete profile.password;
     delete profile.passwordConfirm;
     this.doctorService.updateProfile(profile.user_id, profile)
@@ -100,24 +102,33 @@ export class ProfileComponent implements OnInit, OnDestroy {
   onFileSelected(event) {
     if (event.target.files?.length) {
       const [file] = event.target.files;
+      const user = this.form.getRawValue() as Doctor;
+      const newfileName = `${user._id}.${file.name.split('.').pop()}`; // _id.[ext]
 
       const reader = new FileReader();
       reader.readAsDataURL(file);
       reader.onload = () => {
         this.avatar = reader.result;
         const formData = new FormData();
-        // formData.append('id', this.id); // pass in id
-        formData.append('file', file, file.name);
+        formData.append('file', file, newfileName);// pass new file name in
         this.uploadService.upload(formData).pipe(
           map(event => {
             switch (event.type) {
               case HttpEventType.UploadProgress:
                 file.progress = Math.round(event.loaded * 100 / event.total);
+                if (event.loaded >= event.total) {
+                  // update icon to db after finished uploading
+                  this.doctorService.updateProfile(user.user_id, {
+                    _id: user._id,
+                    hid: user.hid,
+                    icon: newfileName
+                  }).subscribe();
+                }
                 break;
               case HttpEventType.Response:
                 return event;
             }
-          })
+          }),
         ).subscribe();
       };
     }

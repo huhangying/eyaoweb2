@@ -1,4 +1,6 @@
 export interface Doctor {
+  _id: string;
+  hid: string;
   user_id: string;
   name: string;
   role: number;
