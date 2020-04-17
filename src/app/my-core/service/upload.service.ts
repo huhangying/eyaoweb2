@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { environment } from '../../../environments/environment';
+import { ApiService } from './api.service';
 
 @Injectable({
   providedIn: 'root'
@@ -8,11 +7,11 @@ import { environment } from '../../../environments/environment';
 export class UploadService {
 
   constructor(
-    private httpClient: HttpClient,
+    private api: ApiService,
   ) { }
 
   upload(formData: FormData) {
-    return this.httpClient.post<any>(environment.apiUrl + 'upload', formData, {
+    return this.api.post<any>('upload', formData, {
       reportProgress: true,
       observe: 'events'
     });

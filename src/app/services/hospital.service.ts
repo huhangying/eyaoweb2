@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { Department } from '../models/hospital/department.model';
 import { Disease } from '../models/hospital/disease.model';
 import { Medicine } from '../models/hospital/medicine.model';
 import { Const } from '../models/const.model';
-import { environment } from '../../environments/environment';
+import { ApiService } from '../my-core/service/api.service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,51 +11,51 @@ import { environment } from '../../environments/environment';
 export class HospitalService {
 
   constructor(
-    private http: HttpClient,
+    private api: ApiService,
   ) { }
 
   // Department
   getDepartments(hid?: string) {
-    return this.http.get<Department[]>(environment.apiUrl + 'departments/');
+    return this.api.get<Department[]>('departments/');
   }
 
   getDepartmentById(id: string) {
-    return this.http.get<Department>(environment.apiUrl + 'department/' + id);
+    return this.api.get<Department>('department/' + id);
   }
 
   createDepartment(data: any) {
-    return this.http.post<Department>(environment.apiUrl + 'department', data);
+    return this.api.post<Department>('department', data);
   }
 
   deleteDepartmentById(id: string) {
-    return this.http.delete<any>(environment.apiUrl + 'department/' + id);
+    return this.api.delete<any>('department/' + id);
   }
 
   updateDepartment(data: Department) {
-    return this.http.patch<Department>(environment.apiUrl + 'department/' + data._id, data);
+    return this.api.patch<Department>('department/' + data._id, data);
   }
 
   // Disease
   getDiseases(hid?: string) {
-    return this.http.get<Disease[]>(environment.apiUrl + 'diseases/');
+    return this.api.get<Disease[]>('diseases/');
   }
 
   // Medicine
   getMedicines(hid?: string) {
-    return this.http.get<Medicine[]>(environment.apiUrl + 'medicines/');
+    return this.api.get<Medicine[]>('medicines/');
   }
 
   // 医院全局变量
   getHospitalSettings(hid?: string) {
-    return this.http.get<Const[]>(environment.apiUrl + 'consts');
+    return this.api.get<Const[]>('consts');
   }
 
   getHospitalSetting(name: string, hid?: string) {
-    return this.http.get<Const>(environment.apiUrl + 'const/' + name);
+    return this.api.get<Const>('const/' + name);
   }
 
   updateHospitalSetting(data: Const) {
-    return this.http.patch(environment.apiUrl + 'const/' + data._id, { value: data.value });
+    return this.api.patch('const/' + data._id, { value: data.value });
   }
 
 

@@ -1,8 +1,7 @@
 import { Doctor } from '../models/doctor.model';
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { AppStoreService } from '../my-core/store/app-store.service';
-import { environment } from '../../environments/environment';
+import { ApiService } from '../my-core/service/api.service';
 
 @Injectable({
   providedIn: 'root'
@@ -10,15 +9,15 @@ import { environment } from '../../environments/environment';
 export class DoctorService {
 
   constructor(
-    private http: HttpClient,
+    private api: ApiService,
     private appStore: AppStoreService
   ) { }
 
   getDoctorById(id: string) {
-    return this.http.get<Doctor>(environment.apiUrl + 'doctor/' + id);
+    return this.api.get<Doctor>('doctor/' + id);
   }
 
   updateProfile(id: string, payload: any) {
-    return this.http.patch(environment.apiUrl + 'doctor/' + id, payload);
+    return this.api.patch('doctor/' + id, payload);
   }
 }

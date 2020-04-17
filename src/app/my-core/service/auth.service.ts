@@ -1,8 +1,7 @@
 import { AppStoreService } from '../store/app-store.service';
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { User } from '../../models/user.model';
-import { environment } from '../../../environments/environment';
+import { ApiService } from './api.service';
 
 @Injectable({
   providedIn: 'root',
@@ -11,11 +10,12 @@ export class AuthService {
   _isLoggedIn: boolean;
 
   constructor(
-    private http: HttpClient,
-    private appStore: AppStoreService) { }
+    private api: ApiService,
+    private appStore: AppStoreService
+  ) { }
 
   login(userId: string, password: string) {
-    return this.http.patch<User>(environment.apiUrl + 'login/doctor', {
+    return this.api.patch<User>('login/doctor', {
       user_id: userId,
       password: password,
     });
