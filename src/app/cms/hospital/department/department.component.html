@@ -8,7 +8,7 @@
     <div [formGroup]="searchForm" class="float-right d-flex">
       <nb-form-field class="mr-3">
         <nb-select size="small" hero placeholder="搜索医院科室" formControlName="department">
-          <nb-option *ngFor="let dep of departments" [value]="dep._id">{{ dep.name }}</nb-option>
+          <nb-option *ngFor="let dep of dataSource?.data" [value]="dep._id">{{ dep.name }}</nb-option>
         </nb-select>
       </nb-form-field>
       <nb-form-field class="">

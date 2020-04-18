@@ -47,7 +47,7 @@ export class DepartmentEditComponent implements OnInit, OnDestroy {
   }
 
   update() {
-    const response = this.data?._id ?
+    const response = this.data._id ?
       // update
       this.hospitalService.updateDepartment({ ...this.data, ...this.form.value }) :
       // create

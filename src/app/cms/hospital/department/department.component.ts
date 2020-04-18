@@ -23,7 +23,6 @@ export class DepartmentComponent implements OnInit, OnDestroy {
   dataSource: MatTableDataSource<Department>;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
-  departments: Department[];
 
   constructor(
     private fb: FormBuilder,
@@ -33,7 +32,6 @@ export class DepartmentComponent implements OnInit, OnDestroy {
   ) {
     this.hospitalService.getDepartments().subscribe(
       data => {
-        this.departments = data; // for test
         this.loadData(data);
       }
     );
@@ -61,14 +59,23 @@ export class DepartmentComponent implements OnInit, OnDestroy {
   }
 
   edit(data?: Department) {
+    const isEdit = !!data;
     this.dialog.open(DepartmentEditComponent, {
       data: data
     }).afterClosed()
     .subscribe(result => {
       if (result?._id) {
-        this.dataSource.data.unshift(result);
+        if (isEdit) {
+          // update
+          this.dataSource.data = this.dataSource.data.map(item => {
+            return item._id === result._id ? result : item;
+          });
+        } else {
+          // create
+          this.dataSource.data.unshift(result);
+        }
         this.loadData(this.dataSource.data); // add to list
-        data && this.dataSource.paginator.firstPage(); // created goes first
+        isEdit && this.dataSource.paginator.firstPage(); // created goes first
       }
     });
   }
