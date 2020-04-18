@@ -4,6 +4,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { HospitalService } from '../../../../services/hospital.service';
+import { map, tap, takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'ngx-department-edit',
@@ -28,7 +29,7 @@ export class DepartmentEditComponent implements OnInit, OnDestroy {
       desc: [''],
       assetFolder: [''],
       order: [''],
-      apply: [false],
+      apply: false,
     });
     if (data) {
       console.log(data);
@@ -46,19 +47,16 @@ export class DepartmentEditComponent implements OnInit, OnDestroy {
   }
 
   update() {
-    if (!this.data?._id) {
-      // create
-      this.hospitalService.createDepartment({...this.form.value, hid: 1})
-        .subscribe(result => {
-          console.log(result);
-        });
-    } else {
+    const response = this.data?._id ?
       // update
-      this.hospitalService.updateDepartment({ ...this.data, ...this.form.value })
-        .subscribe(result => {
-          console.log(result);
-        });
-    }
+      this.hospitalService.updateDepartment({ ...this.data, ...this.form.value }) :
+      // create
+      this.hospitalService.createDepartment({ ...this.form.value, hid: 1 });
+    response.pipe(
+      tap(rsp => {
+        this.dialogRef.close(rsp);
+      }),
+    ).subscribe();
   }
 
 }

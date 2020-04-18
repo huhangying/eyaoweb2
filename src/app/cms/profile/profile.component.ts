@@ -62,7 +62,6 @@ export class ProfileComponent implements OnInit, OnDestroy {
       });
   }
 
-
   public get password() { return this.form.get('password'); }
   public get passwordConfirm() { return this.form.get('passwordConfirm'); }
 

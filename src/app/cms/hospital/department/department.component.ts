@@ -57,12 +57,19 @@ export class DepartmentComponent implements OnInit, OnDestroy {
   }
 
   add() {
-    this.edit();
+    return this.edit();
   }
 
   edit(data?: Department) {
     this.dialog.open(DepartmentEditComponent, {
       data: data
+    }).afterClosed()
+    .subscribe(result => {
+      if (result?._id) {
+        this.dataSource.data.unshift(result);
+        this.loadData(this.dataSource.data); // add to list
+        data && this.dataSource.paginator.firstPage(); // created goes first
+      }
     });
   }
 
@@ -72,7 +79,9 @@ export class DepartmentComponent implements OnInit, OnDestroy {
         if (result) {
           this.hospitalService.deleteDepartmentById(id)
             .subscribe(result => {
-              console.log(result);
+              if (result?._id) {
+                this.loadData(this.dataSource.data.filter(item => item._id !== result._id)); // remove from list
+              }
             });
         }
       });
