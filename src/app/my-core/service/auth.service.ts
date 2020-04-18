@@ -2,6 +2,7 @@ import { AppStoreService } from '../store/app-store.service';
 import { Injectable } from '@angular/core';
 import { User } from '../../models/user.model';
 import { ApiService } from './api.service';
+import { Doctor } from '../../models/doctor.model';
 
 @Injectable({
   providedIn: 'root',
@@ -15,7 +16,7 @@ export class AuthService {
   ) { }
 
   login(userId: string, password: string) {
-    return this.api.patch<User>('login/doctor', {
+    return this.api.patch<Doctor>('login/doctor', {
       user_id: userId,
       password: password,
     });

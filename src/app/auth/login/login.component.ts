@@ -36,9 +36,9 @@ export class LoginComponent implements OnInit {
   }
 
   login() {
-    this.authService.login(this.userId.value, this.password.value).subscribe(
-      user => {
-        if (user._id) {
+    this.authService.login(this.userId.value, this.password.value)
+      .subscribe((user) => {
+        if (user?._id) {
           this.appStore.updateUser(user);
           this.authService.isLoggedIn = true;
           // console.log(this.appStore.state);
@@ -49,8 +49,7 @@ export class LoginComponent implements OnInit {
           this.authService.isLoggedIn = false;
           this.errorResult = true;
         }
-      },
-    );
+      });
   }
 
 }
