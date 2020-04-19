@@ -35,29 +35,16 @@ export function getMenuItems(role: number): NbMenuItem[] {
       ],
     },
     {
-      title: 'Layout',
+      title: '药师管理',
       icon: 'layout-outline',
       children: [
         {
-          title: 'Stepper',
-          link: '/pages/layout/stepper',
+          title: '药师',
+          link: '/cms/crm/doctor',
         },
         {
-          title: 'List',
-          link: '/pages/layout/list',
-        },
-        {
-          title: 'Infinite List',
-          link: '/pages/layout/infinite-list',
-        },
-        {
-          title: 'Accordion',
-          link: '/pages/layout/accordion',
-        },
-        {
-          title: 'Tabs',
-          pathMatch: 'prefix',
-          link: '/pages/layout/tabs',
+          title: '药师组',
+          link: '/cms/crm/doctor-group',
         },
       ],
     },

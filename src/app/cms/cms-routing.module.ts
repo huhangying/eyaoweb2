@@ -24,6 +24,11 @@ const routes: Routes = [{
       loadChildren: () => import('./hospital/hospital.module')
         .then(m => m.HospitalModule),
     },
+    {
+      path: 'crm',
+      loadChildren: () => import('./crm/crm.module')
+        .then(m => m.CrmModule),
+    },
   ],
 }];
 
