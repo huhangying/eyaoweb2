@@ -17,7 +17,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   private destroy$: Subject<void> = new Subject<void>();
   userPictureOnly =  false;
-  user: any;
+  doctor: any;
 
   themes = [
     {
@@ -56,7 +56,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.user = this.authService.getUser();
+    this.doctor = this.authService.getDoctor();
     this.currentTheme = this.themeService.currentTheme;
     const { xl } = this.breakpointService.getBreakpointsMap();
     this.themeService.onMediaQueryChange()

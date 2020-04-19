@@ -29,8 +29,8 @@ export class AuthService {
     this._isLoggedIn = value;
   }
 
-  getUser(): Doctor {
-    return this.appStore.state.doctor;
+  getDoctor(): Doctor {
+    return this.appStore.doctor;
   }
 
   logout() {
@@ -38,7 +38,7 @@ export class AuthService {
   }
 
   getDoctorRole(): number {
-    return this.appStore.state.doctor ? (this.appStore.state.doctor.role || 0) : 0;
+    return this.appStore.doctor ? (this.appStore.doctor.role || 0) : 0;
   }
 
   getDoctorIcon(role?: number) {

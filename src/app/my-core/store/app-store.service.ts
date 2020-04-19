@@ -3,22 +3,25 @@ import { AppState } from './app-state.model';
 import { Store } from './store';
 import { NbMediaBreakpoint } from '@nebular/theme';
 import { Doctor } from '../../models/doctor.model';
+import * as store2 from 'store2';
 
 @Injectable({ providedIn: 'root' })
 export class AppStoreService extends Store<AppState> {
 
-  constructor() {
+  constructor(
+  ) {
     super(new AppState());
   }
 
-  // select
-  get doctor() { return this.state?.doctor; }
+  // selectors
+  get doctor() { return this.state?.doctor || store2.get('doctor'); }
 
-  updateUser(doctor: Doctor) {
+  updateDoctor(doctor: Doctor) {
     this.setState({
       ...this.state,
       doctor,
     });
+    store2.set('doctor', doctor);
   }
 
   updateDebugMode(debugMode?: 0 | 1) {
@@ -51,5 +54,7 @@ export class AppStoreService extends Store<AppState> {
 
   reset() {
     this.setState(new AppState());
+    // clear localstorage
+    store2.clear();
   }
 }

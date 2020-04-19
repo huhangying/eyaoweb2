@@ -37,15 +37,15 @@ export class LoginComponent implements OnInit {
 
   login() {
     this.authService.login(this.userId.value, this.password.value)
-      .subscribe((user) => {
-        if (user?._id) {
-          this.appStore.updateUser(user);
+      .subscribe((doctor) => {
+        if (doctor?._id) {
+          this.appStore.updateDoctor(doctor);
           this.authService.isLoggedIn = true;
           // console.log(this.appStore.state);
           this.router.navigate(['/cms/dashboard']);
         } else {
           // error
-          console.error(user);
+          console.error(doctor);
           this.authService.isLoggedIn = false;
           this.errorResult = true;
         }

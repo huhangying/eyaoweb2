@@ -50,7 +50,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
     }, {
       validators: [mustMatch('password', 'passwordConfirm')]
     });
-    this.doctorService.getDoctorById(this.appStore.doctor?._id || '57458db10791dcb26e74cb5a') // for test
+    this.doctorService.getDoctorById(this.appStore.doctor?._id)
       .subscribe(_data => {
         const data: any = _data;
         // leave password to empty
@@ -101,8 +101,8 @@ export class ProfileComponent implements OnInit, OnDestroy {
   onFileSelected(event) {
     if (event.target.files?.length) {
       const [file] = event.target.files;
-      const user = this.form.getRawValue() as Doctor;
-      const newfileName = `${user._id}.${file.name.split('.').pop()}`; // _id.[ext]
+      const doctor = this.form.getRawValue() as Doctor;
+      const newfileName = `${doctor._id}.${file.name.split('.').pop()}`; // _id.[ext]
 
       const reader = new FileReader();
       reader.readAsDataURL(file);
@@ -117,9 +117,9 @@ export class ProfileComponent implements OnInit, OnDestroy {
                 file.progress = Math.round(event.loaded * 100 / event.total);
                 if (event.loaded >= event.total) {
                   // update icon to db after finished uploading
-                  this.doctorService.updateProfile(user.user_id, {
-                    _id: user._id,
-                    hid: user.hid,
+                  this.doctorService.updateProfile(doctor.user_id, {
+                    _id: doctor._id,
+                    hid: doctor.hid,
                     icon: newfileName
                   }).subscribe();
                 }
