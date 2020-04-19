@@ -40,13 +40,11 @@ export class LoginComponent implements OnInit {
       .subscribe((doctor) => {
         if (doctor?._id) {
           this.appStore.updateDoctor(doctor);
-          this.authService.isLoggedIn = true;
           // console.log(this.appStore.state);
           this.router.navigate(['/cms/dashboard']);
         } else {
           // error
           console.error(doctor);
-          this.authService.isLoggedIn = false;
           this.errorResult = true;
         }
       });

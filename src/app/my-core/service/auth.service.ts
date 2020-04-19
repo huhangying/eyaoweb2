@@ -7,7 +7,6 @@ import { Doctor } from '../../models/doctor.model';
   providedIn: 'root',
 })
 export class AuthService {
-  _isLoggedIn: boolean;
 
   constructor(
     private api: ApiService,
@@ -21,20 +20,16 @@ export class AuthService {
     });
   }
 
-  get isLoggedIn() {
-    return this._isLoggedIn;
-  }
-
-  set isLoggedIn(value: boolean) {
-    this._isLoggedIn = value;
-  }
-
-  getDoctor(): Doctor {
-    return this.appStore.doctor;
+  isLoggedIn(): boolean {
+    return !!this.getDoctor();
   }
 
   logout() {
     this.appStore.reset();
+  }
+
+  getDoctor(): Doctor {
+    return this.appStore.doctor;
   }
 
   getDoctorRole(): number {
