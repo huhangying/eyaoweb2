@@ -37,7 +37,6 @@ export class DepartmentComponent implements OnInit, OnDestroy {
     );
     this.searchForm = this.fb.group({
       name: [''],
-      department: [''],
     });
   }
 

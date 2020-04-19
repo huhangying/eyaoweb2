@@ -13,8 +13,17 @@ export class DoctorService {
     private appStore: AppStoreService
   ) { }
 
+
+  getDoctors() {
+    return this.api.get<Doctor[]>('doctors/1000/all');
+  }
+
   getDoctorById(id: string) {
     return this.api.get<Doctor>('doctor/' + id);
+  }
+
+  deleteDoctorById(id: string) {
+    return this.api.delete<Doctor>('doctor/' + id);
   }
 
   updateProfile(id: string, payload: any) {

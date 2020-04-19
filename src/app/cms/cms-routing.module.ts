@@ -4,11 +4,12 @@ import { RouterModule, Routes } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { DepartmentResolver } from '../services/resolvers/department.resolver';
 import { DashboardComponent } from '../pages/dashboard/dashboard.component';
+import { AuthGuard } from '../my-core/service/auth.guard';
 
 const routes: Routes = [{
   path: '',
   component: CmsComponent,
-  // canActivateChild : [AuthGuard],
+  canActivateChild : [AuthGuard],
   children: [
     {
       path: 'dashboard',

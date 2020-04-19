@@ -114,7 +114,8 @@
   "schematics": {
     "@schematics/angular:component": {
       "prefix": "ngx",
-      "styleext": "scss"
+      "style": "scss",
+      "spec": false
     },
     "@schematics/angular:directive": {
       "prefix": "ngx"

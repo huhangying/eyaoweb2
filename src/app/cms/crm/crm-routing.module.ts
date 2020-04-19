@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { DoctorComponent } from './doctor/doctor/doctor.component';
 import { DoctorGroupComponent } from './doctor/doctor-group/doctor-group.component';
+import { DepartmentResolver } from '../../services/resolvers/department.resolver';
 
 const routes: Routes = [{
   path: '',
@@ -9,6 +10,7 @@ const routes: Routes = [{
     {
       path: 'doctor',
       component: DoctorComponent,
+      resolve: { departments: DepartmentResolver }
     },
     {
       path: 'doctor-group',
