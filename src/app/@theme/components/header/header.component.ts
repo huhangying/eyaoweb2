@@ -114,7 +114,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     return false;
   }
 
-  getUserIcon(role: number) {
-    return this.authService.getUserIcon(role);
+  getDoctorIcon(role: number) {
+    return this.authService.getDoctorIcon(role);
   }
 }

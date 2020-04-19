@@ -1,6 +1,5 @@
 import { AppStoreService } from '../store/app-store.service';
 import { Injectable } from '@angular/core';
-import { User } from '../../models/user.model';
 import { ApiService } from './api.service';
 import { Doctor } from '../../models/doctor.model';
 
@@ -30,20 +29,20 @@ export class AuthService {
     this._isLoggedIn = value;
   }
 
-  getUser(): User {
-    return this.appStore.state.user;
+  getUser(): Doctor {
+    return this.appStore.state.doctor;
   }
 
   logout() {
     this.appStore.reset();
   }
 
-  getUserRole(): number {
-    return this.appStore.state.user ? (this.appStore.state.user.role || 0) : 0;
+  getDoctorRole(): number {
+    return this.appStore.state.doctor ? (this.appStore.state.doctor.role || 0) : 0;
   }
 
-  getUserIcon(role?: number) {
-    role = role || this.getUserRole();
+  getDoctorIcon(role?: number) {
+    role = role || this.getDoctorRole();
     switch (role) {
       case 1:
         return 'assets/images/icon/Ninja.svg';

@@ -14,7 +14,7 @@ export class AccessControlDirective {
   }
 
   @Input() set ngxAcl(requireRole: number) {
-    const condition = this.authService.getUserRole() >= requireRole;
+    const condition = this.authService.getDoctorRole() >= requireRole;
     if (condition && !this.hasView) {
       this.viewContainer.createEmbeddedView(this.templateRef);
       this.hasView = true;

@@ -26,7 +26,7 @@ export class CmsComponent {
     private layoutService: LayoutService,
     private appStore: AppStoreService,
   ) {
-    this.role = this.authService.getUserRole();
+    this.role = this.authService.getDoctorRole();
     this.menu = getMenuItems(this.role);
   }
 

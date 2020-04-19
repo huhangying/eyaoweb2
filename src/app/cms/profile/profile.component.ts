@@ -50,7 +50,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
     }, {
       validators: [mustMatch('password', 'passwordConfirm')]
     });
-    this.doctorService.getDoctorById(this.appStore.user?._id || '57458db10791dcb26e74cb5a') // for test
+    this.doctorService.getDoctorById(this.appStore.doctor?._id || '57458db10791dcb26e74cb5a') // for test
       .subscribe(_data => {
         const data: any = _data;
         // leave password to empty

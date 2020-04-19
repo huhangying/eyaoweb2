@@ -15,8 +15,6 @@ export class DepartmentEditComponent implements OnInit, OnDestroy {
   form: FormGroup;
   destroy$ = new Subject<void>();
 
-
-
   constructor(
     public dialogRef: MatDialogRef<DepartmentEditComponent>,
     @Inject(MAT_DIALOG_DATA) @Optional() @SkipSelf() public data: Department,
@@ -32,8 +30,6 @@ export class DepartmentEditComponent implements OnInit, OnDestroy {
       apply: false,
     });
     if (data) {
-      console.log(data);
-
       this.form.patchValue(data);
     }
   }

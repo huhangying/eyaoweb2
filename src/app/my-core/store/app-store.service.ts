@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { AppState } from './app-state.model';
 import { Store } from './store';
-import { User } from '../../models/user.model';
 import { NbMediaBreakpoint } from '@nebular/theme';
+import { Doctor } from '../../models/doctor.model';
 
 @Injectable({ providedIn: 'root' })
 export class AppStoreService extends Store<AppState> {
@@ -12,12 +12,12 @@ export class AppStoreService extends Store<AppState> {
   }
 
   // select
-  get user() { return this.state?.user; }
+  get doctor() { return this.state?.doctor; }
 
-  updateUser(user: User) {
+  updateUser(doctor: Doctor) {
     this.setState({
       ...this.state,
-      user,
+      doctor,
     });
   }
 

@@ -19,7 +19,7 @@ export class PagesComponent {
   menu: NbMenuItem[];
 
   constructor(private authService: AuthService) {
-    this.role = this.authService.getUserRole();
+    this.role = this.authService.getDoctorRole();
     this.menu = getMenuItems(this.role);
   }
 }

@@ -45,7 +45,7 @@ export class ConfigService {
   }
 
   getLoginUserId(): string {
-    return this.appStore.state.user ? this.appStore.state.user._id : '';
+    return this.appStore.state.doctor ? this.appStore.state.doctor._id : '';
   }
 
 }
