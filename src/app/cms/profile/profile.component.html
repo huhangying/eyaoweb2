@@ -35,8 +35,9 @@
             <label class="label col-sm-3">头像</label>
 
             <div class="col-sm-9">
-              <img src="{{ avatar }}" onerror="this.src='/assets/images/icon/default.svg';this.onerror='';"
-                class="img-fluid img-thumbnail z-depth-1 rounded-circle" alt="">
+              <img src="{{ avatar }}"
+                onerror="this.src='/assets/images/icon/default.svg';this.onerror='';"
+                class="avatar-image img-fluid img-thumbnail z-depth-1 rounded-circle" alt="">
               <div>
                 <input hidden="true" type="file" accept="image/*" (change)="onFileSelected($event)" #fileInput>
                 <button mat-flat-button color="primary" class="w-75" (click)="fileInput.click()"
@@ -67,12 +68,8 @@
             <input type="email" class="col-sm-9" nbInput fullWidth id="inputEmail" placeholder="暂不支持">
           </div>
           <div class="field row">
-            <label for="inputAddress" class="label col-sm-3">医院地址</label>
-            <input type="text" class="col-sm-9" nbInput fullWidth id="inputAddress" placeholder="暂不支持">
-          </div>
-          <div class="field row">
-            <label for="inputRoom" class="label col-sm-3">院内地址</label>
-            <input type="text" class="col-sm-9" nbInput fullWidth id="inputRoom" placeholder="暂不支持">
+            <label for="inputInternalAddress" class="label col-sm-3">院内地址</label>
+            <input type="text" class="col-sm-9" nbInput fullWidth id="inputInternalAddress" placeholder="暂不支持">
           </div>
 
         </nb-card-body>
