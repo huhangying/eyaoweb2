@@ -1,0 +1,21 @@
+<nb-card [status]="data ? 'info' : 'success'" [formGroup]="form">
+  <nb-card-header>
+    {{data? '编辑药师' : '新增药师'}}
+    <button nbButton shape="round" size="small" class="float-right" mat-dialog-close>
+      <nb-icon icon="close"></nb-icon>
+    </button>
+  </nb-card-header>
+
+  <mat-dialog-content class="container px-3">
+
+
+
+  </mat-dialog-content>
+
+  <nb-card-footer class="d-block">
+    <button nbButton mat-dialog-close>取消</button>
+    <button nbButton hero status="primary" class="float-right" cdkFocusInitial [disabled]="form.invalid" (click)="update()">
+      <nb-icon icon="checkmark-circle"></nb-icon>更新
+    </button>
+  </nb-card-footer>
+</nb-card>

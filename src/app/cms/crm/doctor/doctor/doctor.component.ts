@@ -11,6 +11,7 @@ import { DialogService } from '../../../../my-core/service/dialog.service';
 import { takeUntil } from 'rxjs/operators';
 import { Department } from '../../../../models/hospital/department.model';
 import { ActivatedRoute } from '@angular/router';
+import { DoctorEditComponent } from './doctor-edit/doctor-edit.component';
 
 @Component({
   selector: 'ngx-doctor',
@@ -62,25 +63,25 @@ export class DoctorComponent implements OnInit, OnDestroy {
   }
 
   edit(data?: Doctor) {
-    // const isEdit = !!data;
-    // this.dialog.open(DEditComponent, {
-    //   data: data
-    // }).afterClosed()
-    // .subscribe(result => {
-    //   if (result?._id) {
-    //     if (isEdit) {
-    //       // update
-    //       this.dataSource.data = this.dataSource.data.map(item => {
-    //         return item._id === result._id ? result : item;
-    //       });
-    //     } else {
-    //       // create
-    //       this.dataSource.data.unshift(result);
-    //     }
-    //     this.loadData(this.dataSource.data); // add to list
-    //     isEdit && this.dataSource.paginator.firstPage(); // created goes first
-    //   }
-    // });
+    const isEdit = !!data;
+    this.dialog.open(DoctorEditComponent, {
+      data: data
+    }).afterClosed()
+    .subscribe(result => {
+      if (result?._id) {
+        if (isEdit) {
+          // update
+          this.dataSource.data = this.dataSource.data.map(item => {
+            return item._id === result._id ? result : item;
+          });
+        } else {
+          // create
+          this.dataSource.data.unshift(result);
+        }
+        this.loadData(this.dataSource.data); // add to list
+        isEdit && this.dataSource.paginator.firstPage(); // created goes first
+      }
+    });
   }
 
   delete(id: string) {

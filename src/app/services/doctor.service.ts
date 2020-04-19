@@ -22,11 +22,19 @@ export class DoctorService {
     return this.api.get<Doctor>('doctor/' + id);
   }
 
+  createDoctor(data: any) {
+    return this.api.post<Doctor>('doctor', data);
+  }
+
   deleteDoctorById(id: string) {
     return this.api.delete<Doctor>('doctor/' + id);
   }
 
+  updateDoctor(data: Doctor) {
+    return this.api.patch<Doctor>('doctor/' + data.user_id, data);
+  }
+
   updateProfile(id: string, payload: any) {
-    return this.api.patch('doctor/' + id, payload);
+    return this.api.patch<Doctor>('doctor/' + id, payload);
   }
 }

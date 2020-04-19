@@ -94,7 +94,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
     const profile = { ...this.form.getRawValue() };
     delete profile.password;
     delete profile.passwordConfirm;
-    this.doctorService.updateProfile(profile.user_id, profile)
+    this.doctorService.updateDoctor(profile)
       .subscribe();
   }
 
@@ -117,9 +117,8 @@ export class ProfileComponent implements OnInit, OnDestroy {
                 file.progress = Math.round(event.loaded * 100 / event.total);
                 if (event.loaded >= event.total) {
                   // update icon to db after finished uploading
-                  this.doctorService.updateProfile(doctor.user_id, {
-                    _id: doctor._id,
-                    hid: doctor.hid,
+                  this.doctorService.updateDoctor({
+                    ...doctor,
                     icon: newfileName
                   }).subscribe();
                 }

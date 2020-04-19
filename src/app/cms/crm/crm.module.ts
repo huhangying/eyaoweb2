@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CrmRoutingModule, routedComponents } from './crm-routing.module';
 import { SharedModule } from '../shared/shared.module';
+import { DoctorEditComponent } from './doctor/doctor/doctor-edit/doctor-edit.component';
 
 
 @NgModule({
@@ -10,6 +11,7 @@ import { SharedModule } from '../shared/shared.module';
   ],
   declarations: [
     ...routedComponents,
+    DoctorEditComponent,
   ]
 })
 export class CrmModule { }
