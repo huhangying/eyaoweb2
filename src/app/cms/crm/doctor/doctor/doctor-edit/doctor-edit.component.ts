@@ -5,6 +5,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Doctor } from '../../../../../models/doctor.model';
 import { DoctorService } from '../../../../../services/doctor.service';
 import { tap } from 'rxjs/operators';
+import { Department } from '../../../../../models/hospital/department.model';
 
 @Component({
   selector: 'ngx-doctor-edit',
@@ -17,21 +18,11 @@ export class DoctorEditComponent implements OnInit, OnDestroy {
 
   constructor(
     public dialogRef: MatDialogRef<DoctorEditComponent>,
-    @Inject(MAT_DIALOG_DATA) @Optional() @SkipSelf() public data: Doctor,
+    @Inject(MAT_DIALOG_DATA) @Optional() @SkipSelf() public data: {doctor: Doctor; departments: Department[]},
     private fb: FormBuilder,
     private doctorService: DoctorService,
   ) {
 
-    this.form = this.fb.group({
-      name: ['', Validators.required],
-      desc: [''],
-      assetFolder: [''],
-      order: [''],
-      apply: false,
-    });
-    if (data) {
-      this.form.patchValue(data);
-    }
   }
 
   ngOnInit() {
@@ -43,9 +34,9 @@ export class DoctorEditComponent implements OnInit, OnDestroy {
   }
 
   update() {
-    const response = this.data?._id ?
+    const response = this.data.doctor._id ?
       // update
-      this.doctorService.updateDoctor({ ...this.data, ...this.form.value }) :
+      this.doctorService.updateDoctor({ ...this.data.doctor, ...this.form.value }) :
       // create
       this.doctorService.createDoctor({ ...this.form.value });
     response.pipe(

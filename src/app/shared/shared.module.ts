@@ -7,6 +7,7 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
+import { DoctorProfileComponent } from './components/doctor-profile/doctor-profile.component';
 
 @NgModule({
   imports: [
@@ -19,6 +20,8 @@ import { MatDialogModule } from '@angular/material/dialog';
     MatCheckboxModule,
     MatButtonModule,
     MatDialogModule,
+
+    // DoctorProfileComponent,
   ],
   exports: [
     FormsModule,
@@ -30,6 +33,11 @@ import { MatDialogModule } from '@angular/material/dialog';
     MatCheckboxModule,
     MatButtonModule,
     MatDialogModule,
+
+    DoctorProfileComponent,
+  ],
+  declarations: [
+    DoctorProfileComponent
   ]
 })
 export class SharedModule { }

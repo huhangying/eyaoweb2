@@ -22,4 +22,6 @@ export interface Doctor {
   locked_count: number;
   apply: boolean;
   order: number;
+
+  password?: string;
 }

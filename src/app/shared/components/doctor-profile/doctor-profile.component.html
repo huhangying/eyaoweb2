@@ -1,0 +1,152 @@
+<div [formGroup]="form">
+  <div class="lead pb-3">药师个人资料</div>
+  <div class="row">
+    <div class="col-lg-6">
+      <nb-card>
+        <nb-card-header>基本信息</nb-card-header>
+        <nb-card-body>
+          <div class="field row">
+            <label class="label col-sm-3">用户名</label>
+            <input type="tel" class="col-sm-9" nbInput fullWidth formControlName="user_id">
+          </div>
+          <div class="field row">
+            <label for="inputName" class="label required col-sm-3">姓名</label>
+            <input type="text" class="col-sm-9" nbInput fullWidth id="inputName" formControlName="name">
+          </div>
+          <div class="field row">
+            <label for="inputGender" class="label required col-sm-3">性别</label>
+            <nb-radio-group class="col-sm-9 d-inline-flex" id="inputGender" formControlName="gender">
+              <nb-radio value="男" class="px-2">男</nb-radio>
+              <nb-radio value="女" class="px-2">女</nb-radio>
+            </nb-radio-group>
+          </div>
+          <div class="field row">
+            <label for="inputDepartment" class="label required col-sm-3">医院科室</label>
+            <nb-select id="inputDepartment" class="col-sm-9" formControlName="department">
+              <nb-option ngInput *ngFor="let dep of departments" [value]="dep._id">{{dep.name}}</nb-option>
+            </nb-select>
+          </div>
+          <div class="field row">
+            <label for="inputTitle" class="label required col-sm-3">职称</label>
+            <input type="text" class="col-sm-9" nbInput fullWidth id="inputTitle" formControlName="title">
+          </div>
+
+          <div class="form-group row clearfix">
+            <label class="label col-sm-3">头像</label>
+
+            <div class="col-sm-9">
+              <img src="{{ avatar }}"
+                onerror="this.src='/assets/images/icon/default.svg';this.onerror='';"
+                class="avatar-image img-fluid img-thumbnail z-depth-1 rounded-circle" alt="">
+              <div>
+                <input hidden="true" type="file" accept="image/*" (change)="onFileSelected($event)" #fileInput>
+                <button mat-flat-button color="primary" class="w-75" (click)="fileInput.click()"
+                  class="UppyModalOpenerBtn">
+                  更改头像
+                </button>
+              </div>
+            </div>
+          </div>
+        </nb-card-body>
+      </nb-card>
+    </div>
+
+    <div class="col-lg-6">
+      <nb-card>
+        <nb-card-header>联系信息</nb-card-header>
+        <nb-card-body>
+          <div class="field row">
+            <label for="inputCell" class="label required col-sm-3">手机</label>
+            <input type="tel" class="col-sm-9" nbInput fullWidth id="inputCell" placeholder="" formControlName="cell">
+          </div>
+          <div class="field row">
+            <label for="inputTel" class="label col-sm-3">工作电话</label>
+            <input type="tel" class="col-sm-9" nbInput fullWidth id="inputTel" placeholder="" formControlName="tel">
+          </div>
+          <div class="field row">
+            <label for="inputEmail" class="label col-sm-3">其它联系方式</label>
+            <input type="email" class="col-sm-9" nbInput fullWidth id="inputEmail" placeholder="暂不支持">
+          </div>
+          <div class="field row">
+            <label for="inputInternalAddress" class="label col-sm-3">院内地址</label>
+            <input type="text" class="col-sm-9" nbInput fullWidth id="inputInternalAddress" placeholder="暂不支持">
+          </div>
+
+        </nb-card-body>
+      </nb-card>
+    </div>
+
+    <div class="col-lg-6">
+      <nb-card>
+        <nb-card-header>修改密码</nb-card-header>
+        <nb-card-body>
+          <div class="field row">
+            <label for="inputPassword" class="label col-sm-3">密码</label>
+            <input type="password" class="col-sm-9" nbInput fullWidth id="inputPassword" placeholder=""
+              formControlName="password">
+          </div>
+          <div class="field row">
+            <label for="inputPasswordConfirm" class="label col-sm-3">再次输入密码</label>
+            <div class="col-sm-9 p-0">
+              <input type="password" nbInput fullWidth id="inputPasswordConfirm" placeholder=""
+                formControlName="passwordConfirm">
+              <ng-container *ngIf="passwordConfirm?.errors" class="py-2">
+                <div class="text-danger" *ngIf="passwordConfirm.errors.mustMatch">再次输入密码必须与密码相同</div>
+              </ng-container>
+            </div>
+          </div>
+          <div class="pt-2">
+            <button nbButton status="primary" class="float-right" [disabled]="checkUpdatePasswordInvalid()"
+              (click)="updatePassword(password.value)">更新密码</button>
+          </div>
+        </nb-card-body>
+      </nb-card>
+    </div>
+
+    <div class="col-lg-6">
+      <nb-card>
+        <nb-card-header>工作时间</nb-card-header>
+        <nb-card-body>
+          <textarea nbInput fullWidth placeholder="工作时间" class="form-control" formControlName="hours"
+            rows="5"></textarea>
+        </nb-card-body>
+      </nb-card>
+    </div>
+
+    <div class="col-lg-6">
+      <nb-card>
+        <nb-card-header>擅长领域</nb-card-header>
+        <nb-card-body>
+          <textarea nbInput fullWidth placeholder="擅长领域" class="form-control" formControlName="expertise"
+            rows="5"></textarea>
+        </nb-card-body>
+      </nb-card>
+    </div>
+
+    <div class="col-lg-6">
+      <nb-card>
+        <nb-card-header>工作范围</nb-card-header>
+        <nb-card-body>
+          <textarea nbInput fullWidth placeholder="工作范围" class="form-control" formControlName="bulletin"
+            rows="5"></textarea>
+        </nb-card-body>
+      </nb-card>
+    </div>
+
+    <div class="col-lg-6">
+      <nb-card>
+        <nb-card-header>获奖情况</nb-card-header>
+        <nb-card-body>
+          <textarea nbInput fullWidth placeholder="获奖情况" class="form-control" formControlName="honor"
+            rows="5"></textarea>
+        </nb-card-body>
+      </nb-card>
+    </div>
+  </div>
+
+  <div class="pb-3">
+    <button nbButton status="primary" [disabled]="form.invalid" (click)="updateProfile()">
+      <nb-icon icon="checkmark-circle"></nb-icon>更新个人信息
+    </button>
+  </div>
+</div>

@@ -10,8 +10,8 @@
 
 export const environment = {
   production: false,
-  apiUrl: 'http://192.168.87.250:3000/',
-  // apiUrl: 'http://localhost:3000/',
+  // apiUrl: 'http://192.168.87.250:3000/',
+  apiUrl: 'http://localhost:3000/',
   imageServer: 'http://192.168.87.250:8888/public/upload/',
   peerPageUrl: 'http://yyl.rostensoft.com/zhaoys/'
 

@@ -1,6 +1,6 @@
 import { AppStoreService } from '../store/app-store.service';
 import { Injectable } from '@angular/core';
-import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent, HttpErrorResponse } from '@angular/common/http';
+import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent, HttpErrorResponse, HttpParams } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { finalize, catchError } from 'rxjs/operators';
 
@@ -9,14 +9,15 @@ export class ApiInterceptor implements HttpInterceptor {
 
   constructor(
     private appStore: AppStoreService,
-    ) {
+  ) {
   }
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     this.appStore.updateLoading(true);
-    // const customReq = request.clone({
-    // });
-    // this.toastr.success(customReq.serializeBody());
+    request = request.clone({
+      // headers: request.headers.set('Accept', 'application/json'),
+      // params: request.params.append('hid', '1')
+    });
     return next.handle(request).pipe(
       finalize(() => {
         this.appStore.updateLoading(false);
