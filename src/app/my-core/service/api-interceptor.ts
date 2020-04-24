@@ -13,18 +13,20 @@ export class ApiInterceptor implements HttpInterceptor {
   }
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    if (this.appStore.doctor?.token) {
+      request = request.clone({
+        setHeaders: {
+          Authorization: `Bearer ${this.appStore.doctor.token}`
+        }
+      });
+    }
     this.appStore.updateLoading(true);
-    request = request.clone({
-      // headers: request.headers.set('Accept', 'application/json'),
-      // params: request.params.append('hid', '1')
-    });
     return next.handle(request).pipe(
       finalize(() => {
         this.appStore.updateLoading(false);
       }),
       catchError((error: HttpErrorResponse) => {
         // handle error
-        this.appStore.updateLoading(false);
         return throwError(error);
       }),
     );
