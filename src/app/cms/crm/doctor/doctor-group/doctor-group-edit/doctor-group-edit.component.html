@@ -1,0 +1,34 @@
+<nb-card [status]="data ? 'info' : 'success'" [formGroup]="form">
+  <nb-card-header>
+    {{data ? '编辑药师组' : '新增药师组'}}
+    <button nbButton shape="round" size="small" class="float-right" mat-dialog-close>
+      <nb-icon icon="close"></nb-icon>
+    </button>
+  </nb-card-header>
+
+  <mat-dialog-content class="container px-3">
+    <div class="field row">
+      <label for="name" class="label required"> 药师组名称 </label>
+      <input nbInput fullWidth id="name" formControlName="name">
+    </div>
+
+    <div class="field row">
+      <label for="doctor" class="label required"> 药师 </label>
+      <nb-select id="doctor" fullWidth formControlName="doctor">
+        <nb-option *ngFor="let doc of doctors" [value]="doc._id">{{doc.name}}</nb-option>
+      </nb-select>
+    </div>
+
+    <div class="field row pt-3">
+      <nb-checkbox nbInput formControlName="apply"> 开关 </nb-checkbox>
+    </div>
+
+  </mat-dialog-content>
+
+  <nb-card-footer class="d-block">
+    <button nbButton mat-dialog-close>取消</button>
+    <button nbButton hero status="primary" class="float-right" cdkFocusInitial (click)="update()">
+      <nb-icon icon="checkmark-circle"></nb-icon>更新
+    </button>
+  </nb-card-footer>
+</nb-card>

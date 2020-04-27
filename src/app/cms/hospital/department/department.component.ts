@@ -10,6 +10,8 @@ import { FormGroup, FormBuilder } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { DepartmentEditComponent } from './department-edit/department-edit.component';
+import { ToastrService } from 'ngx-toastr';
+import { Message } from '../../../my-core/enum/message.enum';
 
 @Component({
   selector: 'ngx-department',
@@ -29,6 +31,7 @@ export class DepartmentComponent implements OnInit, OnDestroy {
     private hospitalService: HospitalService,
     public dialog: MatDialog,
     private dialogService: DialogService,
+    private toastrService: ToastrService,
   ) {
     this.hospitalService.getDepartments().subscribe(
       data => {
@@ -75,6 +78,7 @@ export class DepartmentComponent implements OnInit, OnDestroy {
         }
         this.loadData(this.dataSource.data); // add to list
         isEdit && this.dataSource.paginator.firstPage(); // created goes first
+        this.toastrService.success(Message.updateSuccess);
       }
     });
   }
@@ -87,6 +91,7 @@ export class DepartmentComponent implements OnInit, OnDestroy {
             .subscribe(result => {
               if (result?._id) {
                 this.loadData(this.dataSource.data.filter(item => item._id !== result._id)); // remove from list
+                this.toastrService.success(Message.deleteSuccess);
               }
             });
         }
