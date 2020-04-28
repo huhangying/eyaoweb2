@@ -1,6 +1,6 @@
 export interface Medicine {
   _id: string;
-  hid?: string;
+  hid: number;
   name: string;
   desc: string;
   unit: string;

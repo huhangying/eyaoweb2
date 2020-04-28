@@ -1,6 +1,6 @@
 export interface Department {
   _id: string;
-  hid?: string;
+  hid: number;
   name: string;
   desc?: string;
   assetFolder?: string;

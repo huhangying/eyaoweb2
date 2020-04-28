@@ -1,8 +1,8 @@
 export interface Const {
   _id: string;
-  hid?: string;
+  hid: number;
   name: string;
-  desc: string;
+  desc?: string;
   type: number;
   value: string;
 }

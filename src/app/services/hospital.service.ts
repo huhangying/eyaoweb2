@@ -15,7 +15,7 @@ export class HospitalService {
   ) { }
 
   // Department
-  getDepartments(hid?: string) {
+  getDepartments() {
     return this.api.get<Department[]>('departments/');
   }
 
@@ -36,21 +36,21 @@ export class HospitalService {
   }
 
   // Disease
-  getDiseases(hid?: string) {
+  getDiseases() {
     return this.api.get<Disease[]>('diseases/');
   }
 
   // Medicine
-  getMedicines(hid?: string) {
+  getMedicines() {
     return this.api.get<Medicine[]>('medicines/');
   }
 
   // 医院全局变量
-  getHospitalSettings(hid?: string) {
+  getHospitalSettings() {
     return this.api.get<Const[]>('consts');
   }
 
-  getHospitalSetting(name: string, hid?: string) {
+  getHospitalSetting(name: string) {
     return this.api.get<Const>('const/' + name);
   }
 
