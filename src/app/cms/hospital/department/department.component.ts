@@ -7,8 +7,8 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatDialog } from '@angular/material/dialog';
 import { FormGroup, FormBuilder } from '@angular/forms';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { Subject, EMPTY } from 'rxjs';
+import { takeUntil, tap, catchError } from 'rxjs/operators';
 import { DepartmentEditComponent } from './department-edit/department-edit.component';
 import { ToastrService } from 'ngx-toastr';
 import { Message } from '../../../my-core/enum/message.enum';
@@ -31,7 +31,7 @@ export class DepartmentComponent implements OnInit, OnDestroy {
     private hospitalService: HospitalService,
     public dialog: MatDialog,
     private dialogService: DialogService,
-    private toastrService: ToastrService,
+    private toastr: ToastrService,
   ) {
     this.hospitalService.getDepartments().subscribe(
       data => {
@@ -64,41 +64,49 @@ export class DepartmentComponent implements OnInit, OnDestroy {
     const isEdit = !!data;
     this.dialog.open(DepartmentEditComponent, {
       data: data
-    }).afterClosed()
-    .subscribe(result => {
-      if (result?._id) {
-        if (isEdit) {
-          // update
-          this.dataSource.data = this.dataSource.data.map(item => {
-            return item._id === result._id ? result : item;
-          });
-        } else {
-          // create
-          this.dataSource.data.unshift(result);
+    }).afterClosed().pipe(
+      tap(result => {
+        if (result?._id) {
+          if (isEdit) {
+            // update
+            this.dataSource.data = this.dataSource.data.map(item => {
+              return item._id === result._id ? result : item;
+            });
+          } else {
+            // create
+            this.dataSource.data.unshift(result);
+          }
+          this.loadData(this.dataSource.data); // add to list
+          isEdit && this.dataSource.paginator.firstPage(); // created goes first
+          this.toastr.success(Message.updateSuccess);
         }
-        this.loadData(this.dataSource.data); // add to list
-        isEdit && this.dataSource.paginator.firstPage(); // created goes first
-        this.toastrService.success(Message.updateSuccess);
-      }
-    });
+      }),
+    ).subscribe();
   }
 
   delete(id: string) {
-    // check if data related first
-
-
-    this.dialogService?.deleteConfirm()
-      .subscribe(result => {
+    this.dialogService?.deleteConfirm().pipe(
+      tap(result => {
         if (result) {
-          this.hospitalService.deleteDepartmentById(id)
-            .subscribe(result => {
+          this.hospitalService.deleteDepartmentById(id).pipe(
+            tap(result => {
               if (result?._id) {
                 this.loadData(this.dataSource.data.filter(item => item._id !== result._id)); // remove from list
-                this.toastrService.success(Message.deleteSuccess);
+                this.toastr.success(Message.deleteSuccess);
               }
-            });
+            }),
+            catchError(rsp => {
+              const message = (rsp.error?.return === 'deleteNotAllowed') ?
+                Message.deleteNotAllowed :
+                rsp.headers?.message || Message.defaultError;
+              this.toastr.error(message);
+              return EMPTY;
+            })
+          ).subscribe();
         }
-      });
+      }),
+
+    ).subscribe();
   }
 
 

@@ -5,4 +5,5 @@ export const enum Message {
 
   defaultError = '服务器错误',
   nameExisted = '编辑的名称已经存在，请选择其它值。',
+  deleteNotAllowed = '不能删除，可能是存在关联数据',
 }
