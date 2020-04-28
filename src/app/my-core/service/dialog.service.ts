@@ -15,7 +15,7 @@ export class DialogService {
       width: '460px',
       data: {
         title: '请确认',
-        content: '从数据库中删除该记录。'
+        content: '本操作从数据库中删除记录！删除的记录将不能恢复。'
       }
     }).afterClosed();
   }

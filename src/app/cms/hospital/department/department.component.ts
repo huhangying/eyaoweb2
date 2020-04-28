@@ -84,6 +84,9 @@ export class DepartmentComponent implements OnInit, OnDestroy {
   }
 
   delete(id: string) {
+    // check if data related first
+
+
     this.dialogService?.deleteConfirm()
       .subscribe(result => {
         if (result) {
