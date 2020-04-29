@@ -32,6 +32,10 @@ export function getMenuItems(role: number): NbMenuItem[] {
           title: '药品管理',
           link: '/cms/hospital/medicine',
         },
+        {
+          title: '常问问题管理',
+          link: '/cms/hospital/faq',
+        },
       ],
     },
     {

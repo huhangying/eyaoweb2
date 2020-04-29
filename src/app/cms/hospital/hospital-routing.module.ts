@@ -5,6 +5,7 @@ import { HospitalSettingsComponent } from './hospital-settings/hospital-settings
 import { DepartmentComponent } from './department/department.component';
 import { DiseaseComponent } from './disease/disease.component';
 import { MedicineComponent } from './medicine/medicine.component';
+import { FaqComponent } from './faq/faq.component';
 
 const routes: Routes = [{
   path: '',
@@ -24,6 +25,10 @@ const routes: Routes = [{
     {
       path: 'medicine',
       component: MedicineComponent,
+    },
+    {
+      path: 'faq',
+      component: FaqComponent,
     },
 
   ],
