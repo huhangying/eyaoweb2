@@ -64,10 +64,6 @@ export class HospitalService {
     return this.api.get<Faq[]>('faqs/edit');
   }
 
-  getFaqById(id: string) {
-    return this.api.get<Faq>('faq/' + id);
-  }
-
   deleteFaqById(id: string) {
     return this.api.delete<any>('faq/' + id);
   }
