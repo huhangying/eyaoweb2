@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
-import { Subject } from 'rxjs';
+import { Subject, EMPTY } from 'rxjs';
 import { MatTableDataSource } from '@angular/material/table';
 import { Faq } from '../../../models/hospital/faq.model';
 import { MatPaginator } from '@angular/material/paginator';
@@ -9,7 +9,9 @@ import { HospitalService } from '../../../services/hospital.service';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogService } from '../../../my-core/service/dialog.service';
 import { ToastrService } from 'ngx-toastr';
-import { takeUntil, tap } from 'rxjs/operators';
+import { takeUntil, tap, catchError } from 'rxjs/operators';
+import { Message } from '../../../my-core/enum/message.enum';
+import { FaqEditComponent } from './faq-edit/faq-edit.component';
 
 @Component({
   selector: 'ngx-faq',
@@ -60,48 +62,45 @@ export class FaqComponent implements OnInit, OnDestroy {
 
   edit(data?: Faq) {
     const isEdit = !!data;
-    // this.dialog.open(FaqEditComponent, {
-    //   data: data
-    // }).afterClosed().pipe(
-    //   tap(result => {
-    //     if (result?._id) {
-    //       if (isEdit) {
-    //         // update
-    //         this.dataSource.data = this.dataSource.data.map(item => {
-    //           return item._id === result._id ? result : item;
-    //         });
-    //       } else {
-    //         // create
-    //         this.dataSource.data.unshift(result);
-    //       }
-    //       this.loadData(this.dataSource.data); // add to list
-    //       isEdit && this.dataSource.paginator.firstPage(); // created goes first
-    //       this.toastr.success(Message.updateSuccess);
-    //     }
-    //   }),
-    // ).subscribe();
+    this.dialog.open(FaqEditComponent, {
+      data: data
+    }).afterClosed().pipe(
+      tap(result => {
+        if (result?._id) {
+          if (isEdit) {
+            // update
+            this.dataSource.data = this.dataSource.data.map(item => {
+              return item._id === result._id ? result : item;
+            });
+          } else {
+            // create
+            this.dataSource.data.unshift(result);
+          }
+          this.loadData(this.dataSource.data); // add to list
+          isEdit && this.dataSource.paginator.firstPage(); // created goes first
+          this.toastr.success(Message.updateSuccess);
+        }
+      }),
+    ).subscribe();
   }
 
   delete(id: string) {
     this.dialogService?.deleteConfirm().pipe(
       tap(result => {
-        // if (result) {
-        //   this.hospitalService.deleteDepartmentById(id).pipe(
-        //     tap(result => {
-        //       if (result?._id) {
-        //         this.loadData(this.dataSource.data.filter(item => item._id !== result._id)); // remove from list
-        //         this.toastr.success(Message.deleteSuccess);
-        //       }
-        //     }),
-        //     catchError(rsp => {
-        //       const message = (rsp.error?.return === 'deleteNotAllowed') ?
-        //         Message.deleteNotAllowed :
-        //         rsp.headers?.message || Message.defaultError;
-        //       this.toastr.error(message);
-        //       return EMPTY;
-        //     })
-        //   ).subscribe();
-        // }
+        if (result) {
+          this.hospitalService.deleteFaqById(id).pipe(
+            tap(result => {
+              if (result?._id) {
+                this.loadData(this.dataSource.data.filter(item => item._id !== result._id)); // remove from list
+                this.toastr.success(Message.deleteSuccess);
+              }
+            }),
+            catchError(rsp => {
+              this.toastr.error(rsp.headers?.message || Message.defaultError);
+              return EMPTY;
+            })
+          ).subscribe();
+        }
       }),
 
     ).subscribe();

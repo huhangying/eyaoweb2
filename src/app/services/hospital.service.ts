@@ -59,9 +59,25 @@ export class HospitalService {
     return this.api.patch('const/' + data._id, { value: data.value });
   }
 
-  // Department
+  // 常问问题
   getFaqs() {
     return this.api.get<Faq[]>('faqs/edit');
+  }
+
+  getFaqById(id: string) {
+    return this.api.get<Faq>('faq/' + id);
+  }
+
+  deleteFaqById(id: string) {
+    return this.api.delete<any>('faq/' + id);
+  }
+
+  createFaq(data: any) {
+    return this.api.post<Faq>('faq', data);
+  }
+
+  updateFaq(data: Faq) {
+    return this.api.patch<Faq>('faq/' + data._id, data);
   }
 
 }
