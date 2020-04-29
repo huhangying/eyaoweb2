@@ -19,23 +19,18 @@ export class DoctorGroupEditComponent implements OnInit, OnDestroy {
 
   constructor(
     public dialogRef: MatDialogRef<DoctorGroupEditComponent>,
-    @Inject(MAT_DIALOG_DATA) @Optional() @SkipSelf() public data: DoctorGroup,
+    @Inject(MAT_DIALOG_DATA) @Optional() @SkipSelf() public data: { doctorGroup: DoctorGroup; doctors: Doctor[] },
     private fb: FormBuilder,
     private doctorService: DoctorService,
   ) {
-    doctorService.getDoctors().subscribe(
-      data => {
-        this.doctors = data;
-      }
-    );
-
+    this.doctors = data.doctors;
     this.form = this.fb.group({
       name: ['', Validators.required],
       doctor: ['', Validators.required],
       apply: false,
     });
-    if (data) {
-      this.form.patchValue(data);
+    if (data.doctorGroup) {
+      this.form.patchValue(data.doctorGroup);
     }
   }
 
@@ -48,9 +43,9 @@ export class DoctorGroupEditComponent implements OnInit, OnDestroy {
   }
 
   update() {
-    const response = this.data?._id ?
+    const response = this.data.doctorGroup?._id ?
       // update
-      this.doctorService.updateDoctorGroup({ ...this.data, ...this.form.value }) :
+      this.doctorService.updateDoctorGroup({ ...this.data.doctorGroup, ...this.form.value }) :
       // create
       this.doctorService.createDoctorGroup({ ...this.form.value });
     response.pipe(

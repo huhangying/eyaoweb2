@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { DoctorComponent } from './doctor/doctor/doctor.component';
 import { DoctorGroupComponent } from './doctor/doctor-group/doctor-group.component';
 import { DepartmentResolver } from '../../services/resolvers/department.resolver';
+import { DoctorsResolver } from '../../services/resolvers/doctors.resolver';
 
 const routes: Routes = [{
   path: '',
@@ -15,6 +16,7 @@ const routes: Routes = [{
     {
       path: 'doctor-group',
       component: DoctorGroupComponent,
+      resolve: { doctors: DoctorsResolver }
     },
   ],
 }];

@@ -1,7 +1,6 @@
 import { DoctorGroup } from './../../../../models/doctor-group.model';
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { Subject } from 'rxjs';
-import { Department } from '../../../../models/hospital/department.model';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -12,6 +11,7 @@ import { DialogService } from '../../../../my-core/service/dialog.service';
 import { DoctorGroupEditComponent } from './doctor-group-edit/doctor-group-edit.component';
 import { ToastrService } from 'ngx-toastr';
 import { Message } from '../../../../my-core/enum/message.enum';
+import { Doctor } from '../../../../models/doctor.model';
 
 @Component({
   selector: 'ngx-doctor-group',
@@ -20,7 +20,7 @@ import { Message } from '../../../../my-core/enum/message.enum';
 })
 export class DoctorGroupComponent implements OnInit, OnDestroy {
   destroy$ = new Subject<void>();
-  departments: Department[];
+  doctors: Doctor[];
   displayedColumns: string[] = ['name', 'doctor', 'apply', '_id'];
   dataSource: MatTableDataSource<DoctorGroup>;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
@@ -33,7 +33,7 @@ export class DoctorGroupComponent implements OnInit, OnDestroy {
     private dialogService: DialogService,
     private toastrService: ToastrService,
   ) {
-    this.departments = this.route.snapshot.data.departments;
+    this.doctors = this.route.snapshot.data.doctors;
     this.doctorService.getDoctorGroups().subscribe(
       data => {
         this.loadData(data);
@@ -56,7 +56,10 @@ export class DoctorGroupComponent implements OnInit, OnDestroy {
   edit(data?: DoctorGroup) {
     const isEdit = !!data;
     this.dialog.open(DoctorGroupEditComponent, {
-      data: data
+      data: {
+        doctorGroup: data,
+        doctors: this.doctors
+      },
     }).afterClosed()
     .subscribe(result => {
       if (result?._id) {
@@ -98,7 +101,7 @@ export class DoctorGroupComponent implements OnInit, OnDestroy {
     this.dataSource.paginator = this.paginator;
   }
 
-  getDepartmentLabel(id: string) {
-    return this.departments.find(item => item._id === id)?.name;
+  getDoctorLabel(id: string) {
+    return this.doctors.find(item => item._id === id)?.name;
   }
 }

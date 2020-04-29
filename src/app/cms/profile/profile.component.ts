@@ -51,10 +51,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
       validators: [mustMatch('password', 'passwordConfirm')]
     });
     this.doctorService.getDoctorById(this.appStore.doctor?._id)
-      .subscribe(_data => {
-        const data: any = _data;
-        // leave password to empty
-        data.password = '';
+      .subscribe(data => {
         if (data.icon) {
           this.avatar = environment.imageServer + data.icon;
         }

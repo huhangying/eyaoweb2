@@ -1,6 +1,5 @@
 export interface Disease {
   _id: string;
-  hid: number;
   department: string;
   name: string;
   desc: string;

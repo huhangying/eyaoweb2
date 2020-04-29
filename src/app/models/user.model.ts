@@ -9,7 +9,7 @@ export interface User {
   role?: number;
   // updated: Date;
   // associates?: [{
-  //   hid: number,
+  //   hid: string,
   //   huid: string,
   // }];
   icon?: string;
