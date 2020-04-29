@@ -45,4 +45,5 @@ export const routedComponents = [
   DepartmentComponent,
   DiseaseComponent,
   MedicineComponent,
+  FaqComponent,
 ];

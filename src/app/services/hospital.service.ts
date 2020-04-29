@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Department } from '../models/hospital/department.model';
 import { Disease } from '../models/hospital/disease.model';
 import { Medicine } from '../models/hospital/medicine.model';
+import { Faq } from '../models/hospital/faq.model';
 import { Const } from '../models/const.model';
 import { ApiService } from '../my-core/service/api.service';
 
@@ -16,7 +17,7 @@ export class HospitalService {
 
   // Department
   getDepartments() {
-    return this.api.get<Department[]>('departments/');
+    return this.api.get<Department[]>('departments');
   }
 
   getDepartmentById(id: string) {
@@ -58,5 +59,9 @@ export class HospitalService {
     return this.api.patch('const/' + data._id, { value: data.value });
   }
 
+  // Department
+  getFaqs() {
+    return this.api.get<Faq[]>('faqs/edit');
+  }
 
 }

@@ -4,6 +4,7 @@ import { HospitalSettingsEditComponent } from './hospital-settings/hospital-sett
 import { MedicineEditComponent } from './medicine/medicine-edit/medicine-edit.component';
 import { SharedModule } from '../../shared/shared.module';
 import { DepartmentEditComponent } from './department/department-edit/department-edit.component';
+import { FaqEditComponent } from './faq/faq-edit/faq-edit.component';
 
 @NgModule({
   imports: [
@@ -15,6 +16,7 @@ import { DepartmentEditComponent } from './department/department-edit/department
     MedicineEditComponent,
     HospitalSettingsEditComponent,
     DepartmentEditComponent,
+    FaqEditComponent,
   ]
 })
 export class HospitalModule { }
