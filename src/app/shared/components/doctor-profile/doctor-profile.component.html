@@ -1,12 +1,12 @@
 <div [formGroup]="form">
-  <div class="lead pb-3">药师个人资料</div>
+  <div class="lead pb-3" *ngIf="mode === 0">药师个人资料</div>
   <div class="row">
     <div class="col-lg-6">
       <nb-card>
         <nb-card-header>基本信息</nb-card-header>
         <nb-card-body>
           <div class="field row">
-            <label class="label col-sm-3">用户名</label>
+            <label class="label required col-sm-3">用户名</label>
             <input type="tel" class="col-sm-9" nbInput fullWidth formControlName="user_id">
           </div>
           <div class="field row">
@@ -35,8 +35,7 @@
             <label class="label col-sm-3">头像</label>
 
             <div class="col-sm-9">
-              <img src="{{ avatar }}"
-                onerror="this.src='/assets/images/icon/default.svg';this.onerror='';"
+              <img src="{{ avatar }}" onerror="this.src='/assets/images/icon/default.svg';this.onerror='';"
                 class="avatar-image img-fluid img-thumbnail z-depth-1 rounded-circle" alt="">
               <div>
                 <input hidden="true" type="file" accept="image/*" (change)="onFileSelected($event)" #fileInput>
@@ -96,8 +95,10 @@
             </div>
           </div>
           <div class="pt-2">
-            <button nbButton status="primary" class="float-right" [disabled]="checkUpdatePasswordInvalid()"
-              (click)="updatePassword(password.value)">更新密码</button>
+            <ng-container *ngIf="mode!==1">
+              <button nbButton status="primary" class="float-right" [disabled]="checkUpdatePasswordInvalid()"
+                (click)="updatePassword(password.value)">更新密码</button>
+            </ng-container>
           </div>
         </nb-card-body>
       </nb-card>
@@ -144,7 +145,7 @@
     </div>
   </div>
 
-  <div class="pb-3">
+  <div class="pb-3" *ngIf="mode === 0">
     <button nbButton status="primary" [disabled]="form.invalid" (click)="updateProfile()">
       <nb-icon icon="checkmark-circle"></nb-icon>更新个人信息
     </button>

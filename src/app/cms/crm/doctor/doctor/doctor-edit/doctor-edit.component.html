@@ -8,13 +8,14 @@
 
   <mat-dialog-content class="container px-3">
 
-    <ngx-doctor-profile [departments]="data.departments" [doctor]="data.doctor"></ngx-doctor-profile>
+    <ngx-doctor-profile [departments]="data.departments" [doctor]="data.doctor" [mode]="mode"
+      (valueChange)="profileChanged($event)"></ngx-doctor-profile>
 
   </mat-dialog-content>
 
   <nb-card-footer class="d-block">
     <button nbButton mat-dialog-close>取消</button>
-    <button nbButton hero status="primary" class="float-right" cdkFocusInitial (click)="update()">
+    <button nbButton hero status="primary" class="float-right" cdkFocusInitial [disabled]="invalid" (click)="update()">
       <nb-icon icon="checkmark-circle"></nb-icon>更新
     </button>
   </nb-card-footer>

@@ -67,7 +67,8 @@ export class DoctorComponent implements OnInit, OnDestroy {
     this.dialog.open(DoctorEditComponent, {
       data: {
         doctor: data,
-        departments: this.departments
+        departments: this.departments,
+        isEdit: isEdit
       }
     }).afterClosed()
     .subscribe(result => {

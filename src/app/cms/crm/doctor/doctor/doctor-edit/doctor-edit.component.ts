@@ -6,6 +6,7 @@ import { Doctor } from '../../../../../models/doctor.model';
 import { DoctorService } from '../../../../../services/doctor.service';
 import { tap } from 'rxjs/operators';
 import { Department } from '../../../../../models/hospital/department.model';
+import { threadId } from 'worker_threads';
 
 @Component({
   selector: 'ngx-doctor-edit',
@@ -13,16 +14,17 @@ import { Department } from '../../../../../models/hospital/department.model';
   styleUrls: ['./doctor-edit.component.scss']
 })
 export class DoctorEditComponent implements OnInit, OnDestroy {
-  form: FormGroup;
   destroy$ = new Subject<void>();
+  mode: number; // 1: add; 2: edit
+  doctor: Doctor;
+  invalid = true;
 
   constructor(
     public dialogRef: MatDialogRef<DoctorEditComponent>,
-    @Inject(MAT_DIALOG_DATA) @Optional() @SkipSelf() public data: {doctor: Doctor; departments: Department[]},
-    private fb: FormBuilder,
+    @Inject(MAT_DIALOG_DATA) @Optional() @SkipSelf() public data: {doctor: Doctor; departments: Department[]; isEdit: boolean},
     private doctorService: DoctorService,
   ) {
-
+    this.mode = data.isEdit ? 2 : 1;
   }
 
   ngOnInit() {
@@ -33,12 +35,17 @@ export class DoctorEditComponent implements OnInit, OnDestroy {
     this.destroy$.unsubscribe();
   }
 
+  profileChanged(event: any) {
+    this.doctor = event.doctor;
+    this.invalid = event.invalid;
+  }
+
   update() {
-    const response = this.data.doctor._id ?
+    const response = this.data.doctor?._id ?
       // update
-      this.doctorService.updateDoctor({ ...this.data.doctor, ...this.form.value }) :
+      this.doctorService.updateDoctor({ ...this.data.doctor, ...this.doctor }) :
       // create
-      this.doctorService.createDoctor({ ...this.form.value });
+      this.doctorService.createDoctor(this.doctor);
     response.pipe(
       tap(rsp => {
         this.dialogRef.close(rsp);

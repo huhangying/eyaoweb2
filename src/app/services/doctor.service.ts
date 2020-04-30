@@ -23,7 +23,8 @@ export class DoctorService {
     return this.api.get<Doctor>('doctor/' + id);
   }
 
-  createDoctor(data: any) {
+  createDoctor(data: Doctor) {
+    delete data._id;
     return this.api.post<Doctor>('doctor', data);
   }
 
