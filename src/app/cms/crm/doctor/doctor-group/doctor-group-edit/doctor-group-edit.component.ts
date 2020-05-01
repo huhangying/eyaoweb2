@@ -5,7 +5,8 @@ import { Subject } from 'rxjs';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { DoctorGroup } from '../../../../../models/doctor-group.model';
 import { DoctorService } from '../../../../../services/doctor.service';
-import { tap } from 'rxjs/operators';
+import { tap, catchError } from 'rxjs/operators';
+import { MessageService } from '../../../../../my-core/service/message.service';
 
 @Component({
   selector: 'ngx-doctor-group-edit',
@@ -22,6 +23,7 @@ export class DoctorGroupEditComponent implements OnInit, OnDestroy {
     @Inject(MAT_DIALOG_DATA) @Optional() @SkipSelf() public data: { doctorGroup: DoctorGroup; doctors: Doctor[] },
     private fb: FormBuilder,
     private doctorService: DoctorService,
+    private message: MessageService,
   ) {
     this.doctors = data.doctors;
     this.form = this.fb.group({
@@ -52,6 +54,7 @@ export class DoctorGroupEditComponent implements OnInit, OnDestroy {
       tap(rsp => {
         this.dialogRef.close(rsp);
       }),
+      catchError(rsp => this.message.updateErrorHandle(rsp))
     ).subscribe();
   }
 

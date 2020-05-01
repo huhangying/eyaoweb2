@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { User } from '../../../models/user.model';
 import { FormGroup, FormBuilder } from '@angular/forms';
-import { Subject, EMPTY } from 'rxjs';
+import { Subject } from 'rxjs';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -10,10 +10,9 @@ import { MatDialog } from '@angular/material/dialog';
 import { DialogService } from '../../../my-core/service/dialog.service';
 import { takeUntil, tap, catchError } from 'rxjs/operators';
 import * as moment from 'moment';
-import { UserService } from '../../../services/user.service';
 import { PatientEditComponent } from './patient-edit/patient-edit.component';
-import { ToastrService } from 'ngx-toastr';
-import { Message } from '../../../my-core/enum/message.enum';
+import { MessageService } from '../../../my-core/service/message.service';
+import { UserService } from '../../../services/user.service';
 
 @Component({
   selector: 'ngx-patient',
@@ -35,7 +34,7 @@ export class PatientComponent implements OnInit, OnDestroy {
     private userService: UserService,
     public dialog: MatDialog,
     private dialogService: DialogService,
-    private toastr: ToastrService,
+    private message: MessageService,
   ) {
     moment.locale('zh-cn');
     // this.departments = this.route.snapshot.data.departments;
@@ -78,9 +77,10 @@ export class PatientComponent implements OnInit, OnDestroy {
 
           this.loadData(this.dataSource.data); // add to list
           // isEdit && this.dataSource.paginator.firstPage(); // created goes first
-          this.toastr.success(Message.updateSuccess);
+          this.message.updateSuccess();
         }
-      })
+      }),
+      catchError(rsp => this.message.updateErrorHandle(rsp))
     ).subscribe();
   }
 
@@ -92,16 +92,10 @@ export class PatientComponent implements OnInit, OnDestroy {
             tap(result => {
               if (result?._id) {
                 this.loadData(this.dataSource.data.filter(item => item._id !== result._id)); // remove from list
-                this.toastr.success(Message.deleteSuccess);
+                this.message.deleteSuccess();
               }
             }),
-            catchError(rsp => {
-              const message = (rsp.error?.return === 'deleteNotAllowed') ?
-                Message.deleteNotAllowed :
-                rsp.headers?.message || Message.defaultError;
-              this.toastr.error(message);
-              return EMPTY;
-            })
+            catchError(rsp => this.message.deleteErrorHandle(rsp))
           ).subscribe();
         }
       })

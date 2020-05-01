@@ -1,9 +1,11 @@
 import { Component, OnInit, Inject, Optional, SkipSelf, OnDestroy } from '@angular/core';
 import { User } from '../../../../models/user.model';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { UserService } from '../../../../@core/mock/users.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Subject } from 'rxjs';
+import { UserService } from '../../../../services/user.service';
+import { tap, catchError } from 'rxjs/operators';
+import { MessageService } from '../../../../my-core/service/message.service';
 
 @Component({
   selector: 'ngx-patient-edit',
@@ -20,6 +22,7 @@ export class PatientEditComponent implements OnInit, OnDestroy {
     @Inject(MAT_DIALOG_DATA) @Optional() @SkipSelf() public data: { patient: User },
     private fb: FormBuilder,
     private userService: UserService,
+    private message: MessageService,
   ) {
     this.icon = data.patient.icon;
     this.form = this.fb.group({
@@ -44,7 +47,13 @@ export class PatientEditComponent implements OnInit, OnDestroy {
   }
 
   update() {
-
+    // update only
+    this.userService.updateUser({ ...this.data, ...this.form.value }).pipe(
+      tap(rsp => {
+        this.dialogRef.close(rsp);
+      }),
+      catchError(rsp => this.message.updateErrorHandle(rsp))
+    ).subscribe();
   }
 
 }

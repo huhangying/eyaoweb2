@@ -7,11 +7,10 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatDialog } from '@angular/material/dialog';
 import { FormGroup, FormBuilder } from '@angular/forms';
-import { Subject, EMPTY } from 'rxjs';
+import { Subject } from 'rxjs';
 import { takeUntil, tap, catchError } from 'rxjs/operators';
 import { DepartmentEditComponent } from './department-edit/department-edit.component';
-import { ToastrService } from 'ngx-toastr';
-import { Message } from '../../../my-core/enum/message.enum';
+import { MessageService } from '../../../my-core/service/message.service';
 
 @Component({
   selector: 'ngx-department',
@@ -31,7 +30,7 @@ export class DepartmentComponent implements OnInit, OnDestroy {
     private hospitalService: HospitalService,
     public dialog: MatDialog,
     private dialogService: DialogService,
-    private toastr: ToastrService,
+    private message: MessageService,
   ) {
     this.hospitalService.getDepartments().subscribe(
       data => {
@@ -78,7 +77,7 @@ export class DepartmentComponent implements OnInit, OnDestroy {
           }
           this.loadData(this.dataSource.data); // add to list
           isEdit && this.dataSource.paginator.firstPage(); // created goes first
-          this.toastr.success(Message.updateSuccess);
+          this.message.updateSuccess();
         }
       }),
     ).subscribe();
@@ -92,16 +91,10 @@ export class DepartmentComponent implements OnInit, OnDestroy {
             tap(result => {
               if (result?._id) {
                 this.loadData(this.dataSource.data.filter(item => item._id !== result._id)); // remove from list
-                this.toastr.success(Message.deleteSuccess);
+                this.message.deleteSuccess();
               }
             }),
-            catchError(rsp => {
-              const message = (rsp.error?.return === 'deleteNotAllowed') ?
-                Message.deleteNotAllowed :
-                rsp.headers?.message || Message.defaultError;
-              this.toastr.error(message);
-              return EMPTY;
-            })
+            catchError(rsp => this.message.deleteErrorHandle(rsp))
           ).subscribe();
         }
       }),

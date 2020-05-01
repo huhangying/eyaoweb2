@@ -4,8 +4,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { HospitalService } from '../../../services/hospital.service';
 import { Const } from '../../../models/const.model';
 import { HospitalSettingsEditComponent } from './hospital-settings-edit/hospital-settings-edit.component';
-import { ToastrService } from 'ngx-toastr';
-import { Message } from '../../../my-core/enum/message.enum';
+import { MessageService } from '../../../my-core/service/message.service';
+import { tap } from 'rxjs/operators';
 
 @Component({
   selector: 'ngx-hospital-settings',
@@ -20,7 +20,7 @@ export class HospitalSettingsComponent implements OnInit {
   constructor(
     private hospitalService: HospitalService,
     public dialog: MatDialog,
-    private toastrService: ToastrService,
+    private message: MessageService,
   ) {
     this.hospitalService.getHospitalSettings().subscribe(
       data => {
@@ -38,21 +38,21 @@ export class HospitalSettingsComponent implements OnInit {
     return this.dialog.open(HospitalSettingsEditComponent, {
       width: '600px',
       data: data
-    }).afterClosed().subscribe(
-      newItem => {
-      // update array item
-      const index = this.data.findIndex(item => item._id === newItem._id);
-      if (index >=0 ) {
-        this.data[index] = newItem;
-        this.loadData();
-        this.toastrService.success(Message.updateSuccess);
-      }
-    });
+    }).afterClosed().pipe(
+      tap(newItem => {
+        // update array item
+        const index = this.data.findIndex(item => item._id === newItem._id);
+        if (index >=0 ) {
+          this.data[index] = newItem;
+          this.loadData();
+          this.message.updateSuccess();
+        }
+      })
+    ).subscribe();
   }
 
   loadData() {
     this.dataSource.connect().next(this.data);
   }
-
 
 }

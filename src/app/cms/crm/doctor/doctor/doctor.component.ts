@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
-import { Subject, EMPTY } from 'rxjs';
+import { Subject } from 'rxjs';
 import { MatTableDataSource } from '@angular/material/table';
 import { Doctor } from '../../../../models/doctor.model';
 import { MatPaginator } from '@angular/material/paginator';
@@ -12,8 +12,7 @@ import { takeUntil, tap, catchError } from 'rxjs/operators';
 import { Department } from '../../../../models/hospital/department.model';
 import { ActivatedRoute } from '@angular/router';
 import { DoctorEditComponent } from './doctor-edit/doctor-edit.component';
-import { Message } from '../../../../my-core/enum/message.enum';
-import { ToastrService } from 'ngx-toastr';
+import { MessageService } from '../../../../my-core/service/message.service';
 
 @Component({
   selector: 'ngx-doctor',
@@ -35,7 +34,7 @@ export class DoctorComponent implements OnInit, OnDestroy {
     private doctorService: DoctorService,
     public dialog: MatDialog,
     private dialogService: DialogService,
-    private toastr: ToastrService,
+    private message: MessageService,
   ) {
     this.departments = this.route.snapshot.data.departments;
     this.doctorService.getDoctors().subscribe(
@@ -87,7 +86,7 @@ export class DoctorComponent implements OnInit, OnDestroy {
           }
           this.loadData(this.dataSource.data); // add to list
           isEdit && this.dataSource.paginator.firstPage(); // created goes first
-          this.toastr.success(Message.updateSuccess);
+          this.message.updateSuccess();
         }
       });
   }
@@ -100,16 +99,10 @@ export class DoctorComponent implements OnInit, OnDestroy {
             tap(result => {
               if (result?._id) {
                 this.loadData(this.dataSource.data.filter(item => item._id !== result._id)); // remove from list
-                this.toastr.success(Message.deleteSuccess);
+                this.message.deleteSuccess();
               }
             }),
-            catchError(rsp => {
-              const message = (rsp.error?.return === 'deleteNotAllowed') ?
-                Message.deleteNotAllowed :
-                rsp.headers?.message || Message.defaultError;
-              this.toastr.error(message);
-              return EMPTY;
-            })
+            catchError(rsp => this.message.deleteErrorHandle(rsp))
           ).subscribe();
         }
       });

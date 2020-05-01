@@ -1,12 +1,10 @@
 import { Component, OnInit, OnDestroy, Inject, Optional, SkipSelf } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Doctor } from '../../../../../models/doctor.model';
 import { DoctorService } from '../../../../../services/doctor.service';
 import { tap } from 'rxjs/operators';
 import { Department } from '../../../../../models/hospital/department.model';
-import { threadId } from 'worker_threads';
 
 @Component({
   selector: 'ngx-doctor-edit',

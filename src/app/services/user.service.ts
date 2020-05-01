@@ -25,7 +25,7 @@ export class UserService {
   }
 
   updateUser(data: User) {
-    return this.api.patch<User>('user/' + data.user_id, data);
+    return this.api.patch<User>('user/wechat/' + data.link_id, data);
   }
 
 }

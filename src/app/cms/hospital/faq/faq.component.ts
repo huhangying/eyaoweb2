@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
-import { Subject, EMPTY } from 'rxjs';
+import { Subject } from 'rxjs';
 import { MatTableDataSource } from '@angular/material/table';
 import { Faq } from '../../../models/hospital/faq.model';
 import { MatPaginator } from '@angular/material/paginator';
@@ -8,9 +8,8 @@ import { MatSort } from '@angular/material/sort';
 import { HospitalService } from '../../../services/hospital.service';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogService } from '../../../my-core/service/dialog.service';
-import { ToastrService } from 'ngx-toastr';
 import { takeUntil, tap, catchError } from 'rxjs/operators';
-import { Message } from '../../../my-core/enum/message.enum';
+import { MessageService } from '../../../my-core/service/message.service';
 import { FaqEditComponent } from './faq-edit/faq-edit.component';
 
 @Component({
@@ -31,7 +30,7 @@ export class FaqComponent implements OnInit, OnDestroy {
     private hospitalService: HospitalService,
     public dialog: MatDialog,
     private dialogService: DialogService,
-    private toastr: ToastrService,
+    private message: MessageService,
   ) {
     this.hospitalService.getFaqs().subscribe(
       data => {
@@ -78,9 +77,10 @@ export class FaqComponent implements OnInit, OnDestroy {
           }
           this.loadData(this.dataSource.data); // add to list
           isEdit && this.dataSource.paginator.firstPage(); // created goes first
-          this.toastr.success(Message.updateSuccess);
+          this.message.updateSuccess();
         }
       }),
+      catchError(this.message.updateErrorHandle)
     ).subscribe();
   }
 
@@ -92,17 +92,13 @@ export class FaqComponent implements OnInit, OnDestroy {
             tap(result => {
               if (result?._id) {
                 this.loadData(this.dataSource.data.filter(item => item._id !== result._id)); // remove from list
-                this.toastr.success(Message.deleteSuccess);
+                this.message.deleteSuccess();
               }
             }),
-            catchError(rsp => {
-              this.toastr.error(rsp.headers?.message || Message.defaultError);
-              return EMPTY;
-            })
+            catchError(err => this.message.deleteErrorHandle(err))
           ).subscribe();
         }
       }),
-
     ).subscribe();
   }
 

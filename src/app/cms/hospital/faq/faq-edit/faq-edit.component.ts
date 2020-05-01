@@ -1,12 +1,11 @@
 import { Component, OnInit, OnDestroy, Inject, Optional, SkipSelf } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { Subject, EMPTY } from 'rxjs';
+import { Subject } from 'rxjs';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Faq } from '../../../../models/hospital/faq.model';
 import { HospitalService } from '../../../../services/hospital.service';
-import { ToastrService } from 'ngx-toastr';
 import { tap, catchError } from 'rxjs/operators';
-import { Message } from '../../../../my-core/enum/message.enum';
+import { MessageService } from '../../../../my-core/service/message.service';
 
 @Component({
   selector: 'ngx-faq-edit',
@@ -22,7 +21,7 @@ export class FaqEditComponent implements OnInit, OnDestroy {
     @Inject(MAT_DIALOG_DATA) @Optional() @SkipSelf() public data: Faq,
     private fb: FormBuilder,
     private hospitalService: HospitalService,
-    private toastr: ToastrService,
+    private message: MessageService,
   ) {
 
     this.form = this.fb.group({
@@ -54,13 +53,7 @@ export class FaqEditComponent implements OnInit, OnDestroy {
       tap(rsp => {
         this.dialogRef.close(rsp);
       }),
-      catchError(rsp => {
-        const message = (rsp.error?.return === 'existed') ?
-          Message.nameExisted :
-          rsp.headers?.message || Message.defaultError;
-        this.toastr.error(message);
-        return EMPTY;
-      })
+      catchError(err => this.message.updateErrorHandle(err))
     ).subscribe();
   }
 
