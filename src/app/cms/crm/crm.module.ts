@@ -3,7 +3,7 @@ import { CrmRoutingModule, routedComponents } from './crm-routing.module';
 import { SharedModule } from '../../shared/shared.module';
 import { DoctorEditComponent } from './doctor/doctor/doctor-edit/doctor-edit.component';
 import { DoctorGroupEditComponent } from './doctor/doctor-group/doctor-group-edit/doctor-group-edit.component';
-
+import { PatientEditComponent } from './patient/patient-edit/patient-edit.component';
 
 @NgModule({
   imports: [
@@ -14,6 +14,7 @@ import { DoctorGroupEditComponent } from './doctor/doctor-group/doctor-group-edi
     ...routedComponents,
     DoctorEditComponent,
     DoctorGroupEditComponent,
+    PatientEditComponent,
   ]
 })
 export class CrmModule { }

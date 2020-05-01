@@ -39,7 +39,7 @@ export function getMenuItems(role: number): NbMenuItem[] {
       ],
     },
     {
-      title: '药师管理',
+      title: '医患管理',
       icon: 'layout-outline',
       children: [
         {
@@ -50,6 +50,15 @@ export function getMenuItems(role: number): NbMenuItem[] {
           title: '药师组',
           link: '/cms/crm/doctor-group',
         },
+        {
+          title: '病患',
+          link: '/cms/crm/patient',
+        },
+        {
+          title: '医患关系',
+          link: '/cms/crm/relationship',
+        },
+
       ],
     },
     {

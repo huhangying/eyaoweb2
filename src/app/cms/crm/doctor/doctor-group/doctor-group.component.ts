@@ -31,7 +31,7 @@ export class DoctorGroupComponent implements OnInit, OnDestroy {
     private doctorService: DoctorService,
     public dialog: MatDialog,
     private dialogService: DialogService,
-    private toastrService: ToastrService,
+    private toastr: ToastrService,
   ) {
     this.doctors = this.route.snapshot.data.doctors;
     this.doctorService.getDoctorGroups().subscribe(
@@ -74,7 +74,7 @@ export class DoctorGroupComponent implements OnInit, OnDestroy {
         }
         this.loadData(this.dataSource.data); // add to list
         isEdit && this.dataSource.paginator.firstPage(); // created goes first
-        this.toastrService.success(Message.updateSuccess);
+        this.toastr.success(Message.updateSuccess);
       }
     });
   }
@@ -87,7 +87,7 @@ export class DoctorGroupComponent implements OnInit, OnDestroy {
             .subscribe(result => {
               if (result?._id) {
                 this.loadData(this.dataSource.data.filter(item => item._id !== result._id)); // remove from list
-                this.toastrService.success(Message.deleteSuccess);
+                this.toastr.success(Message.deleteSuccess);
               }
             });
         }

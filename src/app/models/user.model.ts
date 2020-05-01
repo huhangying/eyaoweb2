@@ -2,8 +2,8 @@
 export interface User {
   _id: string;
   user_id: string;
-  // link_id: string;
-  // cell: string;
+  link_id?: string;
+  cell: string;
   name: string;
   // password: string;
   role?: number;
@@ -13,10 +13,10 @@ export interface User {
   //   huid: string,
   // }];
   icon?: string;
-  // gender: string;
+  gender: string;
   // height?: string;
   // weight?: string;
-  // birthdate?: Date;
+  birthdate?: Date;
   // sin?: string;
   // admissionNumber?: string;
   // visitedDepartments?: Department[]; // 用来判定应该使用初诊问卷还是复诊问卷

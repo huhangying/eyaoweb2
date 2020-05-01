@@ -7,7 +7,9 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 import { DoctorProfileComponent } from './components/doctor-profile/doctor-profile.component';
+import { MatNativeDateModule } from '@angular/material/core';
 
 @NgModule({
   imports: [
@@ -20,7 +22,8 @@ import { DoctorProfileComponent } from './components/doctor-profile/doctor-profi
     MatCheckboxModule,
     MatButtonModule,
     MatDialogModule,
-
+    MatDatepickerModule,
+    MatNativeDateModule,
     // DoctorProfileComponent,
   ],
   exports: [
@@ -33,11 +36,16 @@ import { DoctorProfileComponent } from './components/doctor-profile/doctor-profi
     MatCheckboxModule,
     MatButtonModule,
     MatDialogModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
 
     DoctorProfileComponent,
   ],
   declarations: [
     DoctorProfileComponent
+  ],
+  providers: [
+    MatDatepickerModule
   ]
 })
 export class SharedModule { }

@@ -1,0 +1,62 @@
+<nb-card [status]="data ? 'info' : 'success'">
+  <nb-card-header>
+    编辑病患
+    <button nbButton shape="round" size="small" class="float-right" mat-dialog-close>
+      <nb-icon icon="close"></nb-icon>
+    </button>
+  </nb-card-header>
+
+  <mat-dialog-content class="container px-3" [formGroup]="form">
+    <div class="field row">
+      <label class="label col-sm-3">头像</label>
+      <img src="{{ icon }}"
+                onerror="this.src='/assets/images/icon/default.svg';this.onerror='';"
+                class="avatar-image img-fluid img-thumbnail z-depth-1 rounded-circle" alt="">
+    </div>
+
+    <div class="field row">
+      <label for="name" class="label required col-sm-3"> 姓名 </label>
+      <input nbInput fullWidth class="col-sm-9" id="name" formControlName="name">
+    </div>
+
+    <div class="field row">
+      <label for="gender" class="label required col-sm-3"> 性别 </label>
+      <nb-radio-group class="col-sm-9 d-inline-flex" id="gender" formControlName="gender">
+        <nb-radio value="M" class="px-2">男</nb-radio>
+        <nb-radio value="F" class="px-2">女</nb-radio>
+      </nb-radio-group>
+    </div>
+
+    <div class="field row">
+      <label for="birthdate" class="label col-sm-3">生日</label>
+      <div class="col-sm-9 d-inline-flex px-0">
+        <input nbInput fullWidth id="birthdate" [matDatepicker]="picker" formControlName="birthdate">
+        <mat-datepicker-toggle nbSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </div>
+    </div>
+
+    <div class="field row">
+      <label for="cell" class="label required col-sm-3"> 手机 </label>
+      <input nbInput fullWidth class="col-sm-9" id="cell" formControlName="cell">
+    </div>
+
+    <div class="field row pt-2">
+      <nb-checkbox formControlName="apply"> 开关 </nb-checkbox>
+    </div>
+
+    <div class="field row">
+      <label class="label col-sm-3"> 关联ID </label>
+      <label class="label col-sm-9">{{data.patient.link_id}}</label>
+    </div>
+
+
+  </mat-dialog-content>
+
+  <nb-card-footer class="d-block">
+    <button nbButton mat-dialog-close>取消</button>
+    <button nbButton hero status="primary" class="float-right" cdkFocusInitial [disabled]="form.invalid" (click)="update()">
+      <nb-icon icon="checkmark-circle"></nb-icon>更新
+    </button>
+  </nb-card-footer>
+</nb-card>

@@ -4,6 +4,8 @@ import { DoctorComponent } from './doctor/doctor/doctor.component';
 import { DoctorGroupComponent } from './doctor/doctor-group/doctor-group.component';
 import { DepartmentResolver } from '../../services/resolvers/department.resolver';
 import { DoctorsResolver } from '../../services/resolvers/doctors.resolver';
+import { PatientComponent } from './patient/patient.component';
+import { RelationshipComponent } from './relationship/relationship.component';
 
 const routes: Routes = [{
   path: '',
@@ -18,6 +20,14 @@ const routes: Routes = [{
       component: DoctorGroupComponent,
       resolve: { doctors: DoctorsResolver }
     },
+    {
+      path: 'patient',
+      component: PatientComponent,
+    },
+    {
+      path: 'relationship',
+      component: RelationshipComponent,
+    },
   ],
 }];
 
@@ -30,4 +40,6 @@ export class CrmRoutingModule { }
 export const routedComponents = [
   DoctorComponent,
   DoctorGroupComponent,
+  PatientComponent,
+  RelationshipComponent,
 ];
