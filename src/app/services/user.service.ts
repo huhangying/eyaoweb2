@@ -13,7 +13,7 @@ export class UserService {
 
   // 药师
   getUsers() {
-    return this.api.get<User[]>('users/1000');
+    return this.api.get<User[]>('users/1000'); //todo:
   }
 
   getById(id: string) {

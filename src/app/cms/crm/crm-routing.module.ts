@@ -27,6 +27,7 @@ const routes: Routes = [{
     {
       path: 'relationship',
       component: RelationshipComponent,
+      resolve: { departments: DepartmentResolver }
     },
   ],
 }];

@@ -3,6 +3,7 @@ import { Doctor } from '../models/doctor.model';
 import { Injectable } from '@angular/core';
 import { AppStoreService } from '../my-core/store/app-store.service';
 import { ApiService } from '../my-core/service/api.service';
+import { Relationship } from '../models/relationship.model';
 
 @Injectable({
   providedIn: 'root'
@@ -17,6 +18,10 @@ export class DoctorService {
   // 药师
   getDoctors() {
     return this.api.get<Doctor[]>('doctors/1000/all');
+  }
+
+  getDoctorsByDepartment(departmentId: string) {
+    return this.api.get<Doctor[]>('doctors/department/' + departmentId);
   }
 
   getDoctorById(id: string) {
@@ -57,5 +62,18 @@ export class DoctorService {
     return this.api.patch<DoctorGroup>('group/' + data._id, data);
   }
 
+  // getPopulatedRelationshipsByDoctorId(doctorId: string) {
+  //   return this.api.get<any[]>('relationships/doctor/' + doctorId + '/select');
+  // }
+
+  // use for populating groups in relationships
+  getDoctorGroupsByDoctorId(doctorId: string) {
+    return this.api.get<DoctorGroup[]>('groups/doctor/' + doctorId);
+  }
+
+  // 医患关系
+  getRelationshipsByDoctorId(doctorId: string) {
+    return this.api.get<Relationship[]>('relationships/doctor/' + doctorId);
+  }
 
 }

@@ -1,1 +1,71 @@
-<p>relationship works!</p>
+<nb-card>
+  <nb-card-header [formGroup]="searchForm">
+    医患关系
+    <div class="float-right d-flex">
+      <nb-form-field>
+        <nb-icon nbSuffix icon="search-outline" pack="eva"></nb-icon>
+        <input type="text" nbInput fieldSize="small" placeholder="请输入名字搜索" formControlName="name"
+          (focus)="setupFilter('name')">
+      </nb-form-field>
+    </div>
+    <div class="alert alert-info mt-3 mb-0" role="alert">
+      请先按顺序选择医院科室和药师
+      <div class="d-flex pt-2">
+        <nb-form-field class="mr-3">
+          科室:&nbsp;
+          <nb-select hero placeholder="选择医院科室" formControlName="department">
+            <nb-option *ngFor="let dep of departments" [value]="dep._id">{{ dep.name }}</nb-option>
+          </nb-select>
+        </nb-form-field>
+        <nb-form-field class="">
+          药师:&nbsp;
+          <nb-select hero placeholder="选择药师" formControlName="doctor">
+            <nb-option *ngFor="let doc of doctors" [value]="doc._id">{{ doc.name }}</nb-option>
+          </nb-select>
+        </nb-form-field>
+      </div>
+    </div>
+  </nb-card-header>
+
+  <nb-card-body>
+    <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8 table-striped table-hover">
+
+      <ng-container matColumnDef="group">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 10rem;"> 药师用户组 </th>
+        <td mat-cell *matCellDef="let element">
+          {{getGroupLabel(element.group)}}
+          <i *ngIf="!element.group">未设置</i>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="user">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 10rem;"> 病患 </th>
+        <td mat-cell *matCellDef="let element"> {{element.user}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="apply">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> 开关 </th>
+        <td mat-cell *matCellDef="let element">
+          <mat-checkbox [(ngModel)]="element.apply" [disabled]="true"></mat-checkbox>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="_id">
+        <th mat-header-cell *matHeaderCellDef class="text-center"> 操作 </th>
+        <td mat-cell *matCellDef="let element" class="actions">
+          <button nbButton hero shape="round" size="tiny" status="info" title="编辑" (click)="edit(element)">
+            <nb-icon icon="edit-2"></nb-icon>
+          </button>
+          &nbsp;
+          <button nbButton hero shape="round" size="tiny" status="danger" title="删除" (click)="delete(element._id)">
+            <nb-icon icon="trash-2-outline"></nb-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+    <mat-paginator [pageSizeOptions]="[10, 25, 50]" [pageSize]="10" showFirstLastButtons></mat-paginator>
+  </nb-card-body>
+</nb-card>

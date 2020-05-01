@@ -25,6 +25,13 @@
       {
         "name": "tslint-language-service"
       }
-    ]
-  }
+    ],
+    "skipLibCheck": true,
+  },
+  "include": [
+    "src"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
 }

@@ -47,7 +47,7 @@ export function getMenuItems(role: number): NbMenuItem[] {
           link: '/cms/crm/doctor',
         },
         {
-          title: '药师组',
+          title: '药师用户组',
           link: '/cms/crm/doctor-group',
         },
         {
