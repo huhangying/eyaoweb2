@@ -12,7 +12,7 @@ export function getMenuItems(role: number): NbMenuItem[] {
       group: true,
     },
     {
-      title: '医院',
+      title: '医院科室管理',
       icon: 'settings-2',
       children: [
         {
@@ -40,7 +40,7 @@ export function getMenuItems(role: number): NbMenuItem[] {
     },
     {
       title: '医患管理',
-      icon: 'layout-outline',
+      icon: 'people-outline',
       children: [
         {
           title: '药师',

@@ -8,12 +8,14 @@ import { MatSort } from '@angular/material/sort';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogService } from '../../../my-core/service/dialog.service';
 import { MessageService } from '../../../my-core/service/message.service';
-import { takeUntil, tap, distinctUntilChanged } from 'rxjs/operators';
+import { takeUntil, tap, distinctUntilChanged, catchError } from 'rxjs/operators';
 import { DoctorService } from '../../../services/doctor.service';
 import { Department } from '../../../models/hospital/department.model';
 import { ActivatedRoute } from '@angular/router';
 import { Doctor } from '../../../models/doctor.model';
 import { DoctorGroup } from '../../../models/doctor-group.model';
+import { User } from '../../../models/user.model';
+import { RelationshipEditComponent } from './relationship-edit/relationship-edit.component';
 
 @Component({
   selector: 'ngx-relationship',
@@ -107,48 +109,40 @@ export class RelationshipComponent implements OnInit, OnDestroy {
   }
 
   edit(data?: Relationship) {
-    const isEdit = !!data;
-    // this.dialog.open(DepartmentEditComponent, {
-    //   data: data
-    // }).afterClosed().pipe(
-    //   tap(result => {
-    //     if (result?._id) {
-    //       if (isEdit) {
-    //         // update
-    //         this.dataSource.data = this.dataSource.data.map(item => {
-    //           return item._id === result._id ? result : item;
-    //         });
-    //       } else {
-    //         // create
-    //         this.dataSource.data.unshift(result);
-    //       }
-    //       this.loadData(this.dataSource.data); // add to list
-    //       isEdit && this.dataSource.paginator.firstPage(); // created goes first
-    //       this.message.updateSuccess();
-    //     }
-    //   }),
-    // ).subscribe();
+    this.dialog.open(RelationshipEditComponent, {
+      data: data
+    }).afterClosed().pipe(
+      tap(result => {
+        this.updateToDataSource(result);
+      }),
+    ).subscribe();
   }
 
   delete(id: string) {
     this.dialogService?.deleteConfirm().pipe(
-      // tap(result => {
-      //   if (result) {
-      //     this.hospitalService.deleteDepartmentById(id).pipe(
-      //       tap(result => {
-      //         if (result?._id) {
-      //           this.loadData(this.dataSource.data.filter(item => item._id !== result._id)); // remove from list
-      //           this.message.deleteSuccess();
-      //         }
-      //       }),
-      //       catchError(rsp => this.message.deleteErrorHandle(rsp))
-      //     ).subscribe();
-      //   }
-      // }),
-
+      tap(result => {
+        if (result) { // confirmed
+          this.doctorService.removeGroupInRelationship(id).pipe(
+            tap(result => {
+             this.updateToDataSource(result);
+            }),
+            catchError(rsp => this.message.deleteErrorHandle(rsp))
+          ).subscribe();
+        }
+      }),
     ).subscribe();
   }
 
+
+  updateToDataSource(result: Relationship) {
+    if (result?._id) {
+      this.dataSource.data = this.dataSource.data.map(item => {
+        return item._id === result._id ? { ...item, group: result.group } : item; // udpate only 'group'!
+      });
+      this.loadData(this.dataSource.data);
+      this.message.updateSuccess();
+    }
+  }
 
   loadData(data: Relationship[]) {
     this.dataSource = new MatTableDataSource<Relationship>(data);
@@ -166,7 +160,14 @@ export class RelationshipComponent implements OnInit, OnDestroy {
 
   getGroupLabel(id: string) {
     return id ?
-      this.doctorGroups.find(_ => _._id === id)?.name:
+      this.doctorGroups.find(_ => _._id === id)?.name :
       '';
+  }
+
+  getUserBrief(user: User) {
+    const gender = user.gender === 'M' ?
+      '男' :
+      (user.gender === 'F' ? '女' : '');
+    return `${user.name} ${gender} 手机: ${user.cell}`;
   }
 }

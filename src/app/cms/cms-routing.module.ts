@@ -3,8 +3,8 @@ import { CmsComponent } from './cms.component';
 import { RouterModule, Routes } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { DepartmentResolver } from '../services/resolvers/department.resolver';
-import { DashboardComponent } from '../pages/dashboard/dashboard.component';
 import { AuthGuard } from '../my-core/service/auth.guard';
+import { DashboardComponent } from '../pages/dashboard/dashboard.component';
 
 const routes: Routes = [{
   path: '',

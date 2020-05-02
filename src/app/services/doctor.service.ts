@@ -72,8 +72,17 @@ export class DoctorService {
   }
 
   // 医患关系
+  // patient populated (name, gender, cell)
   getRelationshipsByDoctorId(doctorId: string) {
     return this.api.get<Relationship[]>('relationships/doctor/' + doctorId);
+  }
+
+  removeGroupInRelationship(id: string) {
+    return this.updateGroupInRelationship(id);
+  }
+
+  updateGroupInRelationship(id: string, group?: string) {
+    return this.api.patch<Relationship>('relationship/' + id, {group: group || null});
   }
 
 }
