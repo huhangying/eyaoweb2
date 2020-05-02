@@ -16,23 +16,25 @@ import { MessageService } from '../../../../../my-core/service/message.service';
 export class DoctorGroupEditComponent implements OnInit, OnDestroy {
   form: FormGroup;
   destroy$ = new Subject<void>();
-  doctors: Doctor[];
+  // doctors: Doctor[];
+  doctor: Doctor;
 
   constructor(
     public dialogRef: MatDialogRef<DoctorGroupEditComponent>,
-    @Inject(MAT_DIALOG_DATA) @Optional() @SkipSelf() public data: { doctorGroup: DoctorGroup; doctors: Doctor[] },
+    @Inject(MAT_DIALOG_DATA) @Optional() @SkipSelf() public data: { doctorGroup: DoctorGroup; doctor: Doctor },
     private fb: FormBuilder,
     private doctorService: DoctorService,
     private message: MessageService,
   ) {
-    this.doctors = data.doctors;
+    // this.doctors = data.doctors;
+    this.doctor = data.doctor;
     this.form = this.fb.group({
       name: ['', Validators.required],
       doctor: ['', Validators.required],
       apply: false,
     });
     if (data.doctorGroup) {
-      this.form.patchValue(data.doctorGroup);
+      this.form.patchValue({...data.doctorGroup, doctor: null});
     }
   }
 
@@ -47,9 +49,9 @@ export class DoctorGroupEditComponent implements OnInit, OnDestroy {
   update() {
     const response = this.data.doctorGroup?._id ?
       // update
-      this.doctorService.updateDoctorGroup({ ...this.data.doctorGroup, ...this.form.value }) :
+      this.doctorService.updateDoctorGroup({ ...this.data.doctorGroup, ...this.form.value, doctor: this.data.doctor._id }) :
       // create
-      this.doctorService.createDoctorGroup({ ...this.form.value });
+      this.doctorService.createDoctorGroup({ ...this.form.value, doctor: this.data.doctor._id });
     response.pipe(
       tap(rsp => {
         this.dialogRef.close(rsp);

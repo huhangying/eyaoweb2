@@ -12,6 +12,7 @@ import { DoctorGroupEditComponent } from './doctor-group-edit/doctor-group-edit.
 import { MessageService } from '../../../../my-core/service/message.service';
 import { Doctor } from '../../../../models/doctor.model';
 import { tap, catchError } from 'rxjs/operators';
+import { Department } from '../../../../models/hospital/department.model';
 
 @Component({
   selector: 'ngx-doctor-group',
@@ -20,8 +21,10 @@ import { tap, catchError } from 'rxjs/operators';
 })
 export class DoctorGroupComponent implements OnInit, OnDestroy {
   destroy$ = new Subject<void>();
+  departments: Department[];
   doctors: Doctor[];
-  displayedColumns: string[] = ['name', 'doctor', 'apply', '_id'];
+  selectedDoctor: Doctor;
+  displayedColumns: string[] = ['doctor', 'name', 'apply', '_id'];
   dataSource: MatTableDataSource<DoctorGroup>;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
@@ -33,12 +36,12 @@ export class DoctorGroupComponent implements OnInit, OnDestroy {
     private dialogService: DialogService,
     private message: MessageService,
   ) {
-    this.doctors = this.route.snapshot.data.doctors;
-    this.doctorService.getDoctorGroups().subscribe(
-      data => {
-        this.loadData(data);
-      }
-    );
+    this.departments = this.route.snapshot.data.departments;
+    // this.doctorService.getDoctorGroups().subscribe(
+    //   data => {
+    //     this.loadData(data);
+    //   }
+    // );
   }
 
   ngOnInit() {
@@ -47,6 +50,16 @@ export class DoctorGroupComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.destroy$.next();
     this.destroy$.unsubscribe();
+  }
+
+  async doctorSelected(doctor: Doctor) {
+    this.selectedDoctor = doctor;
+    if (!doctor?._id) {
+      this.loadData([]);
+      return;
+    }
+    const doctorGroups = await this.doctorService.getDoctorGroupsByDoctorId(doctor._id).toPromise();
+    this.loadData(doctorGroups);
   }
 
   add() {
@@ -58,7 +71,8 @@ export class DoctorGroupComponent implements OnInit, OnDestroy {
     this.dialog.open(DoctorGroupEditComponent, {
       data: {
         doctorGroup: data,
-        doctors: this.doctors
+        // doctors: this.doctors
+        doctor: this.selectedDoctor
       },
     }).afterClosed().pipe(
       tap(result => {
@@ -106,6 +120,8 @@ export class DoctorGroupComponent implements OnInit, OnDestroy {
   }
 
   getDoctorLabel(id: string) {
-    return this.doctors.find(item => item._id === id)?.name;
+    return this.selectedDoctor?._id === id ?
+      this.selectedDoctor.name :
+      '';
   }
 }

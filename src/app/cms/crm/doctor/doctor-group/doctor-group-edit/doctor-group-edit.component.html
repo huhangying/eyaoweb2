@@ -14,9 +14,7 @@
 
     <div class="field row">
       <label for="doctor" class="label required"> 药师 </label>
-      <nb-select id="doctor" fullWidth formControlName="doctor">
-        <nb-option *ngFor="let doc of doctors" [value]="doc._id">{{doc.name}}</nb-option>
-      </nb-select>
+      <input nbInput fullWidth id="doctor" [attr.disabled]="true" formControlName="doctor" [placeholder]="data.doctor.name">
     </div>
 
     <div class="field row pt-3">

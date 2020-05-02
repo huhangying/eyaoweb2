@@ -18,7 +18,8 @@ const routes: Routes = [{
     {
       path: 'doctor-group',
       component: DoctorGroupComponent,
-      resolve: { doctors: DoctorsResolver }
+      // resolve: { doctors: DoctorsResolver }
+      resolve: { departments: DepartmentResolver }
     },
     {
       path: 'patient',

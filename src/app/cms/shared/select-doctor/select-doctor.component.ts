@@ -38,6 +38,7 @@ export class SelectDoctorComponent implements OnInit, OnDestroy {
       tap(async dep => {
         // reset selected doctor
         this.doctorCtrl.patchValue('');
+        this.doctorSelected.emit(null);
 
         if (!dep) {
           this.doctors = [];
