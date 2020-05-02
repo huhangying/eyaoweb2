@@ -1,1 +1,32 @@
-<p>relationship-edit works!</p>
+<nb-card [status]="data ? 'info' : 'success'">
+  <nb-card-header>
+    编辑编辑药师用户组
+    <button nbButton shape="round" size="small" class="float-right" mat-dialog-close>
+      <nb-icon icon="close"></nb-icon>
+    </button>
+  </nb-card-header>
+
+  <mat-dialog-content class="container px-3">
+    <ng-container *ngIf="data.groups?.length === 0">
+      没有该药师相关的药师用户组。请首先
+      <button mat-button color="primary" (click)="redirectDoctorGroup()">设置药师用户组</button>
+    </ng-container>
+
+    <ng-container *ngIf="data.groups?.length > 0">
+      {{ data.relationship | json}}
+
+      |
+      {{ data.groups.length }}
+    </ng-container>
+
+
+
+  </mat-dialog-content>
+
+  <nb-card-footer class="d-block">
+    <button nbButton mat-dialog-close>取消</button>
+    <button nbButton hero status="primary" class="float-right" cdkFocusInitial (click)="update()">
+      <nb-icon icon="checkmark-circle"></nb-icon>更新
+    </button>
+  </nb-card-footer>
+</nb-card>

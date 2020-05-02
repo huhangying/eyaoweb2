@@ -110,7 +110,10 @@ export class RelationshipComponent implements OnInit, OnDestroy {
 
   edit(data?: Relationship) {
     this.dialog.open(RelationshipEditComponent, {
-      data: data
+      data: {
+        relationship: data,
+        groups: this.doctorGroups
+      }
     }).afterClosed().pipe(
       tap(result => {
         this.updateToDataSource(result);
