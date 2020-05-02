@@ -27,6 +27,7 @@ export class RelationshipComponent implements OnInit, OnDestroy {
   searchForm: FormGroup;
   departments: Department[];
   doctors: Doctor[];
+  selectedDoctor: Doctor;
   doctorGroups: DoctorGroup[];
   destroy$ = new Subject<void>();
   displayedColumns: string[] = ['group', 'user', 'apply', '_id'];
@@ -46,15 +47,11 @@ export class RelationshipComponent implements OnInit, OnDestroy {
     this.departments = this.route.snapshot.data.departments;
 
     this.searchForm = this.fb.group({
-      department: '',
-      doctor: '',
       name: [''],
     });
   }
 
-  get departmentCtrl() { return this.searchForm.get('department'); }
-  get doctorCtrl() { return this.searchForm.get('doctor'); }
-  get nameCtrl() { return this.searchForm.get('doctor'); }
+  get nameCtrl() { return this.searchForm.get('name'); }
 
 
   ngOnInit() {
@@ -65,38 +62,6 @@ export class RelationshipComponent implements OnInit, OnDestroy {
         this.dataSource.filter = searchName;
       }
     });
-
-    // department value changes
-    this.departmentCtrl.valueChanges.pipe(
-      tap(async dep => {
-        // reset selected doctor
-        this.doctorCtrl.patchValue('');
-
-        if (!dep) {
-          this.doctors = [];
-          return;
-        }
-        this.doctors = await this.doctorService.getDoctorsByDepartment(dep).toPromise();
-      }),
-      takeUntil(this.destroy$),
-    ).subscribe();
-
-    // doctor value changes
-    this.doctorCtrl.valueChanges.pipe(
-      distinctUntilChanged(),
-      tap(async doc => {
-        if (!doc) {
-          this.loadData([]);
-          return;
-        }
-        this.doctorGroups = await this.doctorService.getDoctorGroupsByDoctorId(doc).toPromise();
-
-        const data = await this.doctorService.getRelationshipsByDoctorId(doc).toPromise();
-        this.loadData(data);
-      }),
-      takeUntil(this.destroy$),
-    ).subscribe();
-
   }
 
   ngOnDestroy() {
@@ -104,12 +69,23 @@ export class RelationshipComponent implements OnInit, OnDestroy {
     this.destroy$.unsubscribe();
   }
 
+  async doctorSelected(doctor: Doctor) {
+    this.selectedDoctor = doctor;
+    if (!doctor?._id) {
+      this.loadData([]);
+      return;
+    }
+    this.doctorGroups = await this.doctorService.getDoctorGroupsByDoctorId(doctor._id).toPromise();
+    const data = await this.doctorService.getRelationshipsByDoctorId(doctor._id).toPromise();
+    this.loadData(data);
+  }
+
   edit(data?: Relationship) {
     this.dialog.open(RelationshipEditComponent, {
       data: {
         relationship: data,
         groups: this.doctorGroups,
-        doctorName: this.doctors.find(_ => _._id === data.doctor).name
+        doctorName: this.selectedDoctor?.name
       }
     }).afterClosed().pipe(
       tap(result => {
@@ -124,7 +100,7 @@ export class RelationshipComponent implements OnInit, OnDestroy {
         if (result) { // confirmed
           this.doctorService.removeGroupInRelationship(id).pipe(
             tap(result => {
-             this.updateToDataSource(result);
+              this.updateToDataSource(result);
             }),
             catchError(rsp => this.message.deleteErrorHandle(rsp))
           ).subscribe();

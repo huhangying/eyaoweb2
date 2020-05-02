@@ -8,23 +8,9 @@
           (focus)="setupFilter('name')">
       </nb-form-field>
     </div>
-    <div class="alert alert-info mt-3 mb-0" role="alert">
-      请先按顺序选择医院科室和药师
-      <div class="d-flex pt-2">
-        <nb-form-field class="mr-3">
-          科室:&nbsp;
-          <nb-select hero placeholder="选择医院科室" formControlName="department">
-            <nb-option *ngFor="let dep of departments" [value]="dep._id">{{ dep.name }}</nb-option>
-          </nb-select>
-        </nb-form-field>
-        <nb-form-field class="">
-          药师:&nbsp;
-          <nb-select hero placeholder="选择药师" formControlName="doctor">
-            <nb-option *ngFor="let doc of doctors" [value]="doc._id">{{ doc.name }}</nb-option>
-          </nb-select>
-        </nb-form-field>
-      </div>
-    </div>
+
+    <ngx-select-doctor [departments]="departments" (doctorSelected)="doctorSelected($event)"></ngx-select-doctor>
+
   </nb-card-header>
 
   <nb-card-body>

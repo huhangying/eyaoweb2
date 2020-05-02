@@ -11,6 +11,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { DoctorProfileComponent } from './components/doctor-profile/doctor-profile.component';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { SelectDoctorComponent } from '../cms/shared/select-doctor/select-doctor.component';
 
 @NgModule({
   imports: [
@@ -43,9 +44,11 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     MatTooltipModule,
 
     DoctorProfileComponent,
+    SelectDoctorComponent,
   ],
   declarations: [
-    DoctorProfileComponent
+    DoctorProfileComponent,
+    SelectDoctorComponent,
   ],
   providers: [
     MatDatepickerModule
