@@ -44,11 +44,7 @@ export class RelationshipComponent implements OnInit, OnDestroy {
     private message: MessageService,
   ) {
     this.departments = this.route.snapshot.data.departments;
-    // this.doctorService.getRelationships('doctorid').subscribe(
-    //   data => {
-    //     this.loadData(data);
-    //   }
-    // );
+
     this.searchForm = this.fb.group({
       department: '',
       doctor: '',
@@ -112,7 +108,8 @@ export class RelationshipComponent implements OnInit, OnDestroy {
     this.dialog.open(RelationshipEditComponent, {
       data: {
         relationship: data,
-        groups: this.doctorGroups
+        groups: this.doctorGroups,
+        doctorName: this.doctors.find(_ => _._id === data.doctor).name
       }
     }).afterClosed().pipe(
       tap(result => {
