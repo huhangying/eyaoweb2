@@ -13,6 +13,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { SelectDoctorComponent } from '../cms/shared/select-doctor/select-doctor.component';
 import { MatTabsModule } from '@angular/material/tabs';
+import { MatBadgeModule } from '@angular/material/badge';
 
 @NgModule({
   imports: [
@@ -29,6 +30,7 @@ import { MatTabsModule } from '@angular/material/tabs';
     MatNativeDateModule,
     MatTooltipModule,
     MatTabsModule,
+    MatBadgeModule,
     // DoctorProfileComponent,
   ],
   exports: [
@@ -45,6 +47,7 @@ import { MatTabsModule } from '@angular/material/tabs';
     MatNativeDateModule,
     MatTooltipModule,
     MatTabsModule,
+    MatBadgeModule,
 
     DoctorProfileComponent,
     SelectDoctorComponent,

@@ -7,6 +7,7 @@ import { MedicineService } from '../../../../services/medicine.service';
 import { tap, catchError, takeUntil } from 'rxjs/operators';
 import { MessageService } from '../../../../my-core/service/message.service';
 import { MedicineReferences } from '../../../../models/hospital/medicine-references.model';
+import { MedicineNotice } from '../../../../models/hospital/medicine-notice.model';
 
 @Component({
   selector: 'ngx-medicine-edit',
@@ -21,6 +22,7 @@ export class MedicineEditComponent implements OnInit, OnDestroy {
   ways: string[];
   usages: string[];
   periods: { name: string; value: number }[];
+  notices: MedicineNotice[];
 
   constructor(
     public dialogRef: MatDialogRef<MedicineEditComponent>,
@@ -60,10 +62,14 @@ export class MedicineEditComponent implements OnInit, OnDestroy {
     this.destroy$.unsubscribe();
   }
 
+  noticesChanged($event) {
+    this.notices = $event;
+  }
+
   update() {
     const response = this.data.medicine?._id ?
       // update
-      this.medicineService.update({ ...this.data.medicine, ...this.form.value }) :
+      this.medicineService.update({ ...this.data.medicine, ...this.form.value, notices: this.notices }) :
       // create
       this.medicineService.add({ ...this.form.value });
     response.pipe(

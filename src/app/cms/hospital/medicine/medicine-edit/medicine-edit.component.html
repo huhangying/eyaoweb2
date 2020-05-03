@@ -6,10 +6,10 @@
     </button>
   </nb-card-header>
 
-  <mat-dialog-content class="container pt-0">
+  <mat-dialog-content class="container pt-0" [formGroup]="form">
     <mat-tab-group>
       <mat-tab label="药名属性">
-        <div class="container" [formGroup]="form">
+        <div class="container">
           <div class="field row">
             <div class="col-md-6">
               <label for="name" class="label required"> 药名 </label>
@@ -72,12 +72,12 @@
 
       <mat-tab>
         <ng-template mat-tab-label>
-          <span class="material-icons">notification_important </span> 预设监测提醒
+          <span class="material-icons">notification_important </span>
+          <span [matBadge]="notices?.length" matBadgePosition="after">预设监测提醒</span>
         </ng-template>
 
         <div class="field">
-          <button mat-button>新增提醒</button>
-          <hr>
+          <ngx-medicine-notices-edit [notices]="data.medicine.notices" (valueChange)="noticesChanged($event)"></ngx-medicine-notices-edit>
         </div>
       </mat-tab>
     </mat-tab-group>

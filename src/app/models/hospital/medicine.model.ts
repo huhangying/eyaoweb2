@@ -1,3 +1,5 @@
+import { MedicineNotice } from './medicine-notice.model';
+
 export interface Medicine {
   _id: string;
   name: string;
@@ -6,7 +8,7 @@ export interface Medicine {
   capacity: number;
   usage: string; // 内服外用等
   dosage: Dosage;
-  notices: Notice[];
+  notices: MedicineNotice[];
   apply: boolean;
 }
 
@@ -15,12 +17,4 @@ export interface Dosage {
   way: string; // 饭前/饭后/隔几小时
   frequency: number;
   count: number;
-}
-
-interface Notice {
-  notice: string;
-  days_to_start: number;
-  during: number;
-  require_confirm: boolean;
-  apply: boolean;
 }
