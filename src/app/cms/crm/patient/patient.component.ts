@@ -9,7 +9,6 @@ import { ActivatedRoute } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogService } from '../../../my-core/service/dialog.service';
 import { takeUntil, tap, catchError } from 'rxjs/operators';
-import * as moment from 'moment';
 import { PatientEditComponent } from './patient-edit/patient-edit.component';
 import { MessageService } from '../../../my-core/service/message.service';
 import { UserService } from '../../../services/user.service';
@@ -36,7 +35,6 @@ export class PatientComponent implements OnInit, OnDestroy {
     private dialogService: DialogService,
     private message: MessageService,
   ) {
-    moment.locale('zh-cn');
     // this.departments = this.route.snapshot.data.departments;
     this.userService.getUsers().subscribe(
       data => {
@@ -135,9 +133,6 @@ export class PatientComponent implements OnInit, OnDestroy {
     };
   }
 
-  localDate(date) {
-    return moment(date).format('LL');
-  }
   getGenderLabel(gender: string) {
     return gender === 'M' ?
       '男' :

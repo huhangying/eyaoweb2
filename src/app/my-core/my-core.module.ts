@@ -6,10 +6,12 @@ import { PaginatorProvider } from './helper/paginator.provider';
 import { MatPaginatorIntl } from '@angular/material/paginator';
 import { DialogService } from './service/dialog.service';
 import { MatDialogModule } from '@angular/material/dialog';
+import { LocalDatePipe } from './pipe/local-date.pipe';
 
 @NgModule({
   declarations: [
     AccessControlDirective,
+    LocalDatePipe,
   ],
   imports: [
     MatDialogModule,
@@ -20,7 +22,8 @@ import { MatDialogModule } from '@angular/material/dialog';
     DialogService
   ],
   exports: [
-    AccessControlDirective
+    AccessControlDirective,
+    LocalDatePipe,
   ],
 })
 export class MyCoreModule { }

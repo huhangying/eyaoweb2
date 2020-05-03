@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { BookingComponent } from './booking/booking.component';
 import { ScheduleComponent } from './schedule/schedule.component';
+import { DepartmentResolver } from '../../services/resolvers/department.resolver';
 
 const routes: Routes = [{
   path: '',
@@ -9,6 +10,7 @@ const routes: Routes = [{
     {
       path: 'schedule',
       component: ScheduleComponent,
+      resolve: { departments: DepartmentResolver }
     },
     {
       path: 'booking',

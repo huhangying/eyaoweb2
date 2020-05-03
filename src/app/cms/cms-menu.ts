@@ -70,7 +70,7 @@ export function getMenuItems(role: number): NbMenuItem[] {
           link: '/cms/reservation/schedule',
         },
         {
-          title: '预约门诊',
+          title: '门诊预约',
           link: '/cms/reservation/booking',
         },
       ],

@@ -38,7 +38,7 @@
       <ng-container matColumnDef="created">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> 创建时间 </th>
         <td mat-cell *matCellDef="let element">
-          {{localDate(element.created)}} </td>
+          {{element.created | localDate}} </td>
       </ng-container>
 
       <ng-container matColumnDef="apply">
