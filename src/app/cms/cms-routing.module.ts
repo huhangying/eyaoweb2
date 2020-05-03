@@ -30,6 +30,11 @@ const routes: Routes = [{
       loadChildren: () => import('./crm/crm.module')
         .then(m => m.CrmModule),
     },
+    {
+      path: 'reservation',
+      loadChildren: () => import('./reservation/reservation.module')
+        .then(m => m.ReservationModule),
+    },
   ],
 }];
 

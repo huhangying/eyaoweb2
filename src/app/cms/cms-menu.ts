@@ -62,6 +62,20 @@ export function getMenuItems(role: number): NbMenuItem[] {
       ],
     },
     {
+      title: '预约管理',
+      icon: 'calendar-outline',
+      children: [
+        {
+          title: '门诊开设',
+          link: '/cms/reservation/schedule',
+        },
+        {
+          title: '预约门诊',
+          link: '/cms/reservation/booking',
+        },
+      ],
+    },
+    {
       title: 'Forms',
       icon: 'edit-2-outline',
       children: [
