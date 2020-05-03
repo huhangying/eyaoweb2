@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 import { Resolve } from '@angular/router';
 import { HospitalService } from '../hospital.service';
-import { MedicineRefernces } from '../../models/hospital/medicine-references.model';
+import { MedicineReferences } from '../../models/hospital/medicine-references.model';
 import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
-export class MedicineReferencesResolver implements Resolve<MedicineRefernces> {
+export class MedicineReferencesResolver implements Resolve<MedicineReferences> {
   constructor(
     private hospitalService: HospitalService,
   ) { }

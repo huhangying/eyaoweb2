@@ -6,7 +6,7 @@ import { Subject } from 'rxjs';
 import { MedicineService } from '../../../../services/medicine.service';
 import { tap, catchError, takeUntil } from 'rxjs/operators';
 import { MessageService } from '../../../../my-core/service/message.service';
-import { MedicineRefernces } from '../../../../models/hospital/medicine-references.model';
+import { MedicineReferences } from '../../../../models/hospital/medicine-references.model';
 
 @Component({
   selector: 'ngx-medicine-edit',
@@ -24,7 +24,7 @@ export class MedicineEditComponent implements OnInit, OnDestroy {
 
   constructor(
     public dialogRef: MatDialogRef<MedicineEditComponent>,
-    @Inject(MAT_DIALOG_DATA) @Optional() @SkipSelf() public data: { medicine: Medicine; medicineReferences: MedicineRefernces },
+    @Inject(MAT_DIALOG_DATA) @Optional() @SkipSelf() public data: { medicine: Medicine; medicineReferences: MedicineReferences },
     private fb: FormBuilder,
     private medicineService: MedicineService,
     private message: MessageService,
