@@ -108,8 +108,7 @@ export class MedicineComponent implements OnInit, OnDestroy {
             // create
             this.dataSource.data.unshift(result);
           }
-          this.loadData(this.dataSource.data); // add to list
-          isEdit && this.dataSource.paginator.firstPage(); // created goes first
+          this.loadData(this.dataSource.data, isEdit); // add to list
           this.message.updateSuccess();
         }
       }),
@@ -121,10 +120,11 @@ export class MedicineComponent implements OnInit, OnDestroy {
     this.edit();
   }
 
-  loadData(data: Medicine[]) {
+  loadData(data: Medicine[], isEdit=true) {
     this.dataSource = new MatTableDataSource<Medicine>(data);
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
+    isEdit && this.dataSource.paginator.firstPage(); // created goes first
     this.cd.markForCheck();
   }
 
