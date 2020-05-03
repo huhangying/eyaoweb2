@@ -1,7 +1,6 @@
-import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
-import { HospitalService } from '../../../services/hospital.service';
 import { Medicine, Dosage } from '../../../models/hospital/medicine.model';
 import { MatSort } from '@angular/material/sort';
 import { MatDialog } from '@angular/material/dialog';
@@ -9,12 +8,16 @@ import { MedicineEditComponent } from './medicine-edit/medicine-edit.component';
 import { DialogService } from '../../../my-core/service/dialog.service';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntil, catchError, tap } from 'rxjs/operators';
+import { ActivatedRoute } from '@angular/router';
+import { MessageService } from '../../../my-core/service/message.service';
+import { MedicineService } from '../../../services/medicine.service';
 
 @Component({
   selector: 'ngx-medicine',
   templateUrl: './medicine.component.html',
   styleUrls: ['./medicine.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MedicineComponent implements OnInit, OnDestroy {
   searchForm: FormGroup;
@@ -28,25 +31,23 @@ export class MedicineComponent implements OnInit, OnDestroy {
 
   constructor(
     private fb: FormBuilder,
-    private hospitalService: HospitalService,
+    private route: ActivatedRoute,
+    private cd: ChangeDetectorRef,
+    private medicineService: MedicineService,
     public dialog: MatDialog,
     private dialogService: DialogService,
+    private message: MessageService,
   ) {
-    this.hospitalService.getHospitalSetting('medicine_periods').subscribe(
-      data => {
-        this.intervalDays = data?.value?.split('|').map(value => {
-          const items = value.split(':');
-          return { name: items[0], value: +items[1] };
-        });
-      }
-    );
+
+    this.intervalDays = this.route.snapshot.data.medicineReferences.periods;
+
     this.searchForm = this.fb.group({
       name: [''],
     });
   }
 
   ngOnInit() {
-    this.hospitalService.getMedicines().subscribe(
+    this.medicineService.getMedicines().subscribe(
       data => {
         this.loadData(data);
       }
@@ -72,18 +73,48 @@ export class MedicineComponent implements OnInit, OnDestroy {
   }
 
   delete(id: string) {
-    this.dialogService?.deleteConfirm()
-      .subscribe(result => {
+    this.dialogService?.deleteConfirm().pipe(
+      tap(result => {
         if (result) {
-          alert('deleted');
+          this.medicineService.deleteById(id)
+            .subscribe(result => {
+              if (result?._id) {
+                this.loadData(this.dataSource.data.filter(item => item._id !== result._id)); // remove from list
+                this.message.deleteSuccess();
+              }
+            });
         }
-      });
+      }),
+      catchError(rsp => this.message.deleteErrorHandle(rsp))
+    ).subscribe();
   }
 
   edit(data?: Medicine) {
+    const isEdit = !!data;
     this.dialog.open(MedicineEditComponent, {
-      data: data
-    });
+      data: {
+        medicine: data,
+        medicineReferences: this.route.snapshot.data.medicineReferences
+      },
+    }).afterClosed().pipe(
+      tap(result => {
+        if (result?._id) {
+          if (isEdit) {
+            // update
+            this.dataSource.data = this.dataSource.data.map(item => {
+              return item._id === result._id ? result : item;
+            });
+          } else {
+            // create
+            this.dataSource.data.unshift(result);
+          }
+          this.loadData(this.dataSource.data); // add to list
+          isEdit && this.dataSource.paginator.firstPage(); // created goes first
+          this.message.updateSuccess();
+        }
+      }),
+      catchError(rsp => this.message.updateErrorHandle(rsp))
+    ).subscribe();
   }
 
   add() {
@@ -94,6 +125,7 @@ export class MedicineComponent implements OnInit, OnDestroy {
     this.dataSource = new MatTableDataSource<Medicine>(data);
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
+    this.cd.markForCheck();
   }
 
   setupFilter(column: string) {

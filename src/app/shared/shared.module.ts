@@ -12,6 +12,7 @@ import { DoctorProfileComponent } from './components/doctor-profile/doctor-profi
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { SelectDoctorComponent } from '../cms/shared/select-doctor/select-doctor.component';
+import { MatTabsModule } from '@angular/material/tabs';
 
 @NgModule({
   imports: [
@@ -27,6 +28,7 @@ import { SelectDoctorComponent } from '../cms/shared/select-doctor/select-doctor
     MatDatepickerModule,
     MatNativeDateModule,
     MatTooltipModule,
+    MatTabsModule,
     // DoctorProfileComponent,
   ],
   exports: [
@@ -42,6 +44,7 @@ import { SelectDoctorComponent } from '../cms/shared/select-doctor/select-doctor
     MatDatepickerModule,
     MatNativeDateModule,
     MatTooltipModule,
+    MatTabsModule,
 
     DoctorProfileComponent,
     SelectDoctorComponent,

@@ -3,7 +3,10 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Medicine } from '../../../../models/hospital/medicine.model';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Subject } from 'rxjs';
-import { HospitalService } from '../../../../services/hospital.service';
+import { MedicineService } from '../../../../services/medicine.service';
+import { tap, catchError, takeUntil } from 'rxjs/operators';
+import { MessageService } from '../../../../my-core/service/message.service';
+import { MedicineRefernces } from '../../../../models/hospital/medicine-references.model';
 
 @Component({
   selector: 'ngx-medicine-edit',
@@ -21,29 +24,11 @@ export class MedicineEditComponent implements OnInit, OnDestroy {
 
   constructor(
     public dialogRef: MatDialogRef<MedicineEditComponent>,
-    @Inject(MAT_DIALOG_DATA) @Optional() @SkipSelf() public data: Medicine,
+    @Inject(MAT_DIALOG_DATA) @Optional() @SkipSelf() public data: { medicine: Medicine; medicineReferences: MedicineRefernces },
     private fb: FormBuilder,
-    private hospitalService: HospitalService,
+    private medicineService: MedicineService,
+    private message: MessageService,
   ) {
-    this.hospitalService.getHospitalSetting('medicine_units').subscribe(
-      data => {
-        this.units = data?.value.split('|');
-      });
-    this.hospitalService.getHospitalSetting('medicine_usages').subscribe(
-      data => {
-        this.usages = data?.value.split('|');
-      });
-    this.hospitalService.getHospitalSetting('medicine_periods').subscribe(
-      data => {
-        this.periods = data?.value.split('|').map(value => {
-          const items = value.split(':');
-          return { name: items[0], value: +items[1] };
-        });
-      });
-    this.hospitalService.getHospitalSetting('medicine_ways').subscribe(
-      data => {
-        this.ways = data?.value.split('|');
-      });
 
     this.form = this.fb.group({
       name: ['', Validators.required],
@@ -59,16 +44,15 @@ export class MedicineEditComponent implements OnInit, OnDestroy {
       }),
       apply: [false],
     });
-    if (data) {
-      console.log(data);
-
-      this.form.patchValue(data);
+    if (data.medicine) {
+      this.form.patchValue(data.medicine);
     }
   }
 
   get unitCtrl() { return this.form.get('unit'); }
 
   ngOnInit() {
+    this.dialogRef.updateSize('80%');
   }
 
   ngOnDestroy() {
@@ -77,6 +61,19 @@ export class MedicineEditComponent implements OnInit, OnDestroy {
   }
 
   update() {
+    const response = this.data.medicine?._id ?
+      // update
+      this.medicineService.update({ ...this.data.medicine, ...this.form.value }) :
+      // create
+      this.medicineService.add({ ...this.form.value });
+    response.pipe(
+      tap(result => {
+        this.dialogRef.close(result);
+      }),
+      catchError(err => this.message.updateErrorHandle(err)),
+      takeUntil(this.destroy$)
+    ).subscribe();
+
   }
 
 }

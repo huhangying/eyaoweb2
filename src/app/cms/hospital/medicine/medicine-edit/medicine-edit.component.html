@@ -1,74 +1,93 @@
-<nb-card [status]="data ? 'info' : 'success'" [formGroup]="form">
+<nb-card [status]="data.medicine ? 'info' : 'success'">
   <nb-card-header>
-    {{data? '编辑药品' : '新增药品'}}
+    {{data.medicine? '编辑药品' : '新增药品'}}
     <button nbButton shape="round" size="small" class="float-right" mat-dialog-close>
       <nb-icon icon="close"></nb-icon>
     </button>
   </nb-card-header>
 
-  <mat-dialog-content class="container">
-    <div class="field row">
-      <div class="col-md-6">
-        <label for="name" class="label required"> 药名 </label>
-        <input nbInput fullWidth id="name" formControlName="name">
-        <div class="pt-3">
-          <nb-checkbox formControlName="apply">开关</nb-checkbox>
-        </div>
-      </div>
-      <div class="col-md-6">
-        <label for="desc" class="label"> 描述 </label>
-        <textarea nbInput fullWidth id="desc" formControlName="desc" rows="3"></textarea>
-      </div>
-    </div>
+  <mat-dialog-content class="container pt-0">
+    <mat-tab-group>
+      <mat-tab label="药名属性">
+        <div class="container" [formGroup]="form">
+          <div class="field row">
+            <div class="col-md-6">
+              <label for="name" class="label required"> 药名 </label>
+              <input nbInput fullWidth id="name" formControlName="name">
+              <div class="pt-3">
+                <nb-checkbox formControlName="apply">开关</nb-checkbox>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <label for="desc" class="label"> 描述 </label>
+              <textarea nbInput fullWidth id="desc" formControlName="desc" rows="3"></textarea>
+            </div>
+          </div>
 
-    <div class="field row">
-      <div class="col-md-3">
-        <label for="capacity" class="label required"> 药品总量 </label>
-        <input nbInput type="number" min="0" fullWidth id="capacity" formControlName="capacity">
-      </div>
-      <div class="col-md-4">
-        <label for="unit" class="label required"> 单位 </label>
-        <nb-select id="unit" fullWidth formControlName="unit">
-          <nb-option *ngFor="let unit of units" [value]="unit">{{unit}}</nb-option>
-        </nb-select>
-      </div>
-      <div class="col-md-5">
-        <label for="usage" class="label required"> 使用方法 </label>
-        <nb-select id="usage" fullWidth formControlName="usage">
-          <nb-option *ngFor="let usage of usages" [value]="usage">{{usage}}</nb-option>
-        </nb-select>
-      </div>
-    </div>
+          <div class="field row">
+            <div class="col-md-3">
+              <label for="capacity" class="label required"> 药品总量 </label>
+              <input nbInput type="number" min="0" fullWidth id="capacity" formControlName="capacity">
+            </div>
+            <div class="col-md-3">
+              <label for="unit" class="label required"> 单位 </label>
+              <nb-select id="unit" fullWidth formControlName="unit">
+                <nb-option *ngFor="let unit of data.medicineReferences.units" [value]="unit">{{unit}}</nb-option>
+              </nb-select>
+            </div>
+            <div class="col-md-4">
+              <label for="usage" class="label required"> 使用方法 </label>
+              <nb-select id="usage" fullWidth formControlName="usage">
+                <nb-option *ngFor="let usage of data.medicineReferences.usages" [value]="usage">{{usage}}</nb-option>
+              </nb-select>
+            </div>
+          </div>
 
-    <div class="field row" formGroupName="dosage">
-      <div class="col-md-6">
-        <label for="intervalDay" class="label required"> 用药周期 </label>
-        <div class="container">
-          <div class="row">
-            <nb-select id="intervalDay" class="col-6" fullWidth formControlName="intervalDay">
-              <nb-option *ngFor="let period of periods" [value]="period.value">{{period.name}}</nb-option>
-            </nb-select>
-            <nb-select class="col-6" fullWidth formControlName="way">
-              <nb-option *ngFor="let way of ways" [value]="way">{{way}}</nb-option>
-            </nb-select>
+          <div class="field row" formGroupName="dosage">
+            <div class="col-md-6">
+              <label for="intervalDay" class="label required"> 用药周期 </label>
+              <div class="container">
+                <div class="row">
+                  <nb-select id="intervalDay" class="col-6" fullWidth formControlName="intervalDay">
+                    <nb-option *ngFor="let period of data.medicineReferences.periods" [value]="period.value">{{period.name}}</nb-option>
+                  </nb-select>
+                  <nb-select class="col-6" fullWidth formControlName="way">
+                    <nb-option *ngFor="let way of data.medicineReferences.ways" [value]="way">{{way}}</nb-option>
+                  </nb-select>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <label for="frequency" class="label required"> 服用频率 </label>
+              <input nbInput fullWidth type="number" id="frequency" min="0" formControlName="frequency">
+            </div>
+            <div class="col-md-3">
+              <label for="count" class="label required"> 每次 {{ unitCtrl.value && '(' + unitCtrl.value + ')' }} </label>
+              <input nbInput fullWidth type="number" id="count" min="0" formControlName="count">
+            </div>
           </div>
         </div>
-      </div>
-      <div class="col-md-3">
-        <label for="frequency" class="label required"> 服用频率 </label>
-        <input nbInput fullWidth type="number" id="frequency" formControlName="frequency">
-      </div>
-      <div class="col-md-3">
-        <label for="count" class="label required"> 每次 {{ unitCtrl.value && '(' + unitCtrl.value + ')' }} </label>
-        <input nbInput fullWidth type="number" id="count" formControlName="count">
-      </div>
-    </div>
+      </mat-tab>
+
+
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <span class="material-icons">notification_important </span> 监测提醒
+        </ng-template>
+
+        <div class="field">
+          <button mat-button>新增提醒</button>
+          <hr>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
 
   </mat-dialog-content>
 
   <nb-card-footer class="d-block">
     <button nbButton mat-dialog-close>取消</button>
-    <button nbButton hero status="primary" class="float-right" cdkFocusInitial [disabled]="form.invalid" (click)="update()">
+    <button nbButton hero status="primary" class="float-right" cdkFocusInitial [disabled]="form.invalid"
+      (click)="update()">
       <nb-icon icon="checkmark-circle"></nb-icon>更新
     </button>
   </nb-card-footer>

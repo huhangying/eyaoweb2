@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Department } from '../models/hospital/department.model';
 import { Disease } from '../models/hospital/disease.model';
-import { Medicine } from '../models/hospital/medicine.model';
 import { Faq } from '../models/hospital/faq.model';
 import { Const } from '../models/const.model';
 import { ApiService } from '../my-core/service/api.service';
@@ -39,11 +38,6 @@ export class HospitalService {
   // Disease
   getDiseases() {
     return this.api.get<Disease[]>('diseases/');
-  }
-
-  // Medicine
-  getMedicines() {
-    return this.api.get<Medicine[]>('medicines/');
   }
 
   // 医院全局变量

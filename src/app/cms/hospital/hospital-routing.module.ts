@@ -6,6 +6,7 @@ import { DepartmentComponent } from './department/department.component';
 import { DiseaseComponent } from './disease/disease.component';
 import { MedicineComponent } from './medicine/medicine.component';
 import { FaqComponent } from './faq/faq.component';
+import { MedicineReferencesResolver } from '../../services/resolvers/medicine-references.resolver';
 
 const routes: Routes = [{
   path: '',
@@ -25,6 +26,7 @@ const routes: Routes = [{
     {
       path: 'medicine',
       component: MedicineComponent,
+      resolve: { medicineReferences: MedicineReferencesResolver }
     },
     {
       path: 'faq',

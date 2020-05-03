@@ -21,13 +21,10 @@ export class MessageService {
         message = Message.notFound;
       } else if (rsp.error?.return === 'existed') {
         message = Message.nameExisted;
-      } else {
-        message = rsp.message || Message.defaultError;
       }
-    } else {
-      message = rsp.message || Message.defaultError;
     }
-    this.toastr.error(message);
+    message = message || rsp.error?.message || rsp.message || Message.defaultError;
+    this.toastr.error(message );
     return EMPTY;
   }
 
