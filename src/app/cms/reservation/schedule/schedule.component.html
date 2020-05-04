@@ -16,7 +16,7 @@
       <ng-container matColumnDef="period">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> 门诊时间片 </th>
         <td mat-cell *matCellDef="let element">
-          {{ getDoctorLabel(element.period) }}
+          {{ element.period?.name }}
         </td>
       </ng-container>
 
