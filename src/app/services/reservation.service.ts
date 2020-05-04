@@ -19,6 +19,10 @@ export class ReservationService {
     return this.api.patch<Schedule>('schedule/' + data._id, data);
   }
 
+  create(data: Schedule) {
+    return this.api.post<Schedule>('schedule', data);
+  }
+
   deleteById(id: string) {
     return this.api.delete<Schedule>('schedule/' + id);
   }

@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { Subject } from 'rxjs';
 import { Doctor } from '../../../models/doctor.model';
-import { Schedule } from '../../../models/reservation/schedule.model';
+import { Schedule, Period } from '../../../models/reservation/schedule.model';
 import { tap, catchError } from 'rxjs/operators';
 import { MessageService } from '../../../my-core/service/message.service';
 import { DialogService } from '../../../my-core/service/dialog.service';
@@ -12,6 +12,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 import { Department } from '../../../models/hospital/department.model';
 import { ReservationService } from '../../../services/reservation.service';
+import { ScheduleEditComponent } from './schedule-edit/schedule-edit.component';
 
 @Component({
   selector: 'ngx-schedule',
@@ -21,6 +22,7 @@ import { ReservationService } from '../../../services/reservation.service';
 export class ScheduleComponent implements OnInit, OnDestroy {
   destroy$ = new Subject<void>();
   departments: Department[];
+  periods: Period[];
   doctors: Doctor[];
   selectedDoctor: Doctor;
   displayedColumns: string[] = ['date', 'period', 'limit', 'apply', '_id'];
@@ -36,6 +38,7 @@ export class ScheduleComponent implements OnInit, OnDestroy {
     private message: MessageService,
   ) {
     this.departments = this.route.snapshot.data.departments;
+    this.periods = this.route.snapshot.data.periods;
     // this.reservationService.getDoctorGroups().subscribe(
     //   data => {
     //     this.loadData(data);
@@ -67,31 +70,32 @@ export class ScheduleComponent implements OnInit, OnDestroy {
 
   edit(data?: Schedule) {
     const isEdit = !!data;
-    // this.dialog.open(ScheduleEditComponent, {
-    //   data: {
-    //     doctorGroup: data,
-    //     // doctors: this.doctors
-    //     doctor: this.selectedDoctor
-    //   },
-    // }).afterClosed().pipe(
-    //   tap(result => {
-    //     if (result?._id) {
-    //       if (isEdit) {
-    //         // update
-    //         this.dataSource.data = this.dataSource.data.map(item => {
-    //           return item._id === result._id ? result : item;
-    //         });
-    //       } else {
-    //         // create
-    //         this.dataSource.data.unshift(result);
-    //       }
-    //       this.loadData(this.dataSource.data); // add to list
-    //       isEdit && this.dataSource.paginator.firstPage(); // created goes first
-    //       this.message.updateSuccess();
-    //     }
-    //   }),
-    //   catchError(rsp => this.message.updateErrorHandle(rsp))
-    // ).subscribe();
+    this.dialog.open(ScheduleEditComponent, {
+      data: {
+        schedule: data,
+        periods: this.periods,
+        doctor: this.selectedDoctor
+      },
+      width: '600px'
+    }).afterClosed().pipe(
+      tap(result => {
+        if (result?._id) {
+          if (isEdit) {
+            // update
+            this.dataSource.data = this.dataSource.data.map(item => {
+              return item._id === result._id ? result : item;
+            });
+          } else {
+            // create
+            this.dataSource.data.unshift(result);
+          }
+          this.loadData(this.dataSource.data); // add to list
+          isEdit && this.dataSource.paginator.firstPage(); // created goes first
+          this.message.updateSuccess();
+        }
+      }),
+      catchError(rsp => this.message.updateErrorHandle(rsp))
+    ).subscribe();
   }
 
   delete(id: string) {
@@ -122,5 +126,9 @@ export class ScheduleComponent implements OnInit, OnDestroy {
     return this.selectedDoctor?._id === id ?
       this.selectedDoctor.name :
       '';
+  }
+
+  getPeriodLabel(id: string) {
+    return this.periods.find(_ => _._id === id)?.name;
   }
 }
