@@ -1,6 +1,6 @@
-<nb-card [status]="data ? 'info' : 'success'" [formGroup]="form">
+<nb-card [status]="data.schedule ? 'info' : 'success'" [formGroup]="form">
   <nb-card-header>
-    {{data ? '编辑门诊' : '新增门诊'}} ({{data.doctor?.name}})
+    {{data.schedule ? '编辑门诊' : '新增门诊'}} ({{data.doctor?.name}})
     <button nbButton shape="round" size="small" class="float-right" mat-dialog-close>
       <nb-icon icon="close"></nb-icon>
     </button>
@@ -8,7 +8,7 @@
 
   <mat-dialog-content class="container px-3">
     <div class="field row">
-        <label for="date" class="label required col-3"> 日期 </label>
+      <label for="date" class="label required col-3"> 日期 </label>
       <div class="d-inline-flex px-0 col-9">
         <input nbInput fullWidth id="date" [matDatepicker]="picker" formControlName="date">
         <mat-datepicker-toggle nbSuffix [for]="picker"></mat-datepicker-toggle>

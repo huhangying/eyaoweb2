@@ -13,6 +13,8 @@ import { MatSort } from '@angular/material/sort';
 import { Department } from '../../../models/hospital/department.model';
 import { ReservationService } from '../../../services/reservation.service';
 import { ScheduleEditComponent } from './schedule-edit/schedule-edit.component';
+import { ScheduleBatEditComponent } from './schedule-bat-edit/schedule-bat-edit.component';
+import { ScheduleBatDeleteComponent } from './schedule-bat-delete/schedule-bat-delete.component';
 
 @Component({
   selector: 'ngx-schedule',
@@ -112,6 +114,29 @@ export class ScheduleComponent implements OnInit, OnDestroy {
         }
       }),
       catchError(rsp => this.message.deleteErrorHandle(rsp))
+    ).subscribe();
+  }
+
+  batchCreate() {
+    this.dialog.open(ScheduleBatEditComponent, {
+      data: {
+        periods: this.periods,
+        doctor: this.selectedDoctor
+      },
+    }).afterClosed().pipe(
+
+    ).subscribe();
+  }
+
+  batchDelete() {
+    this.dialog.open(ScheduleBatDeleteComponent, {
+      data: {
+        periods: this.periods,
+        doctor: this.selectedDoctor
+      },
+      width: '600px'
+    }).afterClosed().pipe(
+
     ).subscribe();
   }
 

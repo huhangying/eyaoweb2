@@ -2,10 +2,21 @@
   <nb-card-header>
     门诊开设
     &nbsp;&nbsp;
-    <button nbButton hero shape="round" size="tiny" status="success" [hidden]="!selectedDoctor" title="新增门诊"
-      (click)="add()">
-      <nb-icon icon="plus" pack="eva" [options]="{ animation: { type: 'shake' } }"></nb-icon>
-    </button>
+    <ng-container *ngIf="selectedDoctor">
+      <button nbButton hero shape="round" size="tiny" status="success" title="新增门诊"
+        (click)="add()">
+        <nb-icon icon="plus" pack="eva" [options]="{ animation: { type: 'shake' } }"></nb-icon>
+      </button>
+      <div class="float-right d-flex mt-n1">
+        <button nbButton hero status="success" class="mr-3" (click)="batchCreate()">
+          <nb-icon icon="plus-circle" status="info"></nb-icon>批量创建
+        </button>
+        <button nbButton hero status="success" (click)="batchDelete()">
+          <nb-icon icon="trash-2" status="danger"></nb-icon>批量删除
+        </button>
+      </div>
+    </ng-container>
+
     <ngx-select-doctor [departments]="departments" (doctorSelected)="doctorSelected($event)"></ngx-select-doctor>
   </nb-card-header>
 
