@@ -41,7 +41,7 @@
         <button nbButton hero cdkFocusInitial (click)="cancel()" class="mr-3">
           取消
         </button>
-        <button nbButton hero [status]="isEdit ? 'info' : 'success'" cdkFocusInitial [disabled]="form.invalid"
+        <button nbButton hero [status]="isEdit ? 'info' : 'success'" [disabled]="form.invalid"
           (click)="update()">
           <nb-icon [icon]="isEdit ? 'edit-outline' : 'plus-outline'"></nb-icon>确定
         </button>

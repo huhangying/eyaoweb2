@@ -1,1 +1,61 @@
-<p>schedule-bat-delete works!</p>
+<nb-card status="success" [formGroup]="form">
+  <nb-card-header>
+    批量删除药师门诊  (药师: {{data.doctor?.name}})
+    <button nbButton shape="round" size="small" class="float-right" mat-dialog-close>
+      <nb-icon icon="close"></nb-icon>
+    </button>
+  </nb-card-header>
+
+  <mat-dialog-content class="px-3">
+    <div class="field row">
+      <div class="col-6 row pl-4">
+        <label for="period" class="label required col-3"> 门诊时间片 </label>
+        <div class="col-9">
+          <nb-select hero id="period" fullWidth multiple placeholder="支持多选" formControlName="periods">
+            <nb-option *ngFor="let p of data.periods" [value]="p._id">{{ p.name }}</nb-option>
+          </nb-select>
+        </div>
+      </div>
+    </div>
+
+    <div class="field pt-2">
+      <label class="label">日期范围选择:</label>
+    </div>
+    <hr class="mt-0">
+    <div class="field row">
+      <div class="col-6">
+        <label for="startDate" class="label required col-3"> 开始日期 </label>
+        <div class="d-inline-flex px-0 col-9">
+          <input nbInput fullWidth id="startDate" #startDate [matDatepicker]="pickerStart" formControlName="from" [min]="fromMinDate" [max]="fromMaxDate">
+          <mat-datepicker-toggle nbSuffix [for]="pickerStart"></mat-datepicker-toggle>
+          <mat-datepicker #pickerStart></mat-datepicker>
+        </div>
+      </div>
+      <div class="col-6">
+        <label for="endDate" class="label required col-3"> 结束日期 </label>
+        <div class="d-inline-flex px-0 col-9">
+          <input nbInput fullWidth id="endDate" #endDate [matDatepicker]="pickerEnd" formControlName="to" [min]="toMinDate">
+          <mat-datepicker-toggle nbSuffix [for]="pickerEnd"></mat-datepicker-toggle>
+          <mat-datepicker #pickerEnd></mat-datepicker>
+        </div>
+      </div>
+    </div>
+
+    <div class="field row justify-content-center pt-4">
+      <mat-checkbox class="pr-3" formControlName="day1"> 星期一 </mat-checkbox>
+      <mat-checkbox class="pr-3" formControlName="day2"> 星期二 </mat-checkbox>
+      <mat-checkbox class="pr-3" formControlName="day3"> 星期三 </mat-checkbox>
+      <mat-checkbox class="pr-3" formControlName="day4"> 星期四 </mat-checkbox>
+      <mat-checkbox class="pr-3" formControlName="day5"> 星期五 </mat-checkbox>
+      <mat-checkbox class="pr-3" formControlName="day6"> 星期六 </mat-checkbox>
+      <mat-checkbox class="pr-3" formControlName="day0"> 星期天 </mat-checkbox>
+    </div>
+  </mat-dialog-content>
+
+  <nb-card-footer class="d-block">
+    <button nbButton mat-dialog-close>取消</button>
+    <button nbButton hero status="primary" class="float-right" [disabled]="checkInvalid()" (click)="delete()">
+      <nb-icon icon="checkmark-circle"></nb-icon>删除
+    </button>
+  </nb-card-footer>
+</nb-card>

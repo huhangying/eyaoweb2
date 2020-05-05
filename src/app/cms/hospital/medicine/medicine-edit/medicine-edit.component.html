@@ -86,7 +86,7 @@
 
   <nb-card-footer class="d-block">
     <button nbButton mat-dialog-close>取消</button>
-    <button nbButton hero status="primary" class="float-right" cdkFocusInitial [disabled]="form.invalid"
+    <button nbButton hero status="primary" class="float-right" [disabled]="form.invalid"
       (click)="update()">
       <nb-icon icon="checkmark-circle"></nb-icon>更新
     </button>

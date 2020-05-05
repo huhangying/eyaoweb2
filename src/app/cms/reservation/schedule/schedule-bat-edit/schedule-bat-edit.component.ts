@@ -5,9 +5,10 @@ import { Period } from '../../../../models/reservation/schedule.model';
 import { Doctor } from '../../../../models/doctor.model';
 import { ReservationService } from '../../../../services/reservation.service';
 import { MessageService } from '../../../../my-core/service/message.service';
-import { filter, distinctUntilChanged, tap, takeUntil } from 'rxjs/operators';
+import { filter, distinctUntilChanged, tap, takeUntil, catchError } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import * as moment from 'moment';
+import { ScheduleBatch } from '../../../../models/reservation/schedule-batch.model';
 
 @Component({
   selector: 'ngx-schedule-bat-edit',
@@ -31,7 +32,7 @@ export class ScheduleBatEditComponent implements OnInit, OnDestroy {
     private message: MessageService,
   ) {
     this.form = this.fb.group({
-      period: [[''], Validators.required],
+      periods: [[''], Validators.required],
       limit: ['', Validators.required],
       from: ['', Validators.required],
       to: ['', Validators.required],
@@ -45,7 +46,7 @@ export class ScheduleBatEditComponent implements OnInit, OnDestroy {
     });
   }
 
-  get periodCtrl() { return this.form.get('period'); }
+  get periodsCtrl() { return this.form.get('periods'); }
   get limitCtrl() { return this.form.get('limit'); }
   get fromCtrl() { return this.form.get('from'); }
   get toCtrl() { return this.form.get('to'); }
@@ -108,16 +109,21 @@ export class ScheduleBatEditComponent implements OnInit, OnDestroy {
         (day === 5 && this.day5Ctrl.value) ||
         (day === 6 && this.day6Ctrl.value);
     });
-    const dd = availableDates.map(_ => {
-      return {
-        doctor: this.data.doctor._id,
-        period: this.periodCtrl.value,
-        limit: this.limitCtrl.value,
-        date: _.toISOString()
-      };
-    });
-console.log(dd);
+    const batch: ScheduleBatch = {
+      doctor: this.data.doctor._id,
+      periods: this.periodsCtrl.value,
+      dates: availableDates.map(_ => _.toISOString()),
+      limit: this.limitCtrl.value,
+    };
 
+    this.reservationService.batchAdd(batch).pipe(
+      tap(rsp => {
+        // console.log(rsp);
+        this.dialogRef.close(rsp);
+      }),
+      catchError(rsp => this.message.updateErrorHandle(rsp)),
+      takeUntil(this.destroy$)
+    ).subscribe();
   }
 
 }

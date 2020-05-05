@@ -24,12 +24,12 @@ export class MessageService {
       }
     }
     message = message || rsp.error?.message || rsp.message || Message.defaultError;
-    this.toastr.error(message );
+    this.toastr.error(message);
     return EMPTY;
   }
 
-  updateSuccess() {
-    this.toastr.success(Message.updateSuccess);
+  updateSuccess(prefix?: string) {
+    this.toastr.success((prefix || '') + Message.updateSuccess);
   }
 
   deleteErrorHandle(rsp) {
@@ -49,10 +49,13 @@ export class MessageService {
     return EMPTY;
   }
 
-  deleteSuccess() {
-    this.toastr.success(Message.deleteSuccess);
+  deleteSuccess(prefix?: string) {
+    this.toastr.success((prefix || '') + Message.deleteSuccess);
   }
 
+  nothingUpdated() {
+    this.toastr.warning(Message.nothingUpdated);
+  }
 
 
 }

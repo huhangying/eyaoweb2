@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { Subject } from 'rxjs';
 import { Doctor } from '../../../models/doctor.model';
 import { Schedule, Period } from '../../../models/reservation/schedule.model';
@@ -19,7 +19,8 @@ import { ScheduleBatDeleteComponent } from './schedule-bat-delete/schedule-bat-d
 @Component({
   selector: 'ngx-schedule',
   templateUrl: './schedule.component.html',
-  styleUrls: ['./schedule.component.scss']
+  styleUrls: ['./schedule.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ScheduleComponent implements OnInit, OnDestroy {
   destroy$ = new Subject<void>();
@@ -36,6 +37,7 @@ export class ScheduleComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private reservationService: ReservationService,
     public dialog: MatDialog,
+    private cd: ChangeDetectorRef,
     private dialogService: DialogService,
     private message: MessageService,
   ) {
@@ -62,7 +64,7 @@ export class ScheduleComponent implements OnInit, OnDestroy {
       this.loadData([]);
       return;
     }
-    const schedules = await this.reservationService.getByDoctorId(doctor._id).toPromise();
+    const schedules = await this.reservationService.getAllByDoctorId(doctor._id).toPromise();
     this.loadData(schedules);
   }
 
@@ -124,7 +126,13 @@ export class ScheduleComponent implements OnInit, OnDestroy {
         doctor: this.selectedDoctor
       },
     }).afterClosed().pipe(
-
+      tap(results => {
+        this.dataSource.data.unshift(...results);
+        this.loadData(this.dataSource.data); // add to list
+        this.dataSource.paginator.firstPage(); // created goes first
+        this.message.updateSuccess(results.length + '个');
+      }),
+      catchError(rsp => this.message.updateErrorHandle(rsp))
     ).subscribe();
   }
 
@@ -136,7 +144,13 @@ export class ScheduleComponent implements OnInit, OnDestroy {
       },
       width: '600px'
     }).afterClosed().pipe(
-
+      tap(async result => {
+        // reload data
+        const schedules = await this.reservationService.getAllByDoctorId(this.selectedDoctor._id).toPromise();
+        this.loadData(schedules); // add to list
+        this.message.deleteSuccess(result.deletedCount + '个');
+      }),
+      catchError(rsp => this.message.updateErrorHandle(rsp))
     ).subscribe();
   }
 
@@ -145,6 +159,7 @@ export class ScheduleComponent implements OnInit, OnDestroy {
     this.dataSource = new MatTableDataSource<Schedule>(data);
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
+    this.cd.markForCheck();
   }
 
   getDoctorLabel(id: string) {

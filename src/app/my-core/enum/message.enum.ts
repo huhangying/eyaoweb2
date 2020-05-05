@@ -1,5 +1,6 @@
 export const enum Message {
   noData = '无数据',
+  nothingUpdated = '没有更新的纪录！',
   updateSuccess = '更新纪录成功！',
   deleteSuccess = '删除纪录成功！',
 

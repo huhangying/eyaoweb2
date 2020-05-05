@@ -25,7 +25,7 @@
 
   <nb-card-footer class="d-block">
     <button nbButton mat-dialog-close>取消</button>
-    <button nbButton hero status="primary" class="float-right" cdkFocusInitial [disabled]="data.groups?.length === 0"
+    <button nbButton hero status="primary" class="float-right" [disabled]="data.groups?.length === 0"
       (click)="update()">
       <nb-icon icon="checkmark-circle"></nb-icon>更新
     </button>

@@ -11,7 +11,7 @@
       <div class="col-6 row pl-4">
         <label for="period" class="label required col-3"> 门诊时间片 </label>
         <div class="col-9">
-          <nb-select hero id="period" fullWidth multiple placeholder="支持多选" formControlName="period">
+          <nb-select hero id="period" fullWidth multiple placeholder="支持多选" formControlName="periods">
             <nb-option *ngFor="let p of data.periods" [value]="p._id">{{ p.name }}</nb-option>
           </nb-select>
         </div>
@@ -54,12 +54,11 @@
       <mat-checkbox class="pr-3" formControlName="day6"> 星期六 </mat-checkbox>
       <mat-checkbox class="pr-3" formControlName="day0"> 星期天 </mat-checkbox>
     </div>
-    {{form.value | json}} | {{form.invalid}}
   </mat-dialog-content>
 
   <nb-card-footer class="d-block">
     <button nbButton mat-dialog-close>取消</button>
-    <button nbButton hero status="primary" class="float-right" [disabled]="checkInvalid()" cdkFocusInitial (click)="update()">
+    <button nbButton hero status="primary" class="float-right" [disabled]="checkInvalid()" (click)="update()">
       <nb-icon icon="checkmark-circle"></nb-icon>更新
     </button>
   </nb-card-footer>
