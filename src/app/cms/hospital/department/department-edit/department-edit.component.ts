@@ -4,7 +4,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { HospitalService } from '../../../../services/hospital.service';
-import { tap, catchError } from 'rxjs/operators';
+import { tap, catchError, takeUntil } from 'rxjs/operators';
 import { MessageService } from '../../../../my-core/service/message.service';
 
 @Component({
@@ -54,7 +54,8 @@ export class DepartmentEditComponent implements OnInit, OnDestroy {
       tap(rsp => {
         this.dialogRef.close(rsp);
       }),
-      catchError(rsp => this.message.updateErrorHandle(rsp))
+      catchError(rsp => this.message.updateErrorHandle(rsp)),
+      takeUntil(this.destroy$)
     ).subscribe();
   }
 

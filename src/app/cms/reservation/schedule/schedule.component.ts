@@ -71,7 +71,6 @@ export class ScheduleComponent implements OnInit, OnDestroy {
   }
 
   edit(data?: Schedule) {
-    const isEdit = !!data;
     this.dialog.open(ScheduleEditComponent, {
       data: {
         schedule: data,
@@ -82,6 +81,7 @@ export class ScheduleComponent implements OnInit, OnDestroy {
     }).afterClosed().pipe(
       tap(result => {
         if (result?._id) {
+          const isEdit = !!this.dataSource.data.find(item => item._id === result._id);
           if (isEdit) {
             // update
             this.dataSource.data = this.dataSource.data.map(item => {

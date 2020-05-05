@@ -45,6 +45,8 @@ export class ScheduleBatEditComponent implements OnInit, OnDestroy {
     });
   }
 
+  get periodCtrl() { return this.form.get('period'); }
+  get limitCtrl() { return this.form.get('limit'); }
   get fromCtrl() { return this.form.get('from'); }
   get toCtrl() { return this.form.get('to'); }
   get day1Ctrl() { return this.form.get('day1'); }
@@ -94,7 +96,7 @@ export class ScheduleBatEditComponent implements OnInit, OnDestroy {
     const days = moment(this.toCtrl.value).diff(startDate, 'days');
     const dates = [];
     for (let i = 0; i < days; i++) {
-      dates.push(moment(startDate.add(i, 'days')));
+      dates.push(startDate.clone().add(i, 'days'));
     }
     const availableDates = dates.filter(_ => {
       const day = _.day();
@@ -106,7 +108,15 @@ export class ScheduleBatEditComponent implements OnInit, OnDestroy {
         (day === 5 && this.day5Ctrl.value) ||
         (day === 6 && this.day6Ctrl.value);
     });
-    console.log(availableDates);
+    const dd = availableDates.map(_ => {
+      return {
+        doctor: this.data.doctor._id,
+        period: this.periodCtrl.value,
+        limit: this.limitCtrl.value,
+        date: _.toISOString()
+      };
+    });
+console.log(dd);
 
   }
 

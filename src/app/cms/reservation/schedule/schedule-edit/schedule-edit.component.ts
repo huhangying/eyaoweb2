@@ -6,7 +6,7 @@ import { ReservationService } from '../../../../services/reservation.service';
 import { MessageService } from '../../../../my-core/service/message.service';
 import { Subject } from 'rxjs';
 import { Doctor } from '../../../../models/doctor.model';
-import { tap, catchError } from 'rxjs/operators';
+import { tap, catchError, takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'ngx-schedule-edit',
@@ -16,6 +16,7 @@ import { tap, catchError } from 'rxjs/operators';
 export class ScheduleEditComponent implements OnInit, OnDestroy {
   form: FormGroup;
   destroy$ = new Subject<void>();
+  currentDate: Date;
 
   constructor(
     public dialogRef: MatDialogRef<ScheduleEditComponent>,
@@ -24,11 +25,12 @@ export class ScheduleEditComponent implements OnInit, OnDestroy {
     private reservationService: ReservationService,
     private message: MessageService,
   ) {
+    this.currentDate = new Date();
     this.form = this.fb.group({
       date: ['', Validators.required],
       period: ['', Validators.required],
       limit: [''],
-      apply: false,
+      apply: true,
     });
     if (data.schedule) {
       this.form.patchValue({...data.schedule});
@@ -53,7 +55,8 @@ export class ScheduleEditComponent implements OnInit, OnDestroy {
       tap(rsp => {
         this.dialogRef.close(rsp);
       }),
-      catchError(rsp => this.message.updateErrorHandle(rsp))
+      catchError(rsp => this.message.updateErrorHandle(rsp)),
+      takeUntil(this.destroy$)
     ).subscribe();
   }
 
