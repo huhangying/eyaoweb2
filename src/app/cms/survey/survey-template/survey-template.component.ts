@@ -27,14 +27,14 @@ export class SurveyTemplateComponent implements OnInit, OnDestroy {
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
 
-  types = [
-    {name: '1', value: 1},
-    {name: '2', value: 2},
-    {name: '3', value: 3},
-    {name: '4', value: 4},
-    {name: '5', value: 5},
-    {name: '6', value: 6},
-  ]
+  surveyTypes = [
+    { id: 1, name: '初诊问卷' },
+    { id: 2, name: '复诊问卷' },
+    { id: 3, name: '随访问卷' },
+    { id: 4, name: '药物知识自测' },
+    { id: 5, name: '门诊结论' },
+    { id: 6, name: '药师评估' }
+];
 
   constructor(
     private route: ActivatedRoute,

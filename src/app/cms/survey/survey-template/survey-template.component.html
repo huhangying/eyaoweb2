@@ -28,7 +28,7 @@
         <label class="col-1 text-right">模版类别:</label>
         <nb-form-field class="col-4">
           <nb-select hero fullWidth placeholder="选择模版类别" formControlName="type">
-            <nb-option *ngFor="let type of types" [value]="type.value">{{ type.name }}</nb-option>
+            <nb-option *ngFor="let type of surveyTypes" [value]="type.id">{{ type.name }}</nb-option>
           </nb-select>
         </nb-form-field>
       </div>
