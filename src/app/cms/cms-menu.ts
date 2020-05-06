@@ -76,6 +76,40 @@ export function getMenuItems(role: number): NbMenuItem[] {
       ],
     },
     {
+      title: '问卷管理',
+      icon: 'map-outline',
+      children: [
+        {
+          title: '问卷模版',
+          link: '/cms/survey/template',
+        },
+      ],
+    },
+    {
+      title: '宣教材料管理',
+      icon: 'layers-outline',
+      children: [
+        {
+          title: '材料类别',
+          link: '/cms/education/template',
+        },
+        {
+          title: '材料模版',
+          link: '/cms/education/template',
+        },
+      ],
+    },
+    {
+      title: '统计报表',
+      icon: 'pie-chart-2',
+      children: [
+        {
+          title: '药师评价',
+          link: '/cms/survey/template',
+        },
+      ],
+    },
+    {
       title: 'Forms',
       icon: 'edit-2-outline',
       children: [

@@ -1,17 +1,18 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { SurveyTemplateComponent } from './survey-template/survey-template.component';
 
 const routes: Routes = [{
   path: '',
   children: [
-    // {
-    //   path: 'schedule',
-    //   component: ScheduleComponent,
-    //   resolve: {
-    //     departments: DepartmentResolver,
-    //     periods: PeriodsResolver
-    //   }
-    // },
+    {
+      path: 'template',
+      component: SurveyTemplateComponent,
+      // resolve: {
+      //   departments: DepartmentResolver,
+      //   periods: PeriodsResolver
+      // }
+    },
 
   ],
 }];
@@ -23,5 +24,5 @@ const routes: Routes = [{
 export class SurveyRoutingModule { }
 
 export const routedComponents = [
-
+  SurveyTemplateComponent
 ];
