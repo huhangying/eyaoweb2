@@ -162,12 +162,6 @@ export class ScheduleComponent implements OnInit, OnDestroy {
     this.cd.markForCheck();
   }
 
-  getDoctorLabel(id: string) {
-    return this.selectedDoctor?._id === id ?
-      this.selectedDoctor.name :
-      '';
-  }
-
   getPeriodLabel(id: string) {
     return this.periods.find(_ => _._id === id)?.name;
   }

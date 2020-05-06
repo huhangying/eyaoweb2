@@ -10,7 +10,7 @@ export class LocalDatePipe implements PipeTransform {
   }
 
   transform(date): string {
-    return moment(date).format('LL');
+    return date ? moment(date).format('LL') : '';
   }
 
 }

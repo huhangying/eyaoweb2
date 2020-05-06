@@ -19,6 +19,10 @@ const routes: Routes = [{
     {
       path: 'booking',
       component: BookingComponent,
+      resolve: {
+        departments: DepartmentResolver,
+        periods: PeriodsResolver
+      }
     },
   ],
 }];

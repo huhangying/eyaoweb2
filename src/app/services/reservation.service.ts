@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { ApiService } from '../my-core/service/api.service';
 import { Schedule } from '../models/reservation/schedule.model';
 import { ScheduleBatch } from '../models/reservation/schedule-batch.model';
+import { Booking } from '../models/reservation/booking.model';
 
 @Injectable({
   providedIn: 'root'
@@ -12,6 +13,7 @@ export class ReservationService {
     private api: ApiService,
   ) { }
 
+  // Schedule
   getAllByDoctorId(did: string) {
     return this.api.get<Schedule[]>('schedules/all/' + did);
   }
@@ -34,6 +36,11 @@ export class ReservationService {
 
   batchDelete(data: ScheduleBatch) {
     return this.api.post<any>('schedules-bat-delete', data);
+  }
+
+  // Booking
+  getAllBookingsByDoctorId(did: string) {
+    return this.api.get<Booking[]>('bookings/doctor/' + did);
   }
 
 }
