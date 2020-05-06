@@ -42,7 +42,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   userMenu = [
     { title: '个人资料', icon: 'person-outline', data: 'profile' },
-    { title: '偏好设置', icon: 'color-palette', data: 'settings' },
+    { title: '偏好设置', icon: 'color-palette-outline', data: 'settings' },
     { title: '退出', icon: 'power-outline', data: 'logout' },
   ];
 
