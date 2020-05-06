@@ -35,11 +35,18 @@ const routes: Routes = [{
       loadChildren: () => import('./reservation/reservation.module')
         .then(m => m.ReservationModule),
     },
+    {
+      path: 'survey',
+      loadChildren: () => import('./survey/survey.module')
+        .then(m => m.SurveyModule),
+    },
   ],
 }];
 
 @NgModule({
-  imports: [RouterModule.forChild(routes)],
+  imports: [
+    RouterModule.forChild(routes)
+  ],
   exports: [RouterModule],
 })
 export class CmsRoutingModule {
