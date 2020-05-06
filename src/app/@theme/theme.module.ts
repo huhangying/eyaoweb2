@@ -17,7 +17,6 @@ import {
   NbInputModule,
   NbSpinnerModule,
   NbDatepickerModule,
-  // NbToastrModule,
   NbDialogModule,
   NbWindowModule,
   NbRadioModule,
@@ -40,8 +39,6 @@ import {
 } from './pipes';
 import {
   OneColumnLayoutComponent,
-  ThreeColumnsLayoutComponent,
-  TwoColumnsLayoutComponent,
   FlatLayoutComponent,
 } from './layouts';
 import { DEFAULT_THEME } from './styles/theme.default';
@@ -67,7 +64,6 @@ const NB_MODULES = [
   NbCheckboxModule,
   NbSpinnerModule,
   NbDatepickerModule,
-  // NbToastrModule,
   NbRadioModule,
   NbListModule,
   NbDialogModule,
@@ -77,8 +73,6 @@ const COMPONENTS = [
   HeaderComponent,
   FooterComponent,
   OneColumnLayoutComponent,
-  ThreeColumnsLayoutComponent,
-  TwoColumnsLayoutComponent,
   FlatLayoutComponent,
 ];
 const PIPES = [
@@ -108,7 +102,6 @@ export class ThemeModule {
         NbMenuModule.forRoot().providers,
         NbSidebarModule.forRoot().providers,
         NbDatepickerModule.forRoot().providers,
-        // NbToastrModule.forRoot().providers,
         NbDialogModule.forRoot().providers, //todo: remove
         NbWindowModule.forRoot().providers,
       ],
