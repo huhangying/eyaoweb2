@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { SurveyTemplateComponent } from './survey-template/survey-template.component';
 import { DepartmentResolver } from '../../services/resolvers/department.resolver';
+import { SurveyTypesResolver } from '../../services/resolvers/survey-types.resolver';
 
 const routes: Routes = [{
   path: '',
@@ -11,6 +12,7 @@ const routes: Routes = [{
       component: SurveyTemplateComponent,
       resolve: {
         departments: DepartmentResolver,
+        surveyTypes: SurveyTypesResolver,
       }
     },
 

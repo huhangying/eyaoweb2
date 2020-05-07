@@ -9,9 +9,11 @@ import { SurveyService } from '../../../services/survey.service';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogService } from '../../../my-core/service/dialog.service';
 import { MessageService } from '../../../my-core/service/message.service';
-import { takeUntil, tap, startWith, distinctUntilChanged } from 'rxjs/operators';
+import { takeUntil, tap, startWith, distinctUntilChanged, catchError } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
 import { Department } from '../../../models/hospital/department.model';
+import { SurveyTemplateEditComponent } from './survey-template-edit/survey-template-edit.component';
+import { SurveyType } from '../../../models/survey/survey-type.model';
 
 @Component({
   selector: 'ngx-survey-template',
@@ -22,19 +24,11 @@ export class SurveyTemplateComponent implements OnInit, OnDestroy {
   searchForm: FormGroup;
   destroy$ = new Subject<void>();
   departments: Department[];
+  surveyTypes: SurveyType[];
   displayedColumns: string[] = ['name', 'questions', 'availableDays', 'apply', '_id'];
   dataSource: MatTableDataSource<SurveyTemplate>;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
-
-  surveyTypes = [
-    { id: 1, name: '初诊问卷' },
-    { id: 2, name: '复诊问卷' },
-    { id: 3, name: '随访问卷' },
-    { id: 4, name: '药物知识自测' },
-    { id: 5, name: '门诊结论' },
-    { id: 6, name: '药师评估' }
-];
 
   constructor(
     private route: ActivatedRoute,
@@ -45,6 +39,7 @@ export class SurveyTemplateComponent implements OnInit, OnDestroy {
     private message: MessageService,
   ) {
     this.departments = this.route.snapshot.data.departments;
+    this.surveyTypes = this.route.snapshot.data.surveyTypes;
     // this.surveyService.getByDepartmentId().subscribe(
     //   data => {
     //     this.loadData(data);
@@ -63,8 +58,6 @@ export class SurveyTemplateComponent implements OnInit, OnDestroy {
     ).subscribe(searchName => {
       this.dataSource.filter = searchName;
     });
-
-
 
     combineLatest(
       this.searchForm.get('department').valueChanges.pipe(
@@ -97,42 +90,44 @@ export class SurveyTemplateComponent implements OnInit, OnDestroy {
 
   edit(data?: SurveyTemplate) {
     const isEdit = !!data;
-    // this.dialog.open(FaqEditComponent, {
-    //   data: data
-    // }).afterClosed().pipe(
-    //   tap(result => {
-    //     if (result?._id) {
-    //       if (isEdit) {
-    //         // update
-    //         this.dataSource.data = this.dataSource.data.map(item => {
-    //           return item._id === result._id ? result : item;
-    //         });
-    //       } else {
-    //         // create
-    //         this.dataSource.data.unshift(result);
-    //       }
-    //       this.loadData(this.dataSource.data); // add to list
-    //       isEdit && this.dataSource.paginator.firstPage(); // created goes first
-    //       this.message.updateSuccess();
-    //     }
-    //   }),
-    //   catchError(this.message.updateErrorHandle)
-    // ).subscribe();
+    this.dialog.open(SurveyTemplateEditComponent, {
+      data: {
+        surveyTemplate: data
+      }
+    }).afterClosed().pipe(
+      tap(result => {
+        if (result?._id) {
+          if (isEdit) {
+            // update
+            this.dataSource.data = this.dataSource.data.map(item => {
+              return item._id === result._id ? result : item;
+            });
+          } else {
+            // create
+            this.dataSource.data.unshift(result);
+          }
+          this.loadData(this.dataSource.data); // add to list
+          isEdit && this.dataSource.paginator.firstPage(); // created goes first
+          this.message.updateSuccess();
+        }
+      }),
+      catchError(this.message.updateErrorHandle)
+    ).subscribe();
   }
 
   delete(id: string) {
     this.dialogService?.deleteConfirm().pipe(
       tap(result => {
         if (result) {
-          // this.hospitalService.deleteFaqById(id).pipe(
-          //   tap(result => {
-          //     if (result?._id) {
-          //       this.loadData(this.dataSource.data.filter(item => item._id !== result._id)); // remove from list
-          //       this.message.deleteSuccess();
-          //     }
-          //   }),
-          //   catchError(err => this.message.deleteErrorHandle(err))
-          // ).subscribe();
+          this.surveyService.deleteById(id).pipe(
+            tap(result => {
+              if (result?._id) {
+                this.loadData(this.dataSource.data.filter(item => item._id !== result._id)); // remove from list
+                this.message.deleteSuccess();
+              }
+            }),
+            catchError(err => this.message.deleteErrorHandle(err))
+          ).subscribe();
         }
       }),
     ).subscribe();
