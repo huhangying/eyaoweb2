@@ -30,6 +30,9 @@ export class SurveyTemplateComponent implements OnInit, OnDestroy {
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
 
+  selectedDepartment: string; //id
+  selectedType: number; // id
+
   constructor(
     private route: ActivatedRoute,
     private fb: FormBuilder,
@@ -68,6 +71,8 @@ export class SurveyTemplateComponent implements OnInit, OnDestroy {
         distinctUntilChanged()
       ),
       (department, type) => {
+        this.selectedDepartment = department;
+        this.selectedType = +type;
         if (department && type > 0) {
           this.surveyService.getByDepartmentIdAndType(department, type).pipe(
             tap(rsp => {
@@ -85,11 +90,12 @@ export class SurveyTemplateComponent implements OnInit, OnDestroy {
   }
 
   add() {
-    return this.edit();
+    // carry department and type even for add
+    return this.edit({department: this.selectedDepartment, type: this.selectedType});
   }
 
   edit(data?: SurveyTemplate) {
-    const isEdit = !!data;
+    const isEdit = !!data?._id;
     this.dialog.open(SurveyTemplateEditComponent, {
       data: {
         surveyTemplate: data

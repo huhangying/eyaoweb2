@@ -33,7 +33,7 @@ export class SurveyTemplateEditComponent implements OnInit, OnDestroy {
     this.loadQuestions(this.questions);
     this.form = this.fb.group({
       name: ['', Validators.required],
-      availableDays: [''],
+      availableDays: ['', Validators.required],
       apply: true,
     });
     if (data.surveyTemplate) {
@@ -86,7 +86,11 @@ export class SurveyTemplateEditComponent implements OnInit, OnDestroy {
       // update
       this.surveyService.updateById({ ...this.data.surveyTemplate, ...this.form.value }) :
       // create
-      this.surveyService.create({ ...this.form.value });
+      this.surveyService.create({
+        ...this.form.value,
+        department: this.data.surveyTemplate.department,
+        type: this.data.surveyTemplate.type
+      });
     response.pipe(
       tap(rsp => {
         this.dialogRef.close(rsp);
