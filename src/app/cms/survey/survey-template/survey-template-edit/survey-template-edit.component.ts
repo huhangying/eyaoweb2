@@ -23,7 +23,7 @@ export class SurveyTemplateEditComponent implements OnInit, OnDestroy {
 
   constructor(
     public dialogRef: MatDialogRef<SurveyTemplateEditComponent>,
-    @Inject(MAT_DIALOG_DATA) @Optional() @SkipSelf() public data: { surveyTemplate: SurveyTemplate },
+    @Inject(MAT_DIALOG_DATA) @Optional() @SkipSelf() public data: { surveyTemplate: SurveyTemplate; departmentName: string; surveyTypeName: string },
     private fb: FormBuilder,
     public dialogService: DialogService,
     private surveyService: SurveyService,

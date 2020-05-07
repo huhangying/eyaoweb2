@@ -43,11 +43,7 @@ export class SurveyTemplateComponent implements OnInit, OnDestroy {
   ) {
     this.departments = this.route.snapshot.data.departments;
     this.surveyTypes = this.route.snapshot.data.surveyTypes;
-    // this.surveyService.getByDepartmentId().subscribe(
-    //   data => {
-    //     this.loadData(data);
-    //   }
-    // );
+
     this.searchForm = this.fb.group({
       name: [''],
       department: [''],
@@ -62,6 +58,7 @@ export class SurveyTemplateComponent implements OnInit, OnDestroy {
       this.dataSource.filter = searchName;
     });
 
+    // get data from
     combineLatest(
       this.searchForm.get('department').valueChanges.pipe(
         startWith('')
@@ -98,7 +95,10 @@ export class SurveyTemplateComponent implements OnInit, OnDestroy {
     const isEdit = !!data?._id;
     this.dialog.open(SurveyTemplateEditComponent, {
       data: {
-        surveyTemplate: data
+        surveyTemplate: data,
+        // passing department name and type name in
+        departmentName: this.departments.find(_ => _._id === data.department)?.name,
+        surveyTypeName: this.surveyTypes.find(_ => _.id === data.type)?.name,
       }
     }).afterClosed().pipe(
       tap(result => {
