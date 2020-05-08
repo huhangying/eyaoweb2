@@ -35,8 +35,7 @@ export class SurveyTemplateEditComponent implements OnInit, OnDestroy {
     private surveyService: SurveyService,
     private message: MessageService,
   ) {
-    this.questions = this.data.surveyTemplate?.questions || [];
-    this.loadQuestions(this.questions);
+    this.loadQuestions(this.data.surveyTemplate?.questions || []);
     this.form = this.fb.group({
       name: ['', Validators.required],
       availableDays: ['', Validators.required],
@@ -57,8 +56,8 @@ export class SurveyTemplateEditComponent implements OnInit, OnDestroy {
   }
 
   loadQuestions(data: Question[]) {
+    this.questions = data;
     this.dataSource = new MatTableDataSource<Question>(data);
-    // this.sort.sort(({id: 'order', start: 'asc'}) as MatSortable);
     this.dataSource.sort = this.sort;
     this.cd.markForCheck();
   }
@@ -100,12 +99,17 @@ export class SurveyTemplateEditComponent implements OnInit, OnDestroy {
   update() {
     const response = this.data.surveyTemplate?._id ?
       // update
-      this.surveyService.updateById({ ...this.data.surveyTemplate, ...this.form.value }) :
+      this.surveyService.updateById({
+        ...this.data.surveyTemplate,
+        ...this.form.value,
+        questions: this.questions
+      }) :
       // create
       this.surveyService.create({
         ...this.form.value,
         department: this.data.surveyTemplate.department,
-        type: this.data.surveyTemplate.type
+        type: this.data.surveyTemplate.type,
+        questions: this.questions
       });
     response.pipe(
       tap(rsp => {
