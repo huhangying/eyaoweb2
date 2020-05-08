@@ -41,6 +41,11 @@ const routes: Routes = [{
         .then(m => m.SurveyModule),
     },
     {
+      path: 'article',
+      loadChildren: () => import('./education/education.module')
+        .then(m => m.EducationModule),
+    },
+    {
       path: '',
       redirectTo: 'dashboard',
       pathMatch: 'full',

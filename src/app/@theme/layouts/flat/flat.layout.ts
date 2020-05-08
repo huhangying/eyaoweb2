@@ -5,7 +5,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./flat.layout.scss'],
   template: `
   <div class="background">
-    <nb-layout >
+    <nb-layout>
       <nb-layout-column>
         <ng-content select="router-outlet"></ng-content>
       </nb-layout-column>

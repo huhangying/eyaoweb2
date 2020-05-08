@@ -91,11 +91,11 @@ export function getMenuItems(role: number): NbMenuItem[] {
       children: [
         {
           title: '材料类别',
-          link: '/cms/education/template',
+          link: '/cms/article/cat',
         },
         {
           title: '材料模版',
-          link: '/cms/education/template',
+          link: '/cms/article/template',
         },
       ],
     },
