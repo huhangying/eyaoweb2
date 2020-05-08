@@ -37,10 +37,8 @@ import {
   TimingPipe,
   NumberWithCommasPipe,
 } from './pipes';
-import {
-  OneColumnLayoutComponent,
-  FlatLayoutComponent,
-} from './layouts';
+import { OneColumnLayoutComponent } from './layouts/one-column/one-column.layout';
+import { FlatLayoutComponent } from './layouts/flat/flat.layout';
 import { DEFAULT_THEME } from './styles/theme.default';
 import { COSMIC_THEME } from './styles/theme.cosmic';
 import { CORPORATE_THEME } from './styles/theme.corporate';
