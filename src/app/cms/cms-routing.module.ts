@@ -40,6 +40,11 @@ const routes: Routes = [{
       loadChildren: () => import('./survey/survey.module')
         .then(m => m.SurveyModule),
     },
+    {
+      path: '',
+      redirectTo: 'dashboard',
+      pathMatch: 'full',
+    },
   ],
 }];
 

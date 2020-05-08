@@ -17,7 +17,7 @@ const routes: Routes = [
     loadChildren: () => import('../app/auth/auth.module')
       .then(m => m.AuthModule),
   },
-  { path: '', redirectTo: 'pages', pathMatch: 'full' },
+  { path: '', redirectTo: 'cms', pathMatch: 'full' },
   { path: '**', redirectTo: 'auth/404' },
 ];
 
