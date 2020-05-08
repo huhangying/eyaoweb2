@@ -8,6 +8,7 @@ import { LoginComponent } from './login/login.component';
 import { RouterModule, Routes } from '@angular/router';
 import { ThemeModule } from '../@theme/theme.module';
 import { DashboardModule } from '../pages/dashboard/dashboard.module';
+import { SharedModule } from '../shared/shared.module';
 
 const routes: Routes = [
   {
@@ -38,14 +39,7 @@ const routes: Routes = [
 
 @NgModule({
   imports: [
-    ThemeModule,
-    DashboardModule,
-    NbInputModule,
-    NbCardModule,
-    NbButtonModule,
-    NbCheckboxModule,
-    NbAlertModule,
-    ReactiveFormsModule,
+    SharedModule,
     RouterModule.forChild(routes),
   ],
   declarations: [
