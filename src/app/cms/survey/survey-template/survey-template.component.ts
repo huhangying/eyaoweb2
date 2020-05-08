@@ -25,7 +25,7 @@ export class SurveyTemplateComponent implements OnInit, OnDestroy {
   destroy$ = new Subject<void>();
   departments: Department[];
   surveyTypes: SurveyType[];
-  displayedColumns: string[] = ['name', 'questions', 'availableDays', 'apply', '_id'];
+  displayedColumns: string[] = ['order', 'name', 'questions', 'availableDays', 'apply', '_id'];
   dataSource: MatTableDataSource<SurveyTemplate>;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;

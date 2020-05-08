@@ -39,6 +39,7 @@ export class SurveyTemplateEditComponent implements OnInit, OnDestroy {
     this.form = this.fb.group({
       name: ['', Validators.required],
       availableDays: ['', Validators.required],
+      order: '',
       apply: true,
     });
     if (data.surveyTemplate) {

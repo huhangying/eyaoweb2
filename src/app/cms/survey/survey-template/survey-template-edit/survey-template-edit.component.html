@@ -18,11 +18,15 @@
         <label for="name" class="label required"> 模板名称 </label>
         <input nbInput fullWidth id="name" formControlName="name">
       </div>
-      <div class="col-md-4">
+      <div class="col-md-2">
         <label for="availableDays" class="label required"> 有效天数 </label>
         <input nbInput fullWidth id="availableDays" type="number" min="0" formControlName="availableDays">
       </div>
-      <div class="col-md-3 pt-5">
+      <div class="col-md-2">
+        <label for="order" class="label"> 顺序 </label>
+        <input nbInput fullWidth id="order" type="number" min="0" formControlName="order">
+      </div>
+      <div class="col-md-2 pt-5">
         <nb-checkbox formControlName="apply"> 开关 </nb-checkbox>
       </div>
     </div>

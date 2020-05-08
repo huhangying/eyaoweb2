@@ -39,7 +39,7 @@
 
   <nb-card-body>
 
-    <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8 table-striped table-hover">
+    <table mat-table [dataSource]="dataSource" matSort matSortActive="order" matSortDirection="asc" class="mat-elevation-z8 table-striped table-hover">
 
       <ng-container matColumnDef="name">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> 模板名称 </th>
