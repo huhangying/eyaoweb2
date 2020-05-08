@@ -12,6 +12,7 @@ import { ActivatedRoute } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogService } from '../../../my-core/service/dialog.service';
 import { MessageService } from '../../../my-core/service/message.service';
+import { ArticleCatEditComponent } from './article-cat-edit/article-cat-edit.component';
 
 @Component({
   selector: 'ngx-article-cat',
@@ -75,29 +76,28 @@ export class ArticleCatComponent implements OnInit, OnDestroy {
 
   edit(data?: ArticleCat) {
     const isEdit = !!data;
-    // this.dialog.open(DoctorEditComponent, {
-    //   data: {
-    //     doctor: data,
-    //     departments: this.departments,
-    //     isEdit: isEdit
-    //   }
-    // }).afterClosed()
-    //   .subscribe(result => {
-    //     if (result?._id) {
-    //       if (isEdit) {
-    //         // update
-    //         this.dataSource.data = this.dataSource.data.map(item => {
-    //           return item._id === result._id ? result : item;
-    //         });
-    //       } else {
-    //         // create
-    //         this.dataSource.data.unshift(result);
-    //       }
-    //       this.loadData(this.dataSource.data); // add to list
-    //       isEdit && this.dataSource.paginator.firstPage(); // created goes first
-    //       this.message.updateSuccess();
-    //     }
-    //   });
+    this.dialog.open(ArticleCatEditComponent, {
+      data: {
+        articleCat: data,
+        selectedDepartment: this.selectedDepartment
+      }
+    }).afterClosed()
+      .subscribe(result => {
+        if (result?._id) {
+          if (isEdit) {
+            // update
+            this.dataSource.data = this.dataSource.data.map(item => {
+              return item._id === result._id ? result : item;
+            });
+          } else {
+            // create
+            this.dataSource.data.unshift(result);
+          }
+          this.loadData(this.dataSource.data); // add to list
+          isEdit && this.dataSource.paginator.firstPage(); // created goes first
+          this.message.updateSuccess();
+        }
+      });
   }
 
   delete(id: string) {

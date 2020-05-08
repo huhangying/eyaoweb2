@@ -1,0 +1,32 @@
+<nb-card [status]="data?.articleCat ? 'info' : 'success'" [formGroup]="form">
+  <nb-card-header>
+    {{data?.articleCat? '编辑宣教材料类别' : '新增宣教材料类别'}}
+    <button nbButton shape="round" size="small" class="float-right" mat-dialog-close>
+      <nb-icon icon="close"></nb-icon>
+    </button>
+  </nb-card-header>
+
+  <mat-dialog-content class="container px-3">
+    <div class="field row">
+      <label for="name" class="label required"> 名称 </label>
+      <input nbInput fullWidth id="name" formControlName="name">
+    </div>
+
+    <div class="field row">
+      <label for="desc" class="label"> 描述 </label>
+      <textarea nbInput fullWidth id="desc" formControlName="desc" rows="2"></textarea>
+    </div>
+
+    <div class="field row pt-3">
+      <nb-checkbox formControlName="apply"> 开关 </nb-checkbox>
+    </div>
+
+  </mat-dialog-content>
+
+  <nb-card-footer class="d-block">
+    <button nbButton mat-dialog-close>取消</button>
+    <button nbButton hero status="primary" class="float-right" [disabled]="form.invalid" (click)="update()">
+      <nb-icon icon="checkmark-circle"></nb-icon>更新
+    </button>
+  </nb-card-footer>
+</nb-card>

@@ -21,7 +21,7 @@ export class ArticleService {
     return this.api.get<ArticleCat>(`articlecat/${id}`);
   }
 
-  updateCatById(data: ArticleCat) {
+  updateCat(data: ArticleCat) {
     return this.api.patch<ArticleCat>('articlecat/' + data._id, data);
   }
 

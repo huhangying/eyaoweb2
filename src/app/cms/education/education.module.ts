@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { routedComponents, EducationRoutingModule } from './education-routing.module';
 import { SharedModule } from '../../shared/shared.module';
+import { ArticleCatEditComponent } from './article-cat/article-cat-edit/article-cat-edit.component';
 
 
 
@@ -11,6 +12,7 @@ import { SharedModule } from '../../shared/shared.module';
   ],
   declarations: [
     ...routedComponents,
+    ArticleCatEditComponent,
   ],
 })
 export class EducationModule { }

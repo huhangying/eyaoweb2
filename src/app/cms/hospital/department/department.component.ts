@@ -98,7 +98,6 @@ export class DepartmentComponent implements OnInit, OnDestroy {
           ).subscribe();
         }
       }),
-
     ).subscribe();
   }
 
