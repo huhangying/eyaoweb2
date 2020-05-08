@@ -14,6 +14,7 @@ import { distinctUntilChanged, startWith, tap } from 'rxjs/operators';
 export class SurveyQuestionEditComponent implements OnInit, OnDestroy {
   form: FormGroup;
   destroy$ = new Subject<void>();
+  isEdit: boolean;
   options: QuestionOption[];
 
   constructor(
@@ -23,11 +24,12 @@ export class SurveyQuestionEditComponent implements OnInit, OnDestroy {
     private cd: ChangeDetectorRef,
     public dialog: MatDialog,
   ) {
+    this.isEdit = !!data;
     this.options = this.data ? [...this.data.options] : [];
 
     this.form = this.fb.group({
       question: ['', Validators.required],
-      answer_type: [0, Validators.required],
+      answer_type: ['', Validators.required],
       answer_number: 1,
       weight: 0,
       order: 0,
@@ -59,8 +61,6 @@ export class SurveyQuestionEditComponent implements OnInit, OnDestroy {
         this.setOptionsByNumber(numb);
       })
     ).subscribe();
-
-
   }
 
   ngOnDestroy() {
@@ -72,11 +72,11 @@ export class SurveyQuestionEditComponent implements OnInit, OnDestroy {
     switch (type) {
       case 0: // 是非题
         this.answerNumberCtrl.patchValue(2);
-        this.answerNumberCtrl.disable();
         this.options = [
           { answer: '是' },
           { answer: '否' }
         ];
+        this.answerNumberCtrl.disable();
         break;
 
       case 1: // 单选题
@@ -87,14 +87,15 @@ export class SurveyQuestionEditComponent implements OnInit, OnDestroy {
         } else {
           this.setOptionsByNumber(+this.answerNumberCtrl.value);
         }
+        this.answerNumberCtrl.enable();
         break;
 
       case 3: // 填空
         this.answerNumberCtrl.patchValue(1);
-        this.answerNumberCtrl.disable();
         this.options = [
           { answer: '' }
         ];
+        this.answerNumberCtrl.disable();
         break;
     }
 
@@ -113,30 +114,15 @@ export class SurveyQuestionEditComponent implements OnInit, OnDestroy {
         this.options.push({ answer: '' });
       }
     }
-    console.log(this.options);
-
     this.cd.markForCheck();
   }
 
-
+  isFormInvalid() {
+    return this.form.invalid || !this.options || this.options.length < 1;
+  }
 
   update() {
-    // const response = this.data.surveyTemplate?._id ?
-    //   // update
-    //   this.surveyService.updateById({ ...this.data.surveyTemplate, ...this.form.value }) :
-    //   // create
-    //   this.surveyService.create({
-    //     ...this.form.value,
-    //     department: this.data.surveyTemplate.department,
-    //     type: this.data.surveyTemplate.type
-    //   });
-    // response.pipe(
-    //   tap(rsp => {
-    //     this.dialogRef.close(rsp);
-    //   }),
-    //   catchError(rsp => this.message.updateErrorHandle(rsp)),
-    //   takeUntil(this.destroy$)
-    // ).subscribe();
+    this.dialogRef.close({ ...this.form.value, options: this.options });
   }
 
 }

@@ -91,7 +91,7 @@ export class SurveyTemplateComponent implements OnInit, OnDestroy {
     return this.edit({department: this.selectedDepartment, type: this.selectedType});
   }
 
-  edit(data?: SurveyTemplate) {
+  edit(data?: SurveyTemplate, index = -1) {
     const isEdit = !!data?._id;
     this.dialog.open(SurveyTemplateEditComponent, {
       data: {
@@ -99,6 +99,7 @@ export class SurveyTemplateComponent implements OnInit, OnDestroy {
         // passing department name and type name in
         departmentName: this.departments.find(_ => _._id === data.department)?.name,
         surveyTypeName: this.surveyTypes.find(_ => _.id === data.type)?.name,
+        index: index
       }
     }).afterClosed().pipe(
       tap(result => {
