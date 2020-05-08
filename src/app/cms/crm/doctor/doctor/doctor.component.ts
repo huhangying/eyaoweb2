@@ -27,6 +27,7 @@ export class DoctorComponent implements OnInit, OnDestroy {
   dataSource: MatTableDataSource<Doctor>;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
+  selectedDepartment: Department;
 
   constructor(
     private fb: FormBuilder,
@@ -37,11 +38,7 @@ export class DoctorComponent implements OnInit, OnDestroy {
     private message: MessageService,
   ) {
     this.departments = this.route.snapshot.data.departments;
-    this.doctorService.getDoctors().subscribe(
-      data => {
-        this.loadData(data);
-      }
-    );
+
     this.searchForm = this.fb.group({
       name: [''],
       department: [''],
@@ -58,6 +55,19 @@ export class DoctorComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.destroy$.next();
     this.destroy$.unsubscribe();
+  }
+
+  departmentSelected(department: Department) {
+    this.selectedDepartment = department;
+    if (!department?._id) {
+      this.loadData([]);
+      return;
+    }
+    this.doctorService.getDoctorsByDepartment(department._id).subscribe(
+      data => {
+        this.loadData(data);
+      }
+    );
   }
 
   add() {

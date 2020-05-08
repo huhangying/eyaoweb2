@@ -6,16 +6,13 @@
       <nb-icon icon="plus" pack="eva" [options]="{ animation: { type: 'shake' } }"></nb-icon>
     </button>
     <div [formGroup]="searchForm" class="float-right d-flex">
-      <nb-form-field class="mr-3">
-        <nb-select size="small" hero placeholder="搜索医院科室" formControlName="department">
-          <nb-option *ngFor="let dep of departments" [value]="dep._id">{{ dep.name }}</nb-option>
-        </nb-select>
-      </nb-form-field>
-      <nb-form-field class="">
+      <nb-form-field>
         <nb-icon nbSuffix icon="search-outline" pack="eva"></nb-icon>
         <input type="text" nbInput fieldSize="small" placeholder="请输入名字搜索" formControlName="name">
       </nb-form-field>
     </div>
+
+    <ngx-select-department [departments]="departments" (departmentSelected)="departmentSelected($event)"></ngx-select-department>
   </nb-card-header>
 
   <nb-card-body>
