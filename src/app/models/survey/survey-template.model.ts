@@ -14,17 +14,17 @@ export interface Question {
   is_inline: boolean;
   weight: number;
   required: boolean;
-  order: number;
+  order?: number;
   answer_type: number; // 0: boolean; 1: radio; 2: multiple; 3: text
-  options: [
-    {
-      answer: string;
-      input_required: boolean;
-      input: string;
-      hint: string;
-      weight: number;
-      selected: boolean;
-    }
-  ];
+  options: QuestionOption[];
   apply: boolean;
+}
+
+export interface QuestionOption {
+  answer: string;
+  input_required?: boolean;
+  input?: string;
+  hint?: string;
+  weight?: number;
+  selected?: boolean;
 }

@@ -2,12 +2,13 @@ import { Component, OnInit, OnDestroy, Inject, Optional, SkipSelf } from '@angul
 import { SurveyService } from '../../../../services/survey.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Subject } from 'rxjs';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { SurveyTemplate, Question } from '../../../../models/survey/survey-template.model';
 import { MessageService } from '../../../../my-core/service/message.service';
 import { tap, catchError, takeUntil } from 'rxjs/operators';
 import { MatTableDataSource } from '@angular/material/table';
 import { DialogService } from '../../../../my-core/service/dialog.service';
+import { SurveyQuestionEditComponent } from './survey-question-edit/survey-question-edit.component';
 
 @Component({
   selector: 'ngx-survey-template-edit',
@@ -18,14 +19,15 @@ export class SurveyTemplateEditComponent implements OnInit, OnDestroy {
   form: FormGroup;
   destroy$ = new Subject<void>();
   questions: Question[];
-  displayedColumns: string[] = ['order', 'question', 'answer_type', 'weight', 'apply', 'required'];
+  displayedColumns: string[] = ['order', 'question', 'answer_type', 'options', 'weight', 'apply', 'required'];
   dataSource: MatTableDataSource<Question>;
 
   constructor(
     public dialogRef: MatDialogRef<SurveyTemplateEditComponent>,
     @Inject(MAT_DIALOG_DATA) @Optional() @SkipSelf() public data: { surveyTemplate: SurveyTemplate; departmentName: string; surveyTypeName: string },
     private fb: FormBuilder,
-    public dialogService: DialogService,
+    public dialog: MatDialog,
+    private dialogService: DialogService,
     private surveyService: SurveyService,
     private message: MessageService,
   ) {
@@ -55,11 +57,15 @@ export class SurveyTemplateEditComponent implements OnInit, OnDestroy {
   }
 
   addQuestion() {
-
+    this.editQuestion(null);
   }
 
   editQuestion(q: Question) {
+    this.dialog.open(SurveyQuestionEditComponent, {
+      data: q
+    }).afterClosed().pipe(
 
+    ).subscribe();
   }
 
   deleteQuestion(q: Question) {

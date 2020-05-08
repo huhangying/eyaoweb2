@@ -31,7 +31,7 @@
     <div class="pt-3">
       <label class="label">问卷试题</label>
       <button nbButton shape="round" size="small" class="float-right" (click)="addQuestion()">
-        <nb-icon icon="plus-circle" status="info"></nb-icon>新增问题
+        <nb-icon icon="plus-circle" status="success"></nb-icon>新增问题
       </button>
     </div>
     <hr class="mt-1">
@@ -52,6 +52,13 @@
         <th mat-header-cell *matHeaderCellDef> 答案类型 </th>
         <td mat-cell *matCellDef="let element">
           {{element.answer_type}}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="options">
+        <th mat-header-cell *matHeaderCellDef> 答案个数 </th>
+        <td mat-cell *matCellDef="let element">
+          {{element.options.length}}
         </td>
       </ng-container>
 
