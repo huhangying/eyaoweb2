@@ -1,18 +1,9 @@
 <div class="alert alert-info mt-3 mb-0 container" role="alert" [formGroup]="form">
-  <div class="pb-2">
-    请按顺序选择医院科室和药师
-  </div>
   <div class="d-flex pt-2 row">
     <label class="col-2 text-right">科室:</label>
     <nb-form-field class="col-4 mr-3">
       <nb-select hero fullWidth placeholder="选择医院科室" formControlName="department">
         <nb-option *ngFor="let dep of departments" [value]="dep._id">{{ dep.name }}</nb-option>
-      </nb-select>
-    </nb-form-field>
-    <label class="col-2 text-right">药师:</label>
-    <nb-form-field class="col-4">
-      <nb-select hero fullWidth placeholder="选择药师" formControlName="doctor">
-        <nb-option *ngFor="let doc of doctors" [value]="doc._id">{{ doc.name }}</nb-option>
       </nb-select>
     </nb-form-field>
   </div>

@@ -9,12 +9,13 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { DoctorProfileComponent } from './components/doctor-profile/doctor-profile.component';
-import { MatNativeDateModule, DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
+import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { SelectDoctorComponent } from '../cms/shared/select-doctor/select-doctor.component';
+import { SelectDepartmentComponent } from '../cms/shared/select-department/select-department.component';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatBadgeModule } from '@angular/material/badge';
-import {MAT_MOMENT_DATE_FORMATS, MomentDateAdapter} from '@angular/material-moment-adapter';
+import { MAT_MOMENT_DATE_FORMATS, MomentDateAdapter } from '@angular/material-moment-adapter';
 
 @NgModule({
   imports: [
@@ -52,10 +53,12 @@ import {MAT_MOMENT_DATE_FORMATS, MomentDateAdapter} from '@angular/material-mome
 
     DoctorProfileComponent,
     SelectDoctorComponent,
+    SelectDepartmentComponent,
   ],
   declarations: [
     DoctorProfileComponent,
     SelectDoctorComponent,
+    SelectDepartmentComponent,
   ],
   providers: [
     MatDatepickerModule,
