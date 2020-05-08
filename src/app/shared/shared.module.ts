@@ -16,6 +16,7 @@ import { SelectDepartmentComponent } from '../cms/shared/select-department/selec
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MAT_MOMENT_DATE_FORMATS, MomentDateAdapter } from '@angular/material-moment-adapter';
+import { SelectArticleCatComponent } from '../cms/shared/select-article-cat/select-article-cat.component';
 
 @NgModule({
   imports: [
@@ -54,11 +55,13 @@ import { MAT_MOMENT_DATE_FORMATS, MomentDateAdapter } from '@angular/material-mo
     DoctorProfileComponent,
     SelectDoctorComponent,
     SelectDepartmentComponent,
+    SelectArticleCatComponent,
   ],
   declarations: [
     DoctorProfileComponent,
     SelectDoctorComponent,
     SelectDepartmentComponent,
+    SelectArticleCatComponent,
   ],
   providers: [
     MatDatepickerModule,

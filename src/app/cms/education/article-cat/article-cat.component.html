@@ -2,7 +2,7 @@
   <nb-card-header>
     宣教材料类别
     &nbsp;&nbsp;
-    <button nbButton hero shape="round" size="tiny" status="success" title="新增记录" (click)="add()">
+    <button nbButton hero shape="round" size="tiny" status="success" title="新增记录" (click)="add()" *ngIf="selectedDepartment">
       <nb-icon icon="plus" pack="eva" [options]="{ animation: { type: 'shake' } }"></nb-icon>
     </button>
     <div [formGroup]="searchForm" class="float-right d-flex">

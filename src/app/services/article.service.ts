@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from '../my-core/service/api.service';
 import { ArticleCat } from '../models/education/article-cat.model';
+import { ArticleTemplate } from '../models/education/article-template.model';
 
 
 @Injectable({
@@ -34,5 +35,7 @@ export class ArticleService {
   }
 
   // Article Template
-
+  getTemplatesByCatId(cat: string) {
+    return this.api.get<ArticleTemplate[]>(`templates/cat/${cat}`);
+  }
 }

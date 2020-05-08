@@ -81,8 +81,8 @@ export class ArticleCatComponent implements OnInit, OnDestroy {
         articleCat: data,
         selectedDepartment: this.selectedDepartment
       }
-    }).afterClosed()
-      .subscribe(result => {
+    }).afterClosed().pipe(
+      tap(result => {
         if (result?._id) {
           if (isEdit) {
             // update
@@ -97,7 +97,8 @@ export class ArticleCatComponent implements OnInit, OnDestroy {
           isEdit && this.dataSource.paginator.firstPage(); // created goes first
           this.message.updateSuccess();
         }
-      });
+      })
+    ).subscribe();
   }
 
   delete(id: string) {

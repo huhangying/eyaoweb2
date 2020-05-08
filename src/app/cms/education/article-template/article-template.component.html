@@ -1,1 +1,57 @@
-<p>article-template works!</p>
+<nb-card>
+  <nb-card-header>
+    宣教材料模版
+    &nbsp;&nbsp;
+    <button nbButton hero shape="round" size="tiny" status="success" title="新增记录" (click)="add()" *ngIf="selectedArticleCat">
+      <nb-icon icon="plus" pack="eva" [options]="{ animation: { type: 'shake' } }"></nb-icon>
+    </button>
+    <div [formGroup]="searchForm" class="float-right d-flex">
+      <nb-form-field class="">
+        <nb-icon nbSuffix icon="search-outline" pack="eva"></nb-icon>
+        <input type="text" nbInput fieldSize="small" placeholder="请输入名字搜索" formControlName="name">
+      </nb-form-field>
+    </div>
+
+    <ngx-select-article-cat [departments]="departments" (articleCatSelected)="articleCatSelected($event)"></ngx-select-article-cat>
+  </nb-card-header>
+
+  <nb-card-body>
+
+    <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8 table-striped table-hover">
+
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> 名称 </th>
+        <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="title">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 10rem;"> 模版标题 </th>
+        <td mat-cell *matCellDef="let element"> {{element.title}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="apply">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> 开关 </th>
+        <td mat-cell *matCellDef="let element">
+          <mat-checkbox [(ngModel)]="element.apply" [disabled]="true"></mat-checkbox>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="_id">
+        <th mat-header-cell *matHeaderCellDef class="text-center"> 操作 </th>
+        <td mat-cell *matCellDef="let element" class="actions">
+          <button nbButton hero shape="round" size="tiny" status="info" title="编辑" (click)="edit(element)">
+            <nb-icon icon="edit-2"></nb-icon>
+          </button>
+          &nbsp;
+          <button nbButton hero shape="round" size="tiny" status="danger" title="删除" (click)="delete(element._id)">
+            <nb-icon icon="trash-2-outline"></nb-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+    <mat-paginator [pageSizeOptions]="[10, 25, 50]" [pageSize]="10" showFirstLastButtons></mat-paginator>
+  </nb-card-body>
+</nb-card>
