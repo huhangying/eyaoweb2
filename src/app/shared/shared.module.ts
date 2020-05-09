@@ -6,6 +6,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { DoctorProfileComponent } from './components/doctor-profile/doctor-profile.component';
@@ -34,6 +35,7 @@ import { SelectArticleCatComponent } from '../cms/shared/select-article-cat/sele
     MatTooltipModule,
     MatTabsModule,
     MatBadgeModule,
+    MatIconModule,
     // DoctorProfileComponent,
   ],
   exports: [
@@ -51,6 +53,7 @@ import { SelectArticleCatComponent } from '../cms/shared/select-article-cat/sele
     MatTooltipModule,
     MatTabsModule,
     MatBadgeModule,
+    MatIconModule,
 
     DoctorProfileComponent,
     SelectDoctorComponent,

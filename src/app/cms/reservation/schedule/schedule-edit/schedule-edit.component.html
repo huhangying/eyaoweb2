@@ -1,7 +1,7 @@
 <nb-card [status]="data.schedule ? 'info' : 'success'" [formGroup]="form">
   <nb-card-header>
     {{data.schedule ? '编辑门诊' : '新增门诊'}} ({{data.doctor?.name}})
-    <button nbButton shape="round" size="small" class="float-right" mat-dialog-close>
+    <button nbButton shape="round" size="tiny" class="float-right" mat-dialog-close>
       <nb-icon icon="close"></nb-icon>
     </button>
   </nb-card-header>
