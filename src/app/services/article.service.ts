@@ -38,4 +38,16 @@ export class ArticleService {
   getTemplatesByCatId(cat: string) {
     return this.api.get<ArticleTemplate[]>(`templates/cat/${cat}`);
   }
+
+  updateTemplate(data: ArticleTemplate) {
+    return this.api.patch<ArticleTemplate>('template/' + data._id, data);
+  }
+
+  createTemplate(data: ArticleTemplate) {
+    return this.api.post<ArticleTemplate>('template', data);
+  }
+
+  deleteTemplateById(id: string) {
+    return this.api.delete<ArticleTemplate>('template/' + id);
+  }
 }

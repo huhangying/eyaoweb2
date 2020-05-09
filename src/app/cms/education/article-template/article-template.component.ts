@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { ArticleTemplate } from '../../../models/education/article-template.model';
-import { tap, takeUntil } from 'rxjs/operators';
+import { tap, takeUntil, catchError } from 'rxjs/operators';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { Department } from '../../../models/hospital/department.model';
@@ -79,25 +79,26 @@ export class ArticleTemplateComponent implements OnInit, OnDestroy {
     const isEdit = !!data;
     this.dialog.open(ArticleTemplateEditComponent, {
       data: {
-        articleCat: data,
-        selectedDepartment: this.departments.find(_ => _._id === data.department)
+        articleTemplate: data,
+        department: this.departments.find(_ => _._id === this.selectedArticleCat.department),
+        cat: this.selectedArticleCat
       }
     }).afterClosed().pipe(
       tap(result => {
-        // if (result?._id) {
-        //   if (isEdit) {
-        //     // update
-        //     this.dataSource.data = this.dataSource.data.map(item => {
-        //       return item._id === result._id ? result : item;
-        //     });
-        //   } else {
-        //     // create
-        //     this.dataSource.data.unshift(result);
-        //   }
-        //   this.loadData(this.dataSource.data); // add to list
-        //   isEdit && this.dataSource.paginator.firstPage(); // created goes first
-        //   this.message.updateSuccess();
-        // }
+        if (result?._id) {
+          if (isEdit) {
+            // update
+            this.dataSource.data = this.dataSource.data.map(item => {
+              return item._id === result._id ? result : item;
+            });
+          } else {
+            // create
+            this.dataSource.data.unshift(result);
+          }
+          this.loadData(this.dataSource.data); // add to list
+          isEdit && this.dataSource.paginator.firstPage(); // created goes first
+          this.message.updateSuccess();
+        }
       })
     ).subscribe();
   }
@@ -106,15 +107,15 @@ export class ArticleTemplateComponent implements OnInit, OnDestroy {
     this.dialogService?.deleteConfirm().pipe(
       tap(result => {
         if (result) {
-          // this.articleService.deleteCatById(id).pipe(
-          //   tap(result => {
-          //     if (result?._id) {
-          //       this.loadData(this.dataSource.data.filter(item => item._id !== result._id)); // remove from list
-          //       this.message.deleteSuccess();
-          //     }
-          //   }),
-          //   catchError(rsp => this.message.deleteErrorHandle(rsp))
-          // ).subscribe();
+          this.articleService.deleteTemplateById(id).pipe(
+            tap(result => {
+              if (result?._id) {
+                this.loadData(this.dataSource.data.filter(item => item._id !== result._id)); // remove from list
+                this.message.deleteSuccess();
+              }
+            }),
+            catchError(rsp => this.message.deleteErrorHandle(rsp))
+          ).subscribe();
         }
       })
     ).subscribe();

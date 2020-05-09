@@ -1,1 +1,56 @@
-<p>article-template-edit works!</p>
+<nb-card [status]="data?.articleTemplate ? 'info' : 'success'" [formGroup]="form">
+  <nb-card-header>
+    {{data?.articleTemplate? '编辑模版' : '新增模版'}}
+    <button nbButton shape="round" size="small" class="float-right" mat-dialog-close>
+      <nb-icon icon="close"></nb-icon>
+    </button>
+  </nb-card-header>
+
+
+  <mat-dialog-content class="px-3">
+    <div class="field row border-bottom pb-2">
+      <span class="text-secondary pr-2">科室: </span> {{data.department?.name}}
+      &nbsp;&nbsp;/&nbsp;&nbsp;
+      <span class="text-secondary pr-2">类别: </span> {{data.cat?.name}}
+    </div>
+    <div class="field row">
+      <div class="col-md-5">
+        <label for="name" class="label required"> 名称 </label>
+        <input nbInput fullWidth id="name" formControlName="name">
+
+        <label for="title" class="label required"> 标题 </label>
+        <textarea nbInput fullWidth id="title" formControlName="title" rows="2"></textarea>
+      </div>
+      <div class="col-md-7">
+        <label for="title_image" class="label"> 标题图片 </label>
+        <div class="row">
+          <div class="col-8">
+            <input nbInput fullWidth id="title_image" formControlName="title_image">
+          </div>
+          <div class="col-4">
+            <button nbButton hero status="primary">
+              <nb-icon icon="crop"></nb-icon> 上传图片
+            </button>
+            <div class="text-secondary pt-2 pb-4">* 图片大小建议 360*240</div>
+            <nb-checkbox formControlName="apply"> 开关 </nb-checkbox>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="field row">
+      <ckeditor [editor]="Editor" [config]="config" class="w-100" formControlName="content"></ckeditor>
+    </div>
+
+  </mat-dialog-content>
+
+  <nb-card-footer class="d-block">
+    <button nbButton mat-dialog-close> 取消 </button>
+    <button nbButton hero status="primary" class="float-right" [disabled]="form.invalid" (click)="update()">
+      <nb-icon icon="checkmark-circle"></nb-icon> 更新
+    </button>
+    <button nbButton hero status="success" class="float-right mr-3">
+      <nb-icon icon="eye"></nb-icon> 预览
+    </button>
+  </nb-card-footer>
+</nb-card>
