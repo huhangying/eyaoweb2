@@ -6,7 +6,7 @@
     </button>
   </nb-card-header>
   <hr class="my-1">
-  <div mat-dialog-content class="px-3">
+  <div mat-dialog-content class="px-3 m-0">
     <div class="toolbar">
       <button mat-icon-button (click)="rotateLeft()">
         <mat-icon title="向左旋转">rotate_90_degrees_ccw</mat-icon>
@@ -30,13 +30,11 @@
       </button>
     </div>
 
-    <div>
-      <image-cropper [imageChangedEvent]="imageChangedEvent" [maintainAspectRatio]="true" [aspectRatio]="data.aspectRatio"
-        [cropperMinWidth]="data.width" [resizeToWidth]="data.width" [onlyScaleDown]="true" [roundCropper]="false"
-        [canvasRotation]="canvasRotation" [transform]="transform" [alignImage]="'left'"
-        [style.display]="showCropper ? null : 'none'" format="jpeg" (imageCropped)="imageCropped($event)"
-        (imageLoaded)="imageLoaded()"></image-cropper>
-    </div>
+    <image-cropper [imageChangedEvent]="imageChangedEvent" [maintainAspectRatio]="true" [aspectRatio]="data.aspectRatio"
+      [cropperMinWidth]="data.width" [resizeToWidth]="data.width" [onlyScaleDown]="true" [roundCropper]="false"
+      [canvasRotation]="canvasRotation" [transform]="transform" [alignImage]="'left'"
+      [style.display]="showCropper ? null : 'none'" format="jpeg" (imageCropped)="imageCropped($event)"
+      (imageLoaded)="imageLoaded()"></image-cropper>
   </div>
   <nb-card-footer class="d-block">
     <button nbButton status="basic" mat-dialog-close>取消</button>
