@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "ngx-admin": {
+    "eyaoweb": {
       "root": "",
       "sourceRoot": "src",
       "projectType": "application",
@@ -61,18 +61,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "ngx-admin:build"
+            "browserTarget": "eyaoweb:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "ngx-admin:build:production"
+              "browserTarget": "eyaoweb:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "ngx-admin:build"
+            "browserTarget": "eyaoweb:build"
           }
         },
         "test": {
@@ -112,7 +112,7 @@
       }
     }
   },
-  "defaultProject": "ngx-admin",
+  "defaultProject": "eyaoweb",
   "schematics": {
     "@schematics/angular:component": {
       "prefix": "ngx",
