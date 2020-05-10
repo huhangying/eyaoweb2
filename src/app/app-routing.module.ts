@@ -3,11 +3,6 @@ import { NgModule } from '@angular/core';
 
 const routes: Routes = [
   {
-    path: 'pages',
-    loadChildren: () => import('../app/pages/pages.module')
-      .then(m => m.PagesModule),
-  },
-  {
     path: 'cms',
     loadChildren: () => import('../app/cms/cms.module')
       .then(m => m.CmsModule),
