@@ -6,7 +6,6 @@ import {
   AnalyticsService,
   LayoutService,
   SeoService,
-  StateService,
 } from './utils';
 
 import { UserData } from './data/users';
@@ -24,7 +23,6 @@ export const NB_CORE_PROVIDERS = [
   AnalyticsService,
   LayoutService,
   SeoService,
-  StateService,
 ];
 
 @NgModule({
