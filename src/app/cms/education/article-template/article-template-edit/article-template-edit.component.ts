@@ -23,6 +23,7 @@ export class ArticleTemplateEditComponent implements OnInit, OnDestroy {
   destroy$ = new Subject<void>();
   public Editor = ClassicEditor;
   config: any;
+  avatar: any;
 
   constructor(
     public dialogRef: MatDialogRef<ArticleTemplateEditComponent>,
@@ -86,4 +87,7 @@ export class ArticleTemplateEditComponent implements OnInit, OnDestroy {
     ).subscribe();
   }
 
+  imageReady($event) {
+
+  }
 }

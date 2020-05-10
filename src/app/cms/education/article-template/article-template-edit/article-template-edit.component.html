@@ -23,11 +23,15 @@
       </div>
       <div class="col-md-7">
         <label for="title_image" class="label"> 标题图片 </label>
+        <div class="avatar-image"
+        [style.backgroundImage]="avatar ? 'url('+ avatar +')' : 'url(/assets/images/no-image.png)'">
+      </div>
         <div class="row">
           <div class="col-8">
             <input nbInput fullWidth id="title_image" formControlName="title_image">
           </div>
           <div class="col-4">
+            <!-- <ngx-image-uploader [width]="100" (imageReady)="imageReady($event)"></ngx-image-uploader> -->
             <button nbButton hero status="primary">
               <nb-icon icon="crop"></nb-icon> 上传图片
             </button>
