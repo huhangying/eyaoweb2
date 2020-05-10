@@ -7,7 +7,7 @@ import { DoctorGroup } from '../../../../models/doctor-group.model';
 import { Router } from '@angular/router';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { tap, takeUntil, catchError } from 'rxjs/operators';
-import { MessageService } from '../../../../my-core/service/message.service';
+import { MessageService } from '../../../../shared/service/message.service';
 
 @Component({
   selector: 'ngx-relationship-edit',

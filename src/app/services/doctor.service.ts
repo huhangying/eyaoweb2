@@ -1,8 +1,8 @@
 import { DoctorGroup } from './../models/doctor-group.model';
 import { Doctor } from '../models/doctor.model';
 import { Injectable } from '@angular/core';
-import { AppStoreService } from '../my-core/store/app-store.service';
-import { ApiService } from '../my-core/service/api.service';
+import { AppStoreService } from '../shared/store/app-store.service';
+import { ApiService } from '../shared/service/api.service';
 import { Relationship } from '../models/relationship.model';
 
 @Injectable({

@@ -1,4 +1,4 @@
-import { AppStoreService } from './my-core/store/app-store.service';
+import { AppStoreService } from './shared/store/app-store.service';
 /**
  * @license
  * Copyright Akveo. All Rights Reserved.

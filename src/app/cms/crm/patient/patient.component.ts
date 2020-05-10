@@ -7,10 +7,10 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { ActivatedRoute } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
-import { DialogService } from '../../../my-core/service/dialog.service';
+import { DialogService } from '../../../shared/service/dialog.service';
 import { takeUntil, tap, catchError } from 'rxjs/operators';
 import { PatientEditComponent } from './patient-edit/patient-edit.component';
-import { MessageService } from '../../../my-core/service/message.service';
+import { MessageService } from '../../../shared/service/message.service';
 import { UserService } from '../../../services/user.service';
 
 @Component({

@@ -5,7 +5,7 @@ import { Subject } from 'rxjs';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { HospitalService } from '../../../../services/hospital.service';
 import { tap, catchError, takeUntil } from 'rxjs/operators';
-import { MessageService } from '../../../../my-core/service/message.service';
+import { MessageService } from '../../../../shared/service/message.service';
 
 @Component({
   selector: 'ngx-department-edit',

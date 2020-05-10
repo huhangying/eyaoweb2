@@ -6,7 +6,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { DoctorGroup } from '../../../../../models/doctor-group.model';
 import { DoctorService } from '../../../../../services/doctor.service';
 import { tap, catchError } from 'rxjs/operators';
-import { MessageService } from '../../../../../my-core/service/message.service';
+import { MessageService } from '../../../../../shared/service/message.service';
 
 @Component({
   selector: 'ngx-doctor-group-edit',

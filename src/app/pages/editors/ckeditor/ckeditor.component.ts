@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import '@ckeditor/ckeditor5-build-classic/build/translations/zh-cn';
 import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
-import { ConfigService } from '../../../my-core/service/config.service';
+import { ConfigService } from '../../../shared/service/config.service';
 
 @Component({
   selector: 'ngx-ckeditor',

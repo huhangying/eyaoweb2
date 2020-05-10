@@ -7,12 +7,12 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { DoctorService } from '../../../../services/doctor.service';
 import { MatDialog } from '@angular/material/dialog';
-import { DialogService } from '../../../../my-core/service/dialog.service';
+import { DialogService } from '../../../../shared/service/dialog.service';
 import { takeUntil, tap, catchError } from 'rxjs/operators';
 import { Department } from '../../../../models/hospital/department.model';
 import { ActivatedRoute } from '@angular/router';
 import { DoctorEditComponent } from './doctor-edit/doctor-edit.component';
-import { MessageService } from '../../../../my-core/service/message.service';
+import { MessageService } from '../../../../shared/service/message.service';
 
 @Component({
   selector: 'ngx-doctor',

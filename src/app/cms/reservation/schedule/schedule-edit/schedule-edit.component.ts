@@ -3,7 +3,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Schedule, Period } from '../../../../models/reservation/schedule.model';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ReservationService } from '../../../../services/reservation.service';
-import { MessageService } from '../../../../my-core/service/message.service';
+import { MessageService } from '../../../../shared/service/message.service';
 import { Subject } from 'rxjs';
 import { Doctor } from '../../../../models/doctor.model';
 import { tap, catchError, takeUntil } from 'rxjs/operators';

@@ -6,12 +6,12 @@ import { ArticleTemplate } from '../../../../models/education/article-template.m
 import { Department } from '../../../../models/hospital/department.model';
 import { ArticleCat } from '../../../../models/education/article-cat.model';
 import { ArticleService } from '../../../../services/article.service';
-import { MessageService } from '../../../../my-core/service/message.service';
+import { MessageService } from '../../../../shared/service/message.service';
 import { tap, catchError, takeUntil } from 'rxjs/operators';
 import '@ckeditor/ckeditor5-build-classic/build/translations/zh-cn';
 import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
-import { ConfigService } from '../../../../my-core/service/config.service';
-import { AuthService } from '../../../../my-core/service/auth.service';
+import { ConfigService } from '../../../../shared/service/config.service';
+import { AuthService } from '../../../../shared/service/auth.service';
 
 @Component({
   selector: 'ngx-article-template-edit',

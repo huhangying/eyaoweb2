@@ -1,4 +1,4 @@
-import { AuthService } from '../my-core/service/auth.service';
+import { AuthService } from '../shared/service/auth.service';
 import { Component } from '@angular/core';
 
 import { getMenuItems } from './pages-menu';

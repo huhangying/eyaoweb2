@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ApiService } from '../my-core/service/api.service';
+import { ApiService } from '../shared/service/api.service';
 import { ArticleCat } from '../models/education/article-cat.model';
 import { ArticleTemplate } from '../models/education/article-template.model';
 

@@ -13,22 +13,19 @@ import { AppRoutingModule } from './app-routing.module';
 import {
   NbChatModule,
 } from '@nebular/theme';
-import { HttpClientModule } from '@angular/common/http';
-import { ConfirmComponent } from './my-core/modal/confirm/confirm.component';
-import { MatDialogModule } from '@angular/material/dialog';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ToastrModule } from 'ngx-toastr';
+import { ApiInterceptor } from './shared/service/api-interceptor';
 
 @NgModule({
   declarations: [
     AppComponent,
-    ConfirmComponent,
   ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
     HttpClientModule,
     AppRoutingModule,
-    MatDialogModule,
     ThemeModule.forRoot(),
     NbChatModule.forRoot({
       messageGoogleMapKey: 'AIzaSyA_wNuCzia92MAmdLRzmqitRGvCF7wCZPY',
@@ -41,6 +38,9 @@ import { ToastrModule } from 'ngx-toastr';
       progressBar: true,
     }),
     CoreModule.forRoot(),
+  ],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: ApiInterceptor, multi: true },
   ],
   bootstrap: [AppComponent]
 })

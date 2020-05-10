@@ -10,8 +10,8 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { ActivatedRoute } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
-import { DialogService } from '../../../my-core/service/dialog.service';
-import { MessageService } from '../../../my-core/service/message.service';
+import { DialogService } from '../../../shared/service/dialog.service';
+import { MessageService } from '../../../shared/service/message.service';
 import { ArticleCatEditComponent } from './article-cat-edit/article-cat-edit.component';
 
 @Component({

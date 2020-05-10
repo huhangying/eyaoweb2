@@ -5,7 +5,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Faq } from '../../../../models/hospital/faq.model';
 import { HospitalService } from '../../../../services/hospital.service';
 import { tap, catchError } from 'rxjs/operators';
-import { MessageService } from '../../../../my-core/service/message.service';
+import { MessageService } from '../../../../shared/service/message.service';
 
 @Component({
   selector: 'ngx-faq-edit',

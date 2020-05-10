@@ -1,10 +1,10 @@
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { AppStoreService } from '../../my-core/store/app-store.service';
-import { AuthService } from '../../my-core/service/auth.service';
+import { AppStoreService } from '../../shared/store/app-store.service';
+import { AuthService } from '../../shared/service/auth.service';
 import { tap, catchError, takeUntil } from 'rxjs/operators';
-import { Message } from '../../my-core/enum/message.enum';
+import { Message } from '../../shared/enum/message.enum';
 import { EMPTY, Subject } from 'rxjs';
 
 @Component({

@@ -1,10 +1,10 @@
-import { AuthService } from '../my-core/service/auth.service';
+import { AuthService } from '../shared/service/auth.service';
 import { Component } from '@angular/core';
 
 import { NbMenuItem, NbSidebarService } from '@nebular/theme';
 import { getMenuItems } from './cms-menu';
 import { LayoutService } from '../@core/utils';
-import { AppStoreService } from '../my-core/store/app-store.service';
+import { AppStoreService } from '../shared/store/app-store.service';
 
 @Component({
   selector: 'ngx-cms',

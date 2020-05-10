@@ -1,4 +1,4 @@
-import { AppStoreService } from '../../../my-core/store/app-store.service';
+import { AppStoreService } from '../../../shared/store/app-store.service';
 import { Router } from '@angular/router';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NbMediaBreakpointsService, NbMenuService, NbSidebarService, NbThemeService, NbMediaBreakpoint } from '@nebular/theme';
@@ -6,7 +6,7 @@ import { NbMediaBreakpointsService, NbMenuService, NbSidebarService, NbThemeServ
 import { LayoutService } from '../../../@core/utils';
 import { map, takeUntil, takeWhile, filter } from 'rxjs/operators';
 import { Subject } from 'rxjs';
-import { AuthService } from '../../../my-core/service/auth.service';
+import { AuthService } from '../../../shared/service/auth.service';
 
 @Component({
   selector: 'ngx-header',

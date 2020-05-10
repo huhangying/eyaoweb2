@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Resolve } from '@angular/router';
 import { Department } from '../../models/hospital/department.model';
-import { ApiService } from '../../my-core/service/api.service';
+import { ApiService } from '../../shared/service/api.service';
 
 @Injectable({
   providedIn: 'root'

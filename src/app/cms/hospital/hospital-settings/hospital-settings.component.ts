@@ -4,7 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { HospitalService } from '../../../services/hospital.service';
 import { Const } from '../../../models/const.model';
 import { HospitalSettingsEditComponent } from './hospital-settings-edit/hospital-settings-edit.component';
-import { MessageService } from '../../../my-core/service/message.service';
+import { MessageService } from '../../../shared/service/message.service';
 import { tap } from 'rxjs/operators';
 
 @Component({

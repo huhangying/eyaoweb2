@@ -5,12 +5,12 @@ import { Medicine, Dosage } from '../../../models/hospital/medicine.model';
 import { MatSort } from '@angular/material/sort';
 import { MatDialog } from '@angular/material/dialog';
 import { MedicineEditComponent } from './medicine-edit/medicine-edit.component';
-import { DialogService } from '../../../my-core/service/dialog.service';
+import { DialogService } from '../../../shared/service/dialog.service';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { takeUntil, catchError, tap } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
-import { MessageService } from '../../../my-core/service/message.service';
+import { MessageService } from '../../../shared/service/message.service';
 import { MedicineService } from '../../../services/medicine.service';
 
 @Component({

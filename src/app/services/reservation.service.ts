@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ApiService } from '../my-core/service/api.service';
+import { ApiService } from '../shared/service/api.service';
 import { Schedule } from '../models/reservation/schedule.model';
 import { ScheduleBatch } from '../models/reservation/schedule-batch.model';
 import { Booking } from '../models/reservation/booking.model';

@@ -5,7 +5,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ArticleCat } from '../../../../models/education/article-cat.model';
 import { Department } from '../../../../models/hospital/department.model';
 import { ArticleService } from '../../../../services/article.service';
-import { MessageService } from '../../../../my-core/service/message.service';
+import { MessageService } from '../../../../shared/service/message.service';
 import { tap, catchError, takeUntil } from 'rxjs/operators';
 
 @Component({

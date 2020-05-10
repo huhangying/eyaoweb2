@@ -5,7 +5,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { UserService } from '../../../../services/user.service';
 import { tap, catchError } from 'rxjs/operators';
-import { MessageService } from '../../../../my-core/service/message.service';
+import { MessageService } from '../../../../shared/service/message.service';
 
 @Component({
   selector: 'ngx-patient-edit',

@@ -1,4 +1,3 @@
-import { MyCoreModule } from '../my-core/my-core.module';
 import { ModuleWithProviders, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
@@ -43,6 +42,7 @@ import { DEFAULT_THEME } from './styles/theme.default';
 import { COSMIC_THEME } from './styles/theme.cosmic';
 import { CORPORATE_THEME } from './styles/theme.corporate';
 import { DARK_THEME } from './styles/theme.dark';
+import { AccessControlDirective } from '../shared/directive/access-control.directive';
 
 const NB_MODULES = [
   NbLayoutModule,
@@ -72,6 +72,8 @@ const COMPONENTS = [
   FooterComponent,
   OneColumnLayoutComponent,
   FlatLayoutComponent,
+
+  AccessControlDirective,
 ];
 const PIPES = [
   CapitalizePipe,
@@ -83,8 +85,8 @@ const PIPES = [
 
 @NgModule({
   declarations: [...COMPONENTS, ...PIPES],
-  imports: [CommonModule, MyCoreModule, ...NB_MODULES],
-  exports: [CommonModule, MyCoreModule, ...PIPES, ...COMPONENTS, ...NB_MODULES],
+  imports: [CommonModule, ...NB_MODULES],
+  exports: [CommonModule, ...PIPES, ...COMPONENTS, ...NB_MODULES],
 })
 export class ThemeModule {
   static forRoot(): ModuleWithProviders {

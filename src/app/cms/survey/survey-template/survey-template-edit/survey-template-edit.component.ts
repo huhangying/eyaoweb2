@@ -4,10 +4,10 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { SurveyTemplate, Question } from '../../../../models/survey/survey-template.model';
-import { MessageService } from '../../../../my-core/service/message.service';
+import { MessageService } from '../../../../shared/service/message.service';
 import { tap, catchError, takeUntil } from 'rxjs/operators';
 import { MatTableDataSource } from '@angular/material/table';
-import { DialogService } from '../../../../my-core/service/dialog.service';
+import { DialogService } from '../../../../shared/service/dialog.service';
 import { SurveyQuestionEditComponent } from './survey-question-edit/survey-question-edit.component';
 import { MatSort, MatSortable } from '@angular/material/sort';
 

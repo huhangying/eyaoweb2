@@ -3,7 +3,7 @@ import { Department } from '../models/hospital/department.model';
 import { Disease } from '../models/hospital/disease.model';
 import { Faq } from '../models/hospital/faq.model';
 import { Const } from '../models/const.model';
-import { ApiService } from '../my-core/service/api.service';
+import { ApiService } from '../shared/service/api.service';
 
 @Injectable({
   providedIn: 'root'

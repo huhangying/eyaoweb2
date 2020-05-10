@@ -4,13 +4,13 @@ import { DoctorService } from '../../services/doctor.service';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subject } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
-import { mustMatch } from '../../my-core/helper/must-match.validator';
+import { mustMatch } from '../../shared/helper/must-match.validator';
 import { Department } from '../../models/hospital/department.model';
-import { UploadService } from '../../my-core/service/upload.service';
+import { UploadService } from '../../shared/service/upload.service';
 import { map } from 'rxjs/operators';
 import { HttpEventType } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
-import { AppStoreService } from '../../my-core/store/app-store.service';
+import { AppStoreService } from '../../shared/store/app-store.service';
 
 @Component({
   selector: 'ngx-profile',

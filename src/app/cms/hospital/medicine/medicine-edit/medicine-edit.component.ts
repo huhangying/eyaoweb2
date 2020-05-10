@@ -5,7 +5,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { MedicineService } from '../../../../services/medicine.service';
 import { tap, catchError, takeUntil } from 'rxjs/operators';
-import { MessageService } from '../../../../my-core/service/message.service';
+import { MessageService } from '../../../../shared/service/message.service';
 import { MedicineReferences } from '../../../../models/hospital/medicine-references.model';
 import { MedicineNotice } from '../../../../models/hospital/medicine-notice.model';
 

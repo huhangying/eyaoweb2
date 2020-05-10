@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { HospitalService } from '../../../services/hospital.service';
-import { DialogService } from '../../../my-core/service/dialog.service';
+import { DialogService } from '../../../shared/service/dialog.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { Department } from '../../../models/hospital/department.model';
 import { MatPaginator } from '@angular/material/paginator';
@@ -10,7 +10,7 @@ import { FormGroup, FormBuilder } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { takeUntil, tap, catchError } from 'rxjs/operators';
 import { DepartmentEditComponent } from './department-edit/department-edit.component';
-import { MessageService } from '../../../my-core/service/message.service';
+import { MessageService } from '../../../shared/service/message.service';
 
 @Component({
   selector: 'ngx-department',

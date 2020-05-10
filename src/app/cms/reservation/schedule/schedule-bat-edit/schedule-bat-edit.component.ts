@@ -4,7 +4,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Period } from '../../../../models/reservation/schedule.model';
 import { Doctor } from '../../../../models/doctor.model';
 import { ReservationService } from '../../../../services/reservation.service';
-import { MessageService } from '../../../../my-core/service/message.service';
+import { MessageService } from '../../../../shared/service/message.service';
 import { filter, distinctUntilChanged, tap, takeUntil, catchError } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import * as moment from 'moment';

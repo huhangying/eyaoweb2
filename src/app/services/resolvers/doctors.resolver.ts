@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Resolve } from '@angular/router';
-import { ApiService } from '../../my-core/service/api.service';
+import { ApiService } from '../../shared/service/api.service';
 import { Doctor } from '../../models/doctor.model';
 
 @Injectable({

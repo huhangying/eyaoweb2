@@ -10,8 +10,8 @@ import { MatSort } from '@angular/material/sort';
 import { ActivatedRoute } from '@angular/router';
 import { ArticleService } from '../../../services/article.service';
 import { MatDialog } from '@angular/material/dialog';
-import { DialogService } from '../../../my-core/service/dialog.service';
-import { MessageService } from '../../../my-core/service/message.service';
+import { DialogService } from '../../../shared/service/dialog.service';
+import { MessageService } from '../../../shared/service/message.service';
 import { ArticleTemplateEditComponent } from './article-template-edit/article-template-edit.component';
 import { ArticleCat } from '../../../models/education/article-cat.model';
 

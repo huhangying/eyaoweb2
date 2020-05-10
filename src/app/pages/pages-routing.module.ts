@@ -4,7 +4,7 @@ import { NgModule } from '@angular/core';
 import { PagesComponent } from './pages.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { NotFoundComponent } from './miscellaneous/not-found/not-found.component';
-import { AuthGuard } from '../my-core/service/auth.guard';
+import { AuthGuard } from '../shared/service/auth.guard';
 
 const routes: Routes = [{
   path: '',
