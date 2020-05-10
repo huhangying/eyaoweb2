@@ -15,8 +15,6 @@ import { ThemeModule } from '../../@theme/theme.module';
 import { DashboardComponent } from './dashboard.component';
 import { StatusCardComponent } from './status-card/status-card.component';
 import { ContactsComponent } from './contacts/contacts.component';
-import { TemperatureComponent } from './temperature/temperature.component';
-import { TemperatureDraggerComponent } from './temperature/temperature-dragger/temperature-dragger.component';
 import { KittenComponent } from './kitten/kitten.component';
 import { FormsModule } from '@angular/forms';
 
@@ -38,9 +36,7 @@ import { FormsModule } from '@angular/forms';
   declarations: [
     DashboardComponent,
     StatusCardComponent,
-    TemperatureDraggerComponent,
     ContactsComponent,
-    TemperatureComponent,
     KittenComponent,
   ],
 })
