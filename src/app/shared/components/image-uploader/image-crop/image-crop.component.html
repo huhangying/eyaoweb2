@@ -1,6 +1,6 @@
 <nb-card>
   <nb-card-header>
-    Image Cropper
+    选取图片
     <button nbButton shape="round" size="tiny" class="float-right" mat-dialog-close>
       <nb-icon icon="close"></nb-icon>
     </button>
@@ -9,24 +9,24 @@
   <div mat-dialog-content class="px-3">
     <div class="toolbar">
       <button mat-icon-button (click)="rotateLeft()">
-        <mat-icon title="Rotate left">rotate_90_degrees_ccw</mat-icon>
+        <mat-icon title="向左旋转">rotate_90_degrees_ccw</mat-icon>
       </button>
       <button mat-icon-button (click)="rotateRight()">
-        <mat-icon class="flipx" title="Rotate right">rotate_90_degrees_ccw</mat-icon>
+        <mat-icon class="flipx" title="向右旋转">rotate_90_degrees_ccw</mat-icon>
       </button>
       <button mat-icon-button (click)="flipHorizontal()">
-        <mat-icon title="Flip horizontal">flip</mat-icon>
+        <mat-icon title="左右互换">flip</mat-icon>
       </button>
       <span class="border-right mx-2"></span>
       <button mat-icon-button (click)="zoomIn()">
-        <mat-icon title="Zoom +">zoom_in</mat-icon>
+        <mat-icon title="放大">zoom_in</mat-icon>
       </button>
       <button mat-icon-button (click)="resetImage()">
-        <mat-icon title="Zoom -">zoom_out</mat-icon>
+        <mat-icon title="缩小">zoom_out</mat-icon>
       </button>
       <span class="border-right mx-2"></span>
       <button mat-icon-button (click)="resetImage()">
-        <mat-icon title="Reset image">replay</mat-icon>
+        <mat-icon title="重置图片">replay</mat-icon>
       </button>
     </div>
 

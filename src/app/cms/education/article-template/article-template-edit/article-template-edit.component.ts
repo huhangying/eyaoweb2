@@ -88,7 +88,12 @@ export class ArticleTemplateEditComponent implements OnInit, OnDestroy {
     ).subscribe();
   }
 
+  preview() {
+
+  }
+
   imageReady(cropped: Blob) {
+    if (!cropped) return;
     const reader = new FileReader();
     reader.readAsDataURL(cropped);
     reader.onload = () => {

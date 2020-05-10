@@ -48,7 +48,7 @@
     <button nbButton hero status="primary" class="float-right" [disabled]="form.invalid" (click)="update()">
       <nb-icon icon="checkmark-circle"></nb-icon> 更新
     </button>
-    <button nbButton hero status="success" class="float-right mr-3">
+    <button nbButton hero status="success" class="float-right mr-3" [disabled]="form.invalid" (click)="preview()">
       <nb-icon icon="eye"></nb-icon> 预览
     </button>
   </nb-card-footer>
