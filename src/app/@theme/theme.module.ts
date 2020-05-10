@@ -16,8 +16,6 @@ import {
   NbInputModule,
   NbSpinnerModule,
   NbDatepickerModule,
-  NbDialogModule,
-  NbWindowModule,
   NbRadioModule,
   NbListModule,
   NbFormFieldModule,
@@ -29,13 +27,7 @@ import {
   FooterComponent,
   HeaderComponent,
 } from './components';
-import {
-  CapitalizePipe,
-  PluralPipe,
-  RoundPipe,
-  TimingPipe,
-  NumberWithCommasPipe,
-} from './pipes';
+
 import { OneColumnLayoutComponent } from './layouts/one-column/one-column.layout';
 import { FlatLayoutComponent } from './layouts/flat/flat.layout';
 import { DEFAULT_THEME } from './styles/theme.default';
@@ -64,8 +56,6 @@ const NB_MODULES = [
   NbDatepickerModule,
   NbRadioModule,
   NbListModule,
-  NbDialogModule,
-  NbWindowModule,
 ];
 const COMPONENTS = [
   HeaderComponent,
@@ -75,18 +65,11 @@ const COMPONENTS = [
 
   AccessControlDirective,
 ];
-const PIPES = [
-  CapitalizePipe,
-  PluralPipe,
-  RoundPipe,
-  TimingPipe,
-  NumberWithCommasPipe,
-];
 
 @NgModule({
-  declarations: [...COMPONENTS, ...PIPES],
+  declarations: [...COMPONENTS],
   imports: [CommonModule, ...NB_MODULES],
-  exports: [CommonModule, ...PIPES, ...COMPONENTS, ...NB_MODULES],
+  exports: [CommonModule, ...COMPONENTS, ...NB_MODULES],
 })
 export class ThemeModule {
   static forRoot(): ModuleWithProviders {
@@ -102,8 +85,6 @@ export class ThemeModule {
         NbMenuModule.forRoot().providers,
         NbSidebarModule.forRoot().providers,
         NbDatepickerModule.forRoot().providers,
-        NbDialogModule.forRoot().providers, //todo: remove
-        NbWindowModule.forRoot().providers,
       ],
     } as ModuleWithProviders;
   }
