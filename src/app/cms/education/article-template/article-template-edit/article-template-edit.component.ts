@@ -23,7 +23,7 @@ export class ArticleTemplateEditComponent implements OnInit, OnDestroy {
   destroy$ = new Subject<void>();
   public Editor = ClassicEditor;
   config: any;
-  avatar: any;
+  titleImage: any;
 
   constructor(
     public dialogRef: MatDialogRef<ArticleTemplateEditComponent>,
@@ -47,6 +47,7 @@ export class ArticleTemplateEditComponent implements OnInit, OnDestroy {
       apply: false,
     });
     if (data.articleTemplate) {
+      this.titleImage = data.articleTemplate.title_image;
       this.form.patchValue(data.articleTemplate);
     }
   }
