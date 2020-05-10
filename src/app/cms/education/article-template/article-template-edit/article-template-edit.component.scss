@@ -1,3 +1,5 @@
-:host ::ng-deep .ck-editor__editable_inline {
-  min-height: 10rem !important;
+:host {
+  ::ng-deep .ck-editor__editable_inline {
+    min-height: 10rem !important;
+  }
 }

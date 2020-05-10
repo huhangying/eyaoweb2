@@ -1,0 +1,45 @@
+<nb-card>
+  <nb-card-header>
+    Image Cropper
+    <button nbButton shape="round" size="tiny" class="float-right" mat-dialog-close>
+      <nb-icon icon="close"></nb-icon>
+    </button>
+  </nb-card-header>
+  <hr class="my-1">
+  <div mat-dialog-content class="px-3">
+    <div class="toolbar">
+      <button mat-icon-button (click)="rotateLeft()">
+        <mat-icon title="Rotate left">rotate_90_degrees_ccw</mat-icon>
+      </button>
+      <button mat-icon-button (click)="rotateRight()">
+        <mat-icon class="flipx" title="Rotate right">rotate_90_degrees_ccw</mat-icon>
+      </button>
+      <button mat-icon-button (click)="flipHorizontal()">
+        <mat-icon title="Flip horizontal">flip</mat-icon>
+      </button>
+      <span class="border-right mx-2"></span>
+      <button mat-icon-button (click)="zoomIn()">
+        <mat-icon title="Zoom +">zoom_in</mat-icon>
+      </button>
+      <button mat-icon-button (click)="resetImage()">
+        <mat-icon title="Zoom -">zoom_out</mat-icon>
+      </button>
+      <span class="border-right mx-2"></span>
+      <button mat-icon-button (click)="resetImage()">
+        <mat-icon title="Reset image">replay</mat-icon>
+      </button>
+    </div>
+
+    <div>
+      <image-cropper [imageChangedEvent]="imageChangedEvent" [maintainAspectRatio]="true" [aspectRatio]="data.aspectRatio"
+        [cropperMinWidth]="data.width" [resizeToWidth]="data.width" [onlyScaleDown]="true" [roundCropper]="false"
+        [canvasRotation]="canvasRotation" [transform]="transform" [alignImage]="'left'"
+        [style.display]="showCropper ? null : 'none'" format="jpeg" (imageCropped)="imageCropped($event)"
+        (imageLoaded)="imageLoaded()"></image-cropper>
+    </div>
+  </div>
+  <nb-card-footer class="d-block">
+    <button nbButton status="basic" mat-dialog-close>取消</button>
+    <button nbButton status="primary" class="float-right" (click)="crop()">确定</button>
+  </nb-card-footer>
+</nb-card>

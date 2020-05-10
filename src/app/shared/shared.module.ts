@@ -23,6 +23,9 @@ import { DialogService } from './service/dialog.service';
 import { AccessControlDirective } from './directive/access-control.directive';
 import { LocalDatePipe } from './pipe/local-date.pipe';
 import { ConfirmComponent } from './modal/confirm/confirm.component';
+import { ImageUploaderComponent } from './components/image-uploader/image-uploader.component';
+import { ImageCropComponent } from './components/image-uploader/image-crop/image-crop.component';
+import { ImageCropperModule } from 'ngx-image-cropper';
 
 @NgModule({
   imports: [
@@ -43,6 +46,8 @@ import { ConfirmComponent } from './modal/confirm/confirm.component';
     MatIconModule,
     // DoctorProfileComponent,
     MatDialogModule,
+
+    ImageCropperModule,
   ],
   exports: [
     FormsModule,
@@ -66,6 +71,9 @@ import { ConfirmComponent } from './modal/confirm/confirm.component';
     SelectDepartmentComponent,
     SelectArticleCatComponent,
 
+    ImageCropperModule,
+    ImageUploaderComponent,
+    ImageCropComponent,
     // AccessControlDirective,
     LocalDatePipe,
   ],
@@ -77,6 +85,8 @@ import { ConfirmComponent } from './modal/confirm/confirm.component';
     SelectArticleCatComponent,
     // AccessControlDirective,
     LocalDatePipe,
+    ImageUploaderComponent,
+    ImageCropComponent,
   ],
   providers: [
     MatDatepickerModule,
