@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CmsComponent } from './cms.component';
 import { CmsRoutingModule } from './cms-routing.module';
-import { ProfileComponent } from './profile/profile.component';
+import { ProfileComponent } from '../framework/profile/profile.component';
 import { SharedModule } from '../shared/shared.module';
 
 @NgModule({

@@ -42,7 +42,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   userMenu = [
     { title: '个人资料', icon: 'person-outline', data: 'profile' },
-    { title: '偏好设置', icon: 'color-palette-outline', data: 'settings' },
+    { title: '偏好设置', icon: 'color-palette-outline', data: 'preferences' },
     { title: '退出', icon: 'power-outline', data: 'logout' },
   ];
 
@@ -90,8 +90,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
           this.router.navigate(['auth/login']);
         } else if (menuBag && menuBag.item.data === 'profile') {
           this.router.navigate(['cms/profile']);
-        } else if (menuBag && menuBag.item.data === 'settings') {
-          this.router.navigate(['cms/settings']);
+        } else if (menuBag && menuBag.item.data === 'preferences') {
+          this.router.navigate(['preferences']);
         }
       });
   }

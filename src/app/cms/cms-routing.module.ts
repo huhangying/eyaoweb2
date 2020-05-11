@@ -1,4 +1,4 @@
-import { ProfileComponent } from './profile/profile.component';
+import { ProfileComponent } from '../framework/profile/profile.component';
 import { CmsComponent } from './cms.component';
 import { RouterModule, Routes } from '@angular/router';
 import { NgModule } from '@angular/core';

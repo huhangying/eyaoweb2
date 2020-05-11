@@ -1,5 +1,6 @@
 import { ExtraOptions, RouterModule, Routes } from '@angular/router';
 import { NgModule } from '@angular/core';
+import { PreferencesComponent } from './framework/preferences/preferences.component';
 
 const routes: Routes = [
   {
@@ -11,6 +12,10 @@ const routes: Routes = [
     path: 'auth',
     loadChildren: () => import('../app/auth/auth.module')
       .then(m => m.AuthModule),
+  },
+  {
+    path: 'preferences',
+    component: PreferencesComponent,
   },
   { path: '', redirectTo: 'cms', pathMatch: 'full' },
   { path: '**', redirectTo: 'auth/404' },
