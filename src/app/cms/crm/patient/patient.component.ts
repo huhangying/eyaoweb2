@@ -36,7 +36,7 @@ export class PatientComponent implements OnInit, OnDestroy {
     private message: MessageService,
   ) {
     // this.departments = this.route.snapshot.data.departments;
-    this.userService.getUsers().subscribe(
+    this.userService.getCmsUsers().subscribe(
       data => {
         this.loadData(data);
       }

@@ -1,1 +1,64 @@
-<p>patient-audit works!</p>
+<nb-card>
+  <nb-card-header>
+    病患用户审核
+    <div [formGroup]="searchForm" class="float-right d-flex">
+      <nb-toggle status="info" class="mr-3" formControlName="notAudited">{{notAuditedCtrl.value ? '未审核用户' : '已审核用户'}}
+      </nb-toggle>
+      <nb-form-field class="mr-3">
+        <nb-icon nbSuffix icon="search-outline" pack="eva"></nb-icon>
+        <input type="text" nbInput fieldSize="small" placeholder="搜索姓名" formControlName="name">
+      </nb-form-field>
+      <nb-form-field>
+        <nb-icon nbSuffix icon="search-outline" pack="eva"></nb-icon>
+        <input type="text" nbInput fieldSize="small" placeholder="搜索手机号码" formControlName="cell">
+      </nb-form-field>
+    </div>
+  </nb-card-header>
+
+  <nb-card-body>
+
+    <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8 table-striped table-hover">
+
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 8rem;"> 姓名 </th>
+        <td mat-cell *matCellDef="let element">
+          {{ element.name }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="gender">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 3rem;"> 性别 </th>
+        <td mat-cell *matCellDef="let element"> {{getGenderLabel(element.gender)}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="cell">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> 手机号码 </th>
+        <td mat-cell *matCellDef="let element"> {{element.cell}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="created">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> 创建时间 </th>
+        <td mat-cell *matCellDef="let element">
+          {{element.created | localDate}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="_id">
+        <th mat-header-cell *matHeaderCellDef class="text-center"> 操作 </th>
+        <td mat-cell *matCellDef="let element" class="actions">
+          <button nbButton hero shape="round" size="tiny" status="info" title="审核通过" *ngIf="element.role === 0"
+            (click)="audit(element._id, 1)">
+            <nb-icon icon="checkmark"></nb-icon>审核通过
+          </button>
+          <button nbButton hero shape="round" size="tiny" status="danger" title="取消审核通过" *ngIf="element.role === 1"
+            (click)="audit(element._id, 0)">
+            <nb-icon icon="close-outline"></nb-icon>取消审核通过
+          </button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+    <mat-paginator [pageSizeOptions]="[10, 25, 50]" [pageSize]="10" showFirstLastButtons></mat-paginator>
+  </nb-card-body>
+</nb-card>

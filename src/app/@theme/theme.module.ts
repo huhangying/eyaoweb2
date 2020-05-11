@@ -20,6 +20,7 @@ import {
   NbListModule,
   NbFormFieldModule,
   NbCheckboxModule,
+  NbToggleModule,
 } from '@nebular/theme';
 import { NbEvaIconsModule } from '@nebular/eva-icons';
 
@@ -56,6 +57,7 @@ const NB_MODULES = [
   NbDatepickerModule,
   NbRadioModule,
   NbListModule,
+  NbToggleModule,
 ];
 const COMPONENTS = [
   HeaderComponent,
