@@ -1,40 +1,53 @@
 import { AuthService } from '../shared/service/auth.service';
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 
-import { NbMenuItem, NbSidebarService } from '@nebular/theme';
+import { NbMenuItem, NbSidebarService, NbMenuService } from '@nebular/theme';
 import { getMenuItems } from './cms-menu';
 import { LayoutService } from '../@core/utils';
 import { AppStoreService } from '../shared/store/app-store.service';
+import { tap, takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'ngx-cms',
   styleUrls: ['cms.component.scss'],
   template: `
     <ngx-one-column-layout>
-      <nb-menu [items]="menu" (click)="toggleSidebar()"></nb-menu>
+      <nb-menu [items]="menu" tag="menu" autoCollapse="true"></nb-menu>
       <router-outlet></router-outlet>
     </ngx-one-column-layout>
   `,
 })
-export class CmsComponent {
+export class CmsComponent implements OnDestroy {
   role: number;
   menu: NbMenuItem[];
+  private destroy$ = new Subject<void>();
 
   constructor(
     private authService: AuthService,
     private sidebarService: NbSidebarService,
     private layoutService: LayoutService,
+    private menuService: NbMenuService,
     private appStore: AppStoreService,
   ) {
     this.role = this.authService.getDoctorRole();
     this.menu = getMenuItems(this.role);
+
+    this.menuService.onItemClick().pipe(
+      tap(item => {
+        // console.log('-->', item);
+        if (this.appStore.state.breakpoint && ['xs', 'sm', 'md', 'lg'].indexOf(this.appStore.state.breakpoint.name) > -1) {
+          this.sidebarService.toggle(true, 'menu-sidebar');
+          this.layoutService.changeLayoutSize();
+        }
+      }),
+      takeUntil(this.destroy$)
+    ).subscribe();
   }
 
-  toggleSidebar(): boolean {
-    if (this.appStore.state.breakpoint && ['xs', 'sm', 'md', 'lg'].indexOf(this.appStore.state.breakpoint.name) > -1) {
-      this.sidebarService.toggle(true, 'menu-sidebar');
-      this.layoutService.changeLayoutSize();
-    }
-    return false;
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
+
 }

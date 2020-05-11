@@ -8,10 +8,6 @@ export function getMenuItems(role: number): NbMenuItem[] {
       link: '/cms/dashboard',
     },
     {
-      title: 'CMS',
-      group: true,
-    },
-    {
       title: '医院科室管理',
       icon: 'settings-2',
       children: [
