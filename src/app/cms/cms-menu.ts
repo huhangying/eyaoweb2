@@ -51,6 +51,10 @@ export function getMenuItems(role: number): NbMenuItem[] {
           link: '/cms/crm/patient',
         },
         {
+          title: '病患审核',
+          link: '/cms/crm/patient-audit',
+        },
+        {
           title: '医患关系',
           link: '/cms/crm/relationship',
         },

@@ -6,6 +6,7 @@ import { DepartmentResolver } from '../../services/resolvers/department.resolver
 import { DoctorsResolver } from '../../services/resolvers/doctors.resolver';
 import { PatientComponent } from './patient/patient.component';
 import { RelationshipComponent } from './relationship/relationship.component';
+import { PatientAuditComponent } from './patient/patient-audit/patient-audit.component';
 
 const routes: Routes = [{
   path: '',
@@ -24,6 +25,10 @@ const routes: Routes = [{
     {
       path: 'patient',
       component: PatientComponent,
+    },
+    {
+      path: 'patient-audit',
+      component: PatientAuditComponent,
     },
     {
       path: 'relationship',
