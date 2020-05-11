@@ -133,9 +133,4 @@ export class PatientComponent implements OnInit, OnDestroy {
     };
   }
 
-  getGenderLabel(gender: string) {
-    return gender === 'M' ?
-      '男' :
-      (gender === 'F' ? '女' : '');
-  }
 }

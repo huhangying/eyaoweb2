@@ -26,6 +26,7 @@ import { ConfirmComponent } from './modal/confirm/confirm.component';
 import { ImageUploaderComponent } from './components/image-uploader/image-uploader.component';
 import { ImageCropComponent } from './components/image-uploader/image-crop/image-crop.component';
 import { ImageCropperModule } from 'ngx-image-cropper';
+import { GenderPipe } from './pipe/gender.pipe';
 
 @NgModule({
   imports: [
@@ -76,6 +77,7 @@ import { ImageCropperModule } from 'ngx-image-cropper';
     ImageCropComponent,
     // AccessControlDirective,
     LocalDatePipe,
+    GenderPipe,
   ],
   declarations: [
     ConfirmComponent,
@@ -85,6 +87,7 @@ import { ImageCropperModule } from 'ngx-image-cropper';
     SelectArticleCatComponent,
     // AccessControlDirective,
     LocalDatePipe,
+    GenderPipe,
     ImageUploaderComponent,
     ImageCropComponent,
   ],
