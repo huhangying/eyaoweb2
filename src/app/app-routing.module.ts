@@ -1,8 +1,12 @@
 import { ExtraOptions, RouterModule, Routes } from '@angular/router';
 import { NgModule } from '@angular/core';
-import { PreferencesComponent } from './main/preferences/preferences.component';
 
 const routes: Routes = [
+  {
+    path: 'main',
+    loadChildren: () => import('../app/main/main.module')
+      .then(m => m.MainModule),
+  },
   {
     path: 'cms',
     loadChildren: () => import('../app/cms/cms.module')
@@ -12,10 +16,6 @@ const routes: Routes = [
     path: 'auth',
     loadChildren: () => import('../app/auth/auth.module')
       .then(m => m.AuthModule),
-  },
-  {
-    path: 'preferences',
-    component: PreferencesComponent,
   },
   { path: '', redirectTo: 'cms', pathMatch: 'full' },
   { path: '**', redirectTo: 'auth/404' },

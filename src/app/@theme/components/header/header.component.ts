@@ -91,7 +91,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
         } else if (menuBag && menuBag.item.data === 'profile') {
           this.router.navigate(['cms/profile']);
         } else if (menuBag && menuBag.item.data === 'preferences') {
-          this.router.navigate(['preferences']);
+          this.router.navigate(['main/preferences']);
         }
       });
   }
