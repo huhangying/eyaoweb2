@@ -16,7 +16,7 @@ import {
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ToastrModule } from 'ngx-toastr';
 import { ApiInterceptor } from './shared/service/api-interceptor';
-import { PreferencesComponent } from './framework/preferences/preferences.component';
+import { PreferencesComponent } from './main/preferences/preferences.component';
 
 @NgModule({
   declarations: [
