@@ -29,6 +29,8 @@ export class RelationshipComponent implements OnInit, OnDestroy {
   doctors: Doctor[];
   selectedDoctor: Doctor;
   doctorGroups: DoctorGroup[];
+  filterDoctorGroups: DoctorGroup[];
+  selectedFilter: string;
   destroy$ = new Subject<void>();
   displayedColumns: string[] = ['group', 'user', 'apply', '_id'];
   dataSource: MatTableDataSource<Relationship>;
@@ -45,6 +47,7 @@ export class RelationshipComponent implements OnInit, OnDestroy {
     private message: MessageService,
   ) {
     this.departments = this.route.snapshot.data.departments;
+    this.selectedFilter = '*';
 
     this.searchForm = this.fb.group({
       name: [''],
@@ -76,6 +79,12 @@ export class RelationshipComponent implements OnInit, OnDestroy {
       return;
     }
     this.doctorGroups = await this.doctorService.getDoctorGroupsByDoctorId(doctor._id).toPromise();
+    this.filterDoctorGroups = [
+      { _id: '*', name: '全部用户组' },
+      { _id: '', name: '未设置' },
+      ...this.doctorGroups
+    ];
+
     const data = await this.doctorService.getRelationshipsByDoctorId(doctor._id).toPromise();
     this.loadData(data);
   }
@@ -145,5 +154,10 @@ export class RelationshipComponent implements OnInit, OnDestroy {
       '男' :
       (user.gender === 'F' ? '女' : '');
     return `${user.name} ${gender} 手机: ${user.cell}`;
+  }
+
+  filterBySelect(id: string) {
+    this.selectedFilter = id;
+
   }
 }
