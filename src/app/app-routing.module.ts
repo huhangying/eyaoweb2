@@ -11,6 +11,7 @@ const routes: Routes = [
     path: 'cms',
     loadChildren: () => import('../app/cms/cms.module')
       .then(m => m.CmsModule),
+    data: {app: 'cms'}
   },
   {
     path: 'auth',

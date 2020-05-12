@@ -3,7 +3,7 @@
     <a (click)="toggleSidebar()" href="#" class="sidebar-toggle">
       <nb-icon icon="menu-2-outline"></nb-icon>
     </a>
-    <a class="logo" href="#" (click)="navigateHome()">新华e药管理后台</a>
+    <a class="logo" href="#" (click)="navigateHome()">新华e药{{ isCms? '管理后台': '' }}</a>
   </div>
 </div>
 
@@ -14,15 +14,15 @@
         <nb-option *ngFor="let theme of themes" [value]="theme.value"> {{ theme.name }}</nb-option>
       </nb-select>
     </nb-action>
-    <nb-action class="control-item" *ngxAcl="1">
-      <nb-icon icon="settings-outline" title="管理后台"></nb-icon>
+    <nb-action class="control-item" icon="settings-outline" title="管理后台" link="/cms" *ngIf="!isCms">
     </nb-action>
-
-    <nb-action class="user-action" icon="bell-outline"></nb-action>
+    <nb-action class="control-item" icon="home-outline" title="返回主頁" link="/main" *ngIf="isCms">
+    </nb-action>
+    <nb-action class="user-action" icon="bell-outline" *ngIf="!isCms"></nb-action>
 
     <nb-action class="user-action">
-      <nb-user [nbContextMenu]="userMenu" [onlyPicture]="userPictureOnly" [name]="doctor?.name" [picture]="getDoctorIcon(doctor?.role)"
-        nbContextMenuTag="user-menu">
+      <nb-user [nbContextMenu]="userMenu" [onlyPicture]="userPictureOnly" [name]="doctor?.name"
+        [picture]="getDoctorIcon(doctor?.role)" nbContextMenuTag="user-menu">
       </nb-user>
     </nb-action>
   </nb-actions>

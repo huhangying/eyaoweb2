@@ -1,5 +1,5 @@
 import { AppStoreService } from '../../../shared/store/app-store.service';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NbMediaBreakpointsService, NbMenuService, NbSidebarService, NbThemeService, NbMediaBreakpoint } from '@nebular/theme';
 
@@ -14,9 +14,9 @@ import { AuthService } from '../../../shared/service/auth.service';
   templateUrl: './header.component.html',
 })
 export class HeaderComponent implements OnInit, OnDestroy {
-
+  isCms: boolean;
   private destroy$: Subject<void> = new Subject<void>();
-  userPictureOnly =  false;
+  userPictureOnly = false;
   doctor: any;
 
   themes = [
@@ -46,6 +46,13 @@ export class HeaderComponent implements OnInit, OnDestroy {
     { title: '退出', icon: 'power-outline', data: 'logout' },
   ];
 
+  statusMenu = [
+    { title: '在线', icon: 'person-done-outline', status: 'success', data: 'online' },
+    { title: '忙碌', icon: 'person-outline', status: 'error', data: 'busy' },
+    { title: '离开', icon: 'person-outline', status: 'warn', data: 'away' },
+    { title: '下线', icon: 'person-outline', data: 'offline' },
+  ];
+
   constructor(private sidebarService: NbSidebarService,
     private menuService: NbMenuService,
     private themeService: NbThemeService,
@@ -53,7 +60,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
     private layoutService: LayoutService,
     private breakpointService: NbMediaBreakpointsService,
     private appStore: AppStoreService,
-    private router: Router) {
+    private router: Router,
+    private route: ActivatedRoute,
+  ) {
+    this.isCms = this.route.snapshot.data?.app === 'cms';
   }
 
   ngOnInit() {
