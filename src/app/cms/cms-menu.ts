@@ -4,7 +4,7 @@ export function getMenuItems(role: number): NbMenuItem[] {
   return [
     {
       title: '控制台',
-      icon: 'home',
+      icon: 'grid-outline',
       link: '/cms/dashboard',
     },
     {
