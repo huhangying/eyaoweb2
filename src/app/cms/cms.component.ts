@@ -41,6 +41,7 @@ export class CmsComponent implements OnDestroy {
       tap(item => {
         // console.log('-->', item);
         if (this.appStore.state.breakpoint && ['xs', 'sm', 'md', 'lg'].indexOf(this.appStore.state.breakpoint.name) > -1) {
+          this.menuService.collapseAll();
           this.sidebarService.toggle(true, 'menu-sidebar');
           this.layoutService.changeLayoutSize();
         }
