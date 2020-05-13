@@ -15,55 +15,62 @@
   </nb-card-header>
 
   <nb-card-body>
+    <ng-container *ngIf="dataSource?.data?.length > 0">
+      <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8 table-striped table-hover">
 
-    <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8 table-striped table-hover">
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 8rem;"> 姓名 </th>
+          <td mat-cell *matCellDef="let element">
+            {{ element.name }}
+          </td>
+        </ng-container>
 
-      <ng-container matColumnDef="name">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 8rem;"> 姓名 </th>
-        <td mat-cell *matCellDef="let element">
-          {{ element.name }}
-        </td>
-      </ng-container>
+        <ng-container matColumnDef="gender">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 3rem;"> 性别 </th>
+          <td mat-cell *matCellDef="let element"> {{element.gender | gender}} </td>
+        </ng-container>
 
-      <ng-container matColumnDef="gender">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 3rem;"> 性别 </th>
-        <td mat-cell *matCellDef="let element"> {{element.gender | gender}} </td>
-      </ng-container>
+        <ng-container matColumnDef="cell">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> 手机号码 </th>
+          <td mat-cell *matCellDef="let element"> {{element.cell}} </td>
+        </ng-container>
 
-      <ng-container matColumnDef="cell">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> 手机号码 </th>
-        <td mat-cell *matCellDef="let element"> {{element.cell}} </td>
-      </ng-container>
+        <ng-container matColumnDef="created">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> 创建时间 </th>
+          <td mat-cell *matCellDef="let element">
+            {{element.created | localDate}} </td>
+        </ng-container>
 
-      <ng-container matColumnDef="created">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> 创建时间 </th>
-        <td mat-cell *matCellDef="let element">
-          {{element.created | localDate}} </td>
-      </ng-container>
+        <ng-container matColumnDef="apply">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 3rem;"> 开关 </th>
+          <td mat-cell *matCellDef="let element">
+            <mat-checkbox [(ngModel)]="element.apply" [disabled]="true"></mat-checkbox>
+          </td>
+        </ng-container>
 
-      <ng-container matColumnDef="apply">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 3rem;"> 开关 </th>
-        <td mat-cell *matCellDef="let element">
-          <mat-checkbox [(ngModel)]="element.apply" [disabled]="true"></mat-checkbox>
-        </td>
-      </ng-container>
+        <ng-container matColumnDef="_id">
+          <th mat-header-cell *matHeaderCellDef class="text-center"> 操作 </th>
+          <td mat-cell *matCellDef="let element" class="actions">
+            <button nbButton hero shape="round" size="tiny" status="info" title="编辑" (click)="edit(element)">
+              <nb-icon icon="edit-2"></nb-icon>
+            </button>
+            &nbsp;
+            <button nbButton hero shape="round" size="tiny" status="danger" title="删除" (click)="delete(element._id)">
+              <nb-icon icon="trash-2-outline"></nb-icon>
+            </button>
+          </td>
+        </ng-container>
 
-      <ng-container matColumnDef="_id">
-        <th mat-header-cell *matHeaderCellDef class="text-center"> 操作 </th>
-        <td mat-cell *matCellDef="let element" class="actions">
-          <button nbButton hero shape="round" size="tiny" status="info" title="编辑" (click)="edit(element)">
-            <nb-icon icon="edit-2"></nb-icon>
-          </button>
-          &nbsp;
-          <button nbButton hero shape="round" size="tiny" status="danger" title="删除" (click)="delete(element._id)">
-            <nb-icon icon="trash-2-outline"></nb-icon>
-          </button>
-        </td>
-      </ng-container>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+      <mat-paginator [pageSizeOptions]="[10, 25, 50]" [pageSize]="10" showFirstLastButtons></mat-paginator>
+    </ng-container>
+    <ng-container *ngIf="!dataSource?.data?.length">
+      <div class="alert alert-warning" role="alert">
+        没有找到相关记录。
+      </div>
+    </ng-container>
 
-      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-    </table>
-    <mat-paginator [pageSizeOptions]="[10, 25, 50]" [pageSize]="10" showFirstLastButtons></mat-paginator>
   </nb-card-body>
 </nb-card>
