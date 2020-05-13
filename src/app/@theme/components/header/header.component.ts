@@ -19,27 +19,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
   userPictureOnly = false;
   doctor: any;
 
-  themes = [
-    {
-      value: 'default',
-      name: 'Light',
-    },
-    {
-      value: 'dark',
-      name: 'Dark',
-    },
-    {
-      value: 'cosmic',
-      name: 'Cosmic',
-    },
-    {
-      value: 'corporate',
-      name: 'Corporate',
-    },
-  ];
-
-  currentTheme = 'default';
-
   userMenu = [
     { title: '个人资料', icon: 'person-outline', data: 'profile' },
     { title: '偏好设置', icon: 'color-palette-outline', data: 'preferences' },
@@ -68,7 +47,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.doctor = this.authService.getDoctor();
-    this.currentTheme = this.themeService.currentTheme;
     const { xl } = this.breakpointService.getBreakpointsMap();
     this.themeService.onMediaQueryChange()
       .pipe(
@@ -87,7 +65,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
         map(({ name }) => name),
         takeUntil(this.destroy$),
       )
-      .subscribe(themeName => this.currentTheme = themeName);
+      .subscribe(themeName => this.themeService.currentTheme = themeName);
 
     this.menuService.onItemClick()
       .pipe(
@@ -109,10 +87,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.destroy$.next();
     this.destroy$.complete();
-  }
-
-  changeTheme(themeName: string) {
-    this.themeService.changeTheme(themeName);
   }
 
   toggleSidebar(): boolean {
