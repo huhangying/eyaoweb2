@@ -46,7 +46,7 @@ export class SurveyTemplateComponent implements OnInit, OnDestroy {
 
     this.searchForm = this.fb.group({
       name: [''],
-      department: [''],
+      department: [this.route.snapshot.queryParams?.dep || ''],
       type: ''
     });
   }
@@ -61,7 +61,7 @@ export class SurveyTemplateComponent implements OnInit, OnDestroy {
     // get data from
     combineLatest(
       this.searchForm.get('department').valueChanges.pipe(
-        startWith('')
+        startWith(this.route.snapshot.queryParams?.dep || '')
       ),
       this.searchForm.get('type').valueChanges.pipe(
         startWith(false),

@@ -1,6 +1,7 @@
 import { NbMenuItem } from '@nebular/theme';
+import { Params } from '@angular/router';
 
-export function getMenuItems(role: number): NbMenuItem[] {
+export function getMenuItems(role: number, queryParams: Params): NbMenuItem[] {
   return [
     {
       title: '控制台',
@@ -41,10 +42,12 @@ export function getMenuItems(role: number): NbMenuItem[] {
         {
           title: '药师',
           link: '/cms/crm/doctor',
+          queryParams: queryParams, // dep
         },
         {
           title: '药师用户组',
           link: '/cms/crm/doctor-group',
+          queryParams: queryParams,
         },
         {
           title: '病患',
@@ -57,6 +60,7 @@ export function getMenuItems(role: number): NbMenuItem[] {
         {
           title: '医患关系',
           link: '/cms/crm/relationship',
+          queryParams: queryParams,
         },
 
       ],
@@ -68,10 +72,12 @@ export function getMenuItems(role: number): NbMenuItem[] {
         {
           title: '门诊开设',
           link: '/cms/reservation/schedule',
+          queryParams: queryParams,
         },
         {
           title: '门诊预约',
           link: '/cms/reservation/booking',
+          queryParams: queryParams,
         },
       ],
     },
@@ -82,6 +88,7 @@ export function getMenuItems(role: number): NbMenuItem[] {
         {
           title: '问卷模版',
           link: '/cms/survey/template',
+          queryParams: queryParams, // dep
         },
       ],
     },
@@ -92,10 +99,12 @@ export function getMenuItems(role: number): NbMenuItem[] {
         {
           title: '材料类别',
           link: '/cms/article/cat',
+          queryParams: queryParams, // dep
         },
         {
           title: '材料模版',
           link: '/cms/article/template',
+          queryParams: queryParams, // dep
         },
       ],
     },

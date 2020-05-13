@@ -3,8 +3,9 @@ import { FormGroup, FormBuilder } from '@angular/forms';
 import { Department } from '../../../models/hospital/department.model';
 import { Doctor } from '../../../models/doctor.model';
 import { DoctorService } from '../../../services/doctor.service';
-import { tap, takeUntil, distinctUntilChanged, filter } from 'rxjs/operators';
+import { tap, takeUntil, distinctUntilChanged, filter, startWith } from 'rxjs/operators';
 import { Subject } from 'rxjs';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'ngx-select-doctor',
@@ -17,13 +18,15 @@ export class SelectDoctorComponent implements OnInit, OnDestroy {
   form: FormGroup;
   doctors: Doctor[];
   destroy$ = new Subject<void>();
+  doctorInitSet = false;
 
   constructor(
     private fb: FormBuilder,
     private doctorService: DoctorService,
+    private route: ActivatedRoute,
   ) {
     this.form = this.fb.group({
-      department: '',
+      department: this.route.snapshot.queryParams?.dep || '',
       doctor: '',
     });
   }
@@ -35,6 +38,7 @@ export class SelectDoctorComponent implements OnInit, OnDestroy {
 
     // department value changes
     this.departmentCtrl.valueChanges.pipe(
+      startWith(this.route.snapshot.queryParams?.dep || ''),
       tap(async dep => {
         // reset selected doctor
         this.doctorCtrl.patchValue('');
@@ -45,6 +49,10 @@ export class SelectDoctorComponent implements OnInit, OnDestroy {
           return;
         }
         this.doctors = await this.doctorService.getDoctorsByDepartment(dep).toPromise();
+        if (!this.doctorInitSet && this.route.snapshot.queryParams?.doc) {
+          this.doctorCtrl.patchValue(this.route.snapshot.queryParams.doc); // set ONLY one time
+          this.doctorInitSet = true;
+        }
       }),
       takeUntil(this.destroy$),
     ).subscribe();

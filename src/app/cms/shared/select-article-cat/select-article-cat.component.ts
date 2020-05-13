@@ -4,7 +4,8 @@ import { ArticleCat } from '../../../models/education/article-cat.model';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { ArticleService } from '../../../services/article.service';
-import { tap, takeUntil, distinctUntilChanged, filter } from 'rxjs/operators';
+import { tap, takeUntil, distinctUntilChanged, filter, startWith } from 'rxjs/operators';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'ngx-select-article-cat',
@@ -21,9 +22,10 @@ export class SelectArticleCatComponent implements OnInit, OnDestroy {
   constructor(
     private fb: FormBuilder,
     private articleService: ArticleService,
+    private route: ActivatedRoute,
   ) {
     this.form = this.fb.group({
-      department: '',
+      department: this.route.snapshot.queryParams?.dep || '',
       articleCat: '',
     });
   }
@@ -35,6 +37,7 @@ export class SelectArticleCatComponent implements OnInit, OnDestroy {
 
     // department value changes
     this.departmentCtrl.valueChanges.pipe(
+      startWith(this.route.snapshot.queryParams?.dep || ''),
       tap(async dep => {
         // reset selected articleCat
         this.articleCatCtrl.patchValue('');

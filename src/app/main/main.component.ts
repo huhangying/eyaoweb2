@@ -30,8 +30,12 @@ export class MainComponent implements OnDestroy {
     private menuService: NbMenuService,
     private appStore: AppStoreService,
   ) {
-    this.role = this.authService.getDoctorRole();
-    this.menu = getMenuItems(this.role);
+    const doc = this.authService.getDoctor();
+    this.role = doc?.role || 0;
+    this.menu = getMenuItems(this.role, {
+      dep: doc.department,
+      doc: doc._id
+    });
 
     this.menuService.onItemClick().pipe(
       tap(item => {

@@ -2,7 +2,8 @@ import { Component, OnInit, OnDestroy, Input, Output, EventEmitter } from '@angu
 import { Department } from '../../../models/hospital/department.model';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { Subject } from 'rxjs';
-import { distinctUntilChanged, filter, tap, takeUntil } from 'rxjs/operators';
+import { distinctUntilChanged, filter, tap, takeUntil, startWith } from 'rxjs/operators';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'ngx-select-department',
@@ -18,9 +19,10 @@ export class SelectDepartmentComponent implements OnInit, OnDestroy {
 
   constructor(
     private fb: FormBuilder,
+    private route: ActivatedRoute,
   ) {
     this.form = this.fb.group({
-      department: '',
+      department: this.route.snapshot.queryParams?.dep || '',
     });
   }
 
@@ -30,6 +32,7 @@ export class SelectDepartmentComponent implements OnInit, OnDestroy {
 
     // department value changes
     this.departmentCtrl.valueChanges.pipe(
+      startWith(this.route.snapshot.queryParams?.dep || ''),
       distinctUntilChanged(),
       filter(_ => _),
       tap(departmentId => {
