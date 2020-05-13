@@ -63,15 +63,17 @@ export class BookingComponent implements OnInit, OnDestroy {
         // massage data!
         const flattenData: BookingFlatten[] = [];
         data.map(_ => {
-          flattenData.push({
-            _id: _._id,
-            doctor: _.doctor,
-            created: new Date(_.created),
-            status: _.status,
-            scheduleDate: new Date(_.schedule.date),
-            schedulePeriod: this.getPeriodLabel(_.schedule.period),
-            userName: _.user?.name
-          });
+          if (_.user && _.schedule) {
+            flattenData.push({
+              _id: _._id,
+              doctor: _.doctor,
+              created: new Date(_.created),
+              status: _.status,
+              scheduleDate: new Date(_.schedule.date),
+              schedulePeriod: this.getPeriodLabel(_.schedule.period),
+              userName: _.user?.name
+            });
+          }
         });
         this.loadData(flattenData);
       })
