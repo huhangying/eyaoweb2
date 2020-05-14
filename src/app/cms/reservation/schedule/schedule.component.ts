@@ -127,6 +127,7 @@ export class ScheduleComponent implements OnInit, OnDestroy {
       },
     }).afterClosed().pipe(
       tap(results => {
+        if (!results) return;
         this.dataSource.data.unshift(...results);
         this.loadData(this.dataSource.data); // add to list
         this.dataSource.paginator.firstPage(); // created goes first
@@ -145,6 +146,7 @@ export class ScheduleComponent implements OnInit, OnDestroy {
       width: '600px'
     }).afterClosed().pipe(
       tap(async result => {
+        if (!result) return;
         // reload data
         const schedules = await this.reservationService.getAllByDoctorId(this.selectedDoctor._id).toPromise();
         this.loadData(schedules); // add to list
