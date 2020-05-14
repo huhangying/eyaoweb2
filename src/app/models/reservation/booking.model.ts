@@ -6,8 +6,8 @@ import * as moment from 'moment';
 export interface Booking {
   _id: string;
   doctor: string; // id
-  schedule: Schedule; // id
-  user: User; // id
+  schedule?: Schedule; // id
+  user?: User; // id
   status: number;
   created?: Date;
   score?: number;

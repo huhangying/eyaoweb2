@@ -13,6 +13,18 @@ export class ReservationService {
     private api: ApiService,
   ) { }
 
+  getBookingStatusList() {
+    return [
+      '',
+      '用户预约', // 1
+      '用户取消', // 2
+      '药师取消', // 3
+      '用户爽约', // 4
+      '门诊完成', // 5
+      '标记完成' // 6
+    ];
+  }
+
   // Schedule
   getAllByDoctorId(did: string) {
     return this.api.get<Schedule[]>('schedules/all/' + did);
@@ -41,6 +53,10 @@ export class ReservationService {
   // Booking
   getAllBookingsByDoctorId(did: string) {
     return this.api.get<Booking[]>('bookings/doctor/' + did);
+  }
+
+  updateBookingById(data: Booking) {
+    return this.api.patch<Booking>('booking/' + data._id, data);
   }
 
 }

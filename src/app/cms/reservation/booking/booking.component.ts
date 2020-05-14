@@ -3,7 +3,7 @@ import { Subject } from 'rxjs';
 import { Department } from '../../../models/hospital/department.model';
 import { Doctor } from '../../../models/doctor.model';
 import { MatTableDataSource } from '@angular/material/table';
-import { Booking, BookingFlatten } from '../../../models/reservation/booking.model';
+import { BookingFlatten, Booking } from '../../../models/reservation/booking.model';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { ActivatedRoute } from '@angular/router';
@@ -11,9 +11,8 @@ import { ReservationService } from '../../../services/reservation.service';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogService } from '../../../shared/service/dialog.service';
 import { MessageService } from '../../../shared/service/message.service';
-import { Period, Schedule } from '../../../models/reservation/schedule.model';
-import { tap } from 'rxjs/operators';
-import * as moment from 'moment';
+import { Period } from '../../../models/reservation/schedule.model';
+import { tap, catchError } from 'rxjs/operators';
 
 @Component({
   selector: 'ngx-booking',
@@ -27,6 +26,7 @@ export class BookingComponent implements OnInit, OnDestroy {
   periods: Period[];
   doctors: Doctor[];
   selectedDoctor: Doctor;
+  statusList: string[];
   displayedColumns: string[] = ['scheduleDate', 'userName', 'status', 'created', '_id'];
   dataSource: MatTableDataSource<BookingFlatten>;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
@@ -42,6 +42,7 @@ export class BookingComponent implements OnInit, OnDestroy {
   ) {
     this.departments = this.route.snapshot.data.departments;
     this.periods = this.route.snapshot.data.periods;
+    this.statusList = reservationService.getBookingStatusList();
   }
 
   ngOnInit() {
@@ -77,6 +78,34 @@ export class BookingComponent implements OnInit, OnDestroy {
         });
         this.loadData(flattenData);
       })
+    ).subscribe();
+  }
+
+
+  forceDone(data?: BookingFlatten) {
+    this.updateBookingStatus(data, 6);
+  }
+
+  forceCancel(data?: BookingFlatten) {
+    this.updateBookingStatus(data, 3);
+  }
+
+  private updateBookingStatus(data: BookingFlatten, status: number) {
+    const booking: Booking = {
+      _id: data._id,
+      doctor: data.doctor,
+      status: status,
+    };
+    this.reservationService.updateBookingById(booking).pipe(
+      tap(result => {
+        if (result?._id) {
+          this.dataSource.data = this.dataSource.data.map(item => {
+            return item._id === result._id ? { ...item, status: result.status } : item;
+          });
+          this.message.updateSuccess();
+        }
+      }),
+      catchError(rsp => this.message.updateErrorHandle(rsp))
     ).subscribe();
   }
 
@@ -140,5 +169,10 @@ export class BookingComponent implements OnInit, OnDestroy {
     return id ?
       this.periods.find(_ => _._id === id)?.name :
       '';
+  }
+
+  getStatusLabel(status: number) {
+    if (status < 1 || status > 6) return '';
+    return this.statusList[status];
   }
 }
