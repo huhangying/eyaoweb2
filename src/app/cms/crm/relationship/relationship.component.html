@@ -17,21 +17,21 @@
     <div class="container-fluid" [class.d-none]="!selectedDoctor">
       <div class="row">
         <div class="col-4 pl-0">
-          <nb-card>
-            <nb-card-header>
-              用户群组
-              &nbsp;&nbsp;
-              <button nbButton hero shape="round" size="tiny" status="success" title="增加群组" (click)="addGroup()">
-                <nb-icon icon="plus" pack="eva" [options]="{ animation: { type: 'shake' } }"></nb-icon>
-              </button>
-            </nb-card-header>
-            <ul class="list-group">
-              <li class="list-group-item" [class.active]="selectedFilter === group._id"
-                *ngFor="let group of filterDoctorGroups" (click)="filterBySelect(group._id)">
-                {{ group.name }}
-              </li>
-            </ul>
-          </nb-card>
+          <div class="px-3 pb-3">
+            用户群组
+            &nbsp;&nbsp;
+            <button nbButton hero shape="round" size="small" status="info" (click)="redirectToGroup()">
+              <nb-icon icon="link-2-outline"></nb-icon>
+              群组管理
+            </button>
+
+          </div>
+          <ul class="list-group">
+            <li class="list-group-item" [class.active]="selectedFilter === group._id"
+              *ngFor="let group of filterDoctorGroups" (click)="filterBySelect(group._id)">
+              {{ group.name }}
+            </li>
+          </ul>
         </div>
         <div class="col-8 p-0">
           <div [class.d-none]="!dataSource?.data?.length">

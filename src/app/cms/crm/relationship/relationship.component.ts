@@ -11,7 +11,7 @@ import { MessageService } from '../../../shared/service/message.service';
 import { takeUntil, tap, distinctUntilChanged, catchError } from 'rxjs/operators';
 import { DoctorService } from '../../../services/doctor.service';
 import { Department } from '../../../models/hospital/department.model';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Doctor } from '../../../models/doctor.model';
 import { DoctorGroup } from '../../../models/doctor-group.model';
 import { User } from '../../../models/user.model';
@@ -42,6 +42,7 @@ export class RelationshipComponent implements OnInit, OnDestroy {
   constructor(
     private fb: FormBuilder,
     private route: ActivatedRoute,
+    private router: Router,
     private cd: ChangeDetectorRef,
     private doctorService: DoctorService,
     public dialog: MatDialog,
@@ -121,36 +122,36 @@ export class RelationshipComponent implements OnInit, OnDestroy {
     ).subscribe();
   }
 
-  addGroup() {
-    return this.editGroup();
+  redirectToGroup() {
+    this.router.navigate(['../doctor-group'], {relativeTo: this.route, queryParams: this.route.snapshot.queryParams});
   }
 
-  editGroup(data?: DoctorGroup) {
-    const isEdit = !!data;
-    this.dialog.open(DoctorGroupEditComponent, {
-      data: {
-        doctorGroup: data,
-        doctor: this.selectedDoctor
-      },
-    }).afterClosed().pipe(
-      tap(result => {
-        if (result?._id) {
-          if (isEdit) {
-            // update
-            this.filterDoctorGroups = this.filterDoctorGroups.map(item => {
-              return item._id === result._id ? result : item;
-            });
-          } else {
-            // create
-            this.filterDoctorGroups.push(result);
-          }
-          this.cd.markForCheck();
-          this.message.updateSuccess();
-        }
-      }),
-      catchError(rsp => this.message.updateErrorHandle(rsp))
-    ).subscribe();
-  }
+  // editGroup(data?: DoctorGroup) {
+  //   const isEdit = !!data;
+  //   this.dialog.open(DoctorGroupEditComponent, {
+  //     data: {
+  //       doctorGroup: data,
+  //       doctor: this.selectedDoctor
+  //     },
+  //   }).afterClosed().pipe(
+  //     tap(result => {
+  //       if (result?._id) {
+  //         if (isEdit) {
+  //           // update
+  //           this.filterDoctorGroups = this.filterDoctorGroups.map(item => {
+  //             return item._id === result._id ? result : item;
+  //           });
+  //         } else {
+  //           // create
+  //           this.filterDoctorGroups.push(result);
+  //         }
+  //         this.cd.markForCheck();
+  //         this.message.updateSuccess();
+  //       }
+  //     }),
+  //     catchError(rsp => this.message.updateErrorHandle(rsp))
+  //   ).subscribe();
+  // }
 
   updateToDataSource(result: Relationship) {
     if (result?._id) {

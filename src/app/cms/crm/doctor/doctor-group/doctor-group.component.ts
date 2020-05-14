@@ -4,7 +4,7 @@ import { Subject } from 'rxjs';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { DoctorService } from '../../../../services/doctor.service';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogService } from '../../../../shared/service/dialog.service';
@@ -31,6 +31,7 @@ export class DoctorGroupComponent implements OnInit, OnDestroy {
 
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private doctorService: DoctorService,
     public dialog: MatDialog,
     private dialogService: DialogService,
@@ -123,5 +124,9 @@ export class DoctorGroupComponent implements OnInit, OnDestroy {
     return this.selectedDoctor?._id === id ?
       this.selectedDoctor.name :
       '';
+  }
+
+  redirectToRelationship() {
+    this.router.navigate(['../relationship'], {relativeTo: this.route, queryParams: this.route.snapshot.queryParams});
   }
 }

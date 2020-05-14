@@ -57,7 +57,7 @@ export class LoginComponent implements OnInit, OnDestroy {
         if (doctor?._id) {
           this.appStore.updateDoctor(doctor);
           // console.log(this.appStore.state);
-          this.router.navigate(['/cms/dashboard']);
+          this.router.navigate(['/main']);
         } else {
           // error
           this.setErrorMessage();
