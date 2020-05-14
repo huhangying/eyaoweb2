@@ -1,11 +1,9 @@
-@import '../../@theme/styles/themes';
-@import '~bootstrap/scss/mixins/breakpoints';
-@import '~@nebular/theme/styles/global/breakpoints';
-
-@include nb-install-component() {
-
-
-  @include media-breakpoint-down(sm) {
-
+:host {
+  .bg-purple {
+    background-color: #852b99;
   }
+  .bg-light-blue {
+    background-color: #27a9e3;
+  }
+
 }
