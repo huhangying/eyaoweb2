@@ -27,6 +27,7 @@ import { ImageUploaderComponent } from './components/image-uploader/image-upload
 import { ImageCropComponent } from './components/image-uploader/image-crop/image-crop.component';
 import { ImageCropperModule } from 'ngx-image-cropper';
 import { GenderPipe } from './pipe/gender.pipe';
+import {MatCardModule} from '@angular/material/card';
 
 @NgModule({
   imports: [
@@ -47,6 +48,7 @@ import { GenderPipe } from './pipe/gender.pipe';
     MatIconModule,
     // DoctorProfileComponent,
     MatDialogModule,
+    MatCardModule,
 
     ImageCropperModule,
   ],
@@ -66,6 +68,7 @@ import { GenderPipe } from './pipe/gender.pipe';
     MatTabsModule,
     MatBadgeModule,
     MatIconModule,
+    MatCardModule,
 
     DoctorProfileComponent,
     SelectDoctorComponent,
