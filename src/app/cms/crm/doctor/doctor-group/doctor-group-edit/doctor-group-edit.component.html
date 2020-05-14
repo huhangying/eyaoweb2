@@ -1,6 +1,6 @@
 <nb-card [status]="data ? 'info' : 'success'" [formGroup]="form">
   <nb-card-header>
-    {{data ? '编辑药师组' : '新增药师组'}}
+    {{data ? '编辑病患群组' : '新增病患群组'}}
     <button nbButton shape="round" size="tiny" class="float-right" mat-dialog-close>
       <nb-icon icon="close"></nb-icon>
     </button>
@@ -8,7 +8,7 @@
 
   <mat-dialog-content class="container px-3">
     <div class="field row">
-      <label for="name" class="label required"> 药师组名称 </label>
+      <label for="name" class="label required"> 群组名称 </label>
       <input nbInput fullWidth id="name" formControlName="name">
     </div>
 

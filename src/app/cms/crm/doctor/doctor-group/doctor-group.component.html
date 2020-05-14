@@ -1,9 +1,9 @@
 <nb-card>
   <nb-card-header>
-    药师组
+    药师病患群组
     &nbsp;&nbsp;
     <button nbButton hero shape="round" size="tiny" status="success" [hidden]="!selectedDoctor"
-    title="新增药师组" (click)="add()">
+    title="新增病患群组" (click)="add()">
       <nb-icon icon="plus" pack="eva" [options]="{ animation: { type: 'shake' } }"></nb-icon>
     </button>
 
@@ -23,7 +23,7 @@
         </ng-container>
 
         <ng-container matColumnDef="name">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> 药师组名称 </th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> 群组名称 </th>
           <td mat-cell *matCellDef="let element"> {{element.name}} </td>
         </ng-container>
 

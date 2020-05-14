@@ -26,6 +26,16 @@ const routes: Routes = [{
       component: PreferencesComponent,
     },
     {
+      path: 'reservation',
+      loadChildren: () => import('../cms/reservation/reservation.module')
+        .then(m => m.ReservationModule),
+    },
+    {
+      path: 'crm',
+      loadChildren: () => import('../cms/crm/crm.module')
+        .then(m => m.CrmModule),
+    },
+    {
       path: '',
       redirectTo: 'dashboard',
       pathMatch: 'full',

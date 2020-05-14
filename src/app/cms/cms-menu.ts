@@ -45,13 +45,13 @@ export function getMenuItems(role: number, queryParams: Params): NbMenuItem[] {
           queryParams: queryParams, // dep
         },
         {
-          title: '药师用户组',
-          link: '/cms/crm/doctor-group',
-          queryParams: queryParams,
-        },
-        {
           title: '病患',
           link: '/cms/crm/patient',
+        },
+        {
+          title: '群组管理',
+          link: '/cms/crm/doctor-group',
+          queryParams: queryParams,
         },
         {
           title: '病患审核',
