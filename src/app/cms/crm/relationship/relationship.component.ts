@@ -16,6 +16,7 @@ import { Doctor } from '../../../models/doctor.model';
 import { DoctorGroup } from '../../../models/doctor-group.model';
 import { User } from '../../../models/user.model';
 import { RelationshipEditComponent } from './relationship-edit/relationship-edit.component';
+import { DoctorGroupEditComponent } from '../doctor/doctor-group/doctor-group-edit/doctor-group-edit.component';
 
 @Component({
   selector: 'ngx-relationship',
@@ -31,8 +32,9 @@ export class RelationshipComponent implements OnInit, OnDestroy {
   doctorGroups: DoctorGroup[];
   filterDoctorGroups: DoctorGroup[];
   selectedFilter: string;
+  selectedRelationships: Relationship[];
   destroy$ = new Subject<void>();
-  displayedColumns: string[] = ['group', 'user', 'apply', '_id'];
+  displayedColumns: string[] = ['user.name', 'user.gender', 'user.birthdate', 'user.cell', '_id'];
   dataSource: MatTableDataSource<Relationship>;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
@@ -75,18 +77,19 @@ export class RelationshipComponent implements OnInit, OnDestroy {
   async doctorSelected(doctor: Doctor) {
     this.selectedDoctor = doctor;
     if (!doctor?._id) {
-      this.loadData([]);
+      this.selectedRelationships = [];
+      this.loadData();
       return;
     }
     this.doctorGroups = await this.doctorService.getDoctorGroupsByDoctorId(doctor._id).toPromise();
     this.filterDoctorGroups = [
-      { _id: '*', name: '全部用户组' },
-      { _id: '', name: '未设置' },
+      { _id: '*', name: '全部群组' },
+      { _id: '', name: '未分组' },
       ...this.doctorGroups
     ];
 
-    const data = await this.doctorService.getRelationshipsByDoctorId(doctor._id).toPromise();
-    this.loadData(data);
+    this.selectedRelationships = await this.doctorService.getRelationshipsByDoctorId(doctor._id).toPromise();
+    this.loadData();
   }
 
   edit(data?: Relationship) {
@@ -118,18 +121,57 @@ export class RelationshipComponent implements OnInit, OnDestroy {
     ).subscribe();
   }
 
+  addGroup() {
+    return this.editGroup();
+  }
+
+  editGroup(data?: DoctorGroup) {
+    const isEdit = !!data;
+    this.dialog.open(DoctorGroupEditComponent, {
+      data: {
+        doctorGroup: data,
+        doctor: this.selectedDoctor
+      },
+    }).afterClosed().pipe(
+      tap(result => {
+        if (result?._id) {
+          if (isEdit) {
+            // update
+            this.filterDoctorGroups = this.filterDoctorGroups.map(item => {
+              return item._id === result._id ? result : item;
+            });
+          } else {
+            // create
+            this.filterDoctorGroups.push(result);
+          }
+          this.cd.markForCheck();
+          this.message.updateSuccess();
+        }
+      }),
+      catchError(rsp => this.message.updateErrorHandle(rsp))
+    ).subscribe();
+  }
 
   updateToDataSource(result: Relationship) {
     if (result?._id) {
-      this.dataSource.data = this.dataSource.data.map(item => {
+      this.selectedRelationships = this.dataSource.data.map(item => {
         return item._id === result._id ? { ...item, group: result.group } : item; // udpate only 'group'!
       });
-      this.loadData(this.dataSource.data);
+      this.loadData();
       this.message.updateSuccess();
     }
   }
 
-  loadData(data: Relationship[]) {
+  loadData(groupFilter = '*') {
+    let data;
+    if (groupFilter === '*') {
+      data = [...this.selectedRelationships];
+    } else if (!groupFilter) {
+      data = [...this.selectedRelationships].filter(_ => !_.group);
+    } else {
+      data = [...this.selectedRelationships].filter(_ => _.group === groupFilter);
+    }
+
     this.dataSource = new MatTableDataSource<Relationship>(data);
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
@@ -138,26 +180,13 @@ export class RelationshipComponent implements OnInit, OnDestroy {
 
   setupFilter(column: string) {
     this.dataSource.filterPredicate = (d: Relationship, filter: string) => {
-      const textToSearch = d[column] && d[column].toLowerCase() || '';
+      const textToSearch = d[column]?.name && d[column]?.name.toLowerCase() || '';
       return textToSearch.indexOf(filter) !== -1;
     };
   }
 
-  getGroupLabel(id: string) {
-    return id ?
-      this.doctorGroups.find(_ => _._id === id)?.name :
-      '';
-  }
-
-  getUserBrief(user: User) {
-    const gender = user.gender === 'M' ?
-      '男' :
-      (user.gender === 'F' ? '女' : '');
-    return `${user.name} ${gender} 手机: ${user.cell}`;
-  }
-
   filterBySelect(id: string) {
     this.selectedFilter = id;
-
+    this.loadData(id);
   }
 }
