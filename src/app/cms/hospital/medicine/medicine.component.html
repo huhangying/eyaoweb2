@@ -14,7 +14,7 @@
   </nb-card-header>
 
   <nb-card-body>
-    <ng-container *ngIf="dataSource?.data?.length > 0">
+    <div [class.d-none]="!dataSource?.data?.length">
       <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8 table-striped table-hover">
         <!--- Note that these columns can be defined in any order.
               The actual rendered columns are set as a property on the row definition" -->
@@ -70,7 +70,7 @@
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
       </table>
       <mat-paginator [pageSizeOptions]="[10, 25, 50]" [pageSize]="10" showFirstLastButtons></mat-paginator>
-    </ng-container>
+    </div>
     <ng-container *ngIf="!dataSource?.data?.length">
       <div class="alert alert-warning" role="alert">
         没有找到相关记录。

@@ -40,7 +40,7 @@
     </div>
     <hr class="mt-1">
 
-    <ng-container *ngIf="dataSource?.data?.length > 0">
+    <div [class.d-none]="!dataSource?.data?.length">
       <table mat-table [dataSource]="dataSource" matSort matSortActive="order" matSortDirection="asc" class="mat-elevation-z8 table-striped table-hover">
         <ng-container matColumnDef="order">
           <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 5rem;"> 顺序 </th>
@@ -97,7 +97,7 @@
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
       </table>
-    </ng-container>
+    </div>
     <ng-container *ngIf="!dataSource?.data?.length">
       <div class="alert alert-warning" role="alert">
         没有找到相关记录。

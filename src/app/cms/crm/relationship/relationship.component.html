@@ -14,7 +14,7 @@
   </nb-card-header>
 
   <nb-card-body>
-    <div class="container-fluid" *ngIf="selectedDoctor">
+    <div class="container-fluid" [class.d-none]="!selectedDoctor">
       <div class="row">
         <div class="col-4 pl-0">
           <nb-card size="medium">
@@ -34,7 +34,7 @@
           </nb-card>
         </div>
         <div class="col-8 p-0">
-          <ng-container *ngIf="dataSource?.data?.length > 0">
+          <div [class.d-none]="!dataSource?.data?.length">
             <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8 table-striped table-hover">
 
               <ng-container matColumnDef="user.name">
@@ -90,7 +90,7 @@
               <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
             </table>
             <mat-paginator [pageSizeOptions]="[10, 25, 50]" [pageSize]="10" showFirstLastButtons></mat-paginator>
-          </ng-container>
+          </div>
           <ng-container *ngIf="!dataSource?.data?.length">
             <div class="alert alert-warning" role="alert">
               没有找到相关记录。
