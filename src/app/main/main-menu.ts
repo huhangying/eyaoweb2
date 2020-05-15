@@ -58,7 +58,12 @@ export function getMenuItems(role: number, queryParams: Params): NbMenuItem[] {
     {
       title: '宣教材料推送',
       icon: 'at-outline',
-      link: '/main/dashboard',
+      link: '/main/article-push',
+    },
+    {
+      title: '快捷回复管理',
+      icon: 'undo-outline',
+      link: '/main/shortcuts',
     },
   ];
 }

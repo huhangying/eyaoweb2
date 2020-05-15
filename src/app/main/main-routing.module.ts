@@ -6,6 +6,10 @@ import { DepartmentResolver } from '../services/resolvers/department.resolver';
 import { AuthGuard } from '../shared/service/auth.guard';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { PreferencesComponent } from './preferences/preferences.component';
+import { ShortcutsComponent } from './shortcuts/shortcuts.component';
+import { ChatComponent } from './chat/chat.component';
+import { DiagnoseComponent } from './diagnose/diagnose.component';
+import { ArticlePushComponent } from './article-push/article-push.component';
 
 const routes: Routes = [{
   path: '',
@@ -17,6 +21,18 @@ const routes: Routes = [{
       component: DashboardComponent,
     },
     {
+      path: 'chat',
+      component: ChatComponent,
+    },
+    {
+      path: 'diagnose',
+      component: DiagnoseComponent,
+    },
+    {
+      path: 'article-push',
+      component: ArticlePushComponent,
+    },
+    {
       path: 'profile',
       component: ProfileComponent,
       resolve: { departments: DepartmentResolver }
@@ -24,6 +40,10 @@ const routes: Routes = [{
     {
       path: 'preferences',
       component: PreferencesComponent,
+    },
+    {
+      path: 'shortcuts',
+      component: ShortcutsComponent,
     },
     {
       path: 'reservation',
