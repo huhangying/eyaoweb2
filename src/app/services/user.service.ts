@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from '../shared/service/api.service';
 import { User } from '../models/user.model';
+import { Relationship2 } from '../models/relationship.model';
 
 @Injectable({
   providedIn: 'root'
@@ -41,4 +42,8 @@ export class UserService {
     return this.api.patch<User>('user/wechat/' + data.link_id, data);
   }
 
+  // get doctor patients
+  getUsersByDoctorId(doctorId: string) {
+    return this.api.get<Relationship2[]>(`relationships/doctor/${doctorId}/select`);
+  }
 }

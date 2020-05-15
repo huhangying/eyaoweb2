@@ -1,0 +1,20 @@
+<nb-card status="info">
+  <nb-card-header>
+    选择发送宣教材料的病患
+    <button nbButton shape="round" size="tiny" class="float-right" mat-dialog-close>
+      <nb-icon icon="close"></nb-icon>
+    </button>
+  </nb-card-header>
+
+  <mat-dialog-content class="container px-3">
+    {{groups | json}}
+
+  </mat-dialog-content>
+
+  <nb-card-footer class="d-block">
+    <button nbButton mat-dialog-close>取消</button>
+    <button nbButton hero status="primary" class="float-right">
+      <nb-icon icon="checkmark-circle"></nb-icon>确定
+    </button>
+  </nb-card-footer>
+</nb-card>

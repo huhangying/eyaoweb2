@@ -1,4 +1,5 @@
 import { User } from './user.model';
+import { DoctorGroup } from './doctor-group.model';
 
 export interface Relationship {
   _id: string;
@@ -7,4 +8,12 @@ export interface Relationship {
   // user: string; // id
   user?: User;
   apply: boolean;
+}
+
+export interface Relationship2 {
+  _id: string;
+  doctor: string;
+  group: DoctorGroup;
+  user: User;
+  apply?: boolean;
 }
