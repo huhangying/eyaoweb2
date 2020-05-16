@@ -30,6 +30,7 @@ import { GenderPipe } from './pipe/gender.pipe';
 import { MatCardModule } from '@angular/material/card';
 import { SelectPatientComponent } from './components/select-patient/select-patient.component';
 import { SelectDoctorPatientsComponent } from './components/select-doctor-patients/select-doctor-patients.component';
+import {MatRadioModule} from '@angular/material/radio';
 
 @NgModule({
   imports: [
@@ -51,6 +52,7 @@ import { SelectDoctorPatientsComponent } from './components/select-doctor-patien
     // DoctorProfileComponent,
     MatDialogModule,
     MatCardModule,
+    MatRadioModule,
 
     ImageCropperModule,
   ],
@@ -71,6 +73,7 @@ import { SelectDoctorPatientsComponent } from './components/select-doctor-patien
     MatBadgeModule,
     MatIconModule,
     MatCardModule,
+    MatRadioModule,
 
     DoctorProfileComponent,
     SelectDoctorComponent,

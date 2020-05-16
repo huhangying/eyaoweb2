@@ -23,6 +23,8 @@ export class ArticlePushComponent implements OnInit {
   doctor: Doctor;
   sendees: User[];
   selectedTemplate: ArticleTemplate;
+  selectedPage: ArticlePage;
+
   articlePage: ArticlePage;
   public Editor = ClassicEditor;
   config: any;
@@ -75,6 +77,7 @@ export class ArticlePushComponent implements OnInit {
             content: result.content,
             apply: false
           };
+          this.selectedPage = null;
         }
       }),
     ).subscribe();
@@ -83,12 +86,23 @@ export class ArticlePushComponent implements OnInit {
   selectFromHistory() {
     this.dialog.open(SelectFromHistoryComponent, {
       data: {
+        departmentId: this.doctor.department,
         doctorId: this.doctor._id
       }
     }).afterClosed().pipe(
-      tap(results => {
-        if (results?.length) {
-          this.sendees = results;
+      tap(result => {
+        if (result) {
+          this.selectedPage = result;
+          this.articlePage = {
+            ...this.articlePage,
+            cat: result.cat,
+            name: result.name,
+            title: result.title,
+            title_image: result.title_image,
+            content: result.content,
+            apply: false
+          };
+          this.selectedTemplate = null;
         }
       }),
     ).subscribe();

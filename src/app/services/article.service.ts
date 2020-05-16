@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { ApiService } from '../shared/service/api.service';
 import { ArticleCat } from '../models/education/article-cat.model';
 import { ArticleTemplate } from '../models/education/article-template.model';
+import { ArticlePage } from '../models/education/article-page.model';
 
 
 @Injectable({
@@ -53,6 +54,15 @@ export class ArticleService {
 
   getTemplatesByDepartmentId(department: string) {
     return this.api.get<ArticleTemplate[]>(`templates/department/${department}`);
+  }
+
+  // Article Page
+  getPagesByCatId(catId: string) {
+    return this.api.get<ArticlePage[]>(`pages/cat/${catId}`);
+  }
+
+  getPagesByDoctorAndCatId(doctor: string, catId: string) {
+    return this.api.get<ArticlePage[]>(`pages/doctor/${doctor}/${catId}`);
   }
 
 }

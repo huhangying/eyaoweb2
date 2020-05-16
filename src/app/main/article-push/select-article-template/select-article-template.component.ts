@@ -30,7 +30,7 @@ export class SelectArticleTemplateComponent implements OnInit, OnDestroy {
   ) {
     this.articleService.getCatsByDepartmentId(data.departmentId).pipe(
       tap(items => {
-        if (!items?.length) { // no template
+        if (!items?.length) {
           this.message.warning('没有可用的模块！请联系管理员, 先在管理后台中添加专科模版。');
           this.dialogRef.close();
           return;
