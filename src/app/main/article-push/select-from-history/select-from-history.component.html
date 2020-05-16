@@ -25,6 +25,12 @@
       </mat-radio-button>
     </mat-radio-group>
 
+    <ng-container *ngIf="!(pages$ | async)?.length">
+      <div class="alert alert-warning" role="alert">
+        {{ articleCatCtrl.value ? '没有相关的历史记录。': '请选择文章类别' }}
+      </div>
+    </ng-container>
+
   </mat-dialog-content>
 
   <nb-card-footer class="d-block">
