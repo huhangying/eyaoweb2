@@ -21,7 +21,6 @@ export class SelectArticleTemplateComponent implements OnInit, OnDestroy {
   selectedTemplate: ArticleTemplate;
   form: FormGroup;
 
-
   constructor(
     public dialogRef: MatDialogRef<SelectArticleTemplateComponent>,
     @Inject(MAT_DIALOG_DATA) @Optional() @SkipSelf() public data: { departmentId: string },

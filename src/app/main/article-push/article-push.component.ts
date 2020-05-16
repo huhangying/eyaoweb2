@@ -9,6 +9,10 @@ import { User } from '../../models/user.model';
 import { SelectArticleTemplateComponent } from './select-article-template/select-article-template.component';
 import { SelectFromHistoryComponent } from './select-from-history/select-from-history.component';
 import { ArticleTemplate } from '../../models/education/article-template.model';
+import { ArticlePage } from '../../models/education/article-page.model';
+import '@ckeditor/ckeditor5-build-classic/build/translations/zh-cn';
+import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import { ConfigService } from '../../shared/service/config.service';
 
 @Component({
   selector: 'ngx-article-push',
@@ -19,13 +23,21 @@ export class ArticlePushComponent implements OnInit {
   doctor: Doctor;
   sendees: User[];
   selectedTemplate: ArticleTemplate;
+  articlePage: ArticlePage;
+  public Editor = ClassicEditor;
+  config: any;
 
   constructor(
     private auth: AuthService,
+    private configService: ConfigService,
     public dialog: MatDialog,
     private message: MessageService,
   ) {
     this.doctor = this.auth.getDoctor();
+    this.config = configService.editorConfig;
+    this.articlePage = {
+      doctor: this.doctor._id
+    };
   }
 
   ngOnInit(): void {
@@ -51,9 +63,18 @@ export class ArticlePushComponent implements OnInit {
         departmentId: this.doctor.department
       }
     }).afterClosed().pipe(
-      tap(result => {
+      tap((result: ArticleTemplate) => {
         if (result) {
           this.selectedTemplate = result;
+          this.articlePage = {
+            ...this.articlePage,
+            cat: result.cat,
+            name: result.name,
+            title: result.title,
+            title_image: result.title_image,
+            content: result.content,
+            apply: false
+          };
         }
       }),
     ).subscribe();

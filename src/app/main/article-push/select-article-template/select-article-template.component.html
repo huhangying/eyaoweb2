@@ -5,6 +5,7 @@
       <nb-icon icon="close"></nb-icon>
     </button>
   </nb-card-header>
+
   <div class="alert alert-info m-0" role="alert" [formGroup]="form">
     <div class="d-flex pt-2 row">
       <label class="col-2 text-right">类别:</label>
@@ -21,8 +22,28 @@
       </nb-form-field>
     </div>
   </div>
+
   <mat-dialog-content class="container px-3">
-    {{selectedTemplate | json}}
+    <ng-container *ngIf="selectedTemplate">
+      <div class="field row">
+        <div class="col-md-5">
+          <label for="title" class="label required"> 标题 </label>
+          <div>{{selectedTemplate.title}}</div>
+        </div>
+        <div class="col-md-7">
+          <div class="thumbnail">
+            <img [src]="selectedTemplate.title_image ? selectedTemplate.title_image : '/assets/images/no-image.png'"
+              alt="标题图片" class="img-fluid img-thumbnail">
+          </div>
+        </div>
+      </div>
+      <hr />
+      <div class="px-3" [innerHtml]="selectedTemplate.content"></div>
+    </ng-container>
+
+    <div *ngIf="!selectedTemplate" class="blockquote pt-3 pl-2">
+      编辑文章以前, 请先选择一个模版。
+    </div>
   </mat-dialog-content>
 
   <nb-card-footer class="d-block">

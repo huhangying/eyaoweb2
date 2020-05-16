@@ -12,6 +12,8 @@ import { DiagnoseComponent } from './diagnose/diagnose.component';
 import { ArticlePushComponent } from './article-push/article-push.component';
 import { SelectArticleTemplateComponent } from './article-push/select-article-template/select-article-template.component';
 import { SelectFromHistoryComponent } from './article-push/select-from-history/select-from-history.component';
+import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
+
 @NgModule({
   declarations: [
     MainComponent,
@@ -28,6 +30,7 @@ import { SelectFromHistoryComponent } from './article-push/select-from-history/s
   imports: [
     MatProgressSpinnerModule,
     SharedModule,
+    CKEditorModule,
     MainRoutingModule,
   ]
 })

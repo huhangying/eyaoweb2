@@ -1,27 +1,52 @@
 <nb-card>
   <nb-card-header>
     宣教材料推送
-     &nbsp;&nbsp;
+    &nbsp;&nbsp;
   </nb-card-header>
 
   <nb-card-body>
-      <button nbButton size="small" [status]="sendees?.length ? 'info' : ''" (click)="selectSendees()" >
+    <div class="border-bottom pb-2">
+      <button nbButton size="small" [status]="sendees?.length ? 'info' : ''" (click)="selectSendees()">
         选择患者
       </button>&nbsp;&nbsp;
-      <button nbButton size="small" [status]="selectedTemplate ? 'info' : ''" (click)="selectTemplate()" >
+      <button nbButton size="small" [status]="selectedTemplate ? 'info' : ''" (click)="selectTemplate()">
         选择模板
       </button>&nbsp;&nbsp;
-      <button nbButton size="small" (click)="selectFromHistory()" >
+      <button nbButton size="small" (click)="selectFromHistory()">
         选择已发送文章
       </button>
+      <span class="float-right">
+        <button nbButton hero size="small" status="success" (click)="save()">
+          <nb-icon icon="save-outline"></nb-icon> 保存
+        </button>&nbsp;&nbsp;
+        <button nbButton hero size="small" status="primary" (click)="send()">
+          <nb-icon icon="checkmark-circle-outline"></nb-icon> 发送
+        </button>
+      </span>
+    </div>
 
-    <span class="float-right">
-      <button nbButton hero size="small" status="success" (click)="save()" >
-        <nb-icon icon="save-outline"></nb-icon> 保存
-      </button>&nbsp;&nbsp;
-      <button nbButton hero size="small" status="primary" (click)="send()" >
-        <nb-icon icon="checkmark-circle-outline"></nb-icon> 发送
-      </button>
-    </span>
+    <ng-container *ngIf="articlePage?.name">
+      <div class="field row">
+        <div class="col-md-5">
+          <label for="name" class="label"> 模板名称 </label>
+          <input nbInput fullWidth id="name" [(ngModel)]="articlePage.name" readonly>
+
+          <label for="title" class="label required"> 标题 </label>
+          <textarea nbInput fullWidth id="title" [(ngModel)]="articlePage.title" rows="2"></textarea>
+        </div>
+        <div class="col-md-7">
+          <label for="title_image" class="label"> 标题图片 </label>
+          <div>
+            <img [src]="articlePage.title_image ? articlePage.title_image : '/assets/images/no-image.png'" alt="标题图片"
+              class="img-fluid img-thumbnail">
+          </div>
+        </div>
+      </div>
+
+      <div class="field row">
+        <ckeditor [editor]="Editor" [config]="config" class="w-100" [(ngModel)]="articlePage.content"></ckeditor>
+      </div>
+    </ng-container>
+
   </nb-card-body>
 </nb-card>
