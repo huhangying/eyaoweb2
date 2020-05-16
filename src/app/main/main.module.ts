@@ -10,6 +10,8 @@ import { ShortcutsComponent } from './shortcuts/shortcuts.component';
 import { ChatComponent } from './chat/chat.component';
 import { DiagnoseComponent } from './diagnose/diagnose.component';
 import { ArticlePushComponent } from './article-push/article-push.component';
+import { SelectArticleTemplateComponent } from './article-push/select-article-template/select-article-template.component';
+import { SelectFromHistoryComponent } from './article-push/select-from-history/select-from-history.component';
 @NgModule({
   declarations: [
     MainComponent,
@@ -20,6 +22,8 @@ import { ArticlePushComponent } from './article-push/article-push.component';
     ChatComponent,
     DiagnoseComponent,
     ArticlePushComponent,
+    SelectArticleTemplateComponent,
+    SelectFromHistoryComponent,
   ],
   imports: [
     MatProgressSpinnerModule,

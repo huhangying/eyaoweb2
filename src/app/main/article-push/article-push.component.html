@@ -5,21 +5,21 @@
   </nb-card-header>
 
   <nb-card-body>
-      <button nbButton hero size="small" status="info" (click)="selectSendees()" >
+      <button nbButton size="small" [status]="sendees?.length ? 'info' : ''" (click)="selectSendees()" >
         选择患者
       </button>&nbsp;&nbsp;
-      <button nbButton hero size="small" status="info" (click)="selectTemplate()" >
+      <button nbButton size="small" [status]="selectedTemplate ? 'info' : ''" (click)="selectTemplate()" >
         选择模板
       </button>&nbsp;&nbsp;
-      <button nbButton hero size="small" status="info" (click)="selectFromPast()" >
+      <button nbButton size="small" (click)="selectFromHistory()" >
         选择已发送文章
       </button>
 
     <span class="float-right">
-      <button nbButton hero size="small" status="success" (click)="selectTemplate()" >
+      <button nbButton hero size="small" status="success" (click)="save()" >
         <nb-icon icon="save-outline"></nb-icon> 保存
       </button>&nbsp;&nbsp;
-      <button nbButton hero size="small" status="primary" (click)="selectFromPast()" >
+      <button nbButton hero size="small" status="primary" (click)="send()" >
         <nb-icon icon="checkmark-circle-outline"></nb-icon> 发送
       </button>
     </span>

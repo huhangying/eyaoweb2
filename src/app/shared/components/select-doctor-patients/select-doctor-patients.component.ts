@@ -3,7 +3,8 @@ import { User } from '../../../models/user.model';
 import { Subject } from 'rxjs';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { UserService } from '../../../services/user.service';
-import { tap } from 'rxjs/operators';
+import { tap, takeUntil } from 'rxjs/operators';
+import { MessageService } from '../../service/message.service';
 
 @Component({
   selector: 'ngx-select-doctor-patients',
@@ -18,22 +19,29 @@ export class SelectDoctorPatientsComponent implements OnInit, OnDestroy {
     public dialogRef: MatDialogRef<SelectDoctorPatientsComponent>,
     @Inject(MAT_DIALOG_DATA) @Optional() @SkipSelf() public data: { doctorId: string },
     private userService: UserService,
+    private message: MessageService,
   ) {
     this.userService.getUsersByDoctorId(data.doctorId).pipe(
       tap(items => {
-        // this.users = items;
-        // let index;
+        if (!items?.length) { // no patients
+          this.message.warning('没有可选择的病患！');
+          this.dialogRef.close();
+          return;
+        }
+        // Format:
+        // groups: {key: {
+        //   selected: boolean,
+        //   users: User[]
+        // }}
         this.groups = items.reduce((rv, item) => {
           // groupName is key
           const groupName = item.group ? item.group.name || '未分组' : '未分组';
-          (rv[groupName] = rv[groupName] || []).push(item.user);
+          (rv[groupName] = rv[groupName] || { selected: false, users: [] })
+            .users.push({ ...item.user, selected: false });
           return rv;
         }, {});
-
-        console.log(this.groups);
-
-
       }),
+      takeUntil(this.destroy$)
     ).subscribe();
   }
 
@@ -43,6 +51,32 @@ export class SelectDoctorPatientsComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.destroy$.next();
     this.destroy$.unsubscribe();
+  }
+
+  toggleGroup(key: string) {
+    const selected = !this.groups[key].selected;
+    // set all members
+    this.groups[key].users = this.groups[key].users.map(_ => {
+      _.selected = selected;
+      return _;
+    });
+  }
+
+  select() {
+    const selected: string[] = [];
+    Object.keys(this.groups).map(key => {
+      this.groups[key].users.map(_ => {
+        if (_.selected) {
+          selected.push(_);
+        }
+      });
+    });
+    if (selected.length < 1) {
+      this.message.warning('您还没有选择病患，请至少选择一个!');
+      return;
+    }
+
+    this.dialogRef.close(selected);
   }
 
 }

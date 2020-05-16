@@ -50,4 +50,9 @@ export class ArticleService {
   deleteTemplateById(id: string) {
     return this.api.delete<ArticleTemplate>('template/' + id);
   }
+
+  getTemplatesByDepartmentId(department: string) {
+    return this.api.get<ArticleTemplate[]>(`templates/department/${department}`);
+  }
+
 }

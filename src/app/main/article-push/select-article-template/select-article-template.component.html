@@ -1,0 +1,34 @@
+<nb-card status="info">
+  <nb-card-header>
+    选择模版
+    <button nbButton shape="round" size="tiny" class="float-right" mat-dialog-close>
+      <nb-icon icon="close"></nb-icon>
+    </button>
+  </nb-card-header>
+  <div class="alert alert-info m-0" role="alert" [formGroup]="form">
+    <div class="d-flex pt-2 row">
+      <label class="col-2 text-right">类别:</label>
+      <nb-form-field class="col-3">
+        <nb-select hero fullWidth placeholder="选择宣教材料类别" formControlName="articleCat">
+          <nb-option *ngFor="let cat of articleCats" [value]="cat._id">{{ cat.name }}</nb-option>
+        </nb-select>
+      </nb-form-field>
+      <label class="col-2 text-right">模板:</label>
+      <nb-form-field class="col-4 mr-3">
+        <nb-select hero fullWidth placeholder="选择模板" formControlName="template">
+          <nb-option *ngFor="let template of filteredTemplates" [value]="template._id">{{ template.name }}</nb-option>
+        </nb-select>
+      </nb-form-field>
+    </div>
+  </div>
+  <mat-dialog-content class="container px-3">
+    {{selectedTemplate | json}}
+  </mat-dialog-content>
+
+  <nb-card-footer class="d-block">
+    <button nbButton mat-dialog-close>取消</button>
+    <button nbButton hero status="primary" class="float-right" [disabled]="!selectedTemplate" (click)="select()">
+      <nb-icon icon="checkmark-circle"></nb-icon>确定
+    </button>
+  </nb-card-footer>
+</nb-card>
