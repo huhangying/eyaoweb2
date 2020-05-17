@@ -48,6 +48,13 @@ export class ShortcutsComponent implements OnInit {
       data: shortcut
     }).afterClosed().pipe(
       tap(result => {
+        if (result) {
+          if (index < 0) { // add
+            this.shortcuts.unshift(result);
+          } else { // edit
+            this.shortcuts[index] = result;
+          }
+        }
       })
     ).subscribe();
   }

@@ -1,1 +1,23 @@
-<p>shortcut-edit works!</p>
+<nb-card [status]="data ? 'info' : 'success'">
+  <nb-card-header>
+    {{data? '编辑快捷回复' : '新增快捷回复'}}
+    <button nbButton shape="round" size="tiny" class="float-right" mat-dialog-close>
+      <nb-icon icon="close"></nb-icon>
+    </button>
+  </nb-card-header>
+
+  <mat-dialog-content class="container px-3">
+    <div class="field row">
+      <label for="shortcut" class="label required"> 快捷回复 </label>
+      <textarea nbInput fullWidth id="shortcut" [(ngModel)]="shortcut" rows="2"></textarea>
+    </div>
+
+  </mat-dialog-content>
+
+  <nb-card-footer class="d-block">
+    <button nbButton mat-dialog-close>取消</button>
+    <button nbButton hero status="primary" class="float-right" [disabled]="!shortcut" (click)="update()">
+      <nb-icon icon="checkmark-circle"></nb-icon>更新
+    </button>
+  </nb-card-footer>
+</nb-card>
