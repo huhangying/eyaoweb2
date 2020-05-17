@@ -16,10 +16,11 @@
         选择已发送文章
       </button>
       <span class="float-right">
-        <button nbButton hero size="small" status="success" (click)="save()">
-          <nb-icon icon="save-outline"></nb-icon> 保存
-        </button>&nbsp;&nbsp;
-        <button nbButton hero size="small" status="primary" (click)="send()">
+        <button nbButton hero size="small" status="success" (click)="preview()" *ngIf="isReady()">
+          <nb-icon icon="eye-outline"></nb-icon> 预览
+        </button>
+        &nbsp;&nbsp;
+        <button nbButton hero size="small" status="primary" (click)="send()" *ngIf="isReady()">
           <nb-icon icon="checkmark-circle-outline"></nb-icon> 发送
         </button>
       </span>

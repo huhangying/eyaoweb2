@@ -13,6 +13,7 @@ import { ArticlePage } from '../../models/education/article-page.model';
 import '@ckeditor/ckeditor5-build-classic/build/translations/zh-cn';
 import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { ConfigService } from '../../shared/service/config.service';
+import { ArticlePreviewComponent } from './article-preview/article-preview.component';
 
 @Component({
   selector: 'ngx-article-push',
@@ -108,8 +109,18 @@ export class ArticlePushComponent implements OnInit {
     ).subscribe();
   }
 
-  save() {
+  isReady(): boolean {
+    return this.sendees?.length && !!this.articlePage?.cat;
+  }
 
+  preview() {
+    // $window.open(CONFIG.baseApiUrl + 'article/' + articleId);
+    this.dialog.open(ArticlePreviewComponent, {
+      data: {
+        article: this.articlePage,
+        doctor: this.doctor.name + ' ' + this.doctor.title,
+      }
+    });
   }
 
   send() {
