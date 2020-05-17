@@ -59,4 +59,8 @@ export class ReservationService {
     return this.api.patch<Booking>('booking/' + data._id, data);
   }
 
+  getTodayBookingsByDoctorId(did: string) {
+    return this.api.get<Booking[]>('bookings/today/doctor/' + did);
+  }
+
 }

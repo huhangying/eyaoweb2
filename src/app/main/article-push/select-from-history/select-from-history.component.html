@@ -19,7 +19,7 @@
 
   <mat-dialog-content class="px-3">
     <mat-radio-group class="list-group list-group-flush" [(ngModel)]="selectedPage">
-      <mat-radio-button class="list-group-item list-group-item-action" *ngFor="let page of pages$ | async"
+      <mat-radio-button class="list-group-item list-group-item-action pb-1" *ngFor="let page of pages$ | async"
         [value]="page">
         {{page.name}} ({{ page.createdAt | localDate }})
       </mat-radio-button>

@@ -6,7 +6,7 @@
 
   <nb-card-body>
     <div class="border-bottom pb-2">
-      <button nbButton size="small" [status]="false ? 'info' : ''" (click)="selectAppointment()">
+      <button nbButton size="small" [status]="selectedBooking ? 'info' : ''" (click)="selectAppointment()">
         选择预约
       </button>&nbsp;&nbsp;
       <button nbButton size="small" [status]="false ? 'info' : ''" (click)="selectPatient()">

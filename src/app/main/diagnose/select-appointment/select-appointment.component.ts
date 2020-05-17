@@ -1,6 +1,11 @@
 import { Component, OnInit, OnDestroy, Inject, Optional, SkipSelf } from '@angular/core';
-import { Subject } from 'rxjs';
+import { Subject, Observable } from 'rxjs';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { ReservationService } from '../../../services/reservation.service';
+import { Booking } from '../../../models/reservation/booking.model';
+import { filter, map } from 'rxjs/operators';
+import { Period } from '../../../models/reservation/schedule.model';
+import { PeriodsResolver } from '../../../services/resolvers/periods.resolver';
 
 @Component({
   selector: 'ngx-select-appointment',
@@ -9,11 +14,23 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 })
 export class SelectAppointmentComponent implements OnInit, OnDestroy {
   destroy$ = new Subject<void>();
+  todayBookings$: Observable<Booking[]>;
+  periods: Period[];
+  selectedBooking: Booking;
+
   constructor(
     public dialogRef: MatDialogRef<SelectAppointmentComponent>,
-    @Inject(MAT_DIALOG_DATA) @Optional() @SkipSelf() public data: string,
+    @Inject(MAT_DIALOG_DATA) @Optional() @SkipSelf() public data: {doctorId: string},
+    private bookingService: ReservationService,
+    private periodsResolver: PeriodsResolver,
   ) {
-
+    this.periodsResolver.resolve().subscribe(periods => {
+      this.periods = periods;
+    });
+    this.todayBookings$ = this.bookingService.getAllBookingsByDoctorId(data.doctorId).pipe( // for test
+    // this.todayBookings$ = this.bookingService.getTodayBookingsByDoctorId(data.doctorId).pipe(
+      map(bookings => bookings?.filter(_ => !!_.user))
+    );
   }
 
   ngOnInit(): void {
@@ -25,6 +42,10 @@ export class SelectAppointmentComponent implements OnInit, OnDestroy {
   }
 
   select() {
+    this.dialogRef.close(this.selectedBooking);
+  }
 
+  getPeriodLabel(periodId: string): string {
+    return this.periods?.find(_ => _._id === periodId)?.name;
   }
 }
