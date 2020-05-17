@@ -5,14 +5,50 @@
       <nb-icon icon="close"></nb-icon>
     </button>
   </nb-card-header>
+  <div class="pt-2 px-3">
+    <div class="text-muted">请根据选项搜索病患</div>
+    <div class="field row border-bottom pb-2">
+      <nb-form-field class="col-12 col-sm-5">
+        <nb-select hero fullWidth placeholder="选择搜索选项" [(ngModel)]="searchOption">
+          <nb-option [value]="1">门诊号</nb-option>
+          <nb-option [value]="2">姓名</nb-option>
+          <nb-option [value]="3">手机号码</nb-option>
+          <nb-option [value]="4">社保号</nb-option>
+        </nb-select>
+      </nb-form-field>
+      <nb-form-field class="col-12 col-sm-7">
+        <input type="text" nbInput fullWidth fieldSize="small" placeholder="请输入名字搜索" cdkFocusInitial
+          (keyup.enter)="searchPatients()" [(ngModel)]="searchValue">
+        <button nbButton hero status="info" size="small" class="mr-5" nbSuffix (click)="searchPatients()">
+          <nb-icon icon="search-outline" pack="eva"></nb-icon> 搜索
+        </button>
+      </nb-form-field>
+    </div>
+  </div>
 
   <mat-dialog-content class="px-3">
+    <ng-container *ngIf="users$ | async; let users">
+      <mat-radio-group class="list-group list-group-flush" [(ngModel)]="selectedPatient">
+        <mat-radio-button class="list-group-item list-group-item-action pb-1" *ngFor="let user of users" [value]="user">
+          {{ user.name }}
+          {{ user.gender? ' ' + (user.gender | gender) : '' }}
+          {{ user.cell? ' 手机:' + user.cell : '' }}
+          {{ user.birthdate? ' 生日:' + (user.birthdate | localDate) : '' }}
+        </mat-radio-button>
+      </mat-radio-group>
+    </ng-container>
+
+    <ng-container *ngIf="!(users$ | async)?.length">
+      <div class="alert alert-warning" role="alert">
+        没有找到相关记录。
+      </div>
+    </ng-container>
 
   </mat-dialog-content>
 
   <nb-card-footer class="d-block">
     <button nbButton mat-dialog-close>取消</button>
-    <button nbButton hero status="primary" class="float-right" (click)="select()">
+    <button nbButton hero status="primary" class="float-right" [disabled]="!selectedPatient" (click)="select()">
       <nb-icon icon="checkmark-circle"></nb-icon>确定
     </button>
   </nb-card-footer>

@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { ApiService } from '../shared/service/api.service';
 import { User } from '../models/user.model';
 import { Relationship2 } from '../models/relationship.model';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -45,5 +46,10 @@ export class UserService {
   // get doctor patients
   getUsersByDoctorId(doctorId: string) {
     return this.api.get<Relationship2[]>(`relationships/doctor/${doctorId}/select`);
+  }
+
+  // Patient search
+  searchByCriteria(search: any) {
+    return this.api.patch<User[]>('users/search', search);
   }
 }

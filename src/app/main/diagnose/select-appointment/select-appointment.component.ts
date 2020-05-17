@@ -3,9 +3,10 @@ import { Subject, Observable } from 'rxjs';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ReservationService } from '../../../services/reservation.service';
 import { Booking } from '../../../models/reservation/booking.model';
-import { filter, map } from 'rxjs/operators';
+import { filter, map, catchError } from 'rxjs/operators';
 import { Period } from '../../../models/reservation/schedule.model';
 import { PeriodsResolver } from '../../../services/resolvers/periods.resolver';
+import { MessageService } from '../../../shared/service/message.service';
 
 @Component({
   selector: 'ngx-select-appointment',
@@ -20,16 +21,18 @@ export class SelectAppointmentComponent implements OnInit, OnDestroy {
 
   constructor(
     public dialogRef: MatDialogRef<SelectAppointmentComponent>,
-    @Inject(MAT_DIALOG_DATA) @Optional() @SkipSelf() public data: {doctorId: string},
+    @Inject(MAT_DIALOG_DATA) @Optional() @SkipSelf() public data: { doctorId: string },
     private bookingService: ReservationService,
     private periodsResolver: PeriodsResolver,
+    private message: MessageService,
   ) {
     this.periodsResolver.resolve().subscribe(periods => {
       this.periods = periods;
     });
     this.todayBookings$ = this.bookingService.getAllBookingsByDoctorId(data.doctorId).pipe( // for test
-    // this.todayBookings$ = this.bookingService.getTodayBookingsByDoctorId(data.doctorId).pipe(
-      map(bookings => bookings?.filter(_ => !!_.user))
+      // this.todayBookings$ = this.bookingService.getTodayBookingsByDoctorId(data.doctorId).pipe(
+      map(bookings => bookings?.filter(_ => !!_.user)),
+      catchError(rsp => this.message.updateErrorHandle(rsp))
     );
   }
 

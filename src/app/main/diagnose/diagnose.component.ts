@@ -7,6 +7,7 @@ import { SelectAppointmentComponent } from './select-appointment/select-appointm
 import { SelectPatientComponent } from '../../shared/components/select-patient/select-patient.component';
 import { Booking } from '../../models/reservation/booking.model';
 import { tap } from 'rxjs/operators';
+import { User } from '../../models/user.model';
 
 @Component({
   selector: 'ngx-diagnose',
@@ -16,6 +17,7 @@ import { tap } from 'rxjs/operators';
 export class DiagnoseComponent implements OnInit {
   doctor: Doctor;
   selectedBooking: Booking;
+  selectedPatient: User;
 
   constructor(
     private auth: AuthService,
@@ -34,9 +36,11 @@ export class DiagnoseComponent implements OnInit {
         doctorId: this.doctor._id
       }
     }).afterClosed().pipe(
-      tap(result => {
+      tap((result: Booking) => {
         if (result) {
           this.selectedBooking = result;
+          // set selected patient
+          this.selectedPatient = result.user;
         }
       }),
     ).subscribe();
@@ -48,11 +52,11 @@ export class DiagnoseComponent implements OnInit {
         doctorId: this.doctor._id
       }
     }).afterClosed().pipe(
-      // tap(results => {
-      //   if (results?.length) {
-      //     this.sendees = results;
-      //   }
-      // }),
+      tap(result => {
+        if (result) {
+          this.selectedPatient = result;
+        }
+      }),
     ).subscribe();
   }
 

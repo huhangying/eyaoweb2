@@ -7,10 +7,10 @@
   <nb-card-body>
     <div class="border-bottom pb-2">
       <button nbButton size="small" [status]="selectedBooking ? 'info' : ''" (click)="selectAppointment()">
-        选择预约
+        <nb-icon icon="checkmark-circle-2-outline" *ngIf="selectedBooking"></nb-icon> 选择预约
       </button>&nbsp;&nbsp;
-      <button nbButton size="small" [status]="false ? 'info' : ''" (click)="selectPatient()">
-        选择病患
+      <button nbButton size="small" [status]="selectedPatient ? 'info' : ''" (click)="selectPatient()">
+        <nb-icon icon="checkmark-circle-2-outline" *ngIf="selectedPatient"></nb-icon> 选择病患
       </button>
       <span class="float-right">
         <button nbButton hero size="small" status="primary" (click)="closeDiagnose()" *ngIf="isReady()">
@@ -18,15 +18,12 @@
         </button>
       </span>
     </div>
-    <div>
 
-
-      <ng-container *ngIf="true">
-        <div class="alert alert-warning" role="alert">
-          请点击"选择预约"或"选择病患"按键开始一个门诊。
-        </div>
-      </ng-container>
-    </div>
+    <ng-container *ngIf="true">
+      <div class="alert alert-warning" role="alert">
+        请点击"选择预约"或"选择病患"按键开始一个门诊。
+      </div>
+    </ng-container>
 
   </nb-card-body>
 </nb-card>
