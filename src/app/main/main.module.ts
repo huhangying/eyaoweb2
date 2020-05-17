@@ -15,6 +15,7 @@ import { SelectFromHistoryComponent } from './article-push/select-from-history/s
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import { ShortcutEditComponent } from './shortcuts/shortcut-edit/shortcut-edit.component';
 import { ArticlePreviewComponent } from './article-push/article-preview/article-preview.component';
+import { SelectAppointmentComponent } from './diagnose/select-appointment/select-appointment.component';
 
 @NgModule({
   declarations: [
@@ -30,6 +31,7 @@ import { ArticlePreviewComponent } from './article-push/article-preview/article-
     SelectFromHistoryComponent,
     ShortcutEditComponent,
     ArticlePreviewComponent,
+    SelectAppointmentComponent,
   ],
   imports: [
     MatProgressSpinnerModule,

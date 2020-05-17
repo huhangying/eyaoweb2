@@ -11,12 +11,12 @@ export function getMenuItems(role: number, queryParams: Params): NbMenuItem[] {
     {
       title: '药师门诊',
       icon: 'headphones-outline',
-      link: '/main/dashboard',
+      link: '/main/diagnose',
     },
     {
       title: '在线咨询',
       icon: 'message-circle-outline',
-      link: '/main/dashboard',
+      link: '/main/chat',
     },
     {
       title: '预约管理',

@@ -1,1 +1,32 @@
-<p>diagnose works!</p>
+<nb-card>
+  <nb-card-header>
+    药师门诊
+    &nbsp;&nbsp;
+  </nb-card-header>
+
+  <nb-card-body>
+    <div class="border-bottom pb-2">
+      <button nbButton size="small" [status]="false ? 'info' : ''" (click)="selectAppointment()">
+        选择预约
+      </button>&nbsp;&nbsp;
+      <button nbButton size="small" [status]="false ? 'info' : ''" (click)="selectPatient()">
+        选择病患
+      </button>
+      <span class="float-right">
+        <button nbButton hero size="small" status="primary" (click)="closeDiagnose()" *ngIf="isReady()">
+          <nb-icon icon="paper-plane-outline"></nb-icon> 发送
+        </button>
+      </span>
+    </div>
+    <div>
+
+
+      <ng-container *ngIf="true">
+        <div class="alert alert-warning" role="alert">
+          请点击"选择预约"或"选择病患"按键开始一个门诊。
+        </div>
+      </ng-container>
+    </div>
+
+  </nb-card-body>
+</nb-card>
