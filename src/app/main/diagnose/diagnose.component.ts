@@ -60,6 +60,11 @@ export class DiagnoseComponent implements OnInit {
     ).subscribe();
   }
 
+  get isFirstVisit() {
+    if (!this.selectedPatient?.visitedDepartments?.length) return true;
+    return !this.selectedPatient.visitedDepartments.find(_ => _._id === this.doctor.department);
+  }
+
   closeDiagnose() {
 
   }
