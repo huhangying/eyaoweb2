@@ -6,7 +6,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { DialogService } from '../../shared/service/dialog.service';
 import { MessageService } from '../../shared/service/message.service';
 import { ShortcutEditComponent } from './shortcut-edit/shortcut-edit.component';
-import { tap } from 'rxjs/operators';
+import { tap, catchError } from 'rxjs/operators';
 
 @Component({
   selector: 'ngx-shortcuts',
@@ -14,6 +14,7 @@ import { tap } from 'rxjs/operators';
   styleUrls: ['./shortcuts.component.scss']
 })
 export class ShortcutsComponent implements OnInit {
+  doctorUserId: string;
   shortcuts: string[];
   originalShortcuts: string[];
 
@@ -24,8 +25,8 @@ export class ShortcutsComponent implements OnInit {
     private dialogService: DialogService,
     private message: MessageService,
   ) {
-    const doctorId = this.auth.getDoctor().user_id;
-    this.doctorService.getShortcutsByDoctor(doctorId)
+    this.doctorUserId = this.auth.getDoctor().user_id;
+    this.doctorService.getShortcutsByDoctor(this.doctorUserId)
       .subscribe(result => {
         this.shortcuts = result?.split('|');
         this.originalShortcuts = [...this.shortcuts];
@@ -70,14 +71,20 @@ export class ShortcutsComponent implements OnInit {
 
   }
 
-  update() {
-    console.log(this.shortcuts);
-
-
-  }
-
   reset() {
     this.shortcuts = [...this.originalShortcuts];
+  }
+
+  update() {
+    this.doctorService.updateShortcutsByDoctor(this.doctorUserId, this.shortcuts.join('|')).pipe(
+      tap(result => {
+        if (result) {
+          console.log(result);
+          this.message.updateSuccess();
+        }
+      }),
+      catchError(this.message.updateErrorHandle)
+    ).subscribe();
   }
 
 }
