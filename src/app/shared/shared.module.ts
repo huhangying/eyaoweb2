@@ -31,6 +31,7 @@ import { MatCardModule } from '@angular/material/card';
 import { SelectPatientComponent } from './components/select-patient/select-patient.component';
 import { SelectDoctorPatientsComponent } from './components/select-doctor-patients/select-doctor-patients.component';
 import {MatRadioModule} from '@angular/material/radio';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 
 @NgModule({
   imports: [
@@ -53,6 +54,7 @@ import {MatRadioModule} from '@angular/material/radio';
     MatDialogModule,
     MatCardModule,
     MatRadioModule,
+    DragDropModule,
 
     ImageCropperModule,
   ],
@@ -74,6 +76,7 @@ import {MatRadioModule} from '@angular/material/radio';
     MatIconModule,
     MatCardModule,
     MatRadioModule,
+    DragDropModule,
 
     DoctorProfileComponent,
     SelectDoctorComponent,

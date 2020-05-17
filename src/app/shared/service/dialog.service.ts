@@ -20,4 +20,14 @@ export class DialogService {
     }).afterClosed();
   }
 
+  confirm(title: string, details?: string): Observable<boolean> {
+    return this.dialog.open(ConfirmComponent, {
+      width: '460px',
+      data: {
+        title: title,
+        content: details
+      }
+    }).afterClosed();
+  }
+
 }

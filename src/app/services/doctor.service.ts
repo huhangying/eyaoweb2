@@ -4,6 +4,7 @@ import { Injectable } from '@angular/core';
 import { AppStoreService } from '../shared/store/app-store.service';
 import { ApiService } from '../shared/service/api.service';
 import { Relationship } from '../models/relationship.model';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -83,6 +84,15 @@ export class DoctorService {
 
   updateGroupInRelationship(id: string, group?: string) {
     return this.api.patch<Relationship>('relationship/' + id, {group: group || null});
+  }
+
+  // Shortcuts
+  getShortcutsByDoctor(did: string): Observable<string> {
+    return this.api.get<string>('doctor/shortcuts/' + did);
+  }
+
+  updateShortcutsByDoctor(did: string, shortcuts: string): Observable<string> {
+    return this.api.patch<string>('doctor/shortcuts/' + did, {shortcuts});
   }
 
 }

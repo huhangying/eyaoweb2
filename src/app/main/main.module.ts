@@ -13,6 +13,7 @@ import { ArticlePushComponent } from './article-push/article-push.component';
 import { SelectArticleTemplateComponent } from './article-push/select-article-template/select-article-template.component';
 import { SelectFromHistoryComponent } from './article-push/select-from-history/select-from-history.component';
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
+import { ShortcutEditComponent } from './shortcuts/shortcut-edit/shortcut-edit.component';
 
 @NgModule({
   declarations: [
@@ -26,6 +27,7 @@ import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
     ArticlePushComponent,
     SelectArticleTemplateComponent,
     SelectFromHistoryComponent,
+    ShortcutEditComponent,
   ],
   imports: [
     MatProgressSpinnerModule,
