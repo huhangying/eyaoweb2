@@ -6,7 +6,7 @@
     </button>
   </nb-card-header>
 
-  <mat-dialog-content class="container px-3">
+  <mat-dialog-content class="px-3">
     <ng-container *ngFor="let group of groups | keyvalue; let i = index">
       <div class="alert alert-info">
         <mat-checkbox [(ngModel)]="group.value.selected" (click)="toggleGroup(group.key)">{{group.key}}</mat-checkbox>
