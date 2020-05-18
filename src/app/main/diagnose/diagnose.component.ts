@@ -8,6 +8,7 @@ import { SelectPatientComponent } from '../../shared/components/select-patient/s
 import { Booking } from '../../models/reservation/booking.model';
 import { tap } from 'rxjs/operators';
 import { User } from '../../models/user.model';
+import { PatientHistoryComponent } from './patient-history/patient-history.component';
 
 @Component({
   selector: 'ngx-diagnose',
@@ -58,6 +59,15 @@ export class DiagnoseComponent implements OnInit {
         }
       }),
     ).subscribe();
+  }
+
+  viewPatientHistory() {
+    this.dialog.open(PatientHistoryComponent, {
+      data: {
+        patient: this.selectedPatient,
+        doctor: this.doctor
+      }
+    });
   }
 
   get isFirstVisit() {

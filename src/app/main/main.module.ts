@@ -16,6 +16,9 @@ import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import { ShortcutEditComponent } from './shortcuts/shortcut-edit/shortcut-edit.component';
 import { ArticlePreviewComponent } from './article-push/article-preview/article-preview.component';
 import { SelectAppointmentComponent } from './diagnose/select-appointment/select-appointment.component';
+import { PatientHistoryComponent } from './diagnose/patient-history/patient-history.component';
+import { DiagnoseHistoryComponent } from './diagnose/patient-history/diagnose-history/diagnose-history.component';
+import { DiagnoseDetailsComponent } from './diagnose/patient-history/diagnose-details/diagnose-details.component';
 
 @NgModule({
   declarations: [
@@ -32,6 +35,9 @@ import { SelectAppointmentComponent } from './diagnose/select-appointment/select
     ShortcutEditComponent,
     ArticlePreviewComponent,
     SelectAppointmentComponent,
+    PatientHistoryComponent,
+    DiagnoseHistoryComponent,
+    DiagnoseDetailsComponent,
   ],
   imports: [
     MatProgressSpinnerModule,

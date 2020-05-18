@@ -1,0 +1,92 @@
+<nb-card status="info">
+  <nb-card-header>
+    {{ data.patient.name }} 门诊记录
+    <button nbButton shape="round" size="tiny" class="float-right" mat-dialog-close>
+      <nb-icon icon="close"></nb-icon>
+    </button>
+  </nb-card-header>
+
+  <mat-dialog-content class="px-3">
+    <mat-tab-group mat-stretch-tabs (selectedTabChange)="tabChanged($event.index)">
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <mat-icon>account_box</mat-icon>
+          个人信息
+        </ng-template>
+        <ng-template matTabContent>
+          <div class="list-group list-group-flush mt-3 mx-3">
+            <div class="list-group-item list-group-item-action">
+              <span class="pr-4">姓名: </span>{{ data.patient.name }}
+              ({{ data.patient.gender | gender }})
+            </div>
+            <div class="list-group-item list-group-item-action">
+              <span class="pr-4">手机号: </span>{{ data.patient.cell }}
+            </div>
+            <div class="list-group-item list-group-item-action">
+              <span class="pr-4">生日:</span> {{data.patient.birthdate | localDate}}
+            </div>
+            <div class="list-group-item list-group-item-action">
+              <span class="pr-4">社保号:</span> {{ data.patient.sin }}
+            </div>
+            <div class="list-group-item list-group-item-action">
+              <span class="pr-4">门诊号:</span> {{ data.patient.admissionNumber }}
+            </div>
+          </div>
+        </ng-template>
+      </mat-tab>
+
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <mat-icon class="example-tab-icon">assignment</mat-icon>
+          门诊记录
+        </ng-template>
+        <ng-template matTabContent>
+          <ngx-diagnose-history [diagnoses]="diagnoses"></ngx-diagnose-history>
+        </ng-template>
+      </mat-tab>
+
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <mat-icon class="example-tab-icon">opacity</mat-icon>
+          化验结果
+        </ng-template>
+
+        Content 3
+      </mat-tab>
+
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <mat-icon class="example-tab-icon">gesture</mat-icon>
+          不良反应
+        </ng-template>
+
+        Content 3
+      </mat-tab>
+
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <mat-icon class="example-tab-icon">group_work</mat-icon>
+          联合用药
+        </ng-template>
+
+        Content 3
+      </mat-tab>
+
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <mat-icon>event-outline</mat-icon>
+          今日用药
+        </ng-template>
+
+        Content 3
+      </mat-tab>
+    </mat-tab-group>
+
+  </mat-dialog-content>
+
+  <nb-card-footer class="d-block">
+    <button nbButton hero status="primary" class="float-right" mat-dialog-close>
+      <nb-icon icon="close-circle"></nb-icon> 关闭
+    </button>
+  </nb-card-footer>
+</nb-card>

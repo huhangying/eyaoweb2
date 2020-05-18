@@ -4,7 +4,7 @@
     &nbsp;&nbsp;
     <ng-container *ngIf="selectedPatient">
       <button nbButton size="small" class="float-right" [status]="isFirstVisit ? 'success' : 'info'"
-        matTooltip="查看病患历史记录" (click)="selectAppointment()">
+        matTooltip="查看病患历史记录" (click)="viewPatientHistory()">
         <nb-icon icon="person-outline"></nb-icon>
         {{ selectedPatient.name }}
       </button>
