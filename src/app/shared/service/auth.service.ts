@@ -1,7 +1,7 @@
 import { AppStoreService } from '../store/app-store.service';
 import { Injectable } from '@angular/core';
 import { ApiService } from './api.service';
-import { Doctor } from '../../models/doctor.model';
+import { Doctor } from '../../models/crm/doctor.model';
 
 @Injectable({
   providedIn: 'root',

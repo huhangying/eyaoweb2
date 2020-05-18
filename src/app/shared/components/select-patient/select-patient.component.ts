@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, Inject, Optional, SkipSelf } from '@angular/core';
-import { User } from '../../../models/user.model';
+import { User } from '../../../models/crm/user.model';
 import { Subject, Observable } from 'rxjs';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MessageService } from '../../service/message.service';

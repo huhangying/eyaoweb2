@@ -1,4 +1,4 @@
-import { Doctor } from '../../models/doctor.model';
+import { Doctor } from '../../models/crm/doctor.model';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { DoctorService } from '../../services/doctor.service';
 import { Component, OnInit, OnDestroy } from '@angular/core';

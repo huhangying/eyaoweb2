@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatDialog } from '@angular/material/dialog';
 import { HospitalService } from '../../../services/hospital.service';
-import { Const } from '../../../models/const.model';
+import { Const } from '../../../models/hospital/const.model';
 import { HospitalSettingsEditComponent } from './hospital-settings-edit/hospital-settings-edit.component';
 import { MessageService } from '../../../shared/service/message.service';
 import { tap } from 'rxjs/operators';

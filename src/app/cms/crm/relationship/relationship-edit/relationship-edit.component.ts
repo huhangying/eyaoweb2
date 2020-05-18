@@ -1,9 +1,9 @@
 import { Component, OnInit, OnDestroy, Inject, Optional, SkipSelf } from '@angular/core';
 import { Subject } from 'rxjs';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { Relationship } from '../../../../models/relationship.model';
+import { Relationship } from '../../../../models/crm/relationship.model';
 import { DoctorService } from '../../../../services/doctor.service';
-import { DoctorGroup } from '../../../../models/doctor-group.model';
+import { DoctorGroup } from '../../../../models/crm/doctor-group.model';
 import { Router } from '@angular/router';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { tap, takeUntil, catchError } from 'rxjs/operators';

@@ -9,7 +9,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { DialogService } from '../../../../shared/service/dialog.service';
 import { MessageService } from '../../../../shared/service/message.service';
 import { takeUntil, startWith, tap, catchError } from 'rxjs/operators';
-import { User } from '../../../../models/user.model';
+import { User } from '../../../../models/crm/user.model';
 import { UserService } from '../../../../services/user.service';
 
 @Component({

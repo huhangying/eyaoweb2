@@ -5,7 +5,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ReservationService } from '../../../../services/reservation.service';
 import { MessageService } from '../../../../shared/service/message.service';
 import { Subject } from 'rxjs';
-import { Doctor } from '../../../../models/doctor.model';
+import { Doctor } from '../../../../models/crm/doctor.model';
 import { tap, catchError, takeUntil } from 'rxjs/operators';
 
 @Component({

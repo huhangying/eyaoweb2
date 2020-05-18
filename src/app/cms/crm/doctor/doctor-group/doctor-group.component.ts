@@ -1,4 +1,4 @@
-import { DoctorGroup } from './../../../../models/doctor-group.model';
+import { DoctorGroup } from '../../../../models/crm/doctor-group.model';
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { Subject } from 'rxjs';
 import { MatTableDataSource } from '@angular/material/table';
@@ -10,7 +10,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { DialogService } from '../../../../shared/service/dialog.service';
 import { DoctorGroupEditComponent } from './doctor-group-edit/doctor-group-edit.component';
 import { MessageService } from '../../../../shared/service/message.service';
-import { Doctor } from '../../../../models/doctor.model';
+import { Doctor } from '../../../../models/crm/doctor.model';
 import { tap, catchError } from 'rxjs/operators';
 import { Department } from '../../../../models/hospital/department.model';
 

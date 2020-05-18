@@ -1,8 +1,8 @@
 import { Component, OnInit, Inject, Optional, SkipSelf, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
-import { User } from '../../../models/user.model';
-import { Doctor } from '../../../models/doctor.model';
+import { User } from '../../../models/crm/user.model';
+import { Doctor } from '../../../models/crm/doctor.model';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { Diagnose } from '../../../models/diagnose.model';
+import { Diagnose } from '../../../models/diagnose/diagnose.model';
 import { DiagnoseService } from '../../../services/diagnose.service';
 
 @Component({

@@ -2,7 +2,7 @@ import { Component, OnInit, Inject, Optional, SkipSelf, OnDestroy, ChangeDetecti
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Period } from '../../../../models/reservation/schedule.model';
-import { Doctor } from '../../../../models/doctor.model';
+import { Doctor } from '../../../../models/crm/doctor.model';
 import { ReservationService } from '../../../../services/reservation.service';
 import { MessageService } from '../../../../shared/service/message.service';
 import { filter, distinctUntilChanged, tap, takeUntil, catchError } from 'rxjs/operators';

@@ -7,7 +7,7 @@ import { DoctorService } from '../../../services/doctor.service';
 import { UploadService } from '../../service/upload.service';
 import { mustMatch } from '../../helper/must-match.validator';
 import { environment } from '../../../../environments/environment';
-import { Doctor } from '../../../models/doctor.model';
+import { Doctor } from '../../../models/crm/doctor.model';
 import { map, takeUntil, distinctUntilChanged, tap, startWith } from 'rxjs/operators';
 import { HttpEventType } from '@angular/common/http';
 

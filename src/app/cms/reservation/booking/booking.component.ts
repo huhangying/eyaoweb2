@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, ViewChild, ChangeDetectorRef, ChangeDetectionStrategy } from '@angular/core';
 import { Subject } from 'rxjs';
 import { Department } from '../../../models/hospital/department.model';
-import { Doctor } from '../../../models/doctor.model';
+import { Doctor } from '../../../models/crm/doctor.model';
 import { MatTableDataSource } from '@angular/material/table';
 import { BookingFlatten, Booking } from '../../../models/reservation/booking.model';
 import { MatPaginator } from '@angular/material/paginator';

@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy, Inject } from '@angular/core';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { Const } from '../../../../models/const.model';
+import { Const } from '../../../../models/hospital/const.model';
 import { HospitalService } from '../../../../services/hospital.service';
 
 @Component({

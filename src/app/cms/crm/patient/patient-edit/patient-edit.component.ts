@@ -1,5 +1,5 @@
 import { Component, OnInit, Inject, Optional, SkipSelf, OnDestroy } from '@angular/core';
-import { User } from '../../../../models/user.model';
+import { User } from '../../../../models/crm/user.model';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Subject } from 'rxjs';

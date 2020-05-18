@@ -1,4 +1,4 @@
-import { Department } from './hospital/department.model';
+import { Department } from '../hospital/department.model';
 
 export interface User {
   _id: string;

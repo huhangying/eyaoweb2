@@ -1,5 +1,5 @@
 import { Schedule } from './schedule.model';
-import { User } from '../user.model';
+import { User } from '../crm/user.model';
 import * as moment from 'moment';
 
 // flatten booking

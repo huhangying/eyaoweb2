@@ -1,5 +1,5 @@
 import { NbMediaBreakpoint } from '@nebular/theme';
-import { Doctor } from '../../models/doctor.model';
+import { Doctor } from '../../models/crm/doctor.model';
 
 
 export class AppState {

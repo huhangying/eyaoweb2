@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Diagnose } from '../../../../models/diagnose.model';
+import { Diagnose } from '../../../../models/diagnose/diagnose.model';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatDialog } from '@angular/material/dialog';
 import { DiagnoseDetailsComponent } from '../diagnose-details/diagnose-details.component';

@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, Output, Input, EventEmitter } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { Department } from '../../../models/hospital/department.model';
-import { Doctor } from '../../../models/doctor.model';
+import { Doctor } from '../../../models/crm/doctor.model';
 import { DoctorService } from '../../../services/doctor.service';
 import { tap, takeUntil, distinctUntilChanged, filter, startWith } from 'rxjs/operators';
 import { Subject } from 'rxjs';

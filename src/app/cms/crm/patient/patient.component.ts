@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
-import { User } from '../../../models/user.model';
+import { User } from '../../../models/crm/user.model';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { MatTableDataSource } from '@angular/material/table';

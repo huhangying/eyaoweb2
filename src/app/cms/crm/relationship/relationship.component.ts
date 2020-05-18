@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy, ViewChild, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { Subject } from 'rxjs';
-import { Relationship } from '../../../models/relationship.model';
+import { Relationship } from '../../../models/crm/relationship.model';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
@@ -12,9 +12,9 @@ import { takeUntil, tap, distinctUntilChanged, catchError } from 'rxjs/operators
 import { DoctorService } from '../../../services/doctor.service';
 import { Department } from '../../../models/hospital/department.model';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Doctor } from '../../../models/doctor.model';
-import { DoctorGroup } from '../../../models/doctor-group.model';
-import { User } from '../../../models/user.model';
+import { Doctor } from '../../../models/crm/doctor.model';
+import { DoctorGroup } from '../../../models/crm/doctor-group.model';
+import { User } from '../../../models/crm/user.model';
 import { RelationshipEditComponent } from './relationship-edit/relationship-edit.component';
 import { DoctorGroupEditComponent } from '../doctor/doctor-group/doctor-group-edit/doctor-group-edit.component';
 

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from '../shared/service/api.service';
-import { Diagnose } from '../models/diagnose.model';
+import { Diagnose } from '../models/diagnose/diagnose.model';
 
 @Injectable({
   providedIn: 'root'

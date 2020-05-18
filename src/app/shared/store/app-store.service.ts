@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { AppState } from './app-state.model';
 import { Store } from './store';
 import { NbMediaBreakpoint } from '@nebular/theme';
-import { Doctor } from '../../models/doctor.model';
+import { Doctor } from '../../models/crm/doctor.model';
 import * as store2 from 'store2';
 
 @Injectable({ providedIn: 'root' })

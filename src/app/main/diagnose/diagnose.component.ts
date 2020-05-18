@@ -2,12 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../shared/service/auth.service';
 import { MatDialog } from '@angular/material/dialog';
 import { MessageService } from '../../shared/service/message.service';
-import { Doctor } from '../../models/doctor.model';
+import { Doctor } from '../../models/crm/doctor.model';
 import { SelectAppointmentComponent } from './select-appointment/select-appointment.component';
 import { SelectPatientComponent } from '../../shared/components/select-patient/select-patient.component';
 import { Booking } from '../../models/reservation/booking.model';
 import { tap } from 'rxjs/operators';
-import { User } from '../../models/user.model';
+import { User } from '../../models/crm/user.model';
 import { PatientHistoryComponent } from './patient-history/patient-history.component';
 
 @Component({

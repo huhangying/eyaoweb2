@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { MatTableDataSource } from '@angular/material/table';
-import { Doctor } from '../../../../models/doctor.model';
+import { Doctor } from '../../../../models/crm/doctor.model';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { DoctorService } from '../../../../services/doctor.service';

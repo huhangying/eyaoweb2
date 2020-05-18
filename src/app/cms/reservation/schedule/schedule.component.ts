@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy, ViewChild, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { Subject } from 'rxjs';
-import { Doctor } from '../../../models/doctor.model';
+import { Doctor } from '../../../models/crm/doctor.model';
 import { Schedule, Period } from '../../../models/reservation/schedule.model';
 import { tap, catchError } from 'rxjs/operators';
 import { MessageService } from '../../../shared/service/message.service';
