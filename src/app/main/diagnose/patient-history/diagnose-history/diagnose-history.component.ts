@@ -11,9 +11,11 @@ import { DiagnoseDetailsComponent } from '../diagnose-details/diagnose-details.c
 })
 export class DiagnoseHistoryComponent implements OnInit {
   @Input() set diagnoses(values: Diagnose[]) {
+    console.log(values);
+
     this.dataSource = new MatTableDataSource<Diagnose>(values || []);
   }
-  displayedColumns: string[] = ['department', 'doctor', 'prescription', 'notices', 'updatedAt', '_id'];
+  displayedColumns: string[] = ['doctor.department.name', 'doctor.name', 'prescription', 'notices', 'updatedAt', '_id'];
   dataSource: MatTableDataSource<Diagnose>;
 
   constructor(

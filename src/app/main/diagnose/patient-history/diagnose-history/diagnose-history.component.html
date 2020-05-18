@@ -1,17 +1,18 @@
 <ng-container *ngIf="dataSource.data?.length">
-  <div class="text-hint">包含该患者的所有门诊记录(过去的和已经发布的)。</div>
   <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 table-striped table-hover">
 
-    <ng-container matColumnDef="department">
+    <ng-container matColumnDef="doctor.department.name">
       <th mat-header-cell *matHeaderCellDef> 专科 </th>
       <td mat-cell *matCellDef="let element">
-        {{ (element.department) }}
+        {{ (element.doctor?.department?.name) }}
       </td>
     </ng-container>
 
-    <ng-container matColumnDef="doctor">
+    <ng-container matColumnDef="doctor.name">
       <th mat-header-cell *matHeaderCellDef> 药师 </th>
-      <td mat-cell *matCellDef="let element"> {{element.doctor}} </td>
+      <td mat-cell *matCellDef="let element">
+        {{element.doctor?.name}}
+      </td>
     </ng-container>
 
     <ng-container matColumnDef="prescription">
@@ -43,6 +44,7 @@
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   </table>
+  <div class="text-hint pt-3">* 包含该患者的所有门诊记录(过去的和已经发布的)。</div>
 </ng-container>
 
 <ng-container *ngIf="!dataSource.data?.length">

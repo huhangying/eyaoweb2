@@ -8,8 +8,8 @@ export interface Medicine {
   capacity: number;
   usage: string; // 内服外用等
   dosage: Dosage;
-  notices: MedicineNotice[];
-  apply: boolean;
+  notices?: MedicineNotice[];
+  apply?: boolean;
 }
 
 export interface Dosage {
