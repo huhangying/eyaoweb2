@@ -7,6 +7,7 @@ import { Observable, of } from 'rxjs';
 
 @Component({
   selector: 'ngx-app',
+  // template: '<mat-spinner *ngIf="loading$ | async"></mat-spinner><router-outlet></router-outlet>',
   template: '<div [nbSpinner]="loading$ | async" nbSpinnerStatus="info"><router-outlet></router-outlet></div>',
 })
 export class AppComponent implements OnInit {

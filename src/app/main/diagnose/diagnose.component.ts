@@ -75,6 +75,15 @@ export class DiagnoseComponent implements OnInit {
     return !this.selectedPatient.visitedDepartments.find(_ => _._id === this.doctor.department);
   }
 
+  tabChanged(index: number) {
+    console.log(index);
+    switch (index) {
+      case 1:
+        break;
+    }
+
+  }
+
   closeDiagnose() {
 
   }

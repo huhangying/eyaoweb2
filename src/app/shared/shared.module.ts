@@ -20,6 +20,7 @@ import { MAT_MOMENT_DATE_FORMATS, MomentDateAdapter } from '@angular/material-mo
 import { SelectArticleCatComponent } from '../cms/shared/select-article-cat/select-article-cat.component';
 import { PaginatorProvider } from './helper/paginator.provider';
 import { DialogService } from './service/dialog.service';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import { AccessControlDirective } from './directive/access-control.directive';
 import { LocalDatePipe } from './pipe/local-date.pipe';
 import { ConfirmComponent } from './modal/confirm/confirm.component';
@@ -46,6 +47,7 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
     MatDialogModule,
     MatDatepickerModule,
     // MatNativeDateModule,
+    MatProgressSpinnerModule,
     MatTooltipModule,
     MatTabsModule,
     MatBadgeModule,
@@ -70,6 +72,7 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
     MatDialogModule,
     MatDatepickerModule,
     // MatNativeDateModule,
+    MatProgressSpinnerModule,
     MatTooltipModule,
     MatTabsModule,
     MatBadgeModule,

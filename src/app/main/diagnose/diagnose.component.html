@@ -26,7 +26,57 @@
       </span>
     </div>
 
-    <ng-container *ngIf="true">
+    <ng-container *ngIf="selectedPatient">
+      <mat-tab-group mat-stretch-tabs (selectedTabChange)="tabChanged($event.index)">
+        <mat-tab>
+          <ng-template mat-tab-label>
+            <mat-icon>account_box</mat-icon>
+            门诊处方
+          </ng-template>
+          <ng-template matTabContent>
+          </ng-template>
+        </mat-tab>
+
+        <mat-tab>
+          <ng-template mat-tab-label>
+            <mat-icon>account_box</mat-icon>
+            监测计划
+          </ng-template>
+          <ng-template matTabContent>
+          </ng-template>
+        </mat-tab>
+
+        <mat-tab>
+          <ng-template mat-tab-label>
+            <mat-icon>account_box</mat-icon>
+            化验结果
+          </ng-template>
+          <ng-template matTabContent>
+          </ng-template>
+        </mat-tab>
+
+        <mat-tab>
+          <ng-template mat-tab-label>
+            <mat-icon>account_box</mat-icon>
+            问卷
+          </ng-template>
+          <ng-template matTabContent>
+          </ng-template>
+        </mat-tab>
+
+        <mat-tab>
+          <ng-template mat-tab-label>
+            <mat-icon>account_box</mat-icon>
+            门诊结论
+          </ng-template>
+          <ng-template matTabContent>
+          </ng-template>
+        </mat-tab>
+
+      </mat-tab-group>
+    </ng-container>
+
+    <ng-container *ngIf="!selectedPatient">
       <div class="alert alert-warning" role="alert">
         请点击"选择预约"或"选择病患"按键开始一个门诊。
       </div>

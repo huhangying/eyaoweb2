@@ -3,7 +3,6 @@ import { MainComponent } from './main.component';
 import { MainRoutingModule } from './main-routing.module';
 import { ProfileComponent } from './profile/profile.component';
 import { SharedModule } from '../shared/shared.module';
-import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import { PreferencesComponent } from './preferences/preferences.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { ShortcutsComponent } from './shortcuts/shortcuts.component';
@@ -40,7 +39,6 @@ import { DiagnoseDetailsComponent } from './diagnose/patient-history/diagnose-de
     DiagnoseDetailsComponent,
   ],
   imports: [
-    MatProgressSpinnerModule,
     SharedModule,
     CKEditorModule,
     MainRoutingModule,
