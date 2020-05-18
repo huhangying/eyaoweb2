@@ -18,6 +18,9 @@ import { SelectAppointmentComponent } from './diagnose/select-appointment/select
 import { PatientHistoryComponent } from './diagnose/patient-history/patient-history.component';
 import { DiagnoseHistoryComponent } from './diagnose/patient-history/diagnose-history/diagnose-history.component';
 import { DiagnoseDetailsComponent } from './diagnose/patient-history/diagnose-details/diagnose-details.component';
+import { PrescriptionComponent } from './diagnose/prescription/prescription.component';
+import { LabResultsComponent } from './diagnose/lab-results/lab-results.component';
+import { NoticesComponent } from './diagnose/notices/notices.component';
 
 @NgModule({
   declarations: [
@@ -37,6 +40,9 @@ import { DiagnoseDetailsComponent } from './diagnose/patient-history/diagnose-de
     PatientHistoryComponent,
     DiagnoseHistoryComponent,
     DiagnoseDetailsComponent,
+    PrescriptionComponent,
+    LabResultsComponent,
+    NoticesComponent,
   ],
   imports: [
     SharedModule,
