@@ -1,5 +1,4 @@
 import { Survey } from '../survey/survey.model';
-import { Prescription } from './prescription.model';
 import { MedicineNotice } from '../hospital/medicine-notice.model';
 import { Medicine } from '../hospital/medicine.model';
 
