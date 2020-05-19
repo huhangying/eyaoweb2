@@ -17,8 +17,6 @@ export class NoticesComponent implements OnInit {
     public dialog: MatDialog,
     private dialogService: DialogService,
   ) {
-    // load if existed
-    this.notices = [];
   }
 
   ngOnInit(): void {
@@ -35,10 +33,7 @@ export class NoticesComponent implements OnInit {
   edit(index=-1, item?: MedicineNotice) {
     const isEdit = index > -1;
     this.dialog.open(NoticeEditComponent, {
-      data: {
-        medicine: item,
-        notices: this.notices || [],
-      }
+      data: item
     }).afterClosed()
       .subscribe(result => {
         if (result) {

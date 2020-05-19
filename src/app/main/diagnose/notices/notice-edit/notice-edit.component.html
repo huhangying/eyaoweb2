@@ -1,1 +1,61 @@
-<p>notice-edit works!</p>
+<nb-card [status]="data ? 'info' : 'success'">
+  <nb-card-header>
+    {{data? '编辑监测计划' : '新增监测计划'}}
+    <button nbButton shape="round" size="tiny" class="float-right" mat-dialog-close>
+      <nb-icon icon="close"></nb-icon>
+    </button>
+  </nb-card-header>
+
+  <mat-dialog-content class="px-3" [formGroup]="form">
+    <div class="field row m-0">
+      <label for="name" class="label required"> 名称 </label>
+      <input nbInput fullWidth id="name" formControlName="notice">
+    </div>
+
+    <div class="field row">
+      <div class="col-md-6">
+        <label for="startDate" class="label required"> 开始日期 </label>
+        <div class="d-flex px-0">
+          <input nbInput fullWidth id="startDate" #startDate [matDatepicker]="pickerStart" formControlName="startDate"
+            [min]="fromMinDate" [max]="fromMaxDate">
+          <mat-datepicker-toggle nbSuffix [for]="pickerStart"></mat-datepicker-toggle>
+          <mat-datepicker #pickerStart></mat-datepicker>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <label for="endDate" class="label"> 结束日期 </label>
+        <div class="d-flex px-0">
+          <input nbInput fullWidth id="endDate" #endDate [matDatepicker]="pickerEnd" formControlName="endDate"
+            [min]="toMinDate">
+          <mat-datepicker-toggle nbSuffix [for]="pickerEnd"></mat-datepicker-toggle>
+          <mat-datepicker #pickerEnd></mat-datepicker>
+        </div>
+      </div>
+    </div>
+
+    <div class="field row">
+      <div class="col-md-6">
+        <label for="days_to_start" class="label required"> 提醒开始 </label>
+          <input nbInput type="number" fullWidth id="days_to_start" formControlName="days_to_start">
+      </div>
+      <div class="col-md-6">
+        <label for="during" class="label"> 持续天数 </label>
+          <input nbInput type="number" min="1" fullWidth id="during" formControlName="during">
+      </div>
+    </div>
+
+    <div class="field row">
+      <div class="field row m-0 pt-3">
+        <nb-checkbox formControlName="require_confirm"> 需用户确认？ </nb-checkbox>
+      </div>
+    </div>
+
+  </mat-dialog-content>
+
+  <nb-card-footer class="d-block">
+    <button nbButton mat-dialog-close>取消</button>
+    <button nbButton hero status="primary" class="float-right" [disabled]="form.invalid" (click)="update()">
+      <nb-icon icon="checkmark-circle"></nb-icon>更新
+    </button>
+  </nb-card-footer>
+</nb-card>

@@ -27,7 +27,7 @@
         <td>{{medicine.name}}(共{{ medicine.capacity }} {{ medicine.unit}} X {{medicine.quantity}})</td>
         <td>{{medicine.usage}}: {{showInterval(medicine.dosage.intervalDay)}} {{medicine.dosage.way}} {{medicine.dosage.frequency}} 次, 每次 {{medicine.dosage.count}} {{medicine.unit}}</td>
         <td>{{medicine.notes || '无'}}</td>
-        <td>
+        <td class="">
           <button nbButton hero shape="round" size="tiny" status="info" title="编辑" (click)="edit(i, medicine)">
             <nb-icon icon="edit-2"></nb-icon>
           </button>
