@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject, Optional, SkipSelf, OnDestroy } from '@angular/core';
+import { Component, OnInit, Inject, Optional, SkipSelf, OnDestroy, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { Medicine } from '../../../../models/hospital/medicine.model';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
@@ -11,7 +11,8 @@ import { MessageService } from '../../../../shared/service/message.service';
 @Component({
   selector: 'ngx-prescription-edit',
   templateUrl: './prescription-edit.component.html',
-  styleUrls: ['./prescription-edit.component.scss']
+  styleUrls: ['./prescription-edit.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PrescriptionEditComponent implements OnInit , OnDestroy {
   form: FormGroup;
@@ -28,6 +29,7 @@ export class PrescriptionEditComponent implements OnInit , OnDestroy {
     private fb: FormBuilder,
     private medicineService: MedicineService,
     private message: MessageService,
+    private cd: ChangeDetectorRef,
   ) {
     this.medicines$ = this.medicineService.getMedicines();
     this.form = this.fb.group({
@@ -53,9 +55,12 @@ export class PrescriptionEditComponent implements OnInit , OnDestroy {
 
   ngOnInit(): void {
     this.dialogRef.updateSize('90%');
-    this.fromMinDate = moment(); // today
+
     if (this.data.medicine) {
       this.form.patchValue(this.data.medicine);
+      this.cd.markForCheck();
+    } else {
+      this.fromMinDate = moment(); // today if 新增
     }
   }
 
@@ -83,6 +88,7 @@ export class PrescriptionEditComponent implements OnInit , OnDestroy {
     const days = total * med.dosage.intervalDay / everyPeriod;
 
     this.endDateCtrl.patchValue(new Date(moment(med.startDate).add(days, 'days').format()));
+    this.cd.markForCheck();
   }
 
   update() {

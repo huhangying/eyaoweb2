@@ -1,6 +1,6 @@
-<nb-card [status]="data ? 'info' : 'success'">
+<nb-card [status]="data.medicine ? 'info' : 'success'">
   <nb-card-header>
-    {{data ? '编辑药方' : '新增药方'}}
+    {{data.medicine ? '编辑药方' : '新增药方'}}
     <button nbButton shape="round" size="tiny" class="float-right" mat-dialog-close>
       <nb-icon icon="close"></nb-icon>
     </button>
