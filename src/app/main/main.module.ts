@@ -22,6 +22,7 @@ import { PrescriptionComponent } from './diagnose/prescription/prescription.comp
 import { LabResultsComponent } from './diagnose/lab-results/lab-results.component';
 import { NoticesComponent } from './diagnose/notices/notices.component';
 import { PrescriptionEditComponent } from './diagnose/prescription/prescription-edit/prescription-edit.component';
+import { NoticeEditComponent } from './diagnose/notices/notice-edit/notice-edit.component';
 
 @NgModule({
   declarations: [
@@ -45,6 +46,7 @@ import { PrescriptionEditComponent } from './diagnose/prescription/prescription-
     LabResultsComponent,
     NoticesComponent,
     PrescriptionEditComponent,
+    NoticeEditComponent,
   ],
   imports: [
     SharedModule,

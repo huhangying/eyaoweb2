@@ -1,1 +1,48 @@
-<p>notices works!</p>
+<ng-container *ngIf="!notices?.length">
+  <div class="alert alert-warning" role="alert">
+    暂无病患监测计划。
+  </div>
+</ng-container>
+
+<div class="py-2">
+  <button nbButton hero size="small" status="success" class="float-right" (click)="add()">
+    <nb-icon icon="plus-outline"></nb-icon> 增加
+  </button>
+</div>
+
+<ng-container *ngIf="notices?.length">
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">名称</th>
+        <th scope="col">起止日期</th>
+        <th scope="col">提醒开始</th>
+        <th scope="col">提醒持续天数</th>
+        <th scope="col">需用户确认？</th>
+        <th scope="col"></th>
+      </tr>
+    </thead>
+    <tbody cdkDropList (cdkDropListDropped)="drop($event)">
+      <tr *ngFor="let notice of notices; let i=index" cdkDrag>
+        <th scope="row">{{i+1}}</th>
+        <td>{{notice.notice}}</td>
+        <td>{{notice.startDate | localDate}} - {{notice.endDate | localDate}}</td>
+        <td>{{notice.days_to_start}}</td>
+        <td>{{notice.during}}</td>
+        <td>
+          <mat-checkbox [(ngModel)]="notice.require_confirm" [disabled]="true"></mat-checkbox>
+        </td>
+        <td>
+          <button nbButton hero shape="round" size="tiny" status="info" title="编辑" (click)="edit(i, notice)">
+            <nb-icon icon="edit-2"></nb-icon>
+          </button>
+          &nbsp;
+          <button nbButton hero shape="round" size="tiny" status="danger" title="删除" (click)="delete(i)">
+            <nb-icon icon="trash-2-outline"></nb-icon>
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</ng-container>

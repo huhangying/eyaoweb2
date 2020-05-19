@@ -20,8 +20,6 @@ export class PrescriptionComponent implements OnInit {
     public dialog: MatDialog,
     private dialogService: DialogService,
   ) {
-    // load if existed
-    this.prescription = [];
   }
 
   ngOnInit(): void {
