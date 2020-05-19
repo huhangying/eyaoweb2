@@ -22,44 +22,13 @@
           <input nbInput fullWidth id="name" formControlName="name">
         </div>
         <div class="col-md-2">
-          <label for="capacity" class="label required"> 药品总量 </label>
+          <label for="capacity" class="label required"> 药品含量 </label>
           <input nbInput type="number" min="0" fullWidth id="capacity" formControlName="capacity">
         </div>
-        <div class="col-md-2">
+        <div class="col-md-4">
           <label for="unit" class="label required"> 单位 </label>
           <nb-select id="unit" fullWidth formControlName="unit">
             <nb-option *ngFor="let unit of data.medicineReferences.units" [value]="unit">{{unit}}</nb-option>
-          </nb-select>
-        </div>
-        <div class="col-md-2">
-          <label for="quantity" class="label required"> 数量 </label>
-          <input nbInput type="number" min="0" fullWidth id="quantity" formControlName="quantity">
-        </div>
-      </div>
-
-      <div class="field row">
-        <div class="col-md-3">
-          <label for="startDate" class="label required"> 开始服用日期 </label>
-          <div class="d-inline-flex px-0">
-            <input nbInput fullWidth id="startDate" #startDate [matDatepicker]="pickerStart" formControlName="startDate"
-              [min]="fromMinDate" [max]="fromMaxDate">
-            <mat-datepicker-toggle nbSuffix [for]="pickerStart"></mat-datepicker-toggle>
-            <mat-datepicker #pickerStart></mat-datepicker>
-          </div>
-        </div>
-        <div class="col-md-3">
-          <label for="endDate" class="label"> 结束日期 </label>
-          <div class="d-inline-flex px-0">
-            <input nbInput fullWidth id="endDate" #endDate [matDatepicker]="pickerEnd" formControlName="endDate"
-              [min]="toMinDate">
-            <mat-datepicker-toggle nbSuffix [for]="pickerEnd"></mat-datepicker-toggle>
-            <mat-datepicker #pickerEnd></mat-datepicker>
-          </div>
-        </div>
-        <div class="col-md-4">
-          <label for="usage" class="label required"> 使用方法 </label>
-          <nb-select id="usage" fullWidth formControlName="usage">
-            <nb-option *ngFor="let usage of data.medicineReferences.usages" [value]="usage">{{usage}}</nb-option>
           </nb-select>
         </div>
       </div>
@@ -86,6 +55,37 @@
         <div class="col-md-3">
           <label for="count" class="label required"> 每次 {{ unitCtrl.value && '(' + unitCtrl.value + ')' }} </label>
           <input nbInput fullWidth type="number" id="count" min="0" formControlName="count">
+        </div>
+      </div>
+
+      <div class="field row">
+        <div class="col-md-2">
+          <label for="quantity" class="label required"> 数量 </label>
+          <input nbInput type="number" min="0" fullWidth id="quantity" formControlName="quantity">
+        </div>
+        <div class="col-md-4">
+          <label for="usage" class="label required"> 使用方法 </label>
+          <nb-select id="usage" fullWidth formControlName="usage">
+            <nb-option *ngFor="let usage of data.medicineReferences.usages" [value]="usage">{{usage}}</nb-option>
+          </nb-select>
+        </div>
+        <div class="col-md-3">
+          <label for="startDate" class="label required"> 开始服用日期 </label>
+          <div class="d-inline-flex px-0">
+            <input nbInput fullWidth id="startDate" #startDate [matDatepicker]="pickerStart" formControlName="startDate"
+              [min]="fromMinDate" [max]="fromMaxDate">
+            <mat-datepicker-toggle nbSuffix [for]="pickerStart"></mat-datepicker-toggle>
+            <mat-datepicker #pickerStart></mat-datepicker>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <label for="endDate" class="label"> 结束日期 </label>
+          <div class="d-inline-flex px-0">
+            <input nbInput fullWidth id="endDate" #endDate [matDatepicker]="pickerEnd" formControlName="endDate"
+              [min]="toMinDate">
+            <mat-datepicker-toggle nbSuffix [for]="pickerEnd"></mat-datepicker-toggle>
+            <mat-datepicker #pickerEnd></mat-datepicker>
+          </div>
         </div>
       </div>
 

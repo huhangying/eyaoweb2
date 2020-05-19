@@ -57,6 +57,12 @@ export class SelectPatientComponent implements OnInit, OnDestroy {
         return;
     }
     this.users$ = this.userService.searchByCriteria(searchCriteria).pipe(
+      tap(results => {
+        if (results?.length === 1) {
+          // select it if only one user
+          this.selectedPatient = results[0];
+        }
+      }),
       catchError(rsp => this.message.updateErrorHandle(rsp))
     );
   }
