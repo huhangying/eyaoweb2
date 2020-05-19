@@ -12,6 +12,8 @@ export interface Medicine {
   apply?: boolean;
 
   // belows for prescription!
+  startDate?: Date;
+  endDate?: Date;
   quantity?: number;
   notes?: string;
 }

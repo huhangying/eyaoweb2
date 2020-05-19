@@ -6,7 +6,7 @@
     </button>
   </nb-card-header>
 
-  <mat-dialog-content class="px-3">
+  <mat-dialog-content class="px-3 pt-1">
     <div class="field row">
       <label for="fromTemplate" class="label"> 选择药品模板 </label>
       <nb-select id="fromTemplate" fullWidth [(ngModel)]="selectedMedicine" (selectedChange)="templateSelected($event)"
@@ -95,8 +95,8 @@
           <textarea nbInput fullWidth id="notes" formControlName="notes" rows="3"></textarea>
         </div>
         <div class="col-md-3 pull-right">
-          <button nbButton hero status="primary" (click)="recalculate()">
-            重新计算时间
+          <button nbButton hero status="primary" (click)="caculateEndDate()">
+            自动设置结束日期
           </button>
         </div>
       </div>

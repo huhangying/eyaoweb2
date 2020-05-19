@@ -40,6 +40,7 @@ export class PrescriptionComponent implements OnInit {
     this.dialog.open(PrescriptionEditComponent, {
       data: {
         medicine: item,
+        prescription: this.prescription || [],
         medicineReferences: this.medicineReferences
       }
     }).afterClosed()

@@ -6,6 +6,7 @@ import { Subject, Observable } from 'rxjs';
 import { MedicineService } from '../../../../services/medicine.service';
 import { MedicineReferences } from '../../../../models/hospital/medicine-references.model';
 import * as moment from 'moment';
+import { MessageService } from '../../../../shared/service/message.service';
 
 @Component({
   selector: 'ngx-prescription-edit',
@@ -23,9 +24,10 @@ export class PrescriptionEditComponent implements OnInit , OnDestroy {
 
   constructor(
     public dialogRef: MatDialogRef<PrescriptionEditComponent>,
-    @Inject(MAT_DIALOG_DATA) @Optional() @SkipSelf() public data: { medicine: Medicine; medicineReferences: MedicineReferences },
+    @Inject(MAT_DIALOG_DATA) @Optional() @SkipSelf() public data: { medicine: Medicine; prescription: Medicine[]; medicineReferences: MedicineReferences },
     private fb: FormBuilder,
     private medicineService: MedicineService,
+    private message: MessageService,
   ) {
     this.medicines$ = this.medicineService.getMedicines();
     this.form = this.fb.group({
@@ -34,7 +36,7 @@ export class PrescriptionEditComponent implements OnInit , OnDestroy {
       unit: ['', Validators.required],
       quantity: [1, Validators.required],
       startDate: ['', Validators.required],
-      endDate: [''],
+      endDate: ['', Validators.required],
       usage: ['', Validators.required],
       dosage: this.fb.group({
         count: ['', Validators.required],
@@ -47,6 +49,7 @@ export class PrescriptionEditComponent implements OnInit , OnDestroy {
   }
 
   get unitCtrl() { return this.form.get('unit'); }
+  get endDateCtrl() { return this.form.get('endDate'); }
 
   ngOnInit(): void {
     this.dialogRef.updateSize('90%');
@@ -61,14 +64,25 @@ export class PrescriptionEditComponent implements OnInit , OnDestroy {
     this.destroy$.unsubscribe();
   }
 
-  templateSelected(event) {
-    console.log(event);
-    this.form.patchValue(event);
+  templateSelected(selectedTemplate: Medicine) {
+    // check if exist
+    if (this.data.prescription.length && this.data.prescription.find(_ => _.name === selectedTemplate.name)) {
+      this.message.warning('已经开过了的处方药, 不能再次被开。');
+      return;
+    }
+    this.selectedMedicine.startDate = new Date();
+    this.form.patchValue(selectedTemplate);
 
+    this.caculateEndDate();
   }
 
-  recalculate() {
+  caculateEndDate() {
+    const med: Medicine = this.form.value;
+    const total = med.capacity * med.quantity;
+    const everyPeriod = med.dosage.frequency * med.dosage.count;
+    const days = total * med.dosage.intervalDay / everyPeriod;
 
+    this.endDateCtrl.patchValue(new Date(moment(med.startDate).add(days, 'days').format()));
   }
 
   update() {
