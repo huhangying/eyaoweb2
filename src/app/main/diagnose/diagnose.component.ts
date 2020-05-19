@@ -9,6 +9,10 @@ import { Booking } from '../../models/reservation/booking.model';
 import { tap } from 'rxjs/operators';
 import { User } from '../../models/crm/user.model';
 import { PatientHistoryComponent } from './patient-history/patient-history.component';
+import { DiagnoseService } from '../../services/diagnose.service';
+import { Diagnose } from '../../models/diagnose/diagnose.model';
+import { ActivatedRoute } from '@angular/router';
+import { MedicineReferences } from '../../models/hospital/medicine-references.model';
 
 @Component({
   selector: 'ngx-diagnose',
@@ -16,16 +20,22 @@ import { PatientHistoryComponent } from './patient-history/patient-history.compo
   styleUrls: ['./diagnose.component.scss']
 })
 export class DiagnoseComponent implements OnInit {
+  medicineReferences: MedicineReferences;
   doctor: Doctor;
   selectedBooking: Booking;
   selectedPatient: User;
+  diagnose: Diagnose;
 
   constructor(
+    private route: ActivatedRoute,
     private auth: AuthService,
+    private diagnoseService: DiagnoseService,
     public dialog: MatDialog,
     private message: MessageService,
   ) {
     this.doctor = this.auth.getDoctor();
+    this.medicineReferences = {...this.route.snapshot.data.medicineReferences};
+
   }
 
   ngOnInit(): void {
@@ -41,7 +51,7 @@ export class DiagnoseComponent implements OnInit {
         if (result) {
           this.selectedBooking = result;
           // set selected patient
-          this.selectedPatient = result.user;
+          this.setDiagnoseUser(result.user);
         }
       }),
     ).subscribe();
@@ -55,7 +65,7 @@ export class DiagnoseComponent implements OnInit {
     }).afterClosed().pipe(
       tap(result => {
         if (result) {
-          this.selectedPatient = result;
+          this.setDiagnoseUser(result);
         }
       }),
     ).subscribe();
@@ -82,6 +92,46 @@ export class DiagnoseComponent implements OnInit {
         break;
     }
 
+  }
+
+  async setDiagnoseUser(patient: User) {
+    this.selectedPatient = patient;
+
+    // 如果不存在
+    if (!this.diagnose?._id) {
+      const pendingDiagnose = await this.diagnoseService.getLatestDiagnose(patient._id);
+      // create
+      if (pendingDiagnose?._id) {
+        this.diagnose = pendingDiagnose;
+      } else {
+        return this.diagnoseService.addDiagnose({doctor: this.doctor._id, user: patient._id}).pipe(
+          tap((result: Diagnose) => {
+            if (result?._id) {
+              this.diagnose = result;
+            }
+          })
+        ).subscribe();
+      }
+    }
+    // 如果存在
+    else if (this.diagnose.user !== patient._id) {
+      this.diagnose = {
+        _id: this.diagnose._id,
+        user: patient._id,
+        doctor: this.doctor._id,
+        surveys: [],
+        prescription: [],
+        notices: [],
+        labResults: [],
+        status: 0
+      };
+    }
+  }
+
+  saveDiagnose() {
+    this.diagnoseService.updateDiagnose(this.diagnose).pipe(
+
+    ).subscribe();
   }
 
   closeDiagnose() {

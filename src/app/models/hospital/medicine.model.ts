@@ -10,6 +10,10 @@ export interface Medicine {
   dosage: Dosage;
   notices?: MedicineNotice[];
   apply?: boolean;
+
+  // belows for prescription!
+  quantity?: number;
+  notes?: string;
 }
 
 export interface Dosage {

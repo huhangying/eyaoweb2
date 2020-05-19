@@ -20,6 +20,9 @@
         <nb-icon icon="checkmark-circle-2-outline" *ngIf="selectedPatient"></nb-icon> 选择病患
       </button>
       <span class="float-right">
+        <button nbButton hero size="small" status="primary" (click)="saveDiagnose()" *ngIf="isReady()">
+          <nb-icon icon="save-outline"></nb-icon> 保存
+        </button>
         <button nbButton hero size="small" status="primary" (click)="closeDiagnose()" *ngIf="isReady()">
           <nb-icon icon="paper-plane-outline"></nb-icon> 发送
         </button>
@@ -34,7 +37,7 @@
             门诊处方
           </ng-template>
           <ng-template matTabContent>
-            <ngx-prescription></ngx-prescription>
+            <ngx-prescription [prescription]="diagnose?.prescription" [medicineReferences]="medicineReferences"></ngx-prescription>
           </ng-template>
         </mat-tab>
 

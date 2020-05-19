@@ -1,13 +1,20 @@
-import { Medicine } from '../hospital/medicine.model';
+import { Medicine, Dosage } from '../hospital/medicine.model';
 import { MedicineNotice } from '../hospital/medicine-notice.model';
 
 export interface Prescription {
   _id: string;
-  doctor: string; // id
-  user: string; // id
-  booking?: string; // id
+  startDate: Date;
+  endDate: Date;
+  name: string;
+  desc: string;
+  unit: string;
+  capacity: number;
+  usage: string; // 内服外用等
+  dosage: Dosage;
+  notices?: MedicineNotice[];
 
-  medicines: Medicine[];
-  notices: MedicineNotice[];
-  updatedAt: Date;
+  quantity: number;
+  notes: string;
 }
+
+// TO REMOVE

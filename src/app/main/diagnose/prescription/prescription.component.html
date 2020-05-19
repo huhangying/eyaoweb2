@@ -1,1 +1,42 @@
-<p>prescription works!</p>
+<ng-container *ngIf="!prescription?.length">
+  <div class="alert alert-warning" role="alert">
+    暂无药方。
+  </div>
+</ng-container>
+
+<div class="py-2">
+  <button nbButton hero size="small" status="success" class="float-right" (click)="add()">
+    <nb-icon icon="plus-outline"></nb-icon> 增加
+  </button>
+</div>
+
+<ng-container *ngIf="prescription?.length">
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">药名</th>
+        <th scope="col">服用方法</th>
+        <th scope="col">备注</th>
+        <th scope="col"></th>
+      </tr>
+    </thead>
+    <tbody cdkDropList (cdkDropListDropped)="drop($event)">
+      <tr *ngFor="let medicine of prescription; let i=index" cdkDrag>
+        <th scope="row">{{i+1}}</th>
+        <td>{{medicine.name}}(共{{ medicine.capacity }} {{ medicine.unit}} X {{medicine.quantity}})</td>
+        <td>{{medicine.usage}}: {{showInterval(medicine.dosage.intervalDay)}} {{medicine.dosage.way}} {{medicine.dosage.frequency}} 次, 每次 {{medicine.dosage.count}} {{medicine.unit}}</td>
+        <td>{{medicine.notes || '无'}}</td>
+        <td>
+          <button nbButton hero shape="round" size="tiny" status="info" title="编辑" (click)="edit(i, medicine)">
+            <nb-icon icon="edit-2"></nb-icon>
+          </button>
+          &nbsp;
+          <button nbButton hero shape="round" size="tiny" status="danger" title="删除" (click)="delete(i)">
+            <nb-icon icon="trash-2-outline"></nb-icon>
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</ng-container>

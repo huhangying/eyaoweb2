@@ -3,6 +3,7 @@ import { Resolve } from '@angular/router';
 import { HospitalService } from '../hospital.service';
 import { MedicineReferences } from '../../models/hospital/medicine-references.model';
 import { map } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,7 @@ export class MedicineReferencesResolver implements Resolve<MedicineReferences> {
     private hospitalService: HospitalService,
   ) { }
 
-  resolve() {
+  resolve(): Observable<MedicineReferences>{
     return this.hospitalService.getHospitalSettings().pipe(
       map(data => {
         const medicine_units = data.find(_ => _.name === 'medicine_units')?.value;

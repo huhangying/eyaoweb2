@@ -1,0 +1,114 @@
+<nb-card [status]="data ? 'info' : 'success'">
+  <nb-card-header>
+    {{data ? '编辑药方' : '新增药方'}}
+    <button nbButton shape="round" size="tiny" class="float-right" mat-dialog-close>
+      <nb-icon icon="close"></nb-icon>
+    </button>
+  </nb-card-header>
+
+  <mat-dialog-content class="px-3">
+    <div class="field row">
+      <label for="fromTemplate" class="label"> 选择药品模板 </label>
+      <nb-select id="fromTemplate" fullWidth [(ngModel)]="selectedMedicine" (selectedChange)="templateSelected($event)"
+        placeholder="选择或搜索药品名...">
+        <nb-option *ngFor="let m of medicines$ | async" [value]="m">{{m.name}}</nb-option>
+      </nb-select>
+    </div>
+    <hr>
+    <div [formGroup]="form">
+      <div class="field row">
+        <div class="col-md-6">
+          <label for="name" class="label required"> 药名 </label>
+          <input nbInput fullWidth id="name" formControlName="name">
+        </div>
+        <div class="col-md-2">
+          <label for="capacity" class="label required"> 药品总量 </label>
+          <input nbInput type="number" min="0" fullWidth id="capacity" formControlName="capacity">
+        </div>
+        <div class="col-md-2">
+          <label for="unit" class="label required"> 单位 </label>
+          <nb-select id="unit" fullWidth formControlName="unit">
+            <nb-option *ngFor="let unit of data.medicineReferences.units" [value]="unit">{{unit}}</nb-option>
+          </nb-select>
+        </div>
+        <div class="col-md-2">
+          <label for="quantity" class="label required"> 数量 </label>
+          <input nbInput type="number" min="0" fullWidth id="quantity" formControlName="quantity">
+        </div>
+      </div>
+
+      <div class="field row">
+        <div class="col-md-3">
+          <label for="startDate" class="label required"> 开始服用日期 </label>
+          <div class="d-inline-flex px-0">
+            <input nbInput fullWidth id="startDate" #startDate [matDatepicker]="pickerStart" formControlName="startDate"
+              [min]="fromMinDate" [max]="fromMaxDate">
+            <mat-datepicker-toggle nbSuffix [for]="pickerStart"></mat-datepicker-toggle>
+            <mat-datepicker #pickerStart></mat-datepicker>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <label for="endDate" class="label"> 结束日期 </label>
+          <div class="d-inline-flex px-0">
+            <input nbInput fullWidth id="endDate" #endDate [matDatepicker]="pickerEnd" formControlName="endDate"
+              [min]="toMinDate">
+            <mat-datepicker-toggle nbSuffix [for]="pickerEnd"></mat-datepicker-toggle>
+            <mat-datepicker #pickerEnd></mat-datepicker>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <label for="usage" class="label required"> 使用方法 </label>
+          <nb-select id="usage" fullWidth formControlName="usage">
+            <nb-option *ngFor="let usage of data.medicineReferences.usages" [value]="usage">{{usage}}</nb-option>
+          </nb-select>
+        </div>
+      </div>
+
+      <div class="field row" formGroupName="dosage">
+        <div class="col-md-6">
+          <label for="intervalDay" class="label required"> 用药周期 </label>
+          <div class="container">
+            <div class="row">
+              <nb-select id="intervalDay" class="col-6" fullWidth formControlName="intervalDay">
+                <nb-option *ngFor="let period of data.medicineReferences.periods" [value]="period.value">{{period.name}}
+                </nb-option>
+              </nb-select>
+              <nb-select class="col-6" fullWidth formControlName="way">
+                <nb-option *ngFor="let way of data.medicineReferences.ways" [value]="way">{{way}}</nb-option>
+              </nb-select>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <label for="frequency" class="label required"> 服用频率 </label>
+          <input nbInput fullWidth type="number" id="frequency" min="0" formControlName="frequency">
+        </div>
+        <div class="col-md-3">
+          <label for="count" class="label required"> 每次 {{ unitCtrl.value && '(' + unitCtrl.value + ')' }} </label>
+          <input nbInput fullWidth type="number" id="count" min="0" formControlName="count">
+        </div>
+      </div>
+
+      <div class="field row">
+        <div class="col-md-9">
+          <label for="notes" class="label"> 备注 </label>
+          <textarea nbInput fullWidth id="notes" formControlName="notes" rows="3"></textarea>
+        </div>
+        <div class="col-md-3 pull-right">
+          <button nbButton hero status="primary" (click)="recalculate()">
+            重新计算时间
+          </button>
+        </div>
+      </div>
+
+    </div>
+
+  </mat-dialog-content>
+
+  <nb-card-footer class="d-block">
+    <button nbButton mat-dialog-close>取消</button>
+    <button nbButton hero status="primary" class="float-right" [disabled]="form.invalid" (click)="update()">
+      <nb-icon icon="checkmark-circle"></nb-icon>更新
+    </button>
+  </nb-card-footer>
+</nb-card>
