@@ -13,6 +13,7 @@ import { DiagnoseService } from '../../services/diagnose.service';
 import { Diagnose } from '../../models/diagnose/diagnose.model';
 import { ActivatedRoute } from '@angular/router';
 import { MedicineReferences } from '../../models/hospital/medicine-references.model';
+import { SurveyService } from '../../services/survey.service';
 
 @Component({
   selector: 'ngx-diagnose',
@@ -29,6 +30,7 @@ export class DiagnoseComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private auth: AuthService,
+    private surveyService: SurveyService,
     private diagnoseService: DiagnoseService,
     public dialog: MatDialog,
     private message: MessageService,
@@ -51,7 +53,7 @@ export class DiagnoseComponent implements OnInit {
         if (result) {
           this.selectedBooking = result;
           // set selected patient
-          this.setDiagnoseUser(result.user);
+          this.setDiagnoseUserAndMore(result.user, this.selectedBooking);
         }
       }),
     ).subscribe();
@@ -65,7 +67,7 @@ export class DiagnoseComponent implements OnInit {
     }).afterClosed().pipe(
       tap(result => {
         if (result) {
-          this.setDiagnoseUser(result);
+          this.setDiagnoseUserAndMore(result);
         }
       }),
     ).subscribe();
@@ -82,7 +84,7 @@ export class DiagnoseComponent implements OnInit {
 
   get isFirstVisit() {
     if (!this.selectedPatient?.visitedDepartments?.length) return true;
-    return !this.selectedPatient.visitedDepartments.find(_ => _._id === this.doctor.department);
+    return !this.selectedPatient.visitedDepartments.find(_ => _ === this.doctor.department);
   }
 
   tabChanged(index: number) {
@@ -94,8 +96,10 @@ export class DiagnoseComponent implements OnInit {
 
   }
 
-  async setDiagnoseUser(patient: User) {
+  async setDiagnoseUserAndMore(patient: User, booking?: Booking) {
     this.selectedPatient = patient;
+    console.log(patient);
+
 
     // 如果不存在
     if (!this.diagnose?._id) {
@@ -104,13 +108,7 @@ export class DiagnoseComponent implements OnInit {
       if (pendingDiagnose?._id) {
         this.diagnose = pendingDiagnose;
       } else {
-        return this.diagnoseService.addDiagnose({doctor: this.doctor._id, user: patient._id}).pipe(
-          tap((result: Diagnose) => {
-            if (result?._id) {
-              this.diagnose = result;
-            }
-          })
-        ).subscribe();
+        this.diagnose = await this.diagnoseService.addDiagnose({doctor: this.doctor._id, user: patient._id}).toPromise();
       }
     }
     // 如果存在
@@ -126,6 +124,24 @@ export class DiagnoseComponent implements OnInit {
         status: 0
       };
     }
+
+    if (booking) {
+      // check if surveys available
+      const surveyType = this.isFirstVisit ? 1 : 2; // 1: 初诊; 2: 复诊问卷
+      this.surveyService.getPendingSurveysByUserAndType(this.doctor._id, this.selectedPatient._id, surveyType).pipe(
+        tap(results => {
+          // 取初诊或复诊问卷, 如果有的话,更新到diagnose
+          if (results?.length) {
+            this.diagnose.surveys = [{
+              type: surveyType,
+              list: results
+              // list: results.map(result => result._id)
+            }];
+          }
+        })
+      ).subscribe();
+    }
+
   }
 
   saveDiagnose() {
@@ -139,7 +155,7 @@ export class DiagnoseComponent implements OnInit {
   }
 
   isReady() {
-
+    return true;
   }
 
 }

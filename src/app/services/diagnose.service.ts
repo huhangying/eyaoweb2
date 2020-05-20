@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from '../shared/service/api.service';
 import { Diagnose } from '../models/diagnose/diagnose.model';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -20,8 +22,8 @@ export class DiagnoseService {
     return this.api.get<Diagnose>('diagnose/history/latest/' + patientId).toPromise();
   }
 
-  addDiagnose(data: Diagnose) {
-    return this.api.post<Diagnose>('diagnose', data);
+  addDiagnose(data: Diagnose): Observable<Diagnose> {
+    return this.api.post<Diagnose>('diagnose', data) as Observable<Diagnose>;
   }
 
   updateDiagnose(data: Diagnose) {

@@ -3,7 +3,7 @@
     药师门诊
     &nbsp;&nbsp;
     <ng-container *ngIf="selectedPatient">
-      <button nbButton size="small" class="float-right" [status]="isFirstVisit ? 'success' : 'info'"
+      <button nbButton size="small" class="float-right" [status]="isFirstVisit ? 'success' : 'warning'"
         matTooltip="查看病患历史记录" (click)="viewPatientHistory()">
         <nb-icon icon="person-outline"></nb-icon>
         {{ selectedPatient.name }}
@@ -20,7 +20,7 @@
         <nb-icon icon="checkmark-circle-2-outline" *ngIf="selectedPatient"></nb-icon> 选择病患
       </button>
       <span class="float-right">
-        <button nbButton hero size="small" status="primary" (click)="saveDiagnose()" *ngIf="isReady()">
+        <button nbButton hero size="small" status="primary" (click)="saveDiagnose()" *ngIf="isReady()" class="mr-3">
           <nb-icon icon="save-outline"></nb-icon> 保存
         </button>
         <button nbButton hero size="small" status="primary" (click)="closeDiagnose()" *ngIf="isReady()">

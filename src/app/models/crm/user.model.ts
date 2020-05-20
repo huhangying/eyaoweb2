@@ -20,7 +20,7 @@ export interface User {
   birthdate?: Date;
   sin?: string;
   admissionNumber?: string;
-  visitedDepartments?: Department[]; // 用来判定应该使用初诊问卷还是复诊问卷
+  visitedDepartments?: string[]; // department ids, 用来判定应该使用初诊问卷还是复诊问卷
   // locked_count?: number;
   // apply: boolean;
   department?: string;

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from '../shared/service/api.service';
 import { SurveyTemplate } from '../models/survey/survey-template.model';
+import { Survey } from '../models/survey/survey.model';
 
 @Injectable({
   providedIn: 'root'
@@ -31,6 +32,11 @@ export class SurveyService {
 
   deleteById(id: string) {
     return this.api.delete<SurveyTemplate>('surveytemplate/' + id);
+  }
+
+  //
+  getPendingSurveysByUserAndType(doctorId, patientId: string, surveyType: number) {
+    return this.api.get<Survey[]>(`surveys/${doctorId}/${patientId}/${surveyType}/0`); // 0 means unfinished(pending)
   }
 
 }
