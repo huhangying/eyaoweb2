@@ -3,6 +3,7 @@ import { ApiService } from '../shared/service/api.service';
 import { User } from '../models/crm/user.model';
 import { Relationship2 } from '../models/crm/relationship.model';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -51,5 +52,15 @@ export class UserService {
   // Patient search
   searchByCriteria(search: any) {
     return this.api.patch<User[]>('users/search', search);
+  }
+
+  async checkIfRelationshipExisted(did: string, uid: string) {
+    return await this.api.get<{existed: boolean}>(`relationship/${did}/${uid}`).pipe(
+      map(_ => _.existed)
+    ).toPromise();
+  }
+
+  addRelationship(did: string, uid: string) {
+    return this.api.post('relationship', {doctor: did, user: uid});
   }
 }

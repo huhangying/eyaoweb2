@@ -20,12 +20,12 @@ export class DialogService {
     }).afterClosed();
   }
 
-  confirm(title: string, details?: string): Observable<boolean> {
+  confirm(message: string, title?: string): Observable<boolean> {
     return this.dialog.open(ConfirmComponent, {
       width: '460px',
       data: {
-        title: title,
-        content: details
+        title: title || '请确认',
+        content: message
       }
     }).afterClosed();
   }
