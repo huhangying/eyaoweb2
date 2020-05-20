@@ -12,8 +12,7 @@ import { MedicineReferences } from '../../../models/hospital/medicine-references
   styleUrls: ['./prescription.component.scss']
 })
 export class PrescriptionComponent implements OnInit {
-  @Input()
-  prescription: Medicine[];
+  @Input() prescription: Medicine[];
   @Input() medicineReferences: MedicineReferences;
 
   constructor(

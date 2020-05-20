@@ -20,7 +20,7 @@
         <nb-icon icon="checkmark-circle-2-outline" *ngIf="selectedPatient"></nb-icon> 选择病患
       </button>
       <span class="float-right">
-        <button nbButton hero size="small" status="primary" (click)="saveDiagnose()" *ngIf="isReady()" class="mr-3">
+        <button nbButton hero size="small" status="primary" (click)="saveDiagnose()" *ngIf="diagnose?._id" class="mr-3">
           <nb-icon icon="save-outline"></nb-icon> 保存
         </button>
         <button nbButton hero size="small" status="primary" (click)="closeDiagnose()" *ngIf="isReady()">

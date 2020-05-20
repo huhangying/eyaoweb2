@@ -77,7 +77,8 @@ export class DiagnoseComponent implements OnInit {
     this.dialog.open(PatientHistoryComponent, {
       data: {
         patient: this.selectedPatient,
-        doctor: this.doctor
+        doctor: this.doctor,
+        medicineReferences: this.medicineReferences
       }
     });
   }
@@ -121,7 +122,7 @@ export class DiagnoseComponent implements OnInit {
         prescription: [],
         notices: [],
         labResults: [],
-        status: 0
+        status: 1 // 1:
       };
     }
 

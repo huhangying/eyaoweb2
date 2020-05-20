@@ -4,6 +4,7 @@ import { Doctor } from '../../../models/crm/doctor.model';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Diagnose } from '../../../models/diagnose/diagnose.model';
 import { DiagnoseService } from '../../../services/diagnose.service';
+import { MedicineReferences } from '../../../models/hospital/medicine-references.model';
 
 @Component({
   selector: 'ngx-patient-history',
@@ -16,7 +17,11 @@ export class PatientHistoryComponent implements OnInit {
 
   constructor(
     public dialogRef: MatDialogRef<PatientHistoryComponent>,
-    @Inject(MAT_DIALOG_DATA) @Optional() @SkipSelf() public data: { patient: User; doctor: Doctor },
+    @Inject(MAT_DIALOG_DATA) @Optional() @SkipSelf() public data: {
+      patient: User;
+      doctor: Doctor;
+      medicineReferences: MedicineReferences;
+    },
     private diagnoseService: DiagnoseService,
     private cd: ChangeDetectorRef,
   ) { }
