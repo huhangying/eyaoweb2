@@ -23,6 +23,8 @@ import { LabResultsComponent } from './diagnose/lab-results/lab-results.componen
 import { NoticesComponent } from './diagnose/notices/notices.component';
 import { PrescriptionEditComponent } from './diagnose/prescription/prescription-edit/prescription-edit.component';
 import { NoticeEditComponent } from './diagnose/notices/notice-edit/notice-edit.component';
+import { SurveysComponent } from './diagnose/surveys/surveys.component';
+import { SurveyEditComponent } from './diagnose/surveys/survey-edit/survey-edit.component';
 
 @NgModule({
   declarations: [
@@ -47,6 +49,8 @@ import { NoticeEditComponent } from './diagnose/notices/notice-edit/notice-edit.
     NoticesComponent,
     PrescriptionEditComponent,
     NoticeEditComponent,
+    SurveysComponent,
+    SurveyEditComponent,
   ],
   imports: [
     SharedModule,
