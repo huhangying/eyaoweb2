@@ -2,7 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { Survey } from '../../../../models/survey/survey.model';
 import { SurveyService } from '../../../../services/survey.service';
 import { tap } from 'rxjs/operators';
-import { SurveyTemplate, QuestionOption } from '../../../../models/survey/survey-template.model';
+import { SurveyTemplate, QuestionOption, Question } from '../../../../models/survey/survey-template.model';
 
 @Component({
   selector: 'ngx-survey-edit',
@@ -72,9 +72,14 @@ export class SurveyEditComponent implements OnInit {
     }
   }
 
-  changeRadioSelection(options: QuestionOption[], index: number) {
+  changeRadioSelection(question: Question, index: number) {
     // const checked = options[index].selected;
-    options.forEach((option, i) => option.selected = i === index);
+    question.options.forEach((option, i) => option.selected = i === index);
+  }
+
+  test(dd) {
+    console.log(dd);
+
   }
 
 }

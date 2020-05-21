@@ -159,4 +159,13 @@ export class DiagnoseComponent implements OnInit {
     return true;
   }
 
+  getDataByType(type: number) {
+    return {
+      doctorId: this.doctor._id,
+      patientId: this.selectedPatient._id,
+      departmentId: this.doctor.department,
+      list: this.diagnose.surveys?.find(_ => _.type === type)?.list
+    };
+  }
+
 }
