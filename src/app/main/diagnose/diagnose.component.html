@@ -67,7 +67,7 @@
             问卷
           </ng-template>
           <ng-template matTabContent>
-            <ngx-surveys></ngx-surveys>
+            <ngx-surveys [isFirstVisit]="isFirstVisit" [surveys]="diagnose.surveys" [doctor]="doctor" [patient]="selectedPatient"></ngx-surveys>
           </ng-template>
         </mat-tab>
 

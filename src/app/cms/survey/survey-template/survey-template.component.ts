@@ -70,8 +70,8 @@ export class SurveyTemplateComponent implements OnInit, OnDestroy {
       (department, type) => {
         this.selectedDepartment = department;
         this.selectedType = +type;
-        if (department && type > 0) {
-          this.surveyService.getByDepartmentIdAndType(department, type).pipe(
+        if (department && this.selectedType > 0) {
+          this.surveyService.getByDepartmentIdAndType(department, this.selectedType).pipe(
             tap(rsp => {
               this.loadData(rsp);
             })

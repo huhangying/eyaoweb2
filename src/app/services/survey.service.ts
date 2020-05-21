@@ -13,12 +13,12 @@ export class SurveyService {
   ) { }
 
   // Survey Template
-  getByDepartmentId(department: string, type: string) {
+  getByDepartmentId(department: string) {
     return this.api.get<SurveyTemplate[]>(`surveytemplates/department/${department}`);
   }
 
-  // no use for now
-  getByDepartmentIdAndType(department: string, type: string) {
+  //
+  getByDepartmentIdAndType(department: string, type: number) {
     return this.api.get<SurveyTemplate[]>(`surveytemplates/${department}/type/${type}`);
   }
 
@@ -34,9 +34,21 @@ export class SurveyService {
     return this.api.delete<SurveyTemplate>('surveytemplate/' + id);
   }
 
-  //
+  // Surveys
   getPendingSurveysByUserAndType(doctorId, patientId: string, surveyType: number) {
     return this.api.get<Survey[]>(`surveys/${doctorId}/${patientId}/${surveyType}/0`); // 0 means unfinished(pending)
+  }
+
+  getMySurveys(patientId: string) {
+    return this.api.get<Survey[]>(`mysurveys/${patientId}`);
+  }
+
+  GetSurveysByUserAndType(doctorId: string, patientId: string, type: number, readonly=0) {
+    return this.api.get<Survey[]>(`surveys/${doctorId}/${patientId}/${type}/${readonly}`);
+  }
+
+  GetSurveysByUserTypeAndList(doctorId: string, patientId: string, type: number, list: string, readonly=0) {
+    return this.api.get<Survey[]>(`surveys/${doctorId}/${patientId}/${type}/${list}/${readonly}`);
   }
 
 }

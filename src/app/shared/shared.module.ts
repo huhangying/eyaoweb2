@@ -20,7 +20,7 @@ import { MAT_MOMENT_DATE_FORMATS, MomentDateAdapter } from '@angular/material-mo
 import { SelectArticleCatComponent } from '../cms/shared/select-article-cat/select-article-cat.component';
 import { PaginatorProvider } from './helper/paginator.provider';
 import { DialogService } from './service/dialog.service';
-import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { AccessControlDirective } from './directive/access-control.directive';
 import { LocalDatePipe } from './pipe/local-date.pipe';
 import { ConfirmComponent } from './modal/confirm/confirm.component';
@@ -31,8 +31,9 @@ import { GenderPipe } from './pipe/gender.pipe';
 import { MatCardModule } from '@angular/material/card';
 import { SelectPatientComponent } from './components/select-patient/select-patient.component';
 import { SelectDoctorPatientsComponent } from './components/select-doctor-patients/select-doctor-patients.component';
-import {MatRadioModule} from '@angular/material/radio';
+import { MatRadioModule } from '@angular/material/radio';
 import { DragDropModule } from '@angular/cdk/drag-drop';
+import { MatExpansionModule } from '@angular/material/expansion';
 
 @NgModule({
   imports: [
@@ -57,6 +58,7 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
     MatCardModule,
     MatRadioModule,
     DragDropModule,
+    MatExpansionModule,
 
     ImageCropperModule,
   ],
@@ -80,6 +82,7 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
     MatCardModule,
     MatRadioModule,
     DragDropModule,
+    MatExpansionModule,
 
     DoctorProfileComponent,
     SelectDoctorComponent,
