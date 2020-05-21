@@ -2,6 +2,10 @@
   <nb-card-header>
     药师门诊
     &nbsp;&nbsp;
+    <button mat-icon-button matTooltip="清除当前药师门诊" (click)="deleteDiagnose()" *ngIf="this.diagnose?._id">
+      <mat-icon>settings_backup_restore</mat-icon>
+    </button>
+
     <ng-container *ngIf="selectedPatient">
       <button nbButton size="small" class="float-right" [status]="isFirstVisit ? 'success' : 'warning'"
         matTooltip="查看病患历史记录" (click)="viewPatientHistory()">
@@ -37,7 +41,8 @@
             门诊处方
           </ng-template>
           <ng-template matTabContent>
-            <ngx-prescription [prescription]="diagnose?.prescription" [medicineReferences]="medicineReferences"></ngx-prescription>
+            <ngx-prescription [prescription]="diagnose?.prescription" [medicineReferences]="medicineReferences">
+            </ngx-prescription>
           </ng-template>
         </mat-tab>
 
@@ -67,7 +72,8 @@
             问卷
           </ng-template>
           <ng-template matTabContent>
-            <ngx-surveys [isFirstVisit]="isFirstVisit" [surveys]="diagnose.surveys" [doctor]="doctor" [patient]="selectedPatient"></ngx-surveys>
+            <ngx-surveys [isFirstVisit]="isFirstVisit" [surveys]="diagnose.surveys" [doctor]="doctor"
+              [patient]="selectedPatient"></ngx-surveys>
           </ng-template>
         </mat-tab>
 

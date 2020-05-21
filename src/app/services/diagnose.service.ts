@@ -30,5 +30,8 @@ export class DiagnoseService {
     return this.api.patch<Diagnose>('diagnose/' + data._id, data);
   }
 
+  deleteDiagnose(id: string) {
+    return this.api.delete<Diagnose>('diagnose/' + id);
+  }
 
 }

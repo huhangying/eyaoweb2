@@ -6,7 +6,7 @@ import { Doctor } from '../../models/crm/doctor.model';
 import { SelectAppointmentComponent } from './select-appointment/select-appointment.component';
 import { SelectPatientComponent } from '../../shared/components/select-patient/select-patient.component';
 import { Booking } from '../../models/reservation/booking.model';
-import { tap } from 'rxjs/operators';
+import { tap, catchError } from 'rxjs/operators';
 import { User } from '../../models/crm/user.model';
 import { PatientHistoryComponent } from './patient-history/patient-history.component';
 import { DiagnoseService } from '../../services/diagnose.service';
@@ -14,6 +14,7 @@ import { Diagnose } from '../../models/diagnose/diagnose.model';
 import { ActivatedRoute } from '@angular/router';
 import { MedicineReferences } from '../../models/hospital/medicine-references.model';
 import { SurveyService } from '../../services/survey.service';
+import { DialogService } from '../../shared/service/dialog.service';
 
 @Component({
   selector: 'ngx-diagnose',
@@ -33,6 +34,7 @@ export class DiagnoseComponent implements OnInit {
     private surveyService: SurveyService,
     private diagnoseService: DiagnoseService,
     public dialog: MatDialog,
+    private dialogService: DialogService,
     private message: MessageService,
   ) {
     this.doctor = this.auth.getDoctor();
@@ -145,9 +147,35 @@ export class DiagnoseComponent implements OnInit {
 
   }
 
+  deleteDiagnose() {
+    this.dialogService?.deleteConfirm().pipe(
+      tap(result => {
+        if (result) {
+          this.diagnoseService.deleteDiagnose(this.diagnose._id).pipe(
+            tap(result => {
+              if (result?._id) {
+                this.message.deleteSuccess();
+                // reset current diagnose
+                this.diagnose = null;
+                this.selectedPatient = null;
+                this.selectedBooking = null;
+              }
+            }),
+            catchError(err => this.message.deleteErrorHandle(err))
+          ).subscribe();
+        }
+      }),
+    ).subscribe();
+  }
+
   saveDiagnose() {
     this.diagnoseService.updateDiagnose(this.diagnose).pipe(
-
+      tap(result => {
+        if (result?._id) {
+          this.message.deleteSuccess();
+        }
+      }),
+      catchError(err => this.message.deleteErrorHandle(err))
     ).subscribe();
   }
 
