@@ -1,10 +1,15 @@
-<ng-container *ngIf="surveys?.length">
+<ng-container *ngIf="surveys$ | async; let surveys">
   <ng-container *ngFor="let survey of surveys">
-    <div class="alert alert-success text-center my-3">
+    <div class="alert alert-success text-center my-3" (click)="test(survey)">
       {{survey.name}}
     </div>
+    <div>
+      <button nbButton hero size="small" status="primary" (click)="saveSurvey(survey)" class="mr-3">
+        <nb-icon icon="save-outline"></nb-icon> 保存
+      </button>
+    </div>
     <ng-container *ngFor="let question of survey.questions; let qIndex=index">
-      <h5 class="text-primary px-2 pt-3 pb-1" (click)="test(question)">{{qIndex + 1}}. {{question.question}}</h5>
+      <h5 class="text-info px-2 pt-3 pb-1" (click)="test(question)">{{qIndex + 1}}. {{question.question}}</h5>
       <ng-container *ngIf="question.answer_type === 0 || question.answer_type === 1">
         <mat-radio-group>
           <ng-container *ngFor="let option of question.options; let oIndex=index">
@@ -38,7 +43,7 @@
 
 </ng-container>
 
-<ng-container *ngIf="!surveys?.length">
+<ng-container *ngIf="!(surveys$ | async)?.length">
   <blockquote>
     <p>{{readonly? '病患没有填写该问卷' : '无可用的问卷。'}}</p>
   </blockquote>

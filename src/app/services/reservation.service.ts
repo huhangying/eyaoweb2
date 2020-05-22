@@ -30,7 +30,7 @@ export class ReservationService {
     return this.api.get<Schedule[]>('schedules/all/' + did);
   }
 
-  updateById(data: Schedule) {
+  updateSchedule(data: Schedule) {
     return this.api.patch<Schedule>('schedule/' + data._id, data);
   }
 

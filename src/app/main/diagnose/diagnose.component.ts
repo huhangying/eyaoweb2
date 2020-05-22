@@ -15,6 +15,7 @@ import { ActivatedRoute } from '@angular/router';
 import { MedicineReferences } from '../../models/hospital/medicine-references.model';
 import { SurveyService } from '../../services/survey.service';
 import { DialogService } from '../../shared/service/dialog.service';
+import { SurveyGroup } from '../../models/survey/survey-group.model';
 
 @Component({
   selector: 'ngx-diagnose',
@@ -38,7 +39,7 @@ export class DiagnoseComponent implements OnInit {
     private message: MessageService,
   ) {
     this.doctor = this.auth.getDoctor();
-    this.medicineReferences = {...this.route.snapshot.data.medicineReferences};
+    this.medicineReferences = { ...this.route.snapshot.data.medicineReferences };
 
   }
 
@@ -111,7 +112,7 @@ export class DiagnoseComponent implements OnInit {
       if (pendingDiagnose?._id) {
         this.diagnose = pendingDiagnose;
       } else {
-        this.diagnose = await this.diagnoseService.addDiagnose({doctor: this.doctor._id, user: patient._id}).toPromise();
+        this.diagnose = await this.diagnoseService.addDiagnose({ doctor: this.doctor._id, user: patient._id }).toPromise();
       }
     }
     // 如果存在
@@ -137,8 +138,8 @@ export class DiagnoseComponent implements OnInit {
           if (results?.length) {
             this.diagnose.surveys = [{
               type: surveyType,
-              list: results
-              // list: results.map(result => result._id)
+              list: results.map(_ => _._id),
+              surveys: results
             }];
           }
         })
@@ -169,10 +170,12 @@ export class DiagnoseComponent implements OnInit {
   }
 
   saveDiagnose() {
+    console.log(this.diagnose);
+
     this.diagnoseService.updateDiagnose(this.diagnose).pipe(
       tap(result => {
         if (result?._id) {
-          this.message.deleteSuccess();
+          this.message.updateSuccess();
         }
       }),
       catchError(err => this.message.deleteErrorHandle(err))
@@ -194,6 +197,31 @@ export class DiagnoseComponent implements OnInit {
       departmentId: this.doctor.department,
       list: this.diagnose.surveys?.find(_ => _.type === type)?.list
     };
+  }
+
+  surveyGroupChanged(surveyGroup: SurveyGroup) {
+    this.surveyGroupsChanged([surveyGroup]);
+  }
+
+  surveyGroupsChanged(surveyGroups: SurveyGroup[]) {
+    const types: number[] = [];
+    this.diagnose.surveys = [...this.diagnose.surveys, ...surveyGroups]
+      .reduce((newSurveys, survey) => {
+        if (!types || types.indexOf(survey.type) < 0) {
+          types.push(survey.type);
+          newSurveys.push(survey);
+          return newSurveys;
+        }
+        newSurveys = newSurveys.map(_ => {
+          if (_.type === survey.type) {
+            _.list = new Set([..._.list, ...survey.list]); // combine and remove the duplicated
+          }
+          return _;
+        });
+        return newSurveys;
+      }, []);
+
+    this.saveDiagnose();
   }
 
 }

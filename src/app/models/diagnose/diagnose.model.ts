@@ -1,6 +1,7 @@
 import { Survey } from '../survey/survey.model';
 import { MedicineNotice } from '../hospital/medicine-notice.model';
 import { Medicine } from '../hospital/medicine.model';
+import { SurveyGroup } from '../survey/survey-group.model';
 
 export interface Diagnose {
   _id?: string;
@@ -8,7 +9,8 @@ export interface Diagnose {
   user: string; // id
   booking?: string; // id
 
-  surveys?: { type: number; list: Survey[] }[];
+  // surveys?: { type: number; list: Survey[] }[];
+  surveys?: SurveyGroup[];
   // assessment:
   prescription?: Medicine[];
   notices?: MedicineNotice[];

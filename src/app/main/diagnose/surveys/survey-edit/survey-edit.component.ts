@@ -1,8 +1,12 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Survey } from '../../../../models/survey/survey.model';
 import { SurveyService } from '../../../../services/survey.service';
-import { tap } from 'rxjs/operators';
-import { SurveyTemplate, QuestionOption, Question } from '../../../../models/survey/survey-template.model';
+import { map, tap, catchError } from 'rxjs/operators';
+import { Question } from '../../../../models/survey/survey-template.model';
+import { Observable, of } from 'rxjs';
+import { SurveyGroup } from '../../../../models/survey/survey-group.model';
+import { MessageService } from '../../../../shared/service/message.service';
+import * as moment from 'moment';
 
 @Component({
   selector: 'ngx-survey-edit',
@@ -17,46 +21,49 @@ export class SurveyEditComponent implements OnInit {
     patientId: string;
     departmentId: string;
   }
-  surveys: Survey[];
+  @Output() dataChange = new EventEmitter<SurveyGroup>();
+  surveys$: Observable<Survey[]>;
+  list: string[];
   readonly = false;
 
   constructor(
-    private surveyService: SurveyService
+    private surveyService: SurveyService,
+    private message: MessageService,
   ) {
   }
 
   ngOnInit(): void {
+    this.list = this.data.list ? [...this.data.list] : [];
     if (!this.data || !this.data.doctorId || !this.data.departmentId || !this.data.patientId) {
-      this.surveys = [];
+      this.surveys$ = of([]);
       return;
     }
     // 如果list没有survey，就到surveyTemplate去取；如果有survey list，直接加载
     if (!this.data.list) {
-      this.surveyService.getByDepartmentIdAndType(this.data.departmentId, this.type).pipe(
-        tap(results => {
-          if (results?.length) {
-            // create surveys from template
-            this.surveys = results.map(_ => {
-              delete _._id;
-              return {
-                ..._,
-                surveyTemplate: _._id,
-                user: this.data.patientId,
-                doctor: this.data.doctorId,
-                finished: false
-              };
-            });
-          }
+      this.surveys$ = this.surveyService.getByDepartmentIdAndType(this.data.departmentId, this.type).pipe(
+        map(results => {
+          // if (!results?.length) return of([]);
+          // create surveys from template
+          return results.map(_ => {
+            const newSurvey = {
+              ..._,
+              surveyTemplate: _._id,
+              user: this.data.patientId,
+              doctor: this.data.doctorId,
+              finished: false,
+              availableBy: new Date(moment().add(30, 'days').format()) //todo: general util function
+            };
+            delete newSurvey._id;
+            return newSurvey;
+            // this.surveyService.addSurvey(newSurvey).subscribe(
+            //   (surv: Survey) => {
+            //     return surv;
+            //   });
+          });
         })
-      ).subscribe();
+      );
     } else {
-      this.surveyService.GetSurveysByUserTypeAndList(this.data.doctorId, this.data.patientId, this.type, this.data.list.join('|')).pipe(
-        tap(results => {
-          if (results?.length) {
-            this.surveys = results;
-          }
-        })
-      ).subscribe();
+      this.surveys$ = this.surveyService.GetSurveysByUserTypeAndList(this.data.doctorId, this.data.patientId, this.type, this.data.list.join('|'));
     }
   }
 
@@ -77,8 +84,29 @@ export class SurveyEditComponent implements OnInit {
     question.options.forEach((option, i) => option.selected = i === index);
   }
 
-  test(dd) {
-    console.log(dd);
+  saveSurvey(survey: Survey) {
+    if (survey._id) {
+      // update
+      this.surveyService.updateSurvey(survey);
+      this.message.updateSuccess();
+    } else {
+      // create
+      this.surveyService.addSurvey(survey).pipe(
+        tap((result: Survey) => {
+          if (result?._id) {
+            this.list.push(result._id);
+            this.dataChange.emit({ type: this.type, list: this.list });
+            this.message.updateSuccess();
+          }
+        }),
+        catchError(rsp => this.message.updateErrorHandle(rsp)),
+      ).subscribe();
+    }
+
+  }
+
+  test(obj) {
+    console.log(obj);
 
   }
 

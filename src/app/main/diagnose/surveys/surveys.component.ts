@@ -1,6 +1,7 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Doctor } from '../../../models/crm/doctor.model';
 import { User } from '../../../models/crm/user.model';
+import { SurveyGroup } from '../../../models/survey/survey-group.model';
 
 @Component({
   selector: 'ngx-surveys',
@@ -9,9 +10,10 @@ import { User } from '../../../models/crm/user.model';
 })
 export class SurveysComponent implements OnInit {
   @Input() isFirstVisit: boolean;
-  @Input() surveys: {type: number; list: string[]}[];
+  @Input() surveyGroups: SurveyGroup[];
   @Input() doctor: Doctor;
   @Input() patient: User;
+  @Output() dataChange = new EventEmitter<SurveyGroup[]>();
 
   constructor() { }
 
@@ -23,8 +25,15 @@ export class SurveysComponent implements OnInit {
       doctorId: this.doctor._id,
       patientId: this.patient._id,
       departmentId: this.doctor.department,
-      list: this.surveys?.find(_ => _.type === type)?.list
+      list: this.surveyGroups?.find(_ => _.type === type)?.list
     };
+  }
+
+  surveyGroupChanged(sg: SurveyGroup) {
+    this.surveyGroups = this.surveyGroups.map(_ => {
+      return (_.type === sg.type) ? sg : _;
+    });
+    this.dataChange.emit(this.surveyGroups);
   }
 
 }

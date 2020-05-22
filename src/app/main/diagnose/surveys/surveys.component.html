@@ -5,7 +5,7 @@
     </mat-expansion-panel-header>
 
     <ng-template matExpansionPanelContent>
-      <ngx-survey-edit [type]="1" [data]="getDataByType(1)" ></ngx-survey-edit>
+      <ngx-survey-edit [type]="1" [data]="getDataByType(1)" (dataChange)="surveyGroupChanged($event)"></ngx-survey-edit>
     </ng-template>
   </mat-expansion-panel>
 
@@ -15,7 +15,7 @@
     </mat-expansion-panel-header>
 
     <ng-template matExpansionPanelContent>
-      <ngx-survey-edit [type]="2" [data]="getDataByType(2)"></ngx-survey-edit>
+      <ngx-survey-edit [type]="2" [data]="getDataByType(2)" (dataChange)="surveyGroupChanged($event)"></ngx-survey-edit>
     </ng-template>
   </mat-expansion-panel>
 
@@ -25,7 +25,7 @@
     </mat-expansion-panel-header>
 
     <ng-template matExpansionPanelContent>
-      <ngx-survey-edit [type]="3" [data]="getDataByType(3)"></ngx-survey-edit>
+      <ngx-survey-edit [type]="3" [data]="getDataByType(3)" (dataChange)="surveyGroupChanged($event)"></ngx-survey-edit>
     </ng-template>
   </mat-expansion-panel>
 
@@ -35,7 +35,7 @@
     </mat-expansion-panel-header>
 
     <ng-template matExpansionPanelContent>
-      <ngx-survey-edit [type]="4" [data]="getDataByType(4)"></ngx-survey-edit>
+      <ngx-survey-edit [type]="4" [data]="getDataByType(4)" (dataChange)="surveyGroupChanged($event)"></ngx-survey-edit>
     </ng-template>
   </mat-expansion-panel>
 

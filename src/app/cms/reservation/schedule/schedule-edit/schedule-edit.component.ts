@@ -48,7 +48,7 @@ export class ScheduleEditComponent implements OnInit, OnDestroy {
   update() {
     const response = this.data.schedule?._id ?
       // update
-      this.reservationService.updateById({ ...this.data.schedule, ...this.form.value, doctor: this.data.doctor._id }) :
+      this.reservationService.updateSchedule({ ...this.data.schedule, ...this.form.value, doctor: this.data.doctor._id }) :
       // create
       this.reservationService.create({ ...this.form.value, doctor: this.data.doctor._id });
     response.pipe(

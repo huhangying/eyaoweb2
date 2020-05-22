@@ -22,7 +22,7 @@ export class SurveyService {
     return this.api.get<SurveyTemplate[]>(`surveytemplates/${department}/type/${type}`);
   }
 
-  updateById(data: SurveyTemplate) {
+  updateSurveyTemplate(data: SurveyTemplate) {
     return this.api.patch<SurveyTemplate>('surveytemplate/' + data._id, data);
   }
 
@@ -49,6 +49,14 @@ export class SurveyService {
 
   GetSurveysByUserTypeAndList(doctorId: string, patientId: string, type: number, list: string, readonly=0) {
     return this.api.get<Survey[]>(`surveys/${doctorId}/${patientId}/${type}/${list}/${readonly}`);
+  }
+
+  updateSurvey(data: Survey) {
+    return this.api.patch<Survey>('Survey/' + data._id, data);
+  }
+
+  addSurvey(data: Survey) {
+    return this.api.post<Survey>('Survey', data);
   }
 
 }

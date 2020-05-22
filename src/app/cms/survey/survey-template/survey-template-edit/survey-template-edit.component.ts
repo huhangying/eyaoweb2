@@ -100,7 +100,7 @@ export class SurveyTemplateEditComponent implements OnInit, OnDestroy {
   update() {
     const response = this.data.surveyTemplate?._id ?
       // update
-      this.surveyService.updateById({
+      this.surveyService.updateSurveyTemplate({
         ...this.data.surveyTemplate,
         ...this.form.value,
         questions: this.questions

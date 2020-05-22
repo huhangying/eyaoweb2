@@ -72,8 +72,8 @@
             问卷
           </ng-template>
           <ng-template matTabContent>
-            <ngx-surveys [isFirstVisit]="isFirstVisit" [surveys]="diagnose.surveys" [doctor]="doctor"
-              [patient]="selectedPatient"></ngx-surveys>
+            <ngx-surveys [isFirstVisit]="isFirstVisit" [surveyGroups]="diagnose.surveys" [doctor]="doctor"
+              [patient]="selectedPatient" (dataChange)="surveyGroupsChanged($event)"></ngx-surveys>
           </ng-template>
         </mat-tab>
 
@@ -83,7 +83,7 @@
             门诊结论
           </ng-template>
           <ng-template matTabContent>
-            <ngx-survey-edit [type]="5" [data]="getDataByType(5)"></ngx-survey-edit>
+            <ngx-survey-edit [type]="5" [data]="getDataByType(5)" (dataChange)="surveyGroupChanged($event)"></ngx-survey-edit>
           </ng-template>
         </mat-tab>
 
