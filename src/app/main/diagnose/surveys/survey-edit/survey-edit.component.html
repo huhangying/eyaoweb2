@@ -13,7 +13,7 @@
       <ng-container *ngIf="question.answer_type === 0 || question.answer_type === 1">
         <mat-radio-group name="{{survey?._id}}{{qIndex}}">
           <ng-container *ngFor="let option of question.options; let oIndex=index">
-            <mat-radio-button name="{{survey?._id}}{{qIndex}}" (click)="changeRadioSelection(question, oIndex)" [(ngModel)]="option.selected" [value]="option.selected"
+            <mat-radio-button name="{{survey?._id}}{{qIndex}}" (click)="changeRadioSelection(question, oIndex)" [value]="oIndex" [checked]="option.selected"
               class="question-option" [disabled]="readonly">
               {{option.answer}}
             </mat-radio-button>
