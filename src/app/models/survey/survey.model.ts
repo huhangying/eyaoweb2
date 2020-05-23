@@ -1,5 +1,4 @@
-import { SurveyTemplate, Question } from './survey-template.model';
-import { User } from '../crm/user.model';
+import { Question } from './survey-template.model';
 
 export interface Survey {
   _id?: string;

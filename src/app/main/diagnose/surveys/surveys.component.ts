@@ -30,9 +30,15 @@ export class SurveysComponent implements OnInit {
   }
 
   surveyGroupChanged(sg: SurveyGroup) {
-    this.surveyGroups = this.surveyGroups.map(_ => {
-      return (_.type === sg.type) ? sg : _;
-    });
+    // add if not existed
+    if (this.surveyGroups.findIndex(_ => _.type === sg.type) < 0) {
+      this.surveyGroups.push(sg);
+    } else {
+      // update/replace
+      this.surveyGroups = this.surveyGroups.map(_ => {
+        return (_.type === sg.type) ? sg : _;
+      });
+    }
     this.dataChange.emit(this.surveyGroups);
   }
 

@@ -102,8 +102,6 @@ export class DiagnoseComponent implements OnInit {
 
   async setDiagnoseUserAndMore(patient: User, booking?: Booking) {
     this.selectedPatient = patient;
-    console.log(patient);
-
 
     // 如果不存在
     if (!this.diagnose?._id) {
@@ -115,10 +113,10 @@ export class DiagnoseComponent implements OnInit {
         this.diagnose = await this.diagnoseService.addDiagnose({ doctor: this.doctor._id, user: patient._id }).toPromise();
       }
     }
-    // 如果存在
+    // 如果存在, todo: switch
     else if (this.diagnose.user !== patient._id) {
       this.diagnose = {
-        _id: this.diagnose._id,
+       ...this.diagnose,
         user: patient._id,
         doctor: this.doctor._id,
         surveys: [],
@@ -160,6 +158,7 @@ export class DiagnoseComponent implements OnInit {
                 this.diagnose = null;
                 this.selectedPatient = null;
                 this.selectedBooking = null;
+                // backend will delete attached surveys
               }
             }),
             catchError(err => this.message.deleteErrorHandle(err))
@@ -214,7 +213,7 @@ export class DiagnoseComponent implements OnInit {
         }
         newSurveys = newSurveys.map(_ => {
           if (_.type === survey.type) {
-            _.list = new Set([..._.list, ...survey.list]); // combine and remove the duplicated
+            _.list = _.list.filter((item, index) => _.list.indexOf(item) === index); // combine and remove the duplicated
           }
           return _;
         });

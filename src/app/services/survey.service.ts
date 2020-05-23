@@ -2,6 +2,9 @@ import { Injectable } from '@angular/core';
 import { ApiService } from '../shared/service/api.service';
 import { SurveyTemplate } from '../models/survey/survey-template.model';
 import { Survey } from '../models/survey/survey.model';
+import { Observable } from 'rxjs';
+import { catchError } from 'rxjs/operators';
+import { MessageService } from '../shared/service/message.service';
 
 @Injectable({
   providedIn: 'root'
@@ -10,6 +13,7 @@ export class SurveyService {
 
   constructor(
     private api: ApiService,
+    private message: MessageService,
   ) { }
 
   // Survey Template
@@ -56,7 +60,19 @@ export class SurveyService {
   }
 
   addSurvey(data: Survey) {
-    return this.api.post<Survey>('Survey', data);
+    return new Promise<Survey>((resolve, reject) => {
+      this.api.post<Survey>('Survey', data).toPromise()
+        .then((result: Survey) => {
+          // Success
+          resolve(result);
+        },
+          err => {
+            // Error
+            this.message.deleteErrorHandle(err);
+            reject(err);
+          }
+        );
+    });
   }
 
 }

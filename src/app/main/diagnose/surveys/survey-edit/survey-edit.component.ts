@@ -1,7 +1,7 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { Survey } from '../../../../models/survey/survey.model';
 import { SurveyService } from '../../../../services/survey.service';
-import { map, tap, catchError } from 'rxjs/operators';
+import { map, tap, catchError, switchMap } from 'rxjs/operators';
 import { Question } from '../../../../models/survey/survey-template.model';
 import { Observable, of } from 'rxjs';
 import { SurveyGroup } from '../../../../models/survey/survey-group.model';
@@ -11,7 +11,8 @@ import * as moment from 'moment';
 @Component({
   selector: 'ngx-survey-edit',
   templateUrl: './survey-edit.component.html',
-  styleUrls: ['./survey-edit.component.scss']
+  styleUrls: ['./survey-edit.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SurveyEditComponent implements OnInit {
   @Input() type: number; // 0 - 6
@@ -22,30 +23,33 @@ export class SurveyEditComponent implements OnInit {
     departmentId: string;
   }
   @Output() dataChange = new EventEmitter<SurveyGroup>();
-  surveys$: Observable<Survey[]>;
+  // surveys$: Observable<Survey[]>;
+  surveys: Survey[];
   list: string[];
   readonly = false;
 
   constructor(
     private surveyService: SurveyService,
     private message: MessageService,
+    private cd: ChangeDetectorRef,
   ) {
   }
 
   ngOnInit(): void {
     this.list = this.data.list ? [...this.data.list] : [];
     if (!this.data || !this.data.doctorId || !this.data.departmentId || !this.data.patientId) {
-      this.surveys$ = of([]);
+      this.surveys = [];
       return;
     }
     // 如果list没有survey，就到surveyTemplate去取；如果有survey list，直接加载
     if (!this.data.list) {
-      this.surveys$ = this.surveyService.getByDepartmentIdAndType(this.data.departmentId, this.type).pipe(
+      this.surveys = [];
+      this.surveyService.getByDepartmentIdAndType(this.data.departmentId, this.type).pipe(
         map(results => {
-          // if (!results?.length) return of([]);
+          if (!results?.length) return of([]);
           // create surveys from template
-          return results.map(_ => {
-            const newSurvey = {
+          return results.map(async _ => {
+            const newSurvey: Survey = {
               ..._,
               surveyTemplate: _._id,
               user: this.data.patientId,
@@ -54,16 +58,22 @@ export class SurveyEditComponent implements OnInit {
               availableBy: new Date(moment().add(30, 'days').format()) //todo: general util function
             };
             delete newSurvey._id;
-            return newSurvey;
-            // this.surveyService.addSurvey(newSurvey).subscribe(
-            //   (surv: Survey) => {
-            //     return surv;
-            //   });
+            // create survey
+            this.surveys.push(await this.surveyService.addSurvey(newSurvey));
+            if (this.surveys.length >= results.length) {
+              this.dataChange.emit({ type: this.type, list: this.surveys.map(_ => _._id) });
+              this.cd.markForCheck();
+            }
           });
         })
-      );
+      ).subscribe();
     } else {
-      this.surveys$ = this.surveyService.GetSurveysByUserTypeAndList(this.data.doctorId, this.data.patientId, this.type, this.data.list.join('|'));
+      this.surveyService.GetSurveysByUserTypeAndList(this.data.doctorId, this.data.patientId, this.type, this.data.list.join('|')).pipe(
+        tap(results => {
+          this.surveys = results;
+          this.cd.markForCheck();
+        })
+      ).subscribe();
     }
   }
 
@@ -87,23 +97,39 @@ export class SurveyEditComponent implements OnInit {
   saveSurvey(survey: Survey) {
     if (survey._id) {
       // update
-      this.surveyService.updateSurvey(survey);
-      this.message.updateSuccess();
+      this.surveyService.updateSurvey(survey).subscribe( result => {
+        if (result?._id) {
+          this.message.updateSuccess();
+        }
+      });
     } else {
       // create
-      this.surveyService.addSurvey(survey).pipe(
-        tap((result: Survey) => {
-          if (result?._id) {
-            this.list.push(result._id);
-            this.dataChange.emit({ type: this.type, list: this.list });
-            this.message.updateSuccess();
-          }
-        }),
-        catchError(rsp => this.message.updateErrorHandle(rsp)),
-      ).subscribe();
+      // this.surveyService.addSurvey(survey).pipe(
+      //   tap((result: Survey) => {
+      //     if (result?._id) {
+      //       this.list.push(result._id);
+      //       this.dataChange.emit({ type: this.type, list: this.list });
+      //       this.reloadSurveys(result);
+      //       this.message.updateSuccess();
+      //     }
+      //   }),
+      //   catchError(rsp => this.message.updateErrorHandle(rsp)),
+      // ).subscribe();
     }
-
   }
+
+  createSurvey(survey: Survey) {
+    this.surveyService.addSurvey(survey);
+  }
+
+  // reloadSurveys(survey: Survey) {
+  //   this.surveys$ = this.surveys$.pipe(
+  //     map(items => {
+  //       return items.map(item =>  (item._id === survey._id) ? survey : item);
+  //     })
+  //   );
+
+  // }
 
   test(obj) {
     console.log(obj);
