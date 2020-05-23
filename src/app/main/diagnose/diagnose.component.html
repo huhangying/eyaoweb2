@@ -27,8 +27,8 @@
         <button nbButton hero size="small" status="primary" (click)="saveDiagnose()" *ngIf="diagnose?._id" class="mr-3">
           <nb-icon icon="save-outline"></nb-icon> 保存
         </button>
-        <button nbButton hero size="small" status="primary" (click)="closeDiagnose()" *ngIf="isReady()">
-          <nb-icon icon="paper-plane-outline"></nb-icon> 发送
+        <button nbButton hero size="small" status="primary" (click)="closeDiagnose()" *ngIf="diagnose?._id">
+          <nb-icon icon="archive-outline"></nb-icon> 结束门诊
         </button>
       </span>
     </div>

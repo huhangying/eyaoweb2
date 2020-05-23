@@ -18,8 +18,12 @@ export class DiagnoseService {
     return this.api.get<Diagnose[]>('diagnoses/history/' + patientId);
   }
 
-  getLatestDiagnose(patientId: string) {
-    return this.api.get<Diagnose>('diagnose/history/latest/' + patientId).toPromise();
+  getPendgingDiagnose(doctorId: string, patientId: string) {
+    return this.api.get<Diagnose>(`diagnose/${doctorId}/${patientId}`).toPromise(); // finisned
+  }
+
+  getUserLastedDiagnose(patientId: string) {
+    return this.api.get<Diagnose>('diagnose/history/latest/' + patientId); // finisned
   }
 
   addDiagnose(data: Diagnose): Observable<Diagnose> {

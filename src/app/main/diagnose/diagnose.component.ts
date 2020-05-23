@@ -10,12 +10,13 @@ import { tap, catchError } from 'rxjs/operators';
 import { User } from '../../models/crm/user.model';
 import { PatientHistoryComponent } from './patient-history/patient-history.component';
 import { DiagnoseService } from '../../services/diagnose.service';
-import { Diagnose } from '../../models/diagnose/diagnose.model';
+import { Diagnose, DiagnoseStatus } from '../../models/diagnose/diagnose.model';
 import { ActivatedRoute } from '@angular/router';
 import { MedicineReferences } from '../../models/hospital/medicine-references.model';
 import { SurveyService } from '../../services/survey.service';
 import { DialogService } from '../../shared/service/dialog.service';
 import { SurveyGroup } from '../../models/survey/survey-group.model';
+import { UserService } from '../../services/user.service';
 
 @Component({
   selector: 'ngx-diagnose',
@@ -34,6 +35,7 @@ export class DiagnoseComponent implements OnInit {
     private auth: AuthService,
     private surveyService: SurveyService,
     private diagnoseService: DiagnoseService,
+    private userService: UserService,
     public dialog: MatDialog,
     private dialogService: DialogService,
     private message: MessageService,
@@ -105,7 +107,7 @@ export class DiagnoseComponent implements OnInit {
 
     // 如果不存在
     if (!this.diagnose?._id) {
-      const pendingDiagnose = await this.diagnoseService.getLatestDiagnose(patient._id);
+      const pendingDiagnose = await this.diagnoseService.getPendgingDiagnose(this.doctor._id, patient._id);
       // create
       if (pendingDiagnose?._id) {
         this.diagnose = pendingDiagnose;
@@ -116,7 +118,7 @@ export class DiagnoseComponent implements OnInit {
     // 如果存在, todo: switch
     else if (this.diagnose.user !== patient._id) {
       this.diagnose = {
-       ...this.diagnose,
+        ...this.diagnose,
         user: patient._id,
         doctor: this.doctor._id,
         surveys: [],
@@ -155,9 +157,7 @@ export class DiagnoseComponent implements OnInit {
               if (result?._id) {
                 this.message.deleteSuccess();
                 // reset current diagnose
-                this.diagnose = null;
-                this.selectedPatient = null;
-                this.selectedBooking = null;
+                this.resetDiagnose();
                 // backend will delete attached surveys
               }
             }),
@@ -168,9 +168,14 @@ export class DiagnoseComponent implements OnInit {
     ).subscribe();
   }
 
-  saveDiagnose() {
-    console.log(this.diagnose);
+  resetDiagnose() {
+    this.diagnose = null;
+    this.selectedPatient = null;
+    this.selectedBooking = null;
+  }
 
+  saveDiagnose(status = DiagnoseStatus.doctorSaved) {
+    this.diagnose.status = status;
     this.diagnoseService.updateDiagnose(this.diagnose).pipe(
       tap(result => {
         if (result?._id) {
@@ -182,11 +187,21 @@ export class DiagnoseComponent implements OnInit {
   }
 
   closeDiagnose() {
+    this.dialogService.confirm('本操作将结束当前门诊，并发送门诊结论。').subscribe(result => {
+      if (result) {
+        this.saveDiagnose(DiagnoseStatus.archived);
+        if (this.isFirstVisit) {
+          // add into visist
+          this.selectedPatient.visitedDepartments.push(this.doctor.department);
+          this.userService.updateUser(this.selectedPatient).subscribe();
+        }
+        // 发送门诊结论
+        // 发送消息给微信
 
-  }
-
-  isReady() {
-    return true;
+        // reset if success
+        this.resetDiagnose();
+      }
+    });
   }
 
   getDataByType(type: number) {

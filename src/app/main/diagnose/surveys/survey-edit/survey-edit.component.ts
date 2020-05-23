@@ -1,9 +1,8 @@
 import { Component, OnInit, Input, Output, EventEmitter, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { Survey } from '../../../../models/survey/survey.model';
 import { SurveyService } from '../../../../services/survey.service';
-import { map, tap, catchError, switchMap } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 import { Question } from '../../../../models/survey/survey-template.model';
-import { Observable, of } from 'rxjs';
 import { SurveyGroup } from '../../../../models/survey/survey-group.model';
 import { MessageService } from '../../../../shared/service/message.service';
 import * as moment from 'moment';
@@ -23,7 +22,6 @@ export class SurveyEditComponent implements OnInit {
     departmentId: string;
   }
   @Output() dataChange = new EventEmitter<SurveyGroup>();
-  // surveys$: Observable<Survey[]>;
   surveys: Survey[];
   list: string[];
   readonly = false;
@@ -46,7 +44,7 @@ export class SurveyEditComponent implements OnInit {
       this.surveys = [];
       this.surveyService.getByDepartmentIdAndType(this.data.departmentId, this.type).pipe(
         map(results => {
-          if (!results?.length) return of([]);
+          if (!results?.length) return;
           // create surveys from template
           return results.map(async _ => {
             const newSurvey: Survey = {
@@ -77,18 +75,6 @@ export class SurveyEditComponent implements OnInit {
     }
   }
 
-  getTypeById(id: number) {
-    switch (id) {
-      case 0:
-      case 1:
-        return 'radio';
-      case 2:
-        return 'checkbox';
-      case 3: //text
-        return 'hidden';
-    }
-  }
-
   changeRadioSelection(question: Question, index: number) {
     // const checked = options[index].selected;
     question.options.forEach((option, i) => option.selected = i === index);
@@ -102,19 +88,6 @@ export class SurveyEditComponent implements OnInit {
           this.message.updateSuccess();
         }
       });
-    } else {
-      // create
-      // this.surveyService.addSurvey(survey).pipe(
-      //   tap((result: Survey) => {
-      //     if (result?._id) {
-      //       this.list.push(result._id);
-      //       this.dataChange.emit({ type: this.type, list: this.list });
-      //       this.reloadSurveys(result);
-      //       this.message.updateSuccess();
-      //     }
-      //   }),
-      //   catchError(rsp => this.message.updateErrorHandle(rsp)),
-      // ).subscribe();
     }
   }
 
@@ -122,18 +95,8 @@ export class SurveyEditComponent implements OnInit {
     this.surveyService.addSurvey(survey);
   }
 
-  // reloadSurveys(survey: Survey) {
-  //   this.surveys$ = this.surveys$.pipe(
-  //     map(items => {
-  //       return items.map(item =>  (item._id === survey._id) ? survey : item);
-  //     })
-  //   );
-
-  // }
-
   test(obj) {
     console.log(obj);
-
   }
 
 }

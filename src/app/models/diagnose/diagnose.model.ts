@@ -17,6 +17,13 @@ export interface Diagnose {
 
   labResults?: string[]; // ids
 
-  status?: number; // 0: assigned to user;  1: user finished; 2: doctor saved; 3: archived
+  status?: DiagnoseStatus; // 0: assigned to user;  1: user finished; 2: doctor saved; 3: archived
   updatedAt?: Date;
+}
+
+export enum DiagnoseStatus {
+  assignedToUser = 0,
+  userFinished = 1,
+  doctorSaved = 2,
+  archived = 3
 }
