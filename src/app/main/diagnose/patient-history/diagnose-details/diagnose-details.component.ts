@@ -22,13 +22,14 @@ export class DiagnoseDetailsComponent implements OnInit {
       medicineReferences: MedicineReferences;
       patient: User;
       doctor: Doctor;
-     },
+    },
   ) {
     this.diagnose = data.diagnose;
     this.isFirstVisit = this.diagnose.surveys.findIndex(_ => _.type === 1) > -1;
   }
 
   ngOnInit(): void {
+    this.dialogRef.updateSize('90%');
   }
 
   getDataByType(type: number) {
