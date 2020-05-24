@@ -25,6 +25,7 @@ import { PrescriptionEditComponent } from './diagnose/prescription/prescription-
 import { NoticeEditComponent } from './diagnose/notices/notice-edit/notice-edit.component';
 import { SurveysComponent } from './diagnose/surveys/surveys.component';
 import { SurveyEditComponent } from './diagnose/surveys/survey-edit/survey-edit.component';
+import { FeedbackHistoryComponent } from './diagnose/patient-history/feedback-history/feedback-history.component';
 
 @NgModule({
   declarations: [
@@ -51,6 +52,7 @@ import { SurveyEditComponent } from './diagnose/surveys/survey-edit/survey-edit.
     NoticeEditComponent,
     SurveysComponent,
     SurveyEditComponent,
+    FeedbackHistoryComponent,
   ],
   imports: [
     SharedModule,

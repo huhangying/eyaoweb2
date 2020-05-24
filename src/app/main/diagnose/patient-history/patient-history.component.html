@@ -59,8 +59,9 @@
           <mat-icon>gesture</mat-icon>
           不良反应
         </ng-template>
-
-        Content 3
+        <ng-template matTabContent>
+          <ngx-feedback-history [type]="1" [patientId]="data.patient._id" [doctorId]="data.doctor._id"></ngx-feedback-history>
+        </ng-template>
       </mat-tab>
 
       <mat-tab>
@@ -68,8 +69,9 @@
           <mat-icon>group_work</mat-icon>
           联合用药
         </ng-template>
-
-        Content 3
+        <ng-template matTabContent>
+          <ngx-feedback-history [type]="2" [patientId]="data.patient._id" [doctorId]="data.doctor._id"></ngx-feedback-history>
+        </ng-template>
       </mat-tab>
 
       <mat-tab>
