@@ -14,6 +14,7 @@ import { MedicineReferences } from '../../../models/hospital/medicine-references
 export class PrescriptionComponent implements OnInit {
   @Input() prescription: Medicine[];
   @Input() medicineReferences: MedicineReferences;
+  @Input() readonly?: boolean;
 
   constructor(
     public dialog: MatDialog,

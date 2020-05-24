@@ -9,11 +9,12 @@ import { SurveyGroup } from '../../../models/survey/survey-group.model';
   styleUrls: ['./surveys.component.scss']
 })
 export class SurveysComponent implements OnInit {
-  @Input() isFirstVisit: boolean;
+  @Input() isFirstVisit?: boolean;
   @Input() surveyGroups: SurveyGroup[];
   @Input() doctor: Doctor;
   @Input() patient: User;
   @Output() dataChange = new EventEmitter<SurveyGroup[]>();
+  @Input() readonly?: boolean;
 
   constructor() { }
 

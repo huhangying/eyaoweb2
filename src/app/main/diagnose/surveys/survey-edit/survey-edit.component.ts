@@ -22,9 +22,9 @@ export class SurveyEditComponent implements OnInit {
     departmentId: string;
   }
   @Output() dataChange = new EventEmitter<SurveyGroup>();
+  @Input() readonly?: boolean;
   surveys: Survey[];
   list: string[];
-  readonly = false;
 
   constructor(
     private surveyService: SurveyService,

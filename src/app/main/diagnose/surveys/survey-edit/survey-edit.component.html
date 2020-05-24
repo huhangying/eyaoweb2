@@ -3,7 +3,7 @@
     <div class="alert alert-success text-center my-3" (click)="test(survey)">
       {{survey.name}}
     </div>
-    <div>
+    <div [class.d-none]="readonly">
       <button nbButton hero size="small" status="primary" (click)="saveSurvey(survey)" class="mr-3">
         <nb-icon icon="save-outline"></nb-icon> 保存
       </button>

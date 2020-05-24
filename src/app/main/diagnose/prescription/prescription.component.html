@@ -4,7 +4,7 @@
   </div>
 </ng-container>
 
-<div class="py-2">
+<div class="py-2" [class.d-none]="readonly">
   <button nbButton hero size="small" status="success" class="float-right" (click)="add()">
     <nb-icon icon="plus-outline"></nb-icon> 增加
   </button>
@@ -18,7 +18,7 @@
         <th scope="col">药名</th>
         <th scope="col">服用方法</th>
         <th scope="col">备注</th>
-        <th scope="col"></th>
+        <th scope="col" [class.d-none]="readonly"></th>
       </tr>
     </thead>
     <tbody cdkDropList (cdkDropListDropped)="drop($event)">
@@ -27,7 +27,7 @@
         <td>{{medicine.name}}(共{{ medicine.capacity }} {{ medicine.unit}} X {{medicine.quantity}})</td>
         <td>{{medicine.usage}}: {{showInterval(medicine.dosage.intervalDay)}} {{medicine.dosage.way}} {{medicine.dosage.frequency}} 次, 每次 {{medicine.dosage.count}} {{medicine.unit}}</td>
         <td>{{medicine.notes || '无'}}</td>
-        <td class="">
+        <td [class.d-none]="readonly">
           <button nbButton hero shape="round" size="tiny" status="info" title="编辑" (click)="edit(i, medicine)">
             <nb-icon icon="edit-2"></nb-icon>
           </button>

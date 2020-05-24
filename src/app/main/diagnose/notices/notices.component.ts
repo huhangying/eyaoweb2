@@ -12,6 +12,7 @@ import { NoticeEditComponent } from './notice-edit/notice-edit.component';
 })
 export class NoticesComponent implements OnInit {
   @Input() notices: MedicineNotice[];
+  @Input() readonly?: boolean;
 
   constructor(
     public dialog: MatDialog,

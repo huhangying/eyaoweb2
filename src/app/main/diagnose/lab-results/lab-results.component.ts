@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
   selector: 'ngx-lab-results',
@@ -6,6 +6,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./lab-results.component.scss']
 })
 export class LabResultsComponent implements OnInit {
+  @Input() readonly?: boolean;
 
   constructor() { }
 

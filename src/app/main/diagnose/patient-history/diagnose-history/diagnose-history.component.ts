@@ -4,6 +4,8 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatDialog } from '@angular/material/dialog';
 import { DiagnoseDetailsComponent } from '../diagnose-details/diagnose-details.component';
 import { MedicineReferences } from '../../../../models/hospital/medicine-references.model';
+import { User } from '../../../../models/crm/user.model';
+import { Doctor } from '../../../../models/crm/doctor.model';
 
 @Component({
   selector: 'ngx-diagnose-history',
@@ -17,6 +19,8 @@ export class DiagnoseHistoryComponent implements OnInit {
     this.dataSource = new MatTableDataSource<Diagnose>(values || []);
   }
   @Input() medicineReferences: MedicineReferences;
+  @Input() patient: User;
+  @Input() doctor: Doctor;
   displayedColumns: string[] = ['doctor.department.name', 'doctor.name', 'prescription', 'notices', 'updatedAt', '_id'];
   dataSource: MatTableDataSource<Diagnose>;
 
@@ -34,7 +38,9 @@ export class DiagnoseHistoryComponent implements OnInit {
     this.dialog.open(DiagnoseDetailsComponent, {
       data: {
         diagnose: diagnose,
-        medicineReferences: this.medicineReferences
+        medicineReferences: this.medicineReferences,
+        patient: this.patient,
+        doctor: this.doctor
       }
     });
   }
