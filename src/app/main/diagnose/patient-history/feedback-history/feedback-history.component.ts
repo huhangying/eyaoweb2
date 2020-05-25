@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
-import { UserFeedback } from '../../../../models/crm/user-feedback.model';
+import { UserFeedback } from '../../../../models/io/user-feedback.model';
 import { UserFeedbackService } from '../../../../services/user-feedback.service';
 import { tap } from 'rxjs/operators';
 

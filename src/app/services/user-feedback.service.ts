@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Department } from '../models/hospital/department.model';
 import { ApiService } from '../shared/service/api.service';
-import { UserFeedback } from '../models/crm/user-feedback.model';
+import { UserFeedback } from '../models/io/user-feedback.model';
 
 @Injectable({
   providedIn: 'root'

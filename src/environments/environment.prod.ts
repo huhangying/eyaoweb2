@@ -9,5 +9,6 @@ export const environment = {
   apiUrl: 'http://192.168.87.250:3000/',
   // imageServer: 'http://139.224.68.92:81/',
   imageServer: 'http://192.168.87.250:3000/',
-  peerPageUrl: 'http://yyl.rostensoft.com/zhaoys/'
+  peerPageUrl: 'http://yyl.rostensoft.com/zhaoys/',
+  socketUrl: 'http://192.168.87.250:3000'
 };
