@@ -9,8 +9,16 @@ export class LocalDatePipe implements PipeTransform {
     moment.locale('zh-cn');
   }
 
-  transform(date): string {
-    return date ? moment(date).format('LL') : '';
+  transform(date, arg?: string): string {
+    if (!arg) {
+      return date ? moment(date).format('LL') : '';
+    }
+    if (arg === 'time') {
+      return date ? moment(date).format('a h:mm'): '';
+    }
+    if (arg === 'full') {
+      return date ? moment(date).format('LL a h:mm'): '';
+    }
   }
 
 }

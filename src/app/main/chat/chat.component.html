@@ -1,1 +1,6 @@
 <p>chat works!</p>
+
+<div *ngFor="let chat of chats">
+  {{chat.created | localDate: 'time'}} :
+  {{ chat.data }}
+</div>

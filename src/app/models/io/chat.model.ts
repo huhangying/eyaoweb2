@@ -1,10 +1,19 @@
 export interface Chat {
-  _id: string;
+  _id?: string;
+  hid?: string;
   sender: string; // id
   to: string; // id
-  senderName?: string;
-  type: number;
+  // direction: boolean; // 消息方向：   false： user->doctor;     true: doctor->user
+  type: ChatType;
   data: string;
-  created: Date;
-  read: number;
+  created?: Date;
+  read?: number;
+}
+
+// 消息類別： 0：Text；      1：圖片；      2：語音；       4：視頻；
+export enum ChatType {
+  text = 0,
+  picture = 1,
+  audio = 2,
+  video = 4,
 }
