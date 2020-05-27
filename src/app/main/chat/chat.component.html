@@ -9,8 +9,8 @@
   <nb-card-body class="container-fluid" id="wrapper">
     <div class="row">
       <div class="d-none d-md-block col-md-4 col-xl-3">
-        <div class="h6 px-4 py-2">
-          <mat-icon color="primary" class="pr-2">people</mat-icon> 我的患者
+        <div class="h6 pl-3 py-2">
+          <mat-icon color="primary" class="pr-3">people</mat-icon> 我的患者
         </div>
 
         <mat-accordion *ngIf="doctorGroups?.length" class="doctor-group">
@@ -20,33 +20,35 @@
                 {{dg.name}}
               </mat-panel-title>
             </mat-expansion-panel-header>
-            <mat-selection-list [multiple]="false">
-              <mat-list-option *ngFor="let member of getGroupMembers(dg._id)" (click)="selectChatPatient(member.user)">
-                <div mat-list-icon><img [src]="member.user.icon" alt="头像" class="avatar"></div>
-                <div class="pl-4">
-                  {{member.user.name}}
-                  <div class="text-hint"> {{member.user.gender | gender}} </div>
-                </div>
-              </mat-list-option>
-            </mat-selection-list>
+            <div class="doctor-group-body" [style.maxHeight]="groupBodyHeight">
+              <mat-selection-list [multiple]="false">
+                <mat-list-option *ngFor="let member of getGroupMembers(dg._id)" (click)="selectChatPatient(member.user)">
+                  <div mat-list-icon><img [src]="member.user.icon" alt="头像" class="avatar"></div>
+                  <div class="pl-4">
+                    {{member.user.name}}
+                    <div class="text-hint"> {{member.user.gender | gender}} </div>
+                  </div>
+                </mat-list-option>
+              </mat-selection-list>
+            </div>
           </mat-expansion-panel>
         </mat-accordion>
       </div>
 
       <div class="col-12 col-md-8 col-xl-9">
-        <div class="card" *ngIf="selectedPatient">
+        <div class="card" [style.height]="chatBodyHeight" *ngIf="selectedPatient">
           <div class="card-header msg_head">
             <div class="d-flex bd-highlight">
               <div class="img_cont">
-                <img [src]="selectedPatient.icon" class="rounded-circle user_img">
+                <img [src]="selectedPatient?.icon" class="rounded-circle user_img">
                 <span class="online_icon"></span>
               </div>
               <div class="user_info">
-                <span>{{ selectedPatient.name }}</span>
+                <span>{{ selectedPatient?.name }}</span>
                 <p>
-                  {{ selectedPatient.gender | gender }} &nbsp;&nbsp;
-                  {{ selectedPatient.birthdate ? '年龄：' + (selectedPatient.birthdate | localDate: 'age') : '' }} <br>
-                  {{ selectedPatient.cell ? '电话：' + selectedPatient.cell : '' }}
+                  {{ selectedPatient?.gender | gender }} &nbsp;&nbsp;
+                  {{ selectedPatient?.birthdate ? '年龄：' + (selectedPatient.birthdate | localDate: 'age') : '' }} <br>
+                  {{ selectedPatient?.cell ? '电话：' + selectedPatient.cell : '' }}
                 </p>
               </div>
             </div>
@@ -58,7 +60,7 @@
               <div class="d-flex"
                 [ngClass]="chat.sender === doctor._id ? 'align-items-end flex-row-reverse': 'align-items-start flex-row'">
                 <div class="img_cont_msg">
-                  <img [src]="selectedPatient.icon" class="rounded-circle user_img_msg">
+                  <img [src]="selectedPatient?.icon" class="rounded-circle user_img_msg">
                 </div>
                 <div class="msg-data">
                   {{ chat.data }}

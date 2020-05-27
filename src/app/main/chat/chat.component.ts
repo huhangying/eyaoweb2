@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectionStrategy, ChangeDetectorRef, HostListener } from '@angular/core';
 import { SocketioService } from '../../shared/service/socketio.service';
 import { AuthService } from '../../shared/service/auth.service';
 import { Doctor } from '../../models/crm/doctor.model';
@@ -25,6 +25,14 @@ export class ChatComponent implements OnInit, OnDestroy {
 
   doctorGroups: DoctorGroup[];
   relationships: Relationship[];
+  chatBodyHeight: string;
+  groupBodyHeight: string;
+  @HostListener('window:resize', ['$event'])
+  setChatBodyHeight(event?) {
+    this.chatBodyHeight = (window.innerHeight - 166) + 'px';
+    this.groupBodyHeight = (window.innerHeight - 440) + 'px';
+    this.cd.markForCheck();
+  }
 
   constructor(
     private auth: AuthService,
@@ -74,6 +82,8 @@ export class ChatComponent implements OnInit, OnDestroy {
       this.chats.push(msg);
       this.scrollBottom();
     });
+
+    this.setChatBodyHeight();
   }
 
   ngOnDestroy() {
