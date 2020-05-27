@@ -30,6 +30,10 @@ export class AuthService {
 
   get doctor(): Doctor { return this.appStore.doctor; }
 
+  updateDoctor(data: Doctor) {
+    this.appStore.updateDoctor(data);
+  }
+
   getDoctorRole(): number {
     return this.appStore.doctor ? (this.appStore.doctor.role || 0) : 0;
   }

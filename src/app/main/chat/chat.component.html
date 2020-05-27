@@ -90,10 +90,17 @@
               <mat-icon>reply</mat-icon>
             </button>
             <mat-menu #shortcutList="matMenu" yPosition="above">
-              <button mat-menu-item *ngFor="let shortcut of doctor.shortcuts.split('|')"
-                (click)="inputFromShortcut(shortcut)">
-                {{shortcut}}
-              </button>
+              <ng-container *ngIf="doctor.shortcuts">
+                <button mat-menu-item *ngFor="let shortcut of doctor.shortcuts.split('|')"
+                  (click)="inputFromShortcut(shortcut)">
+                  {{shortcut}}
+                </button>
+              </ng-container>
+              <ng-container *ngIf="!doctor.shortcuts">
+                <div class="alert alert-warning">
+                  请先到“快捷回复管理”中设置。
+                </div>
+              </ng-container>
             </mat-menu>
             <button mat-icon-button color="primary" class="float-right d-none">
               <mat-icon>send</mat-icon>

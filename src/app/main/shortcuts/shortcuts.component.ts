@@ -28,7 +28,7 @@ export class ShortcutsComponent implements OnInit {
     this.doctorUserId = this.auth.doctor.user_id;
     this.doctorService.getShortcutsByDoctor(this.doctorUserId)
       .subscribe(result => {
-        this.shortcuts = result?.split('|');
+        this.shortcuts = result ? result?.split('|'): [];
         this.originalShortcuts = [...this.shortcuts];
       });
   }
@@ -78,10 +78,12 @@ export class ShortcutsComponent implements OnInit {
   update() {
     this.doctorService.updateShortcutsByDoctor(this.doctorUserId, this.shortcuts.join('|')).pipe(
       tap(result => {
-        if (result) {
-          console.log(result);
-          this.message.updateSuccess();
-        }
+        // save to the store
+        this.auth.updateDoctor({
+          ...this.auth.doctor,
+          shortcuts: result
+        });
+        this.message.updateSuccess();
       }),
       catchError(this.message.updateErrorHandle)
     ).subscribe();

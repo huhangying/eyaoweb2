@@ -8,24 +8,32 @@
   </nb-card-header>
 
   <nb-card-body>
-    <div class="pb-3 pl-3">
-      <span *ngIf="shortcuts?.length > 1">您可以拖拽来改变顺序。</span>
-    </div>
-
-    <div class="list-group d-block" cdkDropList (cdkDropListDropped)="drop($event)">
-      <div class="list-group-item list-group-item-action" *ngFor="let shortcut of shortcuts; let i=index" cdkDrag>
-        {{shortcut}}
-        <span class="float-right">
-          <button nbButton hero shape="round" size="tiny" status="info" title="编辑" (click)="edit(shortcut, i)">
-            <nb-icon icon="edit-2"></nb-icon>
-          </button>
-          &nbsp;
-          <button nbButton hero shape="round" size="tiny" status="danger" title="删除" (click)="delete(i)">
-            <nb-icon icon="trash-2-outline"></nb-icon>
-          </button>
-        </span>
+    <ng-container *ngIf="shortcuts?.length">
+      <div class="pb-3 pl-3">
+        <span *ngIf="shortcuts?.length > 1">您可以拖拽来改变顺序。</span>
       </div>
-    </div>
+
+      <div class="list-group d-block" cdkDropList (cdkDropListDropped)="drop($event)">
+        <div class="list-group-item list-group-item-action" *ngFor="let shortcut of shortcuts; let i=index" cdkDrag>
+          {{shortcut}}
+          <span class="float-right">
+            <button nbButton hero shape="round" size="tiny" status="info" title="编辑" (click)="edit(shortcut, i)">
+              <nb-icon icon="edit-2"></nb-icon>
+            </button>
+            &nbsp;
+            <button nbButton hero shape="round" size="tiny" status="danger" title="删除" (click)="delete(i)">
+              <nb-icon icon="trash-2-outline"></nb-icon>
+            </button>
+          </span>
+        </div>
+      </div>
+    </ng-container>
+
+    <ng-container *ngIf="!shortcuts?.length">
+      <div class="alert alert-warning">
+        没有快捷回复设置。
+      </div>
+    </ng-container>
   </nb-card-body>
 
   <nb-card-footer class="d-block">

@@ -93,6 +93,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
     delete profile.passwordConfirm;
     this.doctorService.updateDoctor(profile)
       .subscribe();
+    //todo: update store if logged-in doctor
   }
 
   onFileSelected(event) {
@@ -118,6 +119,8 @@ export class ProfileComponent implements OnInit, OnDestroy {
                     ...doctor,
                     icon: newfileName
                   }).subscribe();
+                  //todo: update store if logged-in doctor
+
                 }
                 break;
               case HttpEventType.Response:

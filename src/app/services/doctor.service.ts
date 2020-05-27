@@ -5,6 +5,7 @@ import { AppStoreService } from '../shared/store/app-store.service';
 import { ApiService } from '../shared/service/api.service';
 import { Relationship } from '../models/crm/relationship.model';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -92,7 +93,9 @@ export class DoctorService {
   }
 
   updateShortcutsByDoctor(did: string, shortcuts: string): Observable<string> {
-    return this.api.patch<string>('doctor/shortcuts/' + did, {shortcuts});
+    return this.api.patch<{shortcuts: string}>('doctor/shortcuts/' + did, {shortcuts}).pipe(
+      map(_ => _?.shortcuts)
+    );
   }
 
 }
