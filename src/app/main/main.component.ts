@@ -25,14 +25,14 @@ export class MainComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
 
   constructor(
-    private authService: AuthService,
+    private auth: AuthService,
     private sidebarService: NbSidebarService,
     private layoutService: LayoutService,
     private menuService: NbMenuService,
     private appStore: AppStoreService,
     private socketService: SocketioService,
   ) {
-    const doc = this.authService.getDoctor();
+    const doc = this.auth.doctor;
     this.role = doc?.role || 0;
     this.menu = getMenuItems(this.role, {
       dep: doc.department,

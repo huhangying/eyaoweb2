@@ -25,7 +25,7 @@ export class ShortcutsComponent implements OnInit {
     private dialogService: DialogService,
     private message: MessageService,
   ) {
-    this.doctorUserId = this.auth.getDoctor().user_id;
+    this.doctorUserId = this.auth.doctor.user_id;
     this.doctorService.getShortcutsByDoctor(this.doctorUserId)
       .subscribe(result => {
         this.shortcuts = result?.split('|');

@@ -33,7 +33,7 @@ export class ChatComponent implements OnInit, OnDestroy {
     private doctorService: DoctorService,
     private cd: ChangeDetectorRef,
   ) {
-    this.doctor = this.auth.getDoctor();
+    this.doctor = this.auth.doctor;
     this.loadData(this.doctor._id);
   }
 

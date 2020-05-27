@@ -40,7 +40,7 @@ export class DiagnoseComponent implements OnInit {
     private dialogService: DialogService,
     private message: MessageService,
   ) {
-    this.doctor = this.auth.getDoctor();
+    this.doctor = this.auth.doctor;
     this.medicineReferences = { ...this.route.snapshot.data.medicineReferences };
 
   }

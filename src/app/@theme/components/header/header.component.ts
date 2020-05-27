@@ -35,7 +35,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   constructor(private sidebarService: NbSidebarService,
     private menuService: NbMenuService,
     private themeService: NbThemeService,
-    private authService: AuthService,
+    private auth: AuthService,
     private layoutService: LayoutService,
     private breakpointService: NbMediaBreakpointsService,
     private appStore: AppStoreService,
@@ -46,7 +46,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.doctor = this.authService.getDoctor();
+    this.doctor = this.auth.doctor;
     const { xl } = this.breakpointService.getBreakpointsMap();
     this.themeService.onMediaQueryChange()
       .pipe(
@@ -102,6 +102,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   getDoctorIcon() {
-    return this.authService.getDoctorIcon();
+    return this.auth.getDoctorIcon();
   }
 }

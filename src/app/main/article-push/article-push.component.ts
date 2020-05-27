@@ -36,7 +36,7 @@ export class ArticlePushComponent implements OnInit {
     public dialog: MatDialog,
     private message: MessageService,
   ) {
-    this.doctor = this.auth.getDoctor();
+    this.doctor = this.auth.doctor;
     this.config = configService.editorConfig;
     this.articlePage = {
       doctor: this.doctor._id

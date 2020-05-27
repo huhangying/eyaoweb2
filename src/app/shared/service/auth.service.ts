@@ -28,10 +28,6 @@ export class AuthService {
     this.appStore.reset();
   }
 
-  getDoctor(): Doctor {
-    return this.appStore.doctor;
-  }
-
   get doctor(): Doctor { return this.appStore.doctor; }
 
   getDoctorRole(): number {

@@ -35,7 +35,7 @@ export class ArticleTemplateEditComponent implements OnInit, OnDestroy {
     private fb: FormBuilder,
     private configService: ConfigService,
     private articleService: ArticleService,
-    private authService: AuthService,
+    private auth: AuthService,
     private message: MessageService,
   ) {
     this.config = configService.editorConfig;
@@ -62,7 +62,7 @@ export class ArticleTemplateEditComponent implements OnInit, OnDestroy {
   }
 
   update() {
-    const updatedBy = this.authService.getDoctor()?._id;
+    const updatedBy = this.auth.doctor?._id;
     const response = this.data.articleTemplate?._id ?
       // update
       this.articleService.updateTemplate({
