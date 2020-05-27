@@ -19,6 +19,9 @@ export class LocalDatePipe implements PipeTransform {
     if (arg === 'full') {
       return date ? moment(date).format('LL a h:mm'): '';
     }
+    if (arg === 'age') {
+      return date ? moment().diff(moment(date), 'years').toString(): '';
+    }
   }
 
 }

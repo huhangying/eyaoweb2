@@ -21,7 +21,7 @@ export class AuthService {
   }
 
   isLoggedIn(): boolean {
-    return !!this.getDoctor();
+    return !!this.appStore.doctor;
   }
 
   logout() {
@@ -32,11 +32,13 @@ export class AuthService {
     return this.appStore.doctor;
   }
 
+  get doctor(): Doctor { return this.appStore.doctor; }
+
   getDoctorRole(): number {
     return this.appStore.doctor ? (this.appStore.doctor.role || 0) : 0;
   }
 
-  getDoctorIcon(role?: number) {
+  getDoctorIconByRole(role?: number) {
     role = role || this.getDoctorRole();
     switch (role) {
       case 1:
@@ -46,6 +48,12 @@ export class AuthService {
       default:
         return 'assets/images/icon/Surgeon.svg';
     }
+  }
+
+  getDoctorIcon() {
+    if (!this.doctor) return '';
+    return this.doctor.icon || this.getDoctorIconByRole(this.doctor.role);
+
   }
 
 }

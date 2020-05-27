@@ -19,6 +19,14 @@ export class SocketioService {
     }
   }
 
+  onChat(next) {
+    this.socket.on('chat', next);
+  }
+
+  onRoom(room, next) {
+    this.socket.on(room, next);
+  }
+
   joinRoom(room: string) {
     this.socket.emit('joinRoom', room);
   }
@@ -32,7 +40,6 @@ export class SocketioService {
       ...chat,
       created: moment()
     });
-
   }
 
   sendFeedback(type: number, doctor: string, user: string) {

@@ -34,6 +34,7 @@ import { SelectDoctorPatientsComponent } from './components/select-doctor-patien
 import { MatRadioModule } from '@angular/material/radio';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { MatExpansionModule } from '@angular/material/expansion';
+import { MatListModule } from '@angular/material/list';
 
 @NgModule({
   imports: [
@@ -59,6 +60,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
     MatRadioModule,
     DragDropModule,
     MatExpansionModule,
+    MatListModule,
 
     ImageCropperModule,
   ],
@@ -83,6 +85,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
     MatRadioModule,
     DragDropModule,
     MatExpansionModule,
+    MatListModule,
 
     DoctorProfileComponent,
     SelectDoctorComponent,
