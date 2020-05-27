@@ -35,6 +35,7 @@ import { MatRadioModule } from '@angular/material/radio';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatListModule } from '@angular/material/list';
+import { MatMenuModule } from '@angular/material/menu';
 
 @NgModule({
   imports: [
@@ -61,6 +62,7 @@ import { MatListModule } from '@angular/material/list';
     DragDropModule,
     MatExpansionModule,
     MatListModule,
+    MatMenuModule,
 
     ImageCropperModule,
   ],
@@ -86,6 +88,7 @@ import { MatListModule } from '@angular/material/list';
     DragDropModule,
     MatExpansionModule,
     MatListModule,
+    MatMenuModule,
 
     DoctorProfileComponent,
     SelectDoctorComponent,

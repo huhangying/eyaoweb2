@@ -22,7 +22,8 @@
             </mat-expansion-panel-header>
             <div class="doctor-group-body" [style.maxHeight]="groupBodyHeight">
               <mat-selection-list [multiple]="false">
-                <mat-list-option *ngFor="let member of getGroupMembers(dg._id)" (click)="selectChatPatient(member.user)">
+                <mat-list-option *ngFor="let member of getGroupMembers(dg._id)"
+                  (click)="selectChatPatient(member.user)">
                   <div mat-list-icon><img [src]="member.user.icon" alt="头像" class="avatar"></div>
                   <div class="pl-4">
                     {{member.user.name}}
@@ -37,7 +38,7 @@
 
       <div class="col-12 col-md-8 col-xl-9">
         <div class="card" [style.height]="chatBodyHeight" *ngIf="selectedPatient">
-          <div class="card-header msg_head">
+          <div class="chat-header">
             <div class="d-flex bd-highlight">
               <div class="img_cont">
                 <img [src]="selectedPatient?.icon" class="rounded-circle user_img">
@@ -71,11 +72,31 @@
             <div id="chat-bottom"></div>
           </div>
 
-          <div class="align-bottom d-flex text-right w-100 px-3 py-1">
+          <div class="align-bottom d-flex text-right w-100">
             <textarea type="text" nbInput fullWidth autocomplete="off" fieldSize="small" placeholder="请输入..."
               cdkFocusInitial (keyup.enter)="send()" [(ngModel)]="myInput"></textarea>
             <button nbButton hero status="info" size="small" nbSuffix (click)="send()">
               <nb-icon icon="paper-plane-outline" pack="eva"></nb-icon>
+            </button>
+          </div>
+          <div class="px-3">
+            <button mat-icon-button color="primary" class="mr-2">
+              <mat-icon>insert_emoticon</mat-icon>
+            </button>
+            <button mat-icon-button color="primary" class="mr-2">
+              <mat-icon>insert_photo</mat-icon>
+            </button>
+            <button mat-icon-button [matMenuTriggerFor]="shortcutList" color="primary" class="mr-2">
+              <mat-icon>reply</mat-icon>
+            </button>
+            <mat-menu #shortcutList="matMenu" yPosition="above">
+              <button mat-menu-item *ngFor="let shortcut of doctor.shortcuts.split('|')"
+                (click)="inputFromShortcut(shortcut)">
+                {{shortcut}}
+              </button>
+            </mat-menu>
+            <button mat-icon-button color="primary" class="float-right d-none">
+              <mat-icon>send</mat-icon>
             </button>
           </div>
         </div>
@@ -85,18 +106,18 @@
 
     <div class="row justify-content-center h-100" [class.d-none]="true">
 
-          <div class="card-footer">
-            <div class="input-group">
-              <div class="input-group-append">
-                <span class="input-group-text attach_btn"><i class="fas fa-paperclip"></i></span>
-              </div>
-              <textarea name="" class="form-control type_msg" placeholder="Type your message..."></textarea>
-              <div class="input-group-append">
-                <span class="input-group-text send_btn"><i class="fas fa-location-arrow"></i></span>
-              </div>
-            </div>
+      <div class="card-footer">
+        <div class="input-group">
+          <div class="input-group-append">
+            <span class="input-group-text attach_btn"><i class="fas fa-paperclip"></i></span>
+          </div>
+          <textarea name="" class="form-control type_msg" placeholder="Type your message..."></textarea>
+          <div class="input-group-append">
+            <span class="input-group-text send_btn"><i class="fas fa-location-arrow"></i></span>
           </div>
         </div>
+      </div>
+    </div>
 
   </nb-card-body>
 </nb-card>

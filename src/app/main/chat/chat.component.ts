@@ -21,7 +21,7 @@ export class ChatComponent implements OnInit, OnDestroy {
   chats: Chat[];
   selectedPatient: User;
   room: string;
-  myInput: string;
+  myInput = '';
 
   doctorGroups: DoctorGroup[];
   relationships: Relationship[];
@@ -43,6 +43,8 @@ export class ChatComponent implements OnInit, OnDestroy {
   ) {
     this.doctor = this.auth.doctor;
     this.loadData(this.doctor._id);
+    console.log(this.doctor);
+
   }
 
   //------------------------------------------------------------
@@ -128,6 +130,10 @@ export class ChatComponent implements OnInit, OnDestroy {
       const footer = document.getElementById('chat-bottom');
       footer.scrollIntoView({ behavior: 'smooth', block: 'end' });
     });
+  }
+
+  inputFromShortcut(shortcut: string) {
+    this.myInput += shortcut;
   }
 
 }
