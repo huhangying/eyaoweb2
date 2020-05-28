@@ -15,7 +15,7 @@
     </button>
     <mat-menu #notiMenu="matMenu" xPosition="before">
       <ng-template matMenuContent>
-        <button mat-menu-item *ngFor="let noti of chatNotifications" (click)="viewChat(noti.patientId)">
+        <button mat-menu-item *ngFor="let noti of chatNotifications" (click)="viewChat(noti)">
           <mat-icon>sms</mat-icon>
           收到{{noti.name}} {{noti.count}}条新消息
           <i>{{ noti.created | localDate: 'full'}}</i>

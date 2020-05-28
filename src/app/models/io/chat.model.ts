@@ -19,4 +19,6 @@ export enum ChatType {
   picture = 1,
   audio = 2,
   video = 4,
+  adverseReaction = 10,
+  doseCombination = 20,
 }

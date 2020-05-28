@@ -10,7 +10,7 @@ import { AuthService } from '../../../shared/service/auth.service';
 import { ChatService } from '../../../services/chat.service';
 import { Doctor } from '../../../models/crm/doctor.model';
 import { Chat } from '../../../models/io/chat.model';
-import { ChatNotification } from '../../../models/io/chat-notification.model';
+import { Notification, NotificationType } from '../../../models/io/notification.model';
 
 @Component({
   selector: 'ngx-header',
@@ -23,7 +23,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   userPictureOnly = false;
   doctor: Doctor;
 
-  chatNotifications: ChatNotification[];
+  chatNotifications: Notification[];
   totalUnread = 0;
 
   userMenu = [
@@ -119,36 +119,18 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.chat.getUnreadListByDocter(this.doctor._id).pipe(
       tap(results => {
         console.log('unread: ' + results.length);
-        if (!results?.length) {
-          this.chatNotifications = [];
-        }
         this.totalUnread = results.length;
-        const senders: string[] = [];
-        this.chatNotifications = results.reduce((notis, chat) => {
-          if (senders.indexOf(chat.sender) === -1) {
-            senders.push(chat.sender);
-            notis.push({
-              patientId: chat.sender,
-              name: chat.senderName || 'Test', // to remove
-              count: 1,
-              created: chat.created
-            });
-            return notis;
-          }
-          notis = notis.map(_ => {
-            if (_.patientId === chat.sender) {
-              _.count = _.count + 1;
-            }
-            return _;
-          });
-          return notis;
-        }, []);
+        this.chatNotifications = this.chat.convertNotificationList(results);
       })
     ).subscribe();
   }
 
-  viewChat(patientId: string) {
-    this.router.navigate(['/main/chat'], { queryParams: {pid: patientId}});
+  viewChat(noti: Notification) {
+    if (noti.type === NotificationType.chat) {
+      this.router.navigate(['/main/chat'], { queryParams: {pid: noti.patientId}});
+    } else {
+      //todo:
+    }
   }
 
 }
