@@ -112,6 +112,7 @@ export class ChatComponent implements OnInit, OnDestroy {
     const chat = {
       room: this.room,
       sender: this.doctor._id,
+      senderName: this.doctor.name,
       to: this.selectedPatient._id,
       type: ChatType.text,
       data: this.myInput

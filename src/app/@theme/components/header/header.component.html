@@ -8,13 +8,29 @@
 </div>
 
 <div class="header-container">
+  <ng-container *ngIf="!isCms && totalUnread">
+    <button class="p-0 m-0" mat-icon-button [matBadge]="totalUnread" matBadgeColor="warn"
+      [matMenuTriggerFor]="notiMenu">
+      <mat-icon>notifications_outline</mat-icon>
+    </button>
+    <mat-menu #notiMenu="matMenu" xPosition="before">
+      <ng-template matMenuContent>
+        <button mat-menu-item *ngFor="let noti of chatNotifications" (click)="viewChat(noti.patientId)">
+          <mat-icon>sms</mat-icon>
+          收到{{noti.name}} {{noti.count}}条新消息
+          <i>{{ noti.created | localDate: 'full'}}</i>
+        </button>
+      </ng-template>
+    </mat-menu>
+  </ng-container>
+
   <nb-actions size="small">
     <nb-action class="control-item" icon="settings-outline" title="管理后台" link="/cms" *ngIf="!isCms">
     </nb-action>
     <nb-action class="control-item" icon="home-outline" title="返回主頁" link="/main" *ngIf="isCms">
     </nb-action>
-    <nb-action class="user-action" icon="bell-outline" *ngIf="!isCms"></nb-action>
-    <nb-action class="user-action" icon="email-outline" *ngxAcl="2"></nb-action>
+
+    <nb-action class="user-action" icon="email-outline" *ngxAcl="1"></nb-action>
 
     <nb-action class="user-action">
       <nb-user [nbContextMenu]="userMenu" [onlyPicture]="userPictureOnly" [name]="doctor?.name"

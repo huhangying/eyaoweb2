@@ -1,7 +1,10 @@
+import { User } from '../crm/user.model';
+
 export interface Chat {
   _id?: string;
   hid?: string;
   sender: string; // id
+  senderName: string;
   to: string; // id
   // direction: boolean; // 消息方向：   false： user->doctor;     true: doctor->user
   type: ChatType;

@@ -9,6 +9,8 @@ import { Subject } from 'rxjs';
 import { AuthService } from '../../../shared/service/auth.service';
 import { ChatService } from '../../../services/chat.service';
 import { Doctor } from '../../../models/crm/doctor.model';
+import { Chat } from '../../../models/io/chat.model';
+import { ChatNotification } from '../../../models/io/chat-notification.model';
 
 @Component({
   selector: 'ngx-header',
@@ -20,6 +22,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
   private destroy$: Subject<void> = new Subject<void>();
   userPictureOnly = false;
   doctor: Doctor;
+
+  chatNotifications: ChatNotification[];
+  totalUnread = 0;
 
   userMenu = [
     { title: '个人资料', icon: 'person-outline', data: 'profile' },
@@ -114,9 +119,36 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.chat.getUnreadListByDocter(this.doctor._id).pipe(
       tap(results => {
         console.log('unread: ' + results.length);
-
+        if (!results?.length) {
+          this.chatNotifications = [];
+        }
+        this.totalUnread = results.length;
+        const senders: string[] = [];
+        this.chatNotifications = results.reduce((notis, chat) => {
+          if (senders.indexOf(chat.sender) === -1) {
+            senders.push(chat.sender);
+            notis.push({
+              patientId: chat.sender,
+              name: chat.senderName || 'Test',
+              count: 1,
+              created: chat.created
+            });
+            return notis;
+          }
+          notis = notis.map(_ => {
+            if (_.patientId === chat.sender) {
+              _.count = _.count + 1;
+            }
+            return _;
+          });
+          return notis;
+        }, []);
       })
     ).subscribe();
+  }
+
+  viewChat(patientId: string) {
+
   }
 
 }
