@@ -4,7 +4,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NbMediaBreakpointsService, NbMenuService, NbSidebarService, NbThemeService, NbMediaBreakpoint } from '@nebular/theme';
 
 import { LayoutService } from '../../../@core/utils';
-import { map, takeUntil, filter, tap } from 'rxjs/operators';
+import { map, takeUntil, filter, tap, pluck, distinctUntilChanged } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { AuthService } from '../../../shared/service/auth.service';
 import { ChatService } from '../../../services/chat.service';
@@ -92,6 +92,27 @@ export class HeaderComponent implements OnInit, OnDestroy {
           this.router.navigate(['main/preferences']);
         }
       });
+
+      // moniter notifications
+      this.appStore.state$.pipe(
+        pluck('notifications'),
+        distinctUntilChanged(),
+        tap(notis => {
+          if (!notis?.length) {
+            this.totalUnread = 0;
+            this.chatNotifications = [];
+            return;
+          }
+          this.totalUnread = notis.reduce((total, noti) => {
+            total += noti.count;
+            return total;
+          }, 0);
+          this.chatNotifications = notis;
+        }
+
+        ),
+        takeUntil(this.destroy$),
+      )      .subscribe();
   }
 
   ngOnDestroy() {
@@ -119,9 +140,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.chat.getUnreadListByDocter(this.doctor._id).pipe(
       tap(results => {
         console.log('unread: ' + results.length);
-        this.totalUnread = results.length;
-        this.chatNotifications = this.chat.convertNotificationList(results);
-      })
+        this.chat.convertNotificationList(results);
+      }),
+      takeUntil(this.destroy$)
     ).subscribe();
   }
 

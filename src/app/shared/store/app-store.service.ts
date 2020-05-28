@@ -3,6 +3,7 @@ import { AppState } from './app-state.model';
 import { Store } from './store';
 import { NbMediaBreakpoint } from '@nebular/theme';
 import { Doctor } from '../../models/crm/doctor.model';
+import { Notification } from '../../models/io/notification.model';
 import * as store2 from 'store2';
 
 @Injectable({ providedIn: 'root' })
@@ -22,6 +23,13 @@ export class AppStoreService extends Store<AppState> {
       doctor,
     });
     store2.set('doctor', doctor);
+  }
+
+  updateNotifications(notifications: Notification[]) {
+    this.setState({
+      ...this.state,
+      notifications,
+    });
   }
 
   updateDebugMode(debugMode?: 0 | 1) {
