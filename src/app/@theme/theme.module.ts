@@ -23,14 +23,6 @@ import {
   NbToggleModule,
 } from '@nebular/theme';
 import { NbEvaIconsModule } from '@nebular/eva-icons';
-
-import {
-  FooterComponent,
-  HeaderComponent,
-} from './components';
-
-import { OneColumnLayoutComponent } from './layouts/one-column/one-column.layout';
-import { FlatLayoutComponent } from './layouts/flat/flat.layout';
 import { DEFAULT_THEME } from './styles/theme.default';
 import { COSMIC_THEME } from './styles/theme.cosmic';
 import { CORPORATE_THEME } from './styles/theme.corporate';
@@ -60,11 +52,6 @@ const NB_MODULES = [
   NbToggleModule,
 ];
 const COMPONENTS = [
-  HeaderComponent,
-  FooterComponent,
-  OneColumnLayoutComponent,
-  FlatLayoutComponent,
-
   AccessControlDirective,
 ];
 
@@ -82,7 +69,7 @@ export class ThemeModule {
           {
             name: 'default',
           },
-          [ DEFAULT_THEME, COSMIC_THEME, CORPORATE_THEME, DARK_THEME ],
+          [DEFAULT_THEME, COSMIC_THEME, CORPORATE_THEME, DARK_THEME],
         ).providers,
         NbMenuModule.forRoot().providers,
         NbSidebarModule.forRoot().providers,

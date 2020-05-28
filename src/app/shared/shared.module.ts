@@ -36,6 +36,9 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatListModule } from '@angular/material/list';
 import { MatMenuModule } from '@angular/material/menu';
+import { FooterComponent, HeaderComponent } from '../@theme/components';
+import { OneColumnLayoutComponent } from '../@theme/layouts/one-column/one-column.layout';
+import { FlatLayoutComponent } from '../@theme/layouts/flat/flat.layout';
 
 @NgModule({
   imports: [
@@ -90,6 +93,10 @@ import { MatMenuModule } from '@angular/material/menu';
     MatListModule,
     MatMenuModule,
 
+    FooterComponent,
+    HeaderComponent,
+    OneColumnLayoutComponent,
+    FlatLayoutComponent,
     DoctorProfileComponent,
     SelectDoctorComponent,
     SelectDepartmentComponent,
@@ -105,6 +112,10 @@ import { MatMenuModule } from '@angular/material/menu';
     GenderPipe,
   ],
   declarations: [
+    FooterComponent,
+    HeaderComponent,
+    OneColumnLayoutComponent,
+    FlatLayoutComponent,
     ConfirmComponent,
     DoctorProfileComponent,
     SelectDoctorComponent,
