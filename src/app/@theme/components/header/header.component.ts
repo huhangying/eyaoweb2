@@ -129,7 +129,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
             senders.push(chat.sender);
             notis.push({
               patientId: chat.sender,
-              name: chat.senderName || 'Test',
+              name: chat.senderName || 'Test', // to remove
               count: 1,
               created: chat.created
             });
@@ -148,7 +148,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   viewChat(patientId: string) {
-
+    this.router.navigate(['/main/chat'], { queryParams: {pid: patientId}});
   }
 
 }

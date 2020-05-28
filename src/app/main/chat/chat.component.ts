@@ -9,6 +9,7 @@ import { DoctorGroup } from '../../models/crm/doctor-group.model';
 import { DoctorService } from '../../services/doctor.service';
 import { Relationship } from '../../models/crm/relationship.model';
 import { User } from '../../models/crm/user.model';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'ngx-chat',
@@ -40,10 +41,11 @@ export class ChatComponent implements OnInit, OnDestroy {
     private chatService: ChatService,
     private doctorService: DoctorService,
     private cd: ChangeDetectorRef,
+    private route: ActivatedRoute,
   ) {
     this.doctor = this.auth.doctor;
     this.loadData(this.doctor._id);
-    console.log(this.doctor);
+    // console.log(this.doctor);
 
   }
 
@@ -58,6 +60,7 @@ export class ChatComponent implements OnInit, OnDestroy {
       ...this.doctorGroups
     ];
     this.cd.markForCheck();
+    this.selectPatientFromQuery(); //
   }
 
   getGroupMembers(doctorGroup: string) {
@@ -65,6 +68,22 @@ export class ChatComponent implements OnInit, OnDestroy {
       return this.relationships?.filter(_ => !_.group);
     }
     return this.relationships?.filter(_ => _.group === doctorGroup);
+  }
+
+  selectPatientFromQuery() {
+    const pid = this.route.snapshot.queryParams?.pid;
+    if (pid && !this.selectedPatient) {
+      // search from doctor-group/relationships
+      this.doctorGroups.map(dg => {
+        this.getGroupMembers(dg._id)?.map(r => {
+          if (r.user?._id === pid) {
+            this.selectChatPatient(r.user);
+            // select in the left
+            return;
+          }
+        });
+      });
+    }
   }
 
   //------------------------------------------------------------
@@ -93,7 +112,7 @@ export class ChatComponent implements OnInit, OnDestroy {
   }
 
   selectChatPatient(patient: User) {
-    console.log(patient);
+    // console.log(patient);
     this.selectedPatient = patient;
 
     // get chat history
