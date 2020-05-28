@@ -4,9 +4,11 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NbMediaBreakpointsService, NbMenuService, NbSidebarService, NbThemeService, NbMediaBreakpoint } from '@nebular/theme';
 
 import { LayoutService } from '../../../@core/utils';
-import { map, takeUntil, filter } from 'rxjs/operators';
+import { map, takeUntil, filter, tap } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { AuthService } from '../../../shared/service/auth.service';
+import { ChatService } from '../../../services/chat.service';
+import { Doctor } from '../../../models/crm/doctor.model';
 
 @Component({
   selector: 'ngx-header',
@@ -17,7 +19,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   isCms: boolean;
   private destroy$: Subject<void> = new Subject<void>();
   userPictureOnly = false;
-  doctor: any;
+  doctor: Doctor;
 
   userMenu = [
     { title: '个人资料', icon: 'person-outline', data: 'profile' },
@@ -41,12 +43,15 @@ export class HeaderComponent implements OnInit, OnDestroy {
     private appStore: AppStoreService,
     private router: Router,
     private route: ActivatedRoute,
+    private chat: ChatService,
   ) {
     this.isCms = this.route.snapshot.data?.app === 'cms';
   }
 
   ngOnInit() {
     this.doctor = this.auth.doctor;
+    this.getUnreadList();
+
     const { xl } = this.breakpointService.getBreakpointsMap();
     this.themeService.onMediaQueryChange()
       .pipe(
@@ -104,4 +109,14 @@ export class HeaderComponent implements OnInit, OnDestroy {
   getDoctorIcon() {
     return this.auth.getDoctorIcon();
   }
+
+  getUnreadList() {
+    this.chat.getUnreadListByDocter(this.doctor._id).pipe(
+      tap(results => {
+        console.log('unread: ' + results.length);
+
+      })
+    ).subscribe();
+  }
+
 }

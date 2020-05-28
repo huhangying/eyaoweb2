@@ -24,5 +24,10 @@ export class ChatService {
     return this.api.post<Chat>('chat/send', data);
   }
 
+  // unread list
+  getUnreadListByDocter(doctorId: string) {
+    return this.api.get<Chat[]>(`chats/unread/doctor/${doctorId}`);
+  }
+
 
 }
