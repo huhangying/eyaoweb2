@@ -10,9 +10,6 @@ import { CoreModule } from './@core/core.module';
 import { ThemeModule } from './@theme/theme.module';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
-import {
-  NbChatModule,
-} from '@nebular/theme';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ToastrModule } from 'ngx-toastr';
 import { ApiInterceptor } from './shared/service/api-interceptor';
@@ -27,9 +24,6 @@ import { ApiInterceptor } from './shared/service/api-interceptor';
     HttpClientModule,
     AppRoutingModule,
     ThemeModule.forRoot(),
-    NbChatModule.forRoot({
-      messageGoogleMapKey: 'AIzaSyA_wNuCzia92MAmdLRzmqitRGvCF7wCZPY',
-    }),
     ToastrModule.forRoot({
       timeOut: 3000,
       positionClass: 'toast-top-right', // 'toast-bottom-right',
