@@ -14,6 +14,12 @@ const routes: Routes = [
     data: {app: 'cms'}
   },
   {
+    path: 'wechat',
+    loadChildren: () => import('../app/wechat/wechat.module')
+      .then(m => m.WechatModule),
+      data: {app: 'webchat'}
+  },
+  {
     path: 'auth',
     loadChildren: () => import('../app/auth/auth.module')
       .then(m => m.AuthModule),

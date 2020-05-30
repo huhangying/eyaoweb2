@@ -44,7 +44,6 @@ import { FlatLayoutComponent } from '../@theme/layouts/flat/flat.layout';
   imports: [
     FormsModule,
     ReactiveFormsModule,
-    ThemeModule,
     MatTableModule,
     MatPaginatorModule,
     MatSortModule,
@@ -52,13 +51,11 @@ import { FlatLayoutComponent } from '../@theme/layouts/flat/flat.layout';
     MatButtonModule,
     MatDialogModule,
     MatDatepickerModule,
-    // MatNativeDateModule,
     MatProgressSpinnerModule,
     MatTooltipModule,
     MatTabsModule,
     MatBadgeModule,
     MatIconModule,
-    // DoctorProfileComponent,
     MatDialogModule,
     MatCardModule,
     MatRadioModule,
@@ -68,6 +65,16 @@ import { FlatLayoutComponent } from '../@theme/layouts/flat/flat.layout';
     MatMenuModule,
 
     ImageCropperModule,
+
+    ThemeModule,
+    // ThemeModule.forRoot(),
+    // ToastrModule.forRoot({
+    //   timeOut: 3000,
+    //   positionClass: 'toast-top-right', // 'toast-bottom-right',
+    //   closeButton: true,
+    //   easing: 'ease-in',
+    //   progressBar: true,
+    // }),
   ],
   exports: [
     FormsModule,
@@ -80,7 +87,6 @@ import { FlatLayoutComponent } from '../@theme/layouts/flat/flat.layout';
     MatButtonModule,
     MatDialogModule,
     MatDatepickerModule,
-    // MatNativeDateModule,
     MatProgressSpinnerModule,
     MatTooltipModule,
     MatTabsModule,

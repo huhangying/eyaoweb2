@@ -14,7 +14,6 @@ import {
 import { ThemeModule } from '../../@theme/theme.module';
 import { DashboardComponent } from './dashboard.component';
 import { StatusCardComponent } from './status-card/status-card.component';
-import { ContactsComponent } from './contacts/contacts.component';
 import { KittenComponent } from './kitten/kitten.component';
 import { FormsModule } from '@angular/forms';
 
@@ -36,7 +35,6 @@ import { FormsModule } from '@angular/forms';
   declarations: [
     DashboardComponent,
     StatusCardComponent,
-    ContactsComponent,
     KittenComponent,
   ],
 })

@@ -3,7 +3,7 @@ import { Component, OnDestroy } from '@angular/core';
 
 import { NbMenuItem, NbSidebarService, NbMenuService } from '@nebular/theme';
 import { getMenuItems } from './cms-menu';
-import { LayoutService } from '../@core/utils';
+import { LayoutService } from '../@theme/utils';
 import { AppStoreService } from '../shared/store/app-store.service';
 import { tap, takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
