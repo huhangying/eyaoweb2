@@ -9,7 +9,6 @@ import { Subject } from 'rxjs';
 import { AuthService } from '../../../shared/service/auth.service';
 import { ChatService } from '../../../services/chat.service';
 import { Doctor } from '../../../models/crm/doctor.model';
-import { Chat } from '../../../models/io/chat.model';
 import { Notification, NotificationType } from '../../../models/io/notification.model';
 
 @Component({

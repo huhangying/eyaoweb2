@@ -20,7 +20,7 @@ export class AuthService {
     });
   }
 
-  isLoggedIn(): boolean {
+  get isLoggedIn(): boolean {
     return !!this.appStore.doctor;
   }
 

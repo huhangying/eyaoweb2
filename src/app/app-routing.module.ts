@@ -11,18 +11,18 @@ const routes: Routes = [
     path: 'cms',
     loadChildren: () => import('../app/cms/cms.module')
       .then(m => m.CmsModule),
-    data: {app: 'cms'}
-  },
-  {
-    path: 'wechat',
-    loadChildren: () => import('../app/wechat/wechat.module')
-      .then(m => m.WechatModule),
-      data: {app: 'webchat'}
+    data: { app: 'cms' }
   },
   {
     path: 'auth',
     loadChildren: () => import('../app/auth/auth.module')
       .then(m => m.AuthModule),
+  },
+  {
+    path: 'wecha',
+    // redirectTo: 'auth/404'
+    loadChildren: () => import('../app/wechat/wechat.module')
+      .then(m => m.WechatModule),
   },
   { path: '', redirectTo: 'main', pathMatch: 'full' },
   { path: '**', redirectTo: 'auth/404' },

@@ -1,29 +1,25 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { WechatComponent } from './wechat.component';
-import { DashboardComponent } from './dashboard/dashboard.component';
+import { EntryComponent } from './entry/entry.component';
 
 const routes: Routes = [{
   path: '',
   component: WechatComponent,
   children: [
     {
-      path: 'dashboard',
-      component: DashboardComponent,
+      path: '',
+      redirectTo: 'entry',
+      pathMatch: 'full',
     },
     {
-      path: '',
-      redirectTo: 'dashboard',
-      pathMatch: 'full',
+      path: 'entry',
+      component: EntryComponent,
     },
   ]
 }];
 
 @NgModule({
-  declarations: [
-  //   WechatComponent,
-    // DashboardComponent,
-  ],
   imports: [
     RouterModule.forChild(routes)
   ],

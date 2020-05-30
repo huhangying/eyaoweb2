@@ -1,13 +1,13 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { WechatComponent } from './wechat.component';
-import { DashboardComponent } from './dashboard/dashboard.component';
 import { WechatRoutingModule } from './wechat-routing.module';
+import { EntryComponent } from './entry/entry.component';
 
 @NgModule({
   declarations: [
     WechatComponent,
-    DashboardComponent
+    EntryComponent,
   ],
   imports: [
     CommonModule,

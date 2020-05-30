@@ -25,7 +25,7 @@ import { ApiInterceptor } from './shared/service/api-interceptor';
     ThemeModule.forRoot(),
     ToastrModule.forRoot({
       timeOut: 3000,
-      positionClass: 'toast-top-right', // 'toast-bottom-right',
+      positionClass: 'toast-top-right',
       closeButton: true,
       easing: 'ease-in',
       progressBar: true,
