@@ -10,6 +10,7 @@ export class WechatComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
+    document.getElementById('nb-global-spinner').remove();
   }
 
 }
