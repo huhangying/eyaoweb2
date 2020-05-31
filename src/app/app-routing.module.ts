@@ -18,11 +18,6 @@ const routes: Routes = [
     loadChildren: () => import('../app/auth/auth.module')
       .then(m => m.AuthModule),
   },
-  {
-    path: 'wechat',
-    loadChildren: () => import('../app/wechat/wechat.module')
-      .then(m => m.WechatModule),
-  },
   { path: '', redirectTo: 'main', pathMatch: 'full' },
   { path: '**', redirectTo: 'auth/404' },
 ];
