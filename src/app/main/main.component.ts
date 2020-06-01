@@ -38,7 +38,8 @@ export class MainComponent implements OnInit, OnDestroy {
     private seoService: SeoService,
   ) {
     const doc = this.auth.doctor;
-    this.role = doc?.role || 0;
+    if (!doc) return;
+    this.role = doc.role || 0;
     this.menu = getMenuItems(this.role, {
       dep: doc.department,
       doc: doc._id

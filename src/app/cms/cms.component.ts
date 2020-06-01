@@ -31,7 +31,8 @@ export class CmsComponent implements OnDestroy {
     private appStore: AppStoreService,
   ) {
     const doc = this.auth.doctor;
-    this.role = doc?.role || 0;
+    if (!doc) return;
+    this.role = doc.role || 0;
     this.menu = getMenuItems(this.role, {
       dep: doc.department,
       doc: doc._id
