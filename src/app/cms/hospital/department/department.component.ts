@@ -32,7 +32,7 @@ export class DepartmentComponent implements OnInit, OnDestroy {
     private dialogService: DialogService,
     private message: MessageService,
   ) {
-    this.hospitalService.getDepartments().subscribe(
+    this.hospitalService.getCmsDepartments().subscribe(
       data => {
         this.loadData(data);
       }

@@ -19,6 +19,10 @@ export class HospitalService {
     return this.api.get<Department[]>('departments');
   }
 
+  getCmsDepartments() {
+    return this.api.get<Department[]>('departments/cms');
+  }
+
   getDepartmentById(id: string) {
     return this.api.get<Department>('department/' + id);
   }
