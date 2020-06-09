@@ -29,7 +29,7 @@ export class NoticeEditComponent implements OnInit, OnDestroy {
       endDate: [''],
       days_to_start: ['', Validators.required],
       during: [''],
-      require_confirm: [''],
+      require_confirm: [false],
     });
    }
 
