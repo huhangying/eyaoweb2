@@ -16,6 +16,7 @@ export interface Doctor {
   status: number;  // 0: idle, 1: busy; 2: away; 3: offline
   shortcuts: string; // 快捷回复, separated by '|'
 
+  qrcode: string;
   created: Date;
   updated: Date;
   locked_count: number;

@@ -31,7 +31,7 @@
             <input type="text" class="col-sm-9" nbInput fullWidth id="inputTitle" formControlName="title">
           </div>
 
-          <div class="form-group row clearfix">
+          <div class="field row clearfix">
             <label class="label col-sm-3">头像</label>
 
             <div class="col-sm-9">
@@ -70,7 +70,20 @@
             <label for="inputInternalAddress" class="label col-sm-3">院内地址</label>
             <input type="text" class="col-sm-9" nbInput fullWidth id="inputInternalAddress" placeholder="暂不支持">
           </div>
+          <div class="field row clearfix">
+            <label class="label col-sm-3">药师二维码</label>
 
+            <div class="col-sm-9">
+              <img src="{{ qrcode }}" onerror="this.src='/assets/images/icon/default.svg';this.onerror='';"
+                class="avatar-image img-fluid img-thumbnail z-depth-1 rounded-circle" alt="">
+              <div>
+                <button mat-flat-button color="primary" class="w-75" (click)="generateQrcode()"
+                  class="UppyModalOpenerBtn">
+                  生成二维码
+                </button>
+              </div>
+            </div>
+          </div>
         </nb-card-body>
       </nb-card>
     </div>

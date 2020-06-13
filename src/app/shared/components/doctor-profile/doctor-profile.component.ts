@@ -1,8 +1,7 @@
-import { Component, OnInit, OnDestroy, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, Output, EventEmitter, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { Department } from '../../../models/hospital/department.model';
-import { ActivatedRoute } from '@angular/router';
 import { DoctorService } from '../../../services/doctor.service';
 import { UploadService } from '../../service/upload.service';
 import { mustMatch } from '../../helper/must-match.validator';
@@ -14,20 +13,39 @@ import { HttpEventType } from '@angular/common/http';
 @Component({
   selector: 'ngx-doctor-profile',
   templateUrl: './doctor-profile.component.html',
-  styleUrls: ['./doctor-profile.component.scss']
+  styleUrls: ['./doctor-profile.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DoctorProfileComponent implements OnInit, OnDestroy {
-  @Input() doctor: Doctor;
+  @Input() set doctor(value: Doctor) {
+    if (value?._id) {
+      const data = {...value};
+      // leave password to empty
+      data.password = '';
+
+      this.user_id = value.user_id; // in case of field disabled and cannot copy
+      if (data.icon) {
+        this.avatar = environment.imageServer + data.icon;
+      }
+      if (data.qrcode) {
+        this.qrcode = environment.imageServer + data.qrcode;
+      }
+      this.form.patchValue(data);
+      this.cd.markForCheck();
+    }
+  }
   @Input() departments: Department[];
   @Input() mode: number; // 0: normal profile; 1: add doctor; 2: edit doctor
   @Output() valueChange = new EventEmitter<{doctor: Doctor; invalid: boolean}>();
   form: FormGroup;
   destroy$ = new Subject<void>();
+  user_id: string;
   avatar: any;
+  qrcode: any;
 
   constructor(
     private fb: FormBuilder,
-    private route: ActivatedRoute,
+    private cd: ChangeDetectorRef,
     private doctorService: DoctorService,
     private uploadService: UploadService,
   ) {
@@ -57,20 +75,20 @@ export class DoctorProfileComponent implements OnInit, OnDestroy {
       validators: [mustMatch('password', 'passwordConfirm')]
     });
 
-    if (this.doctor?._id) {
-      const data = {...this.doctor};
-      // leave password to empty
-      data.password = '';
-      if (data.icon) {
-        this.avatar = environment.imageServer + data.icon;
-      }
-      this.form.patchValue(data);
-    }
-
     this.form.valueChanges.pipe(
       startWith(this.form.value),
       distinctUntilChanged(),
-      tap(value => this.valueChange.emit({doctor: value, invalid: this.form.invalid})),
+      tap(value => {
+        if (!value?.name) return;
+        const updated = {...value};
+        delete updated.password;
+        delete updated.passwordConfirm;
+        updated.user_id = this.user_id;
+        this.valueChange.emit({
+          doctor: updated,
+          invalid: this.form.invalid
+        });
+      }),
       takeUntil(this.destroy$)
     ).subscribe();
   }
@@ -137,6 +155,10 @@ export class DoctorProfileComponent implements OnInit, OnDestroy {
         ).subscribe();
       };
     }
+  }
+
+  generateQrcode() {
+    // this.doctor._id;
   }
 
 }
