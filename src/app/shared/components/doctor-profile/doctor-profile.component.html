@@ -74,9 +74,11 @@
             <label class="label col-sm-3">药师二维码</label>
 
             <div class="col-sm-9">
-              <img src="{{ qrcode }}" onerror="this.src='/assets/images/icon/default.svg';this.onerror='';"
-                class="avatar-image img-fluid img-thumbnail z-depth-1 rounded-circle" alt="">
-              <div>
+              <ng-container *ngIf="qrcode">
+                <img src="{{ qrcode }}" onerror="this.src='/assets/images/icon/default.svg';this.onerror='';"
+                  class="img-fluid img-thumbnail z-depth-1 w-50" alt="">
+              </ng-container>
+              <div *ngIf="!qrcode">
                 <button mat-flat-button color="primary" class="w-75" (click)="generateQrcode()"
                   class="UppyModalOpenerBtn">
                   生成二维码

@@ -98,4 +98,11 @@ export class DoctorService {
     );
   }
 
+  // 微信
+  getDoctorQrCode(did: string) {
+    return this.api.get<{ticket: string; url: string}>('wechat/get-doctor-qrcode/' + did).pipe(
+      map(result => result?.ticket ? 'https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket=' + encodeURI(result.ticket) : '')
+    );
+  }
+
 }

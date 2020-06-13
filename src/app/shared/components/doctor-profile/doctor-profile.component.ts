@@ -7,7 +7,7 @@ import { UploadService } from '../../service/upload.service';
 import { mustMatch } from '../../helper/must-match.validator';
 import { environment } from '../../../../environments/environment';
 import { Doctor } from '../../../models/crm/doctor.model';
-import { map, takeUntil, distinctUntilChanged, tap, startWith } from 'rxjs/operators';
+import { map, takeUntil, distinctUntilChanged, tap, startWith, concatMap } from 'rxjs/operators';
 import { HttpEventType } from '@angular/common/http';
 
 @Component({
@@ -24,11 +24,12 @@ export class DoctorProfileComponent implements OnInit, OnDestroy {
       data.password = '';
 
       this.user_id = value.user_id; // in case of field disabled and cannot copy
+      this._id = value._id;
       if (data.icon) {
         this.avatar = environment.imageServer + data.icon;
       }
       if (data.qrcode) {
-        this.qrcode = environment.imageServer + data.qrcode;
+        this.qrcode = data.qrcode;
       }
       this.form.patchValue(data);
       this.cd.markForCheck();
@@ -40,6 +41,7 @@ export class DoctorProfileComponent implements OnInit, OnDestroy {
   form: FormGroup;
   destroy$ = new Subject<void>();
   user_id: string;
+  _id: string;
   avatar: any;
   qrcode: any;
 
@@ -111,7 +113,7 @@ export class DoctorProfileComponent implements OnInit, OnDestroy {
   }
 
   updatePassword(passwd: string) {
-    this.doctorService.updateProfile(this.form.getRawValue().user_id, { password: passwd })
+    this.doctorService.updateProfile(this.user_id, { password: passwd })
       .subscribe();
   }
 
@@ -159,6 +161,13 @@ export class DoctorProfileComponent implements OnInit, OnDestroy {
 
   generateQrcode() {
     // this.doctor._id;
+    this.doctorService.getDoctorQrCode(this._id).pipe(
+      concatMap(result => {
+        this.qrcode = result;
+        this.cd.markForCheck();
+        return this.doctorService.updateDoctor({user_id: this.user_id, qrcode: this.qrcode});
+      }),
+    ).subscribe();
   }
 
 }
