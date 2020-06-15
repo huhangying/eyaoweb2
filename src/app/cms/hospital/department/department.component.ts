@@ -20,7 +20,7 @@ import { MessageService } from '../../../shared/service/message.service';
 export class DepartmentComponent implements OnInit, OnDestroy {
   searchForm: FormGroup;
   destroy$ = new Subject<void>();
-  displayedColumns: string[] = ['name', 'desc', 'assetFolder', 'order', 'apply', '_id'];
+  displayedColumns: string[] = ['name', 'desc', 'address', 'order', 'apply', '_id'];
   dataSource: MatTableDataSource<Department>;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;

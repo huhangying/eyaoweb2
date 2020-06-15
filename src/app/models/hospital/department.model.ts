@@ -3,6 +3,8 @@ export interface Department {
   name: string;
   desc?: string;
   assetFolder?: string;
+  address?: string;
+  direction?: string;
   order?: number;
   apply?: boolean;
 }

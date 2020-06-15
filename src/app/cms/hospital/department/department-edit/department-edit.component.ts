@@ -27,6 +27,8 @@ export class DepartmentEditComponent implements OnInit, OnDestroy {
     this.form = this.fb.group({
       name: ['', Validators.required],
       desc: [''],
+      address: [''],
+      direction: [''],
       assetFolder: [''],
       order: [''],
       apply: false,
