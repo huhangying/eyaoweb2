@@ -22,14 +22,17 @@
             </mat-expansion-panel-header>
             <div class="doctor-group-body" [style.maxHeight]="groupBodyHeight">
               <mat-selection-list [multiple]="false">
-                <mat-list-option *ngFor="let member of getGroupMembers(dg._id)"
-                  (click)="selectChatPatient(member.user)">
-                  <div mat-list-icon><img [src]="member.user.icon" alt="头像" class="avatar"></div>
-                  <div class="pl-4">
-                    {{member.user.name}}
-                    <div class="text-hint"> {{member.user.gender | gender}} </div>
-                  </div>
-                </mat-list-option>
+                <ng-container *ngFor="let member of getGroupMembers(dg._id)">
+                  <mat-list-option *ngIf="member.user" (click)="selectChatPatient(member.user)">
+                    <div class="d-flex align-items-center flex-row">
+                      <div mat-list-icon><img [src]="member.user.icon" alt="头像" class="avatar"></div>
+                      <div class="pl-4">
+                        {{member.user.name}}
+                        <div class="text-hint"> {{member.user.gender | gender}} </div>
+                      </div>
+                    </div>
+                  </mat-list-option>
+                </ng-container>
               </mat-selection-list>
             </div>
           </mat-expansion-panel>
