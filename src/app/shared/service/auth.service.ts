@@ -2,6 +2,7 @@ import { AppStoreService } from '../store/app-store.service';
 import { Injectable } from '@angular/core';
 import { ApiService } from './api.service';
 import { Doctor } from '../../models/crm/doctor.model';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -52,7 +53,11 @@ export class AuthService {
 
   getDoctorIcon() {
     if (!this.doctor) return '';
-    return this.doctor.icon || this.getDoctorIconByRole(this.doctor.role);
+    if (this.doctor.icon) {
+      if (this.doctor.icon.match('^http(s)?://')?.length) return this.doctor.icon;
+      return environment.imageServer + this.doctor.icon;
+    }
+    return this.getDoctorIconByRole(this.doctor.role);
 
   }
 
