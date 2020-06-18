@@ -8,7 +8,6 @@ export const environment = {
   // apiUrl: 'http://139.224.68.92:3000/',
   apiUrl: 'api/',
   // imageServer: 'http://139.224.68.92:81/',
-  imageServer: 'http://192.168.87.250:3000/',
-  peerPageUrl: 'http://yyl.rostensoft.com/zhaoys/',
+  imageServer: 'http://timebox.i234.me/images/',
   socketUrl: 'http://192.168.87.250:3000'
 };

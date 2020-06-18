@@ -19,7 +19,7 @@ import { HttpEventType } from '@angular/common/http';
 export class DoctorProfileComponent implements OnInit, OnDestroy {
   @Input() set doctor(value: Doctor) {
     if (value?._id) {
-      const data = {...value};
+      const data = { ...value };
       // leave password to empty
       data.password = '';
 
@@ -37,7 +37,7 @@ export class DoctorProfileComponent implements OnInit, OnDestroy {
   }
   @Input() departments: Department[];
   @Input() mode: number; // 0: normal profile; 1: add doctor; 2: edit doctor
-  @Output() valueChange = new EventEmitter<{doctor: Doctor; invalid: boolean}>();
+  @Output() valueChange = new EventEmitter<{ doctor: Doctor; invalid: boolean }>();
   form: FormGroup;
   destroy$ = new Subject<void>();
   user_id: string;
@@ -82,7 +82,7 @@ export class DoctorProfileComponent implements OnInit, OnDestroy {
       distinctUntilChanged(),
       tap(value => {
         if (!value?.name) return;
-        const updated = {...value};
+        const updated = { ...value };
         delete updated.password;
         delete updated.passwordConfirm;
         updated.user_id = this.user_id;
@@ -134,24 +134,20 @@ export class DoctorProfileComponent implements OnInit, OnDestroy {
       const reader = new FileReader();
       reader.readAsDataURL(file);
       reader.onload = () => {
-        this.avatar = reader.result;
+
         const formData = new FormData();
         formData.append('file', file, newfileName);// pass new file name in
-        this.uploadService.upload(formData).pipe(
-          map(event => {
-            switch (event.type) {
-              case HttpEventType.UploadProgress:
-                file.progress = Math.round(event.loaded * 100 / event.total);
-                if (event.loaded >= event.total) {
-                  // update icon to db after finished uploading
-                  this.doctorService.updateDoctor({
-                    ...doctor,
-                    icon: newfileName
-                  }).subscribe();
-                }
-                break;
-              case HttpEventType.Response:
-                return event;
+        this.uploadService.uploadDoctorDir(doctor._id, '', formData).pipe(
+          tap(result => {
+            if (result?.path) {
+              // update icon to db after finished uploading
+              this.doctorService.updateDoctor({
+                user_id: doctor.user_id,
+                icon: result.path
+              }).subscribe();
+              // this.avatar = result.path;
+              this.avatar = reader.result;
+              this.cd.markForCheck();
             }
           }),
         ).subscribe();
@@ -165,7 +161,7 @@ export class DoctorProfileComponent implements OnInit, OnDestroy {
       concatMap(result => {
         this.qrcode = result;
         this.cd.markForCheck();
-        return this.doctorService.updateDoctor({user_id: this.user_id, qrcode: this.qrcode});
+        return this.doctorService.updateDoctor({ user_id: this.user_id, qrcode: this.qrcode });
       }),
     ).subscribe();
   }

@@ -28,6 +28,7 @@ import { ImageUploaderComponent } from './components/image-uploader/image-upload
 import { ImageCropComponent } from './components/image-uploader/image-crop/image-crop.component';
 import { ImageCropperModule } from 'ngx-image-cropper';
 import { GenderPipe } from './pipe/gender.pipe';
+import { ImgPathPipe } from './pipe/img-path.pipe';
 import { MatCardModule } from '@angular/material/card';
 import { SelectPatientComponent } from './components/select-patient/select-patient.component';
 import { SelectDoctorPatientsComponent } from './components/select-doctor-patients/select-doctor-patients.component';
@@ -116,6 +117,7 @@ import { FlatLayoutComponent } from '../@theme/layouts/flat/flat.layout';
     // AccessControlDirective,
     LocalDatePipe,
     GenderPipe,
+    ImgPathPipe,
   ],
   declarations: [
     FooterComponent,
@@ -130,10 +132,12 @@ import { FlatLayoutComponent } from '../@theme/layouts/flat/flat.layout';
     // AccessControlDirective,
     LocalDatePipe,
     GenderPipe,
+    ImgPathPipe,
     ImageUploaderComponent,
     ImageCropComponent,
     SelectPatientComponent,
     SelectDoctorPatientsComponent,
+    ImgPathPipe,
   ],
   providers: [
     MatDatepickerModule,

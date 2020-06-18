@@ -35,7 +35,7 @@
             <label class="label col-sm-3">头像</label>
 
             <div class="col-sm-9">
-              <img src="{{ avatar }}" onerror="this.src='/assets/images/icon/default.svg';this.onerror='';"
+              <img src="{{ avatar | imgPath }}" onerror="this.src='/assets/images/icon/default.svg';this.onerror='';"
                 class="avatar-image img-fluid img-thumbnail z-depth-1 rounded-circle" alt="">
               <div>
                 <input hidden="true" type="file" accept="image/*" (change)="onFileSelected($event)" #fileInput>
