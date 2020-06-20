@@ -137,7 +137,6 @@ import { FlatLayoutComponent } from '../@theme/layouts/flat/flat.layout';
     ImageCropComponent,
     SelectPatientComponent,
     SelectDoctorPatientsComponent,
-    ImgPathPipe,
   ],
   providers: [
     MatDatepickerModule,

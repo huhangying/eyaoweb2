@@ -12,6 +12,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ToastrModule } from 'ngx-toastr';
 import { ApiInterceptor } from './shared/service/api-interceptor';
+import { ImgPathPipe } from './shared/pipe/img-path.pipe';
 
 @NgModule({
   declarations: [
@@ -33,6 +34,7 @@ import { ApiInterceptor } from './shared/service/api-interceptor';
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: ApiInterceptor, multi: true },
+    ImgPathPipe,
   ],
   bootstrap: [AppComponent]
 })

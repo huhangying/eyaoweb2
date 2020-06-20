@@ -65,4 +65,8 @@ export class ArticleService {
     return this.api.get<ArticlePage[]>(`pages/doctor/${doctor}/${catId}`);
   }
 
+  savePage(page: ArticlePage) {
+    return this.api.post<ArticlePage>('page', page);
+  }
+
 }

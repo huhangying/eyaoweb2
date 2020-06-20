@@ -14,6 +14,10 @@ import '@ckeditor/ckeditor5-build-classic/build/translations/zh-cn';
 import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { ConfigService } from '../../shared/service/config.service';
 import { ArticlePreviewComponent } from './article-preview/article-preview.component';
+import { WeixinService } from '../../shared/service/weixin.service';
+import { ImgPathPipe } from '../../shared/pipe/img-path.pipe';
+import { ArticleService } from '../../services/article.service';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'ngx-article-push',
@@ -35,6 +39,9 @@ export class ArticlePushComponent implements OnInit {
     private configService: ConfigService,
     public dialog: MatDialog,
     private message: MessageService,
+    private wxService: WeixinService,
+    private imgPath: ImgPathPipe,
+    private articleService: ArticleService,
   ) {
     this.doctor = this.auth.doctor;
     this.config = configService.editorConfig;
@@ -124,6 +131,24 @@ export class ArticlePushComponent implements OnInit {
   }
 
   send() {
+    // save
+    this.articleService.savePage(this.articlePage).subscribe(
+      (result: ArticlePage) => {
+
+        this.sendees.forEach(async (sendee) => {
+          // setTimeout(() => {
+          if (sendee.link_id) {
+            await this.wxService.sendUserArticle(sendee.link_id, this.articlePage.title,
+              `${this.doctor.name + ' ' + this.doctor.title} 给您发送了一篇文章`,
+              environment.wechatServer + 'article;id=' + result?._id,
+              this.imgPath.transform(this.articlePage.title_image)
+            ).toPromise();
+          }
+          // }, 300);
+        });
+
+      }
+    );
 
   }
 
