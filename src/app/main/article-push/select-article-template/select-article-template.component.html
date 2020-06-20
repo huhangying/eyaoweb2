@@ -32,7 +32,7 @@
         </div>
         <div class="col-md-7">
           <div class="thumbnail">
-            <img [src]="selectedTemplate.title_image ? selectedTemplate.title_image : '/assets/images/no-image.png'"
+            <img [src]="selectedTemplate.title_image | imgPath" onerror="this.src='assets/images/no-image.png';this.onerror='';"
               alt="标题图片" class="img-fluid img-thumbnail">
           </div>
         </div>

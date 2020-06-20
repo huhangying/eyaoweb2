@@ -38,8 +38,8 @@
         <div class="col-md-6">
           <label for="title_image" class="label"> 标题图片 </label>
           <div>
-            <img [src]="articlePage.title_image ? articlePage.title_image : '/assets/images/no-image.png'" alt="标题图片"
-              class="img-fluid img-thumbnail">
+            <img [src]="articlePage.title_image | imgPath" onerror="this.src='assets/images/no-image.png';this.onerror='';"
+              alt="标题图片" class="img-fluid img-thumbnail">
           </div>
         </div>
       </div>

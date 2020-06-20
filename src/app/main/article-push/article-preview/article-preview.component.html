@@ -13,6 +13,10 @@
     <p class="font-italic text-muted py-3">
       {{data.doctor}} 发送于 {{currentTime | localDate}}
     </p>
+    <div class="text-center pb-2" *ngIf="data.article.title_image">
+      <img [src]="data.article.title_image | imgPath" onerror="this.src='assets/images/none.png';this.onerror='';"
+        alt="标题图片" class="img-fluid img-thumbnail">
+    </div>
     <div [innerHTML]="data.article?.content">
     </div>
   </mat-dialog-content>
