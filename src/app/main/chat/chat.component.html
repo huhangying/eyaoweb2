@@ -65,9 +65,10 @@
               <ng-container *ngIf="chat.sender === doctor._id">
                 <div class="d-flex align-items-end flex-row-reverse">
                   <div class="img_cont_msg">
+                    <span class="triangle"></span>
                     <img [src]="doctor?.icon | imgPath" class="rounded-circle user_img_msg">
                   </div>
-                  <div class="msg-data">
+                  <div class="msg-data text-break">
                     {{ chat.data }}
                   </div>
                 </div>
@@ -76,9 +77,10 @@
               <ng-container *ngIf="chat.sender !== doctor._id">
                 <div class="d-flex align-items-start flex-row">
                   <div class="img_cont_msg">
+                    <span class="triangle"></span>
                     <img [src]="selectedPatient?.icon" class="rounded-circle user_img_msg">
                   </div>
-                  <div class="msg-data">
+                  <div class="msg-data text-break">
                     {{ chat.data }}
                   </div>
                 </div>

@@ -137,7 +137,7 @@ export class ChatComponent implements OnInit, OnDestroy {
       senderName: this.doctor.name,
       to: this.selectedPatient._id,
       type: ChatType.text,
-      data: this.myInput
+      data: this.myInput.trimRight()
     };
     this.chats.push(chat);
 

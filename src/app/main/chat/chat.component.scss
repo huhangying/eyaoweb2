@@ -9,7 +9,7 @@
     }
     .mat-list-icon {
       width: 50px;
-      height: 50px!important;
+      height: 50px !important;
       margin-left: -1rem;
       margin-right: 1rem;
     }
@@ -17,7 +17,6 @@
       padding: 1.25rem 0.75rem;
     }
   }
-
 
   .avatar {
     vertical-align: middle;
@@ -148,14 +147,29 @@
 
   .sender {
     .msg-data {
-      margin-top: auto;
+      margin-top: 8px;
       margin-bottom: auto;
       margin-right: 10px;
       margin-left: 3rem;
-      border-radius: 20px;
+      border-radius: 8px;
       background-color: #82ccdd;
       padding: 10px;
       position: relative;
+      white-space: pre-wrap;
+      padding: 8px 10px;
+      float: left;
+      line-height: 25px;
+    }
+    .triangle {
+      height: 0px;
+      width: 0px;
+      border-width: 4px 10px;
+      border-style: solid;
+      float: right;
+      border-color: transparent transparent transparent #82ccdd;
+      position: relative;
+      top: 15px;
+      right: 30px;
     }
     .msg-time {
       padding-right: 3.8rem;
@@ -166,14 +180,29 @@
   }
   .to {
     .msg-data {
-      margin-top: auto;
+      margin-top: 8px;
       margin-bottom: auto;
       margin-left: 10px;
       margin-right: 3rem;
-      border-radius: 20px;
+      border-radius: 8px;
       background-color: #eee;
       padding: 10px;
       position: relative;
+      white-space: pre-wrap;
+      padding: 8px 10px;
+      float: right;
+      line-height: 25px;
+    }
+    .triangle {
+      height: 0px;
+      width: 0px;
+      border-width: 4px 10px;
+      border-style: solid;
+      float: left;
+      border-color: transparent #eee transparent transparent;
+      position: relative;
+      top: 23px;
+      left: 30px;
     }
     .msg-time {
       padding-left: 3.8rem;
