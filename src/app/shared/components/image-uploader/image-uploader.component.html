@@ -1,4 +1,4 @@
-<input hidden="true" type="file" (change)="onFileChanged($event)" #fileInput>
+<input hidden="true" type="file" accept="image/*" (change)="onFileChanged($event)" #fileInput>
 <button nbButton hero status="primary" (click)="fileInput.click()">
   <mat-icon inline="true">crop</mat-icon>&nbsp; 上传图片
 </button>

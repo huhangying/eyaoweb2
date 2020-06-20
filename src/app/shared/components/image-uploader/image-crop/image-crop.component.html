@@ -33,7 +33,7 @@
     <image-cropper [imageChangedEvent]="imageChangedEvent" [maintainAspectRatio]="true" [aspectRatio]="data.aspectRatio"
       [cropperMinWidth]="data.width" [resizeToWidth]="data.width" [onlyScaleDown]="true" [roundCropper]="false"
       [canvasRotation]="canvasRotation" [transform]="transform" [alignImage]="'left'"
-      [style.display]="showCropper ? null : 'none'" format="jpeg" (imageCropped)="imageCropped($event)"
+      [style.display]="showCropper ? null : 'none'" format="png" (imageCropped)="imageCropped($event)"
       (imageLoaded)="imageLoaded()"></image-cropper>
   </div>
   <nb-card-footer class="d-block">

@@ -12,6 +12,8 @@ import '@ckeditor/ckeditor5-build-classic/build/translations/zh-cn';
 import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { ConfigService } from '../../../../shared/service/config.service';
 import { AuthService } from '../../../../shared/service/auth.service';
+import { UploadService } from '../../../../shared/service/upload.service';
+import { NbThemeService } from '@nebular/theme';
 
 @Component({
   selector: 'ngx-article-template-edit',
@@ -24,6 +26,7 @@ export class ArticleTemplateEditComponent implements OnInit, OnDestroy {
   public Editor = ClassicEditor;
   config: any;
   titleImage: any;
+  cropped: Blob;
 
   constructor(
     public dialogRef: MatDialogRef<ArticleTemplateEditComponent>,
@@ -35,6 +38,7 @@ export class ArticleTemplateEditComponent implements OnInit, OnDestroy {
     private fb: FormBuilder,
     private configService: ConfigService,
     private articleService: ArticleService,
+    private upload: UploadService,
     private auth: AuthService,
     private message: MessageService,
   ) {
@@ -42,7 +46,6 @@ export class ArticleTemplateEditComponent implements OnInit, OnDestroy {
     this.form = this.fb.group({
       name: ['', Validators.required],
       title: ['', Validators.required],
-      title_image: [''],
       content: [''],
       apply: false,
     });
@@ -61,13 +64,29 @@ export class ArticleTemplateEditComponent implements OnInit, OnDestroy {
     this.destroy$.unsubscribe();
   }
 
-  update() {
+  async update() {
     const updatedBy = this.auth.doctor?._id;
+    let title_image = this.titleImage;
+    // upload image first if needed
+    if (this.titleImage.indexOf('data:') === 0 && !!this.cropped) {
+      const newImage: any = await this.upload.uploadTemplateDir(this.data.cat._id, 'title', this.cropped, '.png').toPromise();
+      if (newImage?.path) {
+        title_image = newImage.path;
+        this.titleImage = newImage.path;
+        // clean
+        this.cropped = null;
+      } else {
+        // upload image error
+        this.message.warning('图片保存失败');
+        title_image = '';
+      }
+    }
     const response = this.data.articleTemplate?._id ?
       // update
       this.articleService.updateTemplate({
         ...this.data.articleTemplate,
         ...this.form.value,
+        title_image: title_image,
         department: this.data.department._id,
         cat: this.data.cat._id,
         updatedBy
@@ -75,6 +94,7 @@ export class ArticleTemplateEditComponent implements OnInit, OnDestroy {
       // create
       this.articleService.createTemplate({
         ...this.form.value,
+        title_image: title_image,
         department: this.data.department._id,
         cat: this.data.cat._id,
         updatedBy
@@ -98,6 +118,7 @@ export class ArticleTemplateEditComponent implements OnInit, OnDestroy {
     reader.readAsDataURL(cropped);
     reader.onload = () => {
       this.titleImage = reader.result;
+      this.cropped = cropped;
       // this.imageUpload.emit(cropped);
       // this.cd.markForCheck();
     };
