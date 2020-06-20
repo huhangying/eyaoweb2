@@ -25,10 +25,12 @@
         <label for="title_image" class="label"> 标题图片 </label>
         <div class="row">
           <div class="col-7">
-            <img [src]="titleImage ? titleImage : '/assets/images/no-image.png'" alt="标题图片" class="img-fluid img-thumbnail">
+            <img [src]="titleImage | imgPath" onerror="this.src='assets/images/no-image.png';this.onerror='';"
+              alt="标题图片" class="img-fluid img-thumbnail">
           </div>
           <div class="col-5">
-            <ngx-image-uploader [width]="360" [aspectRatio]="360/240"  (imageReady)="imageReady($event)"></ngx-image-uploader>
+            <ngx-image-uploader [width]="360" [aspectRatio]="360/240" (imageReady)="imageReady($event)">
+            </ngx-image-uploader>
 
             <div class="text-secondary pt-2 pb-4"><small>* 图片大小建议 360*240</small></div>
             <nb-checkbox formControlName="apply"> 开关 </nb-checkbox>

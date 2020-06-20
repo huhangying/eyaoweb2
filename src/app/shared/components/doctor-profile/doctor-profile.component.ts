@@ -129,15 +129,13 @@ export class DoctorProfileComponent implements OnInit, OnDestroy {
     if (event.target.files?.length) {
       const [file] = event.target.files;
       const doctor = this.form.getRawValue() as Doctor;
-      const newfileName = `${doctor._id}.${file.name.split('.').pop()}`; // _id.[ext]
 
       const reader = new FileReader();
       reader.readAsDataURL(file);
       reader.onload = () => {
 
-        const formData = new FormData();
-        formData.append('file', file, newfileName);// pass new file name in
-        this.uploadService.uploadDoctorDir(doctor._id, '', formData).pipe(
+        const fileName = `.${file.name.split('.').pop()}`; // [did].[ext]
+        this.uploadService.uploadDoctorDir(doctor._id, 'icon', file, fileName).pipe(
           tap(result => {
             if (result?.path) {
               // update icon to db after finished uploading

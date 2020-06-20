@@ -10,22 +10,28 @@ export class UploadService {
     private api: ApiService,
   ) { }
 
-  uploadDoctorDir(did: string, type: string, formData: FormData) {
-    return this.api.post<any>(`upload/doctor/${did}_${type + this.getRandomString(4)}_`, formData, {
+  uploadDoctorDir(did: string, type: string, file: string | Blob | File, fileName?: string) {
+    const formData = new FormData();
+    formData.append('file', file, fileName);// pass new file name in
+    return this.api.post<any>(`upload/doctor/${did}_${type + this.getRandomString(4)}`, formData, {
       reportProgress: true,
       observe: 'events'
     });
   }
 
-  uploadMedicineDir(formData: FormData) {
-    return this.api.post<any>(`upload/medicine/${this.getRandomString(4)}_`, formData, {
+  uploadMedicineDir(type: string, file: string | Blob | File, fileName?: string) {
+    const formData = new FormData();
+    formData.append('file', file, fileName);// pass new file name in
+    return this.api.post<any>(`upload/medicine/${type || ''}${this.getRandomString(4)}`, formData, {
       reportProgress: true,
       observe: 'events'
     });
   }
 
-  uploadTemplateDir(formData: FormData) {
-    return this.api.post<any>(`upload/template/${this.getRandomString(4)}_`, formData, {
+  uploadTemplateDir(type: string, file: string | Blob | File, fileName?: string) {
+    const formData = new FormData();
+    formData.append('file', file, fileName);// pass new file name in
+    return this.api.post<any>(`upload/template/${type || ''}${this.getRandomString(4)}`, formData, {
       reportProgress: true,
       observe: 'events'
     });
@@ -39,4 +45,5 @@ export class UploadService {
     }
     return result;
   }
+
 }
