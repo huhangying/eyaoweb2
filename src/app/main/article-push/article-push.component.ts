@@ -76,14 +76,14 @@ export class ArticlePushComponent implements OnInit {
       tap((result: ArticleTemplate) => {
         if (result) {
           this.selectedTemplate = result;
+          // reset article page
           this.articlePage = {
-            ...this.articlePage,
+            doctor: this.doctor._id,
             cat: result.cat,
             name: result.name,
             title: result.title,
             title_image: result.title_image,
             content: result.content,
-            apply: false
           };
           this.selectedPage = null;
         }
@@ -101,14 +101,14 @@ export class ArticlePushComponent implements OnInit {
       tap(result => {
         if (result) {
           this.selectedPage = result;
+          // reset article page
           this.articlePage = {
-            ...this.articlePage,
+            doctor: this.doctor._id,
             cat: result.cat,
             name: result.name,
             title: result.title,
             title_image: result.title_image,
             content: result.content,
-            apply: false
           };
           this.selectedTemplate = null;
         }
@@ -134,6 +134,7 @@ export class ArticlePushComponent implements OnInit {
     // save
     this.articleService.savePage(this.articlePage).subscribe(
       (result: ArticlePage) => {
+        this.articlePage = { ...result };
 
         this.sendees.forEach(async (sendee) => {
           // setTimeout(() => {
@@ -147,6 +148,8 @@ export class ArticlePushComponent implements OnInit {
           // }, 300);
         });
 
+        // close
+        this.message.success('宣教材料推送成功！');
       }
     );
 

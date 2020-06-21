@@ -66,7 +66,9 @@ export class ArticleService {
   }
 
   savePage(page: ArticlePage) {
-    return this.api.post<ArticlePage>('page', page);
+    return !page._id ?
+      this.api.post<ArticlePage>('page', page) :
+      this.api.patch<ArticlePage>('page/' + page._id, page);
   }
 
 }
