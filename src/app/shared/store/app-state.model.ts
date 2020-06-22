@@ -5,6 +5,7 @@ import { Notification } from '../../models/io/notification.model';
 export class AppState {
     constructor(
         public readonly doctor?: Doctor,
+        public readonly hid?: number,
         public readonly currentUrl?: string,
         public readonly debugMode?: 0|1,
         public readonly loading?: boolean,

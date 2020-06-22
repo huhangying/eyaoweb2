@@ -139,7 +139,7 @@ export class ArticlePushComponent implements OnInit {
         this.sendees.forEach(async (sendee) => {
           // setTimeout(() => {
           if (sendee.link_id) {
-            await this.wxService.sendUserArticle(sendee.link_id, this.articlePage.title,
+            await this.wxService.sendUserMsg(sendee.link_id, this.articlePage.title,
               `${this.doctor.name + ' ' + this.doctor.title} 给您发送了一篇文章`,
               environment.wechatServer + 'article;id=' + result?._id,
               this.imgPath.transform(this.articlePage.title_image)

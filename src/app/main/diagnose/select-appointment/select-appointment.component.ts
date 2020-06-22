@@ -29,7 +29,7 @@ export class SelectAppointmentComponent implements OnInit, OnDestroy {
     this.periodsResolver.resolve().subscribe(periods => {
       this.periods = periods;
     });
-    this.todayBookings$ = this.bookingService.getAllBookingsByDoctorId(data.doctorId).pipe( // for test
+    this.todayBookings$ = this.bookingService.getTodayBookingsByDoctorId(data.doctorId).pipe( // for test
       // this.todayBookings$ = this.bookingService.getTodayBookingsByDoctorId(data.doctorId).pipe(
       map(bookings => bookings?.filter(_ => !!_.user)),
       catchError(rsp => this.message.updateErrorHandle(rsp))

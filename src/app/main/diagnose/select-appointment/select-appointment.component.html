@@ -7,29 +7,31 @@
   </nb-card-header>
 
   <mat-dialog-content class="px-3">
-
     <ng-container *ngIf="todayBookings$ | async; let todayBookings">
-      <div>
-        今日共有 {{todayBookings.length}} 个门诊预约。
-      </div>
-      <hr>
-      <mat-radio-group class="list-group list-group-flush" [(ngModel)]="selectedBooking">
-        <mat-radio-button class="list-group-item list-group-item-action pb-1" *ngFor="let booking of todayBookings"
-          [value]="booking">
-          {{ getPeriodLabel(booking.schedule.period) }}:
-          {{ booking.user.name }}
-          {{ booking.user.gender? ' ' + (booking.user.gender | gender) : '' }}
-          {{ booking.user.cell? ' 手机:' + booking.user.cell : '' }}
-          {{ booking.user.birthdate? ' 生日:' + (booking.user.birthdate | localDate) : '' }}
-        </mat-radio-button>
-      </mat-radio-group>
+      <ng-container *ngIf="todayBookings?.length">
+        <div>
+          今日共有 {{todayBookings.length}} 个门诊预约。
+        </div>
+        <hr>
+        <mat-radio-group class="list-group list-group-flush" [(ngModel)]="selectedBooking">
+          <mat-radio-button class="list-group-item list-group-item-action pb-1" *ngFor="let booking of todayBookings"
+            [value]="booking">
+            {{ getPeriodLabel(booking.schedule.period) }}:
+            {{ booking.user.name }}
+            {{ booking.user.gender? ' ' + (booking.user.gender | gender) : '' }}
+            {{ booking.user.cell? ' 手机:' + booking.user.cell : '' }}
+            {{ booking.user.birthdate? ' 生日:' + (booking.user.birthdate | localDate) : '' }}
+          </mat-radio-button>
+        </mat-radio-group>
+      </ng-container>
+
+      <ng-container *ngIf="!todayBookings?.length">
+        <div class="alert alert-warning" role="alert">
+          无今日可用预约。
+        </div>
+      </ng-container>
     </ng-container>
 
-    <ng-container *ngIf="!(todayBookings$ | async)?.length">
-      <div class="alert alert-warning" role="alert">
-        无今日可用预约。
-      </div>
-    </ng-container>
 
   </mat-dialog-content>
 

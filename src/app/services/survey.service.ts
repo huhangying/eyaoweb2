@@ -39,7 +39,7 @@ export class SurveyService {
   }
 
   // Surveys
-  getPendingSurveysByUserAndType(doctorId, patientId: string, surveyType: number) {
+  getPendingSurveysByUserAndType(doctorId: string, patientId: string, surveyType: number) {
     return this.api.get<Survey[]>(`surveys/${doctorId}/${patientId}/${surveyType}/0`); // 0 means unfinished(pending)
   }
 
@@ -56,7 +56,7 @@ export class SurveyService {
   }
 
   updateSurvey(data: Survey) {
-    return this.api.patch<Survey>('Survey/' + data._id, data);
+    return this.api.patch<Survey>('survey/' + data._id, data);
   }
 
   addSurvey(data: Survey) {
@@ -73,6 +73,10 @@ export class SurveyService {
           }
         );
     });
+  }
+
+  finishDiagnoseSurveys(userid: string, doctorid: string) {
+    return this.api.patch(`surveys/close/${doctorid}/${userid}`, {});
   }
 
 }

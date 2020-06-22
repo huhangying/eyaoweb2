@@ -29,6 +29,7 @@ export class AuthService {
     this.appStore.reset();
   }
 
+  get hid(): number { return this.appStore.hid; }
   get doctor(): Doctor { return this.appStore.doctor; }
 
   updateDoctor(data: Doctor) {

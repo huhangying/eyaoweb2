@@ -15,6 +15,7 @@ export class AppStoreService extends Store<AppState> {
   }
 
   // selectors
+  get hid() { return this.state?.hid || store2.get('hid'); }
   get doctor() { return this.state?.doctor || store2.get('doctor'); }
 
   updateDoctor(doctor: Doctor) {
@@ -23,6 +24,14 @@ export class AppStoreService extends Store<AppState> {
       doctor,
     });
     store2.set('doctor', doctor);
+  }
+
+  updateHid(hid: number) {
+    this.setState({
+      ...this.state,
+      hid,
+    });
+    store2.set('hid', hid);
   }
 
   updateNotifications(notifications: Notification[]) {

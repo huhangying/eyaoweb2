@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { AuthService } from '../../shared/service/auth.service';
 import { MatDialog } from '@angular/material/dialog';
 import { MessageService } from '../../shared/service/message.service';
@@ -17,11 +17,14 @@ import { SurveyService } from '../../services/survey.service';
 import { DialogService } from '../../shared/service/dialog.service';
 import { SurveyGroup } from '../../models/survey/survey-group.model';
 import { UserService } from '../../services/user.service';
+import { WeixinService } from '../../shared/service/weixin.service';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'ngx-diagnose',
   templateUrl: './diagnose.component.html',
-  styleUrls: ['./diagnose.component.scss']
+  styleUrls: ['./diagnose.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DiagnoseComponent implements OnInit {
   medicineReferences: MedicineReferences;
@@ -36,13 +39,14 @@ export class DiagnoseComponent implements OnInit {
     private surveyService: SurveyService,
     private diagnoseService: DiagnoseService,
     private userService: UserService,
+    private wxService: WeixinService,
     public dialog: MatDialog,
     private dialogService: DialogService,
     private message: MessageService,
+    private cd: ChangeDetectorRef,
   ) {
     this.doctor = this.auth.doctor;
     this.medicineReferences = { ...this.route.snapshot.data.medicineReferences };
-
   }
 
   ngOnInit(): void {
@@ -110,9 +114,12 @@ export class DiagnoseComponent implements OnInit {
       const pendingDiagnose = await this.diagnoseService.getPendgingDiagnose(this.doctor._id, patient._id);
       // create
       if (pendingDiagnose?._id) {
+        if (booking?._id && !pendingDiagnose.booking) {
+          pendingDiagnose.booking = booking._id;
+        }
         this.diagnose = pendingDiagnose;
       } else {
-        this.diagnose = await this.diagnoseService.addDiagnose({ doctor: this.doctor._id, user: patient._id }).toPromise();
+        this.diagnose = await this.diagnoseService.addDiagnose({ doctor: this.doctor._id, user: patient._id, booking: booking?._id }).toPromise();
       }
     }
     // 如果存在, todo: switch
@@ -128,6 +135,7 @@ export class DiagnoseComponent implements OnInit {
         status: 1 // 1:
       };
     }
+    this.cd.markForCheck();
 
     if (booking) {
       // check if surveys available
@@ -172,32 +180,46 @@ export class DiagnoseComponent implements OnInit {
     this.diagnose = null;
     this.selectedPatient = null;
     this.selectedBooking = null;
+    this.cd.markForCheck();
   }
 
   saveDiagnose(status = DiagnoseStatus.doctorSaved) {
     this.diagnose.status = status;
-    this.diagnoseService.updateDiagnose(this.diagnose).pipe(
+    return this.diagnoseService.updateDiagnose(this.diagnose).pipe(
       tap(result => {
         if (result?._id) {
           this.message.updateSuccess();
+          // mark surveys finished
+          if (status === DiagnoseStatus.archived) {
+            this.surveyService.finishDiagnoseSurveys(this.diagnose.user, this.diagnose.doctor)
+              .subscribe();
+          }
         }
+        this.cd.markForCheck();
       }),
       catchError(err => this.message.deleteErrorHandle(err))
-    ).subscribe();
+    );
   }
 
   closeDiagnose() {
-    this.dialogService.confirm('本操作将结束当前门诊，并发送门诊结论。').subscribe(result => {
+    this.dialogService.confirm('本操作将结束当前门诊，并发送门诊结论。').subscribe(async result => {
       if (result) {
-        this.saveDiagnose(DiagnoseStatus.archived);
+        await this.saveDiagnose(DiagnoseStatus.archived).toPromise();
         if (this.isFirstVisit) {
           // add into visist
+          this.selectedPatient.visitedDepartments = this.selectedPatient.visitedDepartments || [];
           this.selectedPatient.visitedDepartments.push(this.doctor.department);
           this.userService.updateUser(this.selectedPatient).subscribe();
         }
         // 发送门诊结论
         // 发送消息给微信
-
+        this.wxService.sendUserMsg(
+          this.selectedPatient.link_id,
+          '门诊结论',
+          `${this.doctor.name + ' ' + this.doctor.title} 给您发送了本次门诊结论`,
+          `${environment.wechatServer}diagnose-history?openid=${this.selectedPatient.link_id}&state=${this.auth.hid}&id=${this.diagnose._id}`,
+          ''
+        ).subscribe();
         // reset if success
         this.resetDiagnose();
       }

@@ -10,7 +10,7 @@ export class WeixinService {
     private api: ApiService,
   ) { }
 
-  sendUserArticle(openid: string, title: string, description: string, url: string, picUrl: string) {
+  sendUserMsg(openid: string, title: string, description: string, url: string, picUrl: string) {
     return this.api.post('wechat/send-client-msg/' + openid, {
       article: {
         title: title,
