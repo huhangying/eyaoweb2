@@ -6,7 +6,7 @@
     </button>
   </nb-card-header>
 
-  <mat-dialog-content class="px-3">
+  <mat-dialog-content class="px-3" style="min-width: 320px;">
     <ng-container *ngIf="todayBookings$ | async; let todayBookings">
       <ng-container *ngIf="todayBookings?.length">
         <div>
@@ -16,11 +16,13 @@
         <mat-radio-group class="list-group list-group-flush" [(ngModel)]="selectedBooking">
           <mat-radio-button class="list-group-item list-group-item-action pb-1" *ngFor="let booking of todayBookings"
             [value]="booking">
-            {{ getPeriodLabel(booking.schedule.period) }}:
-            {{ booking.user.name }}
-            {{ booking.user.gender? ' ' + (booking.user.gender | gender) : '' }}
-            {{ booking.user.cell? ' 手机:' + booking.user.cell : '' }}
-            {{ booking.user.birthdate? ' 生日:' + (booking.user.birthdate | localDate) : '' }}
+            <span class="text-wrap">
+              <span class="text-primary pr-1">{{ getPeriodLabel(booking.schedule.period) }}</span>
+              {{ booking.user.name }}
+              {{ booking.user.gender? ' ' + (booking.user.gender | gender) : '' }}
+              {{ booking.user.cell? ' 手机:' + booking.user.cell : '' }}
+              {{ booking.user.birthdate? ' 生日:' + (booking.user.birthdate | localDate) : '' }}
+            </span>
           </mat-radio-button>
         </mat-radio-group>
       </ng-container>

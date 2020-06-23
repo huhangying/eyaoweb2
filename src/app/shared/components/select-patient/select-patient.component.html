@@ -30,10 +30,12 @@
     <ng-container *ngIf="users$ | async; let users">
       <mat-radio-group class="list-group list-group-flush" [(ngModel)]="selectedPatient">
         <mat-radio-button class="list-group-item list-group-item-action pb-1" *ngFor="let user of users" [value]="user">
-          {{ user.name }}
-          {{ user.gender? ' ' + (user.gender | gender) : '' }}
-          {{ user.cell? ' 手机:' + user.cell : '' }}
-          {{ user.birthdate? ' 生日:' + (user.birthdate | localDate) : '' }}
+          <span class="text-wrap">
+            <span class="text-primary pr-1">{{ user.name }}</span>
+            {{ user.gender? ' ' + (user.gender | gender) : '' }}
+            {{ user.cell? ' 手机:' + user.cell : '' }}
+            {{ user.birthdate? ' 生日:' + (user.birthdate | localDate) : '' }}
+          </span>
         </mat-radio-button>
       </mat-radio-group>
     </ng-container>
