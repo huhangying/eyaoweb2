@@ -44,7 +44,6 @@ export class PatientHistoryComponent implements OnInit {
         }
         break;
     }
-
   }
 
 }

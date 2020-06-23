@@ -123,6 +123,7 @@ export class DiagnoseComponent implements OnInit, OnDestroy {
     return !this.selectedPatient.visitedDepartments.find(_ => _ === this.doctor.department);
   }
 
+  //todo: remove
   tabChanged(index: number) {
     console.log(index);
     switch (index) {
@@ -217,7 +218,7 @@ export class DiagnoseComponent implements OnInit, OnDestroy {
           this.message.updateSuccess();
           // mark surveys finished
           if (status === DiagnoseStatus.archived) {
-            this.surveyService.finishDiagnoseSurveys(this.diagnose.user, this.diagnose.doctor)
+            this.surveyService.finishDiagnoseSurveys(this.diagnose.user, this.doctor._id)
               .subscribe();
           }
         }

@@ -18,6 +18,10 @@ export class DiagnoseService {
     return this.api.get<Diagnose[]>('diagnoses/history/' + patientId);
   }
 
+  getUserCurrentDiagnose(userid: string) {
+    return this.api.get<Diagnose>('diagnose/history/latest/' + userid);
+  }
+
   getDiagnoseById(id: string) {
     return this.api.get<Diagnose>(`diagnose/${id}`);
   }
