@@ -14,7 +14,7 @@
         <nb-option *ngFor="let m of medicines$ | async" [value]="m">{{m.name}}</nb-option>
       </nb-select>
     </div>
-    <hr>
+    <hr class="mb-2">
     <div [formGroup]="form">
       <div class="field row">
         <div class="col-md-6">
@@ -70,8 +70,8 @@
           </nb-select>
         </div>
         <div class="col-md-3">
-          <label for="startDate" class="label required"> 开始服用日期 </label>
-          <div class="d-inline-flex px-0">
+          <label for="startDate" class="label label-padding required"> 开始服用日期 </label>
+          <div class="d-inline-flex px-0 pt-1">
             <input nbInput fullWidth id="startDate" #startDate [matDatepicker]="pickerStart" formControlName="startDate"
               [min]="fromMinDate" [max]="fromMaxDate">
             <mat-datepicker-toggle nbSuffix [for]="pickerStart"></mat-datepicker-toggle>
@@ -79,8 +79,8 @@
           </div>
         </div>
         <div class="col-md-3">
-          <label for="endDate" class="label"> 结束日期 </label>
-          <div class="d-inline-flex px-0">
+          <label for="endDate" class="label label-padding"> 结束日期 </label>
+          <div class="d-inline-flex px-0 pt-1">
             <input nbInput fullWidth id="endDate" #endDate [matDatepicker]="pickerEnd" formControlName="endDate"
               [min]="toMinDate">
             <mat-datepicker-toggle nbSuffix [for]="pickerEnd"></mat-datepicker-toggle>
@@ -94,7 +94,7 @@
           <label for="notes" class="label"> 备注 </label>
           <textarea nbInput fullWidth id="notes" formControlName="notes" rows="3"></textarea>
         </div>
-        <div class="col-md-3 pull-right">
+        <div class="col-md-3 pull-right pt-2">
           <button nbButton hero status="primary" (click)="caculateEndDate()">
             自动设置结束日期
           </button>
