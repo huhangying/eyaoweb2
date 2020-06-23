@@ -260,4 +260,9 @@ export class DiagnoseComponent implements OnInit {
     this.saveDiagnose();
   }
 
+  checkIfFinished() {
+    if (!this.diagnose.surveys?.length) return false;
+    return this.diagnose.surveys.findIndex(_ => _.type === 5) >= 0;
+  }
+
 }
