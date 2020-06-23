@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import { AuthService } from '../../shared/service/auth.service';
 import { MatDialog } from '@angular/material/dialog';
 import { MessageService } from '../../shared/service/message.service';
@@ -19,6 +19,7 @@ import { SurveyGroup } from '../../models/survey/survey-group.model';
 import { UserService } from '../../services/user.service';
 import { WeixinService } from '../../shared/service/weixin.service';
 import { environment } from '../../../environments/environment';
+import { AppStoreService } from '../../shared/store/app-store.service';
 
 @Component({
   selector: 'ngx-diagnose',
@@ -26,7 +27,7 @@ import { environment } from '../../../environments/environment';
   styleUrls: ['./diagnose.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DiagnoseComponent implements OnInit {
+export class DiagnoseComponent implements OnInit, OnDestroy {
   medicineReferences: MedicineReferences;
   doctor: Doctor;
   selectedBooking: Booking;
@@ -44,12 +45,37 @@ export class DiagnoseComponent implements OnInit {
     private dialogService: DialogService,
     private message: MessageService,
     private cd: ChangeDetectorRef,
+    private appStore: AppStoreService,
   ) {
     this.doctor = this.auth.doctor;
     this.medicineReferences = { ...this.route.snapshot.data.medicineReferences };
   }
 
   ngOnInit(): void {
+    if (this.appStore.pending?.diagnose) {
+      this.diagnoseService.getDiagnoseById(this.appStore.pending.diagnose).subscribe(result => {
+        this.diagnose = result;
+      });
+    }
+    if (this.appStore.pending?.user) {
+      this.selectedPatient = this.appStore.pending.user;
+    }
+    if (this.appStore.pending?.booking) {
+      this.selectedBooking = this.appStore.pending.booking;
+    }
+  }
+
+  ngOnDestroy() {
+    if (this.diagnose?._id) {
+      this.saveDiagnose();
+      this.appStore.updatePending({
+        diagnose: this.diagnose._id,
+        user: this.selectedPatient,
+        booking: this.selectedBooking
+      });
+    } else {
+      this.appStore.updatePending(null);
+    }
   }
 
   selectAppointment() {
@@ -111,13 +137,13 @@ export class DiagnoseComponent implements OnInit {
 
     // 如果不存在
     if (!this.diagnose?._id) {
-      const pendingDiagnose = await this.diagnoseService.getPendgingDiagnose(this.doctor._id, patient._id);
+      const matchedDiagnose = await this.diagnoseService.getMatchedDiagnose(this.doctor._id, patient._id);
       // create
-      if (pendingDiagnose?._id) {
-        if (booking?._id && !pendingDiagnose.booking) {
-          pendingDiagnose.booking = booking._id;
+      if (matchedDiagnose?._id) {
+        if (booking?._id && !matchedDiagnose.booking) {
+          matchedDiagnose.booking = booking._id;
         }
-        this.diagnose = pendingDiagnose;
+        this.diagnose = matchedDiagnose;
       } else {
         this.diagnose = await this.diagnoseService.addDiagnose({ doctor: this.doctor._id, user: patient._id, booking: booking?._id }).toPromise();
       }

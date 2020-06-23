@@ -1,6 +1,7 @@
 import { NbMediaBreakpoint } from '@nebular/theme';
 import { Doctor } from '../../models/crm/doctor.model';
 import { Notification } from '../../models/io/notification.model';
+import { Pending } from '../../models/pending.model';
 
 export class AppState {
     constructor(
@@ -11,5 +12,6 @@ export class AppState {
         public readonly loading?: boolean,
         public readonly breakpoint?: NbMediaBreakpoint,
         public readonly notifications?: Notification[],
+        public readonly pending?: Pending,
     ) { }
 }

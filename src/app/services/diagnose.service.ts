@@ -18,7 +18,11 @@ export class DiagnoseService {
     return this.api.get<Diagnose[]>('diagnoses/history/' + patientId);
   }
 
-  getPendgingDiagnose(doctorId: string, patientId: string) {
+  getDiagnoseById(id: string) {
+    return this.api.get<Diagnose>(`diagnose/${id}`);
+  }
+
+  getMatchedDiagnose(doctorId: string, patientId: string) {
     return this.api.get<Diagnose>(`diagnose/${doctorId}/${patientId}`).toPromise(); // finisned
   }
 

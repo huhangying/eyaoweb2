@@ -5,6 +5,7 @@ import { NbMediaBreakpoint } from '@nebular/theme';
 import { Doctor } from '../../models/crm/doctor.model';
 import { Notification } from '../../models/io/notification.model';
 import * as store2 from 'store2';
+import { Pending } from '../../models/pending.model';
 
 @Injectable({ providedIn: 'root' })
 export class AppStoreService extends Store<AppState> {
@@ -17,6 +18,7 @@ export class AppStoreService extends Store<AppState> {
   // selectors
   get hid() { return this.state?.hid || store2.get('hid'); }
   get doctor() { return this.state?.doctor || store2.get('doctor'); }
+  get pending() { return this.state?.pending || store2.get('pending'); }
 
   updateDoctor(doctor: Doctor) {
     this.setState({
@@ -67,6 +69,14 @@ export class AppStoreService extends Store<AppState> {
       ...this.state,
       breakpoint,
     });
+  }
+
+  updatePending(pending: Pending) {
+    this.setState({
+      ...this.state,
+      pending,
+    });
+    store2.set('pending', pending);
   }
 
   reset() {
