@@ -28,7 +28,7 @@ import { COSMIC_THEME } from './styles/theme.cosmic';
 import { CORPORATE_THEME } from './styles/theme.corporate';
 import { DARK_THEME } from './styles/theme.dark';
 import { AccessControlDirective } from '../shared/directive/access-control.directive';
-import { LayoutService } from './utils';
+import { LayoutService } from './utils/layout.service';
 
 const NB_MODULES = [
   NbLayoutModule,
@@ -56,10 +56,6 @@ const COMPONENTS = [
   AccessControlDirective,
 ];
 
-export const NB_CORE_PROVIDERS = [
-  LayoutService,
-];
-
 @NgModule({
   declarations: [...COMPONENTS],
   imports: [CommonModule, ...NB_MODULES],
@@ -71,7 +67,7 @@ export class ThemeModule {
     return {
       ngModule: ThemeModule,
       providers: [
-        ...NB_CORE_PROVIDERS,
+        LayoutService,
         ...NbThemeModule.forRoot(
           {
             name: 'default',

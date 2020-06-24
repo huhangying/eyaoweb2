@@ -2,14 +2,13 @@ import { AppStoreService } from '../../../shared/store/app-store.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NbMediaBreakpointsService, NbMenuService, NbSidebarService, NbThemeService, NbMediaBreakpoint } from '@nebular/theme';
-
-import { LayoutService } from '../../utils';
 import { map, takeUntil, filter, tap, pluck, distinctUntilChanged } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { AuthService } from '../../../shared/service/auth.service';
 import { ChatService } from '../../../services/chat.service';
 import { Doctor } from '../../../models/crm/doctor.model';
 import { Notification, NotificationType } from '../../../models/io/notification.model';
+import { LayoutService } from '../../utils/layout.service';
 
 @Component({
   selector: 'ngx-header',
