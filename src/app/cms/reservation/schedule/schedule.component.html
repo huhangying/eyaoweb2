@@ -3,8 +3,7 @@
     门诊开设
     &nbsp;&nbsp;
     <ng-container *ngIf="selectedDoctor">
-      <button nbButton hero shape="round" size="tiny" status="success" title="新增门诊"
-        (click)="add()">
+      <button nbButton hero shape="round" size="tiny" status="success" title="新增门诊" (click)="add()">
         <nb-icon icon="plus" pack="eva" [options]="{ animation: { type: 'shake' } }"></nb-icon>
       </button>
       <div class="float-right d-flex mt-n1">
@@ -17,7 +16,8 @@
       </div>
     </ng-container>
 
-    <ngx-select-doctor [departments]="departments" (doctorSelected)="doctorSelected($event)"></ngx-select-doctor>
+    <ngx-select-doctor [class.d-none]="!isCms" [departments]="departments" (doctorSelected)="doctorSelected($event)">
+    </ngx-select-doctor>
   </nb-card-header>
 
   <nb-card-body>

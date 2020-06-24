@@ -13,6 +13,7 @@ import { MessageService } from '../../../../shared/service/message.service';
 import { Doctor } from '../../../../models/crm/doctor.model';
 import { tap, catchError } from 'rxjs/operators';
 import { Department } from '../../../../models/hospital/department.model';
+import { AppStoreService } from '../../../../shared/store/app-store.service';
 
 @Component({
   selector: 'ngx-doctor-group',
@@ -28,6 +29,7 @@ export class DoctorGroupComponent implements OnInit, OnDestroy {
   dataSource: MatTableDataSource<DoctorGroup>;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
+  isCms: boolean;
 
   constructor(
     private route: ActivatedRoute,
@@ -36,13 +38,10 @@ export class DoctorGroupComponent implements OnInit, OnDestroy {
     public dialog: MatDialog,
     private dialogService: DialogService,
     private message: MessageService,
+    private appStore: AppStoreService,
   ) {
+    this.isCms = this.appStore.cms;
     this.departments = this.route.snapshot.data.departments;
-    // this.doctorService.getDoctorGroups().subscribe(
-    //   data => {
-    //     this.loadData(data);
-    //   }
-    // );
   }
 
   ngOnInit() {

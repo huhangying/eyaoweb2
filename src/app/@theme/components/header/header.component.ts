@@ -50,6 +50,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
     private chat: ChatService,
   ) {
     this.isCms = this.route.snapshot.data?.app === 'cms';
+    if (this.isCms !== this.appStore.cms) {
+      this.appStore.updateCms(this.isCms);
+    }
   }
 
   ngOnInit() {

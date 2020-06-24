@@ -19,6 +19,7 @@ export class AppStoreService extends Store<AppState> {
   get hid() { return this.state?.hid || store2.get('hid'); }
   get doctor() { return this.state?.doctor || store2.get('doctor'); }
   get pending() { return this.state?.pending || store2.get('pending'); }
+  get cms() { return this.state?.cms || false; }
 
   updateDoctor(doctor: Doctor) {
     this.setState({
@@ -43,10 +44,10 @@ export class AppStoreService extends Store<AppState> {
     });
   }
 
-  updateDebugMode(debugMode?: 0 | 1) {
+  updateCms(cms: boolean) {
     this.setState({
       ...this.state,
-      debugMode,
+      cms,
     });
   }
 

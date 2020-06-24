@@ -8,15 +8,14 @@ import { MatSort } from '@angular/material/sort';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogService } from '../../../shared/service/dialog.service';
 import { MessageService } from '../../../shared/service/message.service';
-import { takeUntil, tap, distinctUntilChanged, catchError } from 'rxjs/operators';
+import { takeUntil, tap, catchError } from 'rxjs/operators';
 import { DoctorService } from '../../../services/doctor.service';
 import { Department } from '../../../models/hospital/department.model';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Doctor } from '../../../models/crm/doctor.model';
 import { DoctorGroup } from '../../../models/crm/doctor-group.model';
-import { User } from '../../../models/crm/user.model';
 import { RelationshipEditComponent } from './relationship-edit/relationship-edit.component';
-import { DoctorGroupEditComponent } from '../doctor/doctor-group/doctor-group-edit/doctor-group-edit.component';
+import { AppStoreService } from '../../../shared/store/app-store.service';
 
 @Component({
   selector: 'ngx-relationship',
@@ -38,6 +37,7 @@ export class RelationshipComponent implements OnInit, OnDestroy {
   dataSource: MatTableDataSource<Relationship>;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
+  isCms: boolean;
 
   constructor(
     private fb: FormBuilder,
@@ -48,7 +48,9 @@ export class RelationshipComponent implements OnInit, OnDestroy {
     public dialog: MatDialog,
     private dialogService: DialogService,
     private message: MessageService,
+    private appStore: AppStoreService,
   ) {
+    this.isCms = this.appStore.cms;
     this.departments = this.route.snapshot.data.departments;
     this.selectedFilter = '*';
 
@@ -58,7 +60,6 @@ export class RelationshipComponent implements OnInit, OnDestroy {
   }
 
   get nameCtrl() { return this.searchForm.get('name'); }
-
 
   ngOnInit() {
     this.nameCtrl.valueChanges.pipe(

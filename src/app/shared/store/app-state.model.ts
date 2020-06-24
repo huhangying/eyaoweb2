@@ -8,7 +8,7 @@ export class AppState {
         public readonly doctor?: Doctor,
         public readonly hid?: number,
         public readonly currentUrl?: string,
-        public readonly debugMode?: 0|1,
+        public readonly cms?: boolean,
         public readonly loading?: boolean,
         public readonly breakpoint?: NbMediaBreakpoint,
         public readonly notifications?: Notification[],

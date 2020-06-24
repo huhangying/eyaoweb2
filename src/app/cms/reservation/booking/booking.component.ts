@@ -13,6 +13,7 @@ import { DialogService } from '../../../shared/service/dialog.service';
 import { MessageService } from '../../../shared/service/message.service';
 import { Period } from '../../../models/reservation/schedule.model';
 import { tap, catchError } from 'rxjs/operators';
+import { AppStoreService } from '../../../shared/store/app-store.service';
 
 @Component({
   selector: 'ngx-booking',
@@ -31,6 +32,7 @@ export class BookingComponent implements OnInit, OnDestroy {
   dataSource: MatTableDataSource<BookingFlatten>;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
+  isCms: boolean;
 
   constructor(
     private route: ActivatedRoute,
@@ -39,7 +41,9 @@ export class BookingComponent implements OnInit, OnDestroy {
     private cd: ChangeDetectorRef,
     private dialogService: DialogService,
     private message: MessageService,
+    private appStore: AppStoreService,
   ) {
+    this.isCms = this.appStore.cms;
     this.departments = this.route.snapshot.data.departments;
     this.periods = this.route.snapshot.data.periods;
     this.statusList = reservationService.getBookingStatusList();

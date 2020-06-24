@@ -3,7 +3,7 @@
     药师病患群组
     &nbsp;&nbsp;
     <button nbButton hero shape="round" size="tiny" status="success" class="mr-3" [hidden]="!selectedDoctor"
-    title="新增病患群组" (click)="add()">
+      title="新增病患群组" (click)="add()">
       <nb-icon icon="plus" pack="eva" [options]="{ animation: { type: 'shake' } }"></nb-icon>
     </button>
     <button nbButton hero shape="round" size="small" status="info" (click)="redirectToRelationship()">
@@ -11,7 +11,8 @@
       医患关系
     </button>
 
-    <ngx-select-doctor [departments]="departments" (doctorSelected)="doctorSelected($event)"></ngx-select-doctor>
+    <ngx-select-doctor [class.d-none]="!isCms" [departments]="departments" (doctorSelected)="doctorSelected($event)">
+    </ngx-select-doctor>
   </nb-card-header>
 
   <nb-card-body>

@@ -9,7 +9,8 @@
       </nb-form-field>
     </div>
 
-    <ngx-select-doctor [departments]="departments" (doctorSelected)="doctorSelected($event)"></ngx-select-doctor>
+    <ngx-select-doctor [class.d-none]="!isCms" [departments]="departments" (doctorSelected)="doctorSelected($event)">
+    </ngx-select-doctor>
 
   </nb-card-header>
 

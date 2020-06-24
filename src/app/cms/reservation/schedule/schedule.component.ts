@@ -15,6 +15,7 @@ import { ReservationService } from '../../../services/reservation.service';
 import { ScheduleEditComponent } from './schedule-edit/schedule-edit.component';
 import { ScheduleBatEditComponent } from './schedule-bat-edit/schedule-bat-edit.component';
 import { ScheduleBatDeleteComponent } from './schedule-bat-delete/schedule-bat-delete.component';
+import { AppStoreService } from '../../../shared/store/app-store.service';
 
 @Component({
   selector: 'ngx-schedule',
@@ -32,6 +33,7 @@ export class ScheduleComponent implements OnInit, OnDestroy {
   dataSource: MatTableDataSource<Schedule>;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
+  isCms: boolean;
 
   constructor(
     private route: ActivatedRoute,
@@ -40,7 +42,9 @@ export class ScheduleComponent implements OnInit, OnDestroy {
     private cd: ChangeDetectorRef,
     private dialogService: DialogService,
     private message: MessageService,
+    private appStore: AppStoreService,
   ) {
+    this.isCms = this.appStore.cms;
     this.departments = this.route.snapshot.data.departments;
     this.periods = this.route.snapshot.data.periods;
     // this.reservationService.getDoctorGroups().subscribe(
