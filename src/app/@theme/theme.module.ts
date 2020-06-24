@@ -28,7 +28,7 @@ import { COSMIC_THEME } from './styles/theme.cosmic';
 import { CORPORATE_THEME } from './styles/theme.corporate';
 import { DARK_THEME } from './styles/theme.dark';
 import { AccessControlDirective } from '../shared/directive/access-control.directive';
-import { AnalyticsService, LayoutService, SeoService } from './utils';
+import { LayoutService } from './utils';
 
 const NB_MODULES = [
   NbLayoutModule,
@@ -57,9 +57,7 @@ const COMPONENTS = [
 ];
 
 export const NB_CORE_PROVIDERS = [
-  AnalyticsService,
   LayoutService,
-  SeoService,
 ];
 
 @NgModule({

@@ -17,13 +17,23 @@
   }
 }
 :host {
-  ::ng-deep .menu-items li.menu-item {
-    :hover {
+  ::ng-deep ul.menu-items li.menu-item {
+    .menu-icon {
+      margin: 0!important;
+    }
+    ul.menu-items {
+      padding: 0;
+      li.menu-item {
+        padding-left: 1.25rem;
+      }
+    }
+    li.menu-item:hover,
+    > a:hover {
       background-color: beige;
     }
     .menu-title,
     a {
-      padding-left: 0.5rem;
+      padding-left: 0.65rem;
     }
   }
 }

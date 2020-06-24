@@ -1,9 +1,8 @@
 import { AuthService } from '../shared/service/auth.service';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 
 import { NbMenuItem, NbSidebarService, NbMenuService } from '@nebular/theme';
 import { getMenuItems } from './main-menu';
-import { LayoutService, AnalyticsService, SeoService } from '../@theme/utils';
 import { AppStoreService } from '../shared/store/app-store.service';
 import { tap, takeUntil, filter, pluck } from 'rxjs/operators';
 import { Subject, Observable, of } from 'rxjs';
@@ -20,6 +19,7 @@ import { SocketioService } from '../shared/service/socketio.service';
     </ngx-one-column-layout>
   </div>
   `,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MainComponent implements OnInit, OnDestroy {
   role: number;
@@ -30,12 +30,10 @@ export class MainComponent implements OnInit, OnDestroy {
   constructor(
     private auth: AuthService,
     private sidebarService: NbSidebarService,
-    private layoutService: LayoutService,
     private menuService: NbMenuService,
     private appStore: AppStoreService,
     private socketService: SocketioService,
-    private analytics: AnalyticsService,
-    private seoService: SeoService,
+    private cd: ChangeDetectorRef,
   ) {
     const doc = this.auth.doctor;
     if (!doc) return;
@@ -45,16 +43,26 @@ export class MainComponent implements OnInit, OnDestroy {
       doc: doc._id
     });
 
-    this.analytics.trackPageViews();
-    this.seoService.trackCanonicalChanges();
-
     this.menuService.onItemClick().pipe(
       tap(item => {
-        // console.log('-->', item);
         if (this.appStore.state.breakpoint && ['xs', 'sm', 'md', 'lg'].indexOf(this.appStore.state.breakpoint.name) > -1) {
-          this.menuService.collapseAll();
-          this.sidebarService.toggle(true, 'menu-sidebar');
-          this.layoutService.changeLayoutSize();
+          this.menuService.collapseAll('menu');
+          this.sidebarService.compact('menu-sidebar');
+          // this.layoutService.changeLayoutSize();
+          this.cd.markForCheck();
+        }
+      }),
+      takeUntil(this.destroy$)
+    ).subscribe();
+
+    this.menuService.onItemHover().pipe(
+      tap(itemBag => {
+        if (this.appStore.state.breakpoint && ['xs', 'sm', 'md', 'lg'].indexOf(this.appStore.state.breakpoint.name) > -1) {
+          // fix NB issue
+          if (!itemBag.item.parent && itemBag.item.selected &&itemBag.item.expanded ) {
+            itemBag.item.expanded = false;
+            this.cd.markForCheck();
+          }
         }
       }),
       takeUntil(this.destroy$)
