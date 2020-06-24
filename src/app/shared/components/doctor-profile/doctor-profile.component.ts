@@ -90,9 +90,13 @@ export class DoctorProfileComponent implements OnInit, OnDestroy {
           doctor: updated,
           invalid: this.form.invalid
         });
+        this.cd.markForCheck();
       }),
       takeUntil(this.destroy$)
     ).subscribe();
+    setTimeout(() => {
+      this.cd.markForCheck();
+    });
   }
 
   ngOnDestroy() {
@@ -136,7 +140,7 @@ export class DoctorProfileComponent implements OnInit, OnDestroy {
 
         const fileName = `.${file.name.split('.').pop()}`; // [did].[ext]
         this.uploadService.uploadDoctorDir(doctor._id, 'icon', file, fileName).pipe(
-          tap((result: {path: string}) => {
+          tap((result: { path: string }) => {
             if (result?.path) {
               // update icon to db after finished uploading
               this.doctorService.updateDoctor({

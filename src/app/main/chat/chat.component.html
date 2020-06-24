@@ -93,8 +93,8 @@
           <div class="align-bottom d-flex text-right w-100">
             <textarea type="text" nbInput fullWidth autocomplete="off" fieldSize="small" placeholder="请输入..."
               cdkFocusInitial (keyup.enter)="send()" [(ngModel)]="myInput"></textarea>
-            <button nbButton hero status="info" size="small" nbSuffix (click)="send()">
-              <nb-icon icon="paper-plane-outline" pack="eva"></nb-icon>
+            <button nbButton hero status="info" nbSuffix (click)="send()">
+              <nb-icon icon="paper-plane-outline" class="mx-1"></nb-icon>
             </button>
           </div>
           <div class="px-3">
