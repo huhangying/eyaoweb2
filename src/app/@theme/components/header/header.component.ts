@@ -17,6 +17,7 @@ import { LayoutService } from '../../utils/layout.service';
 })
 export class HeaderComponent implements OnInit, OnDestroy {
   isCms: boolean;
+  isXl: boolean;
   private destroy$: Subject<void> = new Subject<void>();
   userPictureOnly = false;
   doctor: Doctor;
@@ -63,7 +64,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
       )
       .subscribe(
         (currentBreakpoint: NbMediaBreakpoint) => {
-          this.userPictureOnly = (currentBreakpoint.width < xl);
+          this.isXl = currentBreakpoint.width >= xl;
+          this.userPictureOnly = !this.isXl;
           this.appStore.updateBreakpoint(currentBreakpoint);
         }
       );
@@ -91,26 +93,26 @@ export class HeaderComponent implements OnInit, OnDestroy {
         }
       });
 
-      // moniter notifications
-      this.appStore.state$.pipe(
-        pluck('notifications'),
-        distinctUntilChanged(),
-        tap(notis => {
-          if (!notis?.length) {
-            this.totalUnread = 0;
-            this.chatNotifications = [];
-            return;
-          }
-          this.totalUnread = notis.reduce((total, noti) => {
-            total += noti.count;
-            return total;
-          }, 0);
-          this.chatNotifications = notis;
+    // moniter notifications
+    this.appStore.state$.pipe(
+      pluck('notifications'),
+      distinctUntilChanged(),
+      tap(notis => {
+        if (!notis?.length) {
+          this.totalUnread = 0;
+          this.chatNotifications = [];
+          return;
         }
+        this.totalUnread = notis.reduce((total, noti) => {
+          total += noti.count;
+          return total;
+        }, 0);
+        this.chatNotifications = notis;
+      }
 
-        ),
-        takeUntil(this.destroy$),
-      )      .subscribe();
+      ),
+      takeUntil(this.destroy$),
+    ).subscribe();
   }
 
   ngOnDestroy() {
@@ -146,7 +148,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   viewChat(noti: Notification) {
     if (noti.type === NotificationType.chat) {
-      this.router.navigate(['/main/chat'], { queryParams: {pid: noti.patientId}});
+      this.router.navigate(['/main/chat'], { queryParams: { pid: noti.patientId } });
     } else {
       //todo:
     }
