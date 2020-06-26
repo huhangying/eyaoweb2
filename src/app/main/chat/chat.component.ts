@@ -119,12 +119,14 @@ export class ChatComponent implements OnInit, OnDestroy {
     // get chat history
     this.chatService.getChatHistory(this.doctor._id, patient._id).pipe(
       tap(results => {
-        if (results) {
-          this.chats = results;
+        if (results?.length) {
+          this.chats = results.sort((a, b) => (+new Date(a.created) - +new Date(b.created)));
           this.scrollBottom();
 
           //
           this.chatService.removeChatsFromNotificationList(this.selectedPatient._id, 0);
+        } else {
+          this.chats = [];
         }
       })
     ).subscribe();
