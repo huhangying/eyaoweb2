@@ -10,6 +10,7 @@ import { DoctorService } from '../../services/doctor.service';
 import { Relationship } from '../../models/crm/relationship.model';
 import { User } from '../../models/crm/user.model';
 import { ActivatedRoute } from '@angular/router';
+import *  as qqface from 'wx-qqface';
 
 @Component({
   selector: 'ngx-chat',
@@ -23,6 +24,8 @@ export class ChatComponent implements OnInit, OnDestroy {
   selectedPatient: User;
   room: string;
   myInput = '';
+  showEmoji = false;
+  qqfaces: string[] = qqface.codeMap;
 
   doctorGroups: DoctorGroup[];
   relationships: Relationship[];
@@ -45,8 +48,6 @@ export class ChatComponent implements OnInit, OnDestroy {
   ) {
     this.doctor = this.auth.doctor;
     this.loadData(this.doctor._id);
-    // console.log(this.doctor);
-
   }
 
   //------------------------------------------------------------
@@ -130,6 +131,7 @@ export class ChatComponent implements OnInit, OnDestroy {
   }
 
   send() {
+    this.showEmoji = false;
     if (this.myInput.trim() === '') return; // avoid sending empty
     const chat = {
       room: this.room,
@@ -157,6 +159,24 @@ export class ChatComponent implements OnInit, OnDestroy {
 
   inputFromShortcut(shortcut: string) {
     this.myInput += shortcut;
+  }
+
+  toggleEmoji() {
+    this.showEmoji = !this.showEmoji;
+    this.scrollBottom();
+  }
+
+  addEmoji(code: number) {
+    const emoji = '/:' + qqface.codeToText(code) + ' ';
+    this.myInput = this.myInput + emoji;
+  }
+
+  translateEmoji(text: string) {
+    const reg = new RegExp(('\\/:(' + qqface.textMap.join('|') + ')'), 'g');// ie. /:微笑
+    return text.replace(reg, (name) => {
+      const code = qqface.textMap.indexOf(name.substr(2)) + 1;
+      return code ? '<img src="assets/qqface/' + code + '.gif" />' : '';
+    });
   }
 
 }

@@ -26,7 +26,8 @@
                   <mat-list-option *ngIf="member.user" (click)="selectChatPatient(member.user)">
                     <div class="d-flex align-items-center flex-row">
                       <div mat-list-icon>
-                        <img [src]="member.user.icon" alt="头像" class="avatar" onerror="this.src='/assets/images/noimage.jpg';this.onerror='';">
+                        <img [src]="member.user.icon" alt="头像" class="avatar"
+                          onerror="this.src='/assets/images/noimage.jpg';this.onerror='';">
                       </div>
                       <div class="pl-4">
                         {{member.user.name}}
@@ -68,8 +69,7 @@
                     <span class="triangle"></span>
                     <img [src]="doctor?.icon | imgPath" class="rounded-circle user_img_msg">
                   </div>
-                  <div class="msg-data text-break">
-                    {{ chat.data }}
+                  <div class="msg-data text-break" [innerHTML]="translateEmoji(chat.data)">
                   </div>
                 </div>
               </ng-container>
@@ -80,8 +80,7 @@
                     <span class="triangle"></span>
                     <img [src]="selectedPatient?.icon" class="rounded-circle user_img_msg">
                   </div>
-                  <div class="msg-data text-break">
-                    {{ chat.data }}
+                  <div class="msg-data text-break" [innerHTML]="translateEmoji(chat.data)">
                   </div>
                 </div>
               </ng-container>
@@ -98,7 +97,7 @@
             </button>
           </div>
           <div class="px-3">
-            <button mat-icon-button color="primary" class="mr-2">
+            <button mat-icon-button color="primary" class="mr-2" (click)="toggleEmoji()">
               <mat-icon>insert_emoticon</mat-icon>
             </button>
             <button mat-icon-button color="primary" class="mr-2">
@@ -116,13 +115,22 @@
               </ng-container>
               <ng-container *ngIf="!doctor.shortcuts">
                 <div class="alert alert-warning">
-                  请先到“快捷回复管理”中设置。
+                  您还没有设置，请先到“快捷回复管理”中添加。
                 </div>
               </ng-container>
             </mat-menu>
             <button mat-icon-button color="primary" class="float-right d-none">
               <mat-icon>send</mat-icon>
             </button>
+          </div>
+          <div *ngIf="showEmoji">
+            <div class="qqface">
+              <ng-container *ngFor="let code of qqfaces">
+                <button mat-icon-button (click)="addEmoji(code)">
+                  <img [src]="'assets/qqface/' + code + '.gif'" />
+                </button>
+              </ng-container>
+            </div>
           </div>
         </div>
       </div>

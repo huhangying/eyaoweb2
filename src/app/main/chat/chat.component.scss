@@ -16,6 +16,14 @@
     .card-body {
       padding: 1.25rem 0.75rem;
     }
+
+    .qqface {
+      padding: 0.25rem 0;
+      text-align: center;
+      max-height: 10rem;
+      overflow: auto !important;
+      background-color: white;
+    }
   }
 
   .avatar {
