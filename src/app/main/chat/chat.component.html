@@ -69,7 +69,13 @@
                     <span class="triangle"></span>
                     <img [src]="doctor?.icon | imgPath" class="rounded-circle user_img_msg">
                   </div>
-                  <div class="msg-data text-break" [innerHTML]="translateEmoji(chat.data)">
+                  <div class="msg-data" [ngSwitch]="chat.type">
+                    <div *ngSwitchCase="dataType.picture">
+                      <img [src]="chat.data | imgPath" onerror="this.src='assets/images/no-image.png';this.onerror='';"
+                        class="img-fluid img-thumbnail">
+                    </div>
+                    <div *ngSwitchDefault class="text-break" [innerHTML]="translateEmoji(chat.data)">
+                    </div>
                   </div>
                 </div>
               </ng-container>
@@ -80,10 +86,17 @@
                     <span class="triangle"></span>
                     <img [src]="selectedPatient?.icon" class="rounded-circle user_img_msg">
                   </div>
-                  <div class="msg-data text-break" [innerHTML]="translateEmoji(chat.data)">
+                  <div class="msg-data" [ngSwitch]="chat.type">
+                    <div *ngSwitchCase="dataType.picture">
+                      <img [src]="chat.data | imgPath" onerror="this.src='assets/images/no-image.png';this.onerror='';"
+                        class="img-fluid img-thumbnail">
+                    </div>
+                    <div *ngSwitchDefault class="text-break" [innerHTML]="translateEmoji(chat.data)">
+                    </div>
                   </div>
                 </div>
               </ng-container>
+
               <div class="msg-time">{{chat.created | localDate: 'auto'}}</div>
             </div>
             <div id="chat-bottom"></div>
@@ -100,7 +113,8 @@
             <button mat-icon-button color="primary" class="mr-2" (click)="toggleEmoji()">
               <mat-icon>insert_emoticon</mat-icon>
             </button>
-            <button mat-icon-button color="primary" class="mr-2">
+            <input hidden="true" type="file" accept="image/*" (change)="imageUpload($event)" #fileInput>
+            <button mat-icon-button color="primary" class="mr-2" (click)="fileInput.click()">
               <mat-icon>insert_photo</mat-icon>
             </button>
             <button mat-icon-button [matMenuTriggerFor]="shortcutList" color="primary" class="mr-2">
@@ -131,22 +145,6 @@
                 </button>
               </ng-container>
             </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-
-    <div class="row justify-content-center h-100" [class.d-none]="true">
-
-      <div class="card-footer">
-        <div class="input-group">
-          <div class="input-group-append">
-            <span class="input-group-text attach_btn"><i class="fas fa-paperclip"></i></span>
-          </div>
-          <textarea name="" class="form-control type_msg" placeholder="Type your message..."></textarea>
-          <div class="input-group-append">
-            <span class="input-group-text send_btn"><i class="fas fa-location-arrow"></i></span>
           </div>
         </div>
       </div>

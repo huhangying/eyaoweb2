@@ -11,6 +11,7 @@ import { Relationship } from '../../models/crm/relationship.model';
 import { User } from '../../models/crm/user.model';
 import { ActivatedRoute } from '@angular/router';
 import *  as qqface from 'wx-qqface';
+import { UploadService } from '../../shared/service/upload.service';
 
 @Component({
   selector: 'ngx-chat',
@@ -26,6 +27,7 @@ export class ChatComponent implements OnInit, OnDestroy {
   myInput = '';
   showEmoji = false;
   qqfaces: string[] = qqface.codeMap;
+  dataType = ChatType;
 
   doctorGroups: DoctorGroup[];
   relationships: Relationship[];
@@ -43,6 +45,7 @@ export class ChatComponent implements OnInit, OnDestroy {
     private socketio: SocketioService,
     private chatService: ChatService,
     private doctorService: DoctorService,
+    private uploadService: UploadService,
     private cd: ChangeDetectorRef,
     private route: ActivatedRoute,
   ) {
@@ -132,17 +135,31 @@ export class ChatComponent implements OnInit, OnDestroy {
     ).subscribe();
   }
 
-  send() {
+  send(imgPath?: string) {
     this.showEmoji = false;
-    if (this.myInput.trim() === '') return; // avoid sending empty
-    const chat = {
-      room: this.room,
-      sender: this.doctor._id,
-      senderName: this.doctor.name,
-      to: this.selectedPatient._id,
-      type: ChatType.text,
-      data: this.myInput.trimRight()
-    };
+    let chat;
+    if (imgPath) {
+      // Picture
+      chat = {
+        room: this.room,
+        sender: this.doctor._id,
+        senderName: this.doctor.name,
+        to: this.doctor._id,
+        type: ChatType.picture,
+        data: imgPath
+      };
+    } else {
+      // Text
+      if (this.myInput.trim() === '') return; // avoid sending empty
+      chat = {
+        room: this.room,
+        sender: this.doctor._id,
+        senderName: this.doctor.name,
+        to: this.doctor._id,
+        type: ChatType.text,
+        data: this.myInput
+      };
+    }
     this.chats.push(chat);
 
     this.socketio.sendChat(this.room, chat);
@@ -179,6 +196,27 @@ export class ChatComponent implements OnInit, OnDestroy {
       const code = qqface.textMap.indexOf(name.substr(2)) + 1;
       return code ? '<img src="assets/qqface/' + code + '.gif" />' : '';
     });
+  }
+
+  imageUpload(event) {
+    if (event.target.files?.length) {
+      const [file] = event.target.files;
+      const newfileName = `.${file.name.split('.').pop()}`; // _id.[ext]
+
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = async () => {
+
+        const newFile = await this.uploadService.compressImg(file);
+        this.uploadService.uploadDoctorDir(this.selectedPatient._id, 'chat', newFile, newfileName).pipe(
+          tap((result: { path: string }) => {
+            if (result?.path) {
+              this.send(result.path);
+            }
+          })
+        ).subscribe();
+      };
+    }
   }
 
 }
