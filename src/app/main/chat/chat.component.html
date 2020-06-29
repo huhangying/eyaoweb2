@@ -1,14 +1,16 @@
 <nb-card class="h-100">
   <nb-card-header>
     在线咨询
-    <button mat-icon-button color="accent" class="d-md-none">
-      <mat-icon>menu</mat-icon>
-    </button>
+    <ng-container *ngIf="!isMd">
+      <button mat-icon-button color="accent" (click)="toggleShowInSm()">
+        <mat-icon>menu</mat-icon>
+      </button>
+    </ng-container>
   </nb-card-header>
 
   <nb-card-body class="container-fluid" id="wrapper">
     <div class="row">
-      <div class="d-none d-md-block col-md-4 col-xl-3">
+      <div class="d-md-block col-md-4 col-xl-3" [class.d-none]="!isMd && !showInSm">
         <div class="h6 pl-3 py-2">
           <mat-icon color="primary" class="pr-3">people</mat-icon> 我的患者
         </div>
@@ -133,9 +135,6 @@
                 </div>
               </ng-container>
             </mat-menu>
-            <button mat-icon-button color="primary" class="float-right d-none">
-              <mat-icon>send</mat-icon>
-            </button>
           </div>
           <div *ngIf="showEmoji">
             <div class="qqface">

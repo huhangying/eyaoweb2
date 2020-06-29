@@ -4,7 +4,7 @@ import { AuthService } from '../../shared/service/auth.service';
 import { Doctor } from '../../models/crm/doctor.model';
 import { ChatType, Chat } from '../../models/io/chat.model';
 import { ChatService } from '../../services/chat.service';
-import { tap } from 'rxjs/operators';
+import { tap, pluck, distinctUntilChanged } from 'rxjs/operators';
 import { DoctorGroup } from '../../models/crm/doctor-group.model';
 import { DoctorService } from '../../services/doctor.service';
 import { Relationship } from '../../models/crm/relationship.model';
@@ -12,6 +12,8 @@ import { User } from '../../models/crm/user.model';
 import { ActivatedRoute } from '@angular/router';
 import *  as qqface from 'wx-qqface';
 import { UploadService } from '../../shared/service/upload.service';
+import { AppStoreService } from '../../shared/store/app-store.service';
+import { NbMediaBreakpoint, NbMediaBreakpointsService } from '@nebular/theme';
 
 @Component({
   selector: 'ngx-chat',
@@ -28,6 +30,8 @@ export class ChatComponent implements OnInit, OnDestroy {
   showEmoji = false;
   qqfaces: string[] = qqface.codeMap;
   dataType = ChatType;
+  isMd: boolean; // greater than md
+  showInSm: boolean;
 
   doctorGroups: DoctorGroup[];
   relationships: Relationship[];
@@ -48,6 +52,8 @@ export class ChatComponent implements OnInit, OnDestroy {
     private uploadService: UploadService,
     private cd: ChangeDetectorRef,
     private route: ActivatedRoute,
+    private appStore: AppStoreService,
+    private breakpointService: NbMediaBreakpointsService,
   ) {
     this.doctor = this.auth.doctor;
     this.loadData(this.doctor._id);
@@ -109,15 +115,32 @@ export class ChatComponent implements OnInit, OnDestroy {
     });
 
     this.setChatBodyHeight();
+
+    const { md } = this.breakpointService.getBreakpointsMap();
+    this.appStore.state$.pipe(
+      pluck('breakpoint'),
+      distinctUntilChanged(),
+      tap((bp: NbMediaBreakpoint) => {
+        if (bp) {
+          this.isMd = (bp.width >= md);
+        }
+      })
+    ).subscribe();
   }
 
   ngOnDestroy() {
     this.socketio.leaveRoom(this.room);
   }
 
+  toggleShowInSm() {
+    this.showInSm = !this.showInSm;
+    this.cd.markForCheck();
+  }
+
   selectChatPatient(patient: User) {
     // console.log(patient);
     this.selectedPatient = patient;
+    this.showInSm = false;
 
     // get chat history
     this.chatService.getChatHistory(this.doctor._id, patient._id).pipe(
