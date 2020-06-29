@@ -8,34 +8,68 @@
 </div>
 
 <div class="header-container">
-  <ng-container *ngIf="!isCms && totalUnread">
-    <button class="p-0 m-0" mat-icon-button [matBadge]="totalUnread" matBadgeColor="warn"
-      [matMenuTriggerFor]="notiMenu">
-      <mat-icon>notifications_outline</mat-icon>
+
+  <ng-container *ngIf="isCms">
+    <button mat-icon-button color="primary" class="mr-2" title="返回主頁" (click)="nav('/main')">
+      <mat-icon>home</mat-icon>
     </button>
-    <mat-menu #notiMenu="matMenu" xPosition="before">
-      <ng-template matMenuContent>
-        <button mat-menu-item *ngFor="let noti of chatNotifications" (click)="viewChat(noti)">
-          <mat-icon>sms</mat-icon>
-          收到{{noti.name}} {{noti.count}}条新消息
-          <i>{{ noti.created | localDate: 'full'}}</i>
-        </button>
-      </ng-template>
-    </mat-menu>
+  </ng-container>
+  <ng-container *ngIf="!isCms">
+    <button mat-icon-button color="primary" class="mr-2" title="管理后台" (click)="nav('/cms')">
+      <mat-icon>admin_panel_settings</mat-icon>
+    </button>
+
+    <ng-container *ngIf="chatUnread">
+      <button mat-icon-button class="mr-3 text-info" [matMenuTriggerFor]="notiMenu">
+        <mat-icon [matBadge]="chatUnread" matBadgeColor="warn">chat</mat-icon>
+      </button>
+      <mat-menu #notiMenu="matMenu" xPosition="before">
+        <ng-template matMenuContent>
+          <div class="px-3 py-2">在线咨询消息</div>
+          <mat-divider></mat-divider>
+          <div mat-menu-item *ngFor="let noti of chatNotifications" class="d-flex align-items-center notification-item"
+            (click)="viewChat(noti)">
+            <mat-icon class="mr-1">chat</mat-icon>
+            <div class="pl-2 flex-fill">
+              <div class="small">
+                {{noti.count}} 条新消息
+              </div>
+              <div class="small text-right">
+                {{noti.name}} 发送于<i>{{ noti.created | localDate}}</i>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+      </mat-menu>
+    </ng-container>
+
+    <ng-container *ngIf="feedbackUnread">
+      <button mat-icon-button class="mr-3 text-warning" [matMenuTriggerFor]="notiMenu">
+        <mat-icon [matBadge]="feedbackUnread" matBadgeColor="warn">sms</mat-icon>
+      </button>
+      <mat-menu #notiMenu="matMenu" xPosition="before">
+        <ng-template matMenuContent>
+          <div class="px-3 py-2">门诊反馈</div>
+          <mat-divider></mat-divider>
+          <div mat-menu-item *ngFor="let noti of feedbackNotifications"
+            class="d-flex align-items-center notification-item" (click)="viewChat(noti)">
+            <mat-icon class="mr-1" *ngIf="noti.type === 1">gesture</mat-icon>
+            <mat-icon class="mr-1" *ngIf="noti.type === 2">group_work</mat-icon>
+            <div class="pl-2 flex-fill">
+              <div class="small">
+                {{noti.count}} 条 {{noti.type === 1 ? '不良反应': '联合用药'}}反馈
+              </div>
+              <div class="small text-right">
+                {{noti.name}} 发送于<i>{{ noti.created | localDate}}</i>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+      </mat-menu>
+    </ng-container>
   </ng-container>
 
-  <nb-actions size="small">
-    <nb-action class="control-item" icon="settings-outline" title="管理后台" link="/cms" *ngIf="!isCms">
-    </nb-action>
-    <nb-action class="control-item" icon="home-outline" title="返回主頁" link="/main" *ngIf="isCms">
-    </nb-action>
-
-    <nb-action class="user-action" icon="email-outline" *ngxAcl="1"></nb-action>
-
-    <nb-action class="user-action">
-      <nb-user [nbContextMenu]="userMenu" [onlyPicture]="userPictureOnly" [name]="doctor?.name"
-        [picture]="getDoctorIcon()" nbContextMenuTag="user-menu">
-      </nb-user>
-    </nb-action>
-  </nb-actions>
+  <nb-user [nbContextMenu]="userMenu" [onlyPicture]="userPictureOnly" [name]="doctor?.name" [picture]="getDoctorIcon()"
+    nbContextMenuTag="user-menu">
+  </nb-user>
 </div>

@@ -23,7 +23,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
   doctor: Doctor;
 
   chatNotifications: Notification[];
-  totalUnread = 0;
+  chatUnread = 0;
+  feedbackNotifications: Notification[];
+  feedbackUnread = 0;
 
   userMenu = [
     { title: '个人资料', icon: 'person-outline', data: 'profile' },
@@ -101,19 +103,25 @@ export class HeaderComponent implements OnInit, OnDestroy {
       pluck('notifications'),
       distinctUntilChanged(),
       tap(notis => {
+        // init
+        this.chatUnread = 0;
+        this.chatNotifications = [];
+        this.feedbackUnread = 0;
+        this.feedbackNotifications = [];
         if (!notis?.length) {
-          this.totalUnread = 0;
-          this.chatNotifications = [];
           return;
         }
-        this.totalUnread = notis.reduce((total, noti) => {
+        this.chatNotifications = notis.filter(_ => _.type === NotificationType.chat);
+        this.chatUnread = this.chatNotifications.reduce((total, noti) => {
           total += noti.count;
           return total;
         }, 0);
-        this.chatNotifications = notis;
-      }
-
-      ),
+        this.feedbackNotifications = notis.filter(_ => _.type !== NotificationType.chat);
+        this.feedbackUnread = this.feedbackNotifications.reduce((total, noti) => {
+          total += noti.count;
+          return total;
+        }, 0);
+      }),
       takeUntil(this.destroy$),
     ).subscribe();
   }
@@ -142,7 +150,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
   getUnreadList() {
     this.chat.getUnreadListByDocter(this.doctor._id).pipe(
       tap(results => {
-        console.log('unread: ' + results.length);
         this.chat.convertNotificationList(results);
       }),
       takeUntil(this.destroy$)
@@ -155,6 +162,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
     } else {
       //todo:
     }
+  }
+
+  nav(target: string) {
+    this.router.navigate([target]);
   }
 
 }
