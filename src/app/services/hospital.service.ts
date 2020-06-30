@@ -49,6 +49,10 @@ export class HospitalService {
     return this.api.get<Const[]>('consts');
   }
 
+  getHospitalGroupSettings(group: number) {
+    return this.api.get<Const[]>('consts/group/' + group);
+  }
+
   getHospitalSetting(name: string) {
     return this.api.get<Const>('const/' + name);
   }

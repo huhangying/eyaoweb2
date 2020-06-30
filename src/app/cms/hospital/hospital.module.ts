@@ -6,6 +6,7 @@ import { SharedModule } from '../../shared/shared.module';
 import { DepartmentEditComponent } from './department/department-edit/department-edit.component';
 import { FaqEditComponent } from './faq/faq-edit/faq-edit.component';
 import { MedicineNoticesEditComponent } from './medicine/medicine-notices-edit/medicine-notices-edit.component';
+import { GroupSettingsComponent } from './hospital-settings/group-settings/group-settings.component';
 
 @NgModule({
   imports: [
@@ -19,6 +20,7 @@ import { MedicineNoticesEditComponent } from './medicine/medicine-notices-edit/m
     DepartmentEditComponent,
     FaqEditComponent,
     MedicineNoticesEditComponent,
+    GroupSettingsComponent,
   ]
 })
 export class HospitalModule { }

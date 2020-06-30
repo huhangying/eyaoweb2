@@ -1,5 +1,11 @@
-<nb-card [formGroup]="form">
-  <nb-card-header>编辑医院设置: {{data.desc}}</nb-card-header>
+<nb-card status="info" [formGroup]="form">
+  <nb-card-header>
+    编辑医院设置: {{data.desc}}
+    <button nbButton shape="round" size="tiny" class="float-right" mat-dialog-close>
+      <nb-icon icon="close"></nb-icon>
+    </button>
+  </nb-card-header>
+
   <nb-card-body>
     <div class="field row">
       <label for="inputType" class="label required col-sm-2"> 类型 </label>
