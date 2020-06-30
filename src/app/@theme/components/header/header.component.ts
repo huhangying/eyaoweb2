@@ -168,4 +168,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.router.navigate([target]);
   }
 
+  statusChanged(event) {
+    console.log(event);
+
+  }
+
 }

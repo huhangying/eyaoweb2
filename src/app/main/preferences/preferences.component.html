@@ -1,6 +1,8 @@
-<h4>系统偏好设置</h4>
-
-
-<nb-select [selected]="currentTheme" (selectedChange)="changeTheme($event)" status="primary">
-  <nb-option *ngFor="let theme of themes" [value]="theme.value"> {{ theme.name }}</nb-option>
-</nb-select>
+<div class="p-3">
+  <h6>系统偏好设置</h6>
+  <mat-divider></mat-divider>
+  <br>
+  <nb-select [selected]="currentTheme" (selectedChange)="changeTheme($event)" status="primary">
+    <nb-option *ngFor="let theme of themes" [value]="theme.value"> {{ theme.name }}</nb-option>
+  </nb-select>
+</div>

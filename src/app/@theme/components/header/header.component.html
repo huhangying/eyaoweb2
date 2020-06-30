@@ -15,12 +15,12 @@
     </button>
   </ng-container>
   <ng-container *ngIf="!isCms">
-    <button mat-icon-button color="primary" class="mr-2" title="管理后台" (click)="nav('/cms')">
+    <button mat-icon-button color="primary" class="ml-1" title="管理后台" (click)="nav('/cms')">
       <mat-icon>admin_panel_settings</mat-icon>
     </button>
 
     <ng-container *ngIf="chatUnread">
-      <button mat-icon-button class="mr-3 text-info" [matMenuTriggerFor]="notiMenu">
+      <button mat-icon-button class="mr-2 text-info" [matMenuTriggerFor]="notiMenu">
         <mat-icon [matBadge]="chatUnread" matBadgeColor="warn">chat</mat-icon>
       </button>
       <mat-menu #notiMenu="matMenu" xPosition="before">
@@ -44,7 +44,7 @@
     </ng-container>
 
     <ng-container *ngIf="feedbackUnread">
-      <button mat-icon-button class="mr-3 text-warning" [matMenuTriggerFor]="notiMenu">
+      <button mat-icon-button class="mr-2 text-warning" [matMenuTriggerFor]="notiMenu">
         <mat-icon [matBadge]="feedbackUnread" matBadgeColor="warn">sms</mat-icon>
       </button>
       <mat-menu #notiMenu="matMenu" xPosition="before">

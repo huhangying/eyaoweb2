@@ -133,10 +133,15 @@
     border-radius: 50%;
     bottom: 0.2em;
     right: 0.4em;
-    border: 1.5px solid white;
   }
-  .offline {
-    background-color: #c23616 !important;
+  .offline_icon {
+    position: absolute;
+    height: 15px;
+    width: 15px;
+    background-color: #c23616;
+    border-radius: 50%;
+    bottom: 0.2em;
+    right: 0.4em;
   }
   .user_info {
     margin-top: auto;
