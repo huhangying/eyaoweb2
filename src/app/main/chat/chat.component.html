@@ -1,6 +1,6 @@
 <nb-card class="h-100">
   <nb-card-header>
-    在线咨询
+    {{ type === 1 ? '不良反应反馈' : ((type === 2) ? '联合用药反馈' : '在线咨询') }}
     <ng-container *ngIf="!isMd">
       <button mat-icon-button color="accent" (click)="toggleShowInSm()">
         <mat-icon>menu</mat-icon>
@@ -25,7 +25,7 @@
             <div class="doctor-group-body" [style.maxHeight]="groupBodyHeight">
               <mat-selection-list [multiple]="false">
                 <ng-container *ngFor="let member of getGroupMembers(dg._id)">
-                  <mat-list-option *ngIf="member.user" (click)="selectChatPatient(member.user)">
+                  <mat-list-option *ngIf="member.user" (click)="selectPatient(member.user)">
                     <div class="d-flex align-items-center flex-row">
                       <div mat-list-icon>
                         <img [src]="member.user.icon" alt="头像" class="avatar"
@@ -64,44 +64,103 @@
           </div>
 
           <div class="card-body msg_card_body">
-            <div *ngFor="let chat of chats" class="mb-2" [ngClass]="chat.sender === doctor._id ? ' sender': 'to'">
-              <ng-container *ngIf="chat.sender === doctor._id">
-                <div class="d-flex align-items-end flex-row-reverse">
-                  <div class="img_cont_msg">
-                    <span class="triangle"></span>
-                    <img [src]="doctor?.icon | imgPath" class="rounded-circle user_img_msg">
-                  </div>
-                  <div class="msg-data" [ngSwitch]="chat.type">
-                    <div *ngSwitchCase="dataType.picture">
-                      <img [src]="chat.data | imgPath" onerror="this.src='assets/images/no-image.png';this.onerror='';"
-                        class="img-fluid img-thumbnail">
+            <ng-container *ngIf="type === 0">
+              <div *ngFor="let chat of chats" class="mb-2" [ngClass]="chat.sender === doctor._id ? ' sender': 'to'">
+                <ng-container *ngIf="chat.sender === doctor._id">
+                  <div class="d-flex align-items-end flex-row-reverse">
+                    <div class="img_cont_msg">
+                      <span class="triangle"></span>
+                      <img [src]="doctor?.icon | imgPath" class="rounded-circle user_img_msg">
                     </div>
-                    <div *ngSwitchDefault class="text-break" [innerHTML]="translateEmoji(chat.data)">
+                    <div class="msg-data" [ngSwitch]="chat.type">
+                      <div *ngSwitchCase="dataType.picture">
+                        <img [src]="chat.data | imgPath" onerror="this.src='assets/images/no-image.png';this.onerror='';"
+                          class="img-fluid img-thumbnail">
+                      </div>
+                      <div *ngSwitchDefault class="text-break" [innerHTML]="translateEmoji(chat.data)">
+                      </div>
                     </div>
                   </div>
-                </div>
-              </ng-container>
+                </ng-container>
 
-              <ng-container *ngIf="chat.sender !== doctor._id">
-                <div class="d-flex align-items-start flex-row">
-                  <div class="img_cont_msg">
-                    <span class="triangle"></span>
-                    <img [src]="selectedPatient?.icon" class="rounded-circle user_img_msg">
-                  </div>
-                  <div class="msg-data" [ngSwitch]="chat.type">
-                    <div *ngSwitchCase="dataType.picture">
-                      <img [src]="chat.data | imgPath" onerror="this.src='assets/images/no-image.png';this.onerror='';"
-                        class="img-fluid img-thumbnail">
+                <ng-container *ngIf="chat.sender !== doctor._id">
+                  <div class="d-flex align-items-start flex-row">
+                    <div class="img_cont_msg">
+                      <span class="triangle"></span>
+                      <img [src]="selectedPatient?.icon" class="rounded-circle user_img_msg">
                     </div>
-                    <div *ngSwitchDefault class="text-break" [innerHTML]="translateEmoji(chat.data)">
+                    <div class="msg-data" [ngSwitch]="chat.type">
+                      <div *ngSwitchCase="dataType.picture">
+                        <img [src]="chat.data | imgPath" onerror="this.src='assets/images/no-image.png';this.onerror='';"
+                          class="img-fluid img-thumbnail">
+                      </div>
+                      <div *ngSwitchDefault class="text-break" [innerHTML]="translateEmoji(chat.data)">
+                      </div>
                     </div>
                   </div>
-                </div>
-              </ng-container>
+                </ng-container>
 
-              <div class="msg-time">{{chat.created | localDate: 'auto'}}</div>
-            </div>
-            <div id="chat-bottom"></div>
+                <div class="msg-time">{{chat.created | localDate: 'auto'}}</div>
+              </div>
+            </ng-container>
+
+            <ng-container *ngIf="type === 1 || type === 2">
+              <div *ngFor="let feedback of feedbacks" class="mx-2 my-3">
+                <ng-container *ngIf="feedback.status < 2">
+                  <div class="to">
+                    <div class="d-flex align-items-start">
+                      <div class="img_cont_msg">
+                        <span class="triangle"></span>
+                        <img [src]="selectedPatient?.icon" class="rounded-circle user_img_msg">
+                      </div>
+                      <div class="msg-data text-break">
+                        <span class="text-muted small">发送于 {{ feedback.createdAt | localDate: 'full'}}</span>
+                        <hr class="my-2">
+                        <div class="mb-2">
+                          {{feedback.name}}
+                        </div>
+                        {{feedback.how}}
+                        <div class="text-muted small">
+                          开始日期: {{ feedback.startDate ? (feedback.startDate | localDate): '未设置' }}
+                        </div>
+                        <div class="text-muted small">
+                          结束日期: {{ feedback.endDate ? (feedback.endDate | localDate): '未设置' }}
+                        </div>
+                        <div *ngIf="feedback.upload">
+                          <img [src]="feedback.upload | imgPath"
+                            onerror="this.src='assets/images/no-image.png';this.onerror='';" class="img-fluid img-thumbnail">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </ng-container>
+
+                <ng-container *ngIf="feedback.status >= 2">
+                  <div class="sender">
+                    <div class="d-flex align-items-end flex-row-reverse">
+                      <div class="img_cont_msg">
+                        <span class="triangle"></span>
+                        <img [src]="doctor?.icon | imgPath" class="rounded-circle user_img_msg">
+                      </div>
+                      <div class="msg-data text-break">
+                        {{doctor.name + doctor.title}}回复：
+                        <div class="text-muted small">发送于
+                          {{ (feedback.createdAt || feedback.startDate) | localDate: 'full'}}
+                        </div>
+                        <hr class="my-2">
+                        <div class="mb-1 text-break" [innerHTML]="translateEmoji(feedback.name)">
+                        </div>
+                        <div *ngIf="feedback.upload">
+                          <img [src]="feedback.upload | imgPath"
+                            onerror="this.src='assets/images/no-image.png';this.onerror='';" class="img-fluid img-thumbnail">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </ng-container>
+              </div>
+            </ng-container>
+            <div id="chat-bottom" class="position-relative"></div>
           </div>
 
           <div class="align-bottom d-flex text-right w-100">

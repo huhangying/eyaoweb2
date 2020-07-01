@@ -8,5 +8,7 @@ export interface UserFeedback {
   startDate?: Date;
   endDate?: Date;
   notes?: string;
+  upload?: string;
   status: number; // 0: after user sent; 1. after doctor read; 2: 药师回复
+  createdAt?: Date;
 }

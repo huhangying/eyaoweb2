@@ -3,6 +3,7 @@ import * as io from 'socket.io-client';
 import { environment } from '../../../environments/environment';
 import { ChatType, Chat } from '../../models/io/chat.model';
 import * as moment from 'moment';
+import { UserFeedback } from '../../models/io/user-feedback.model';
 
 @Injectable({
   providedIn: 'root'
@@ -42,14 +43,8 @@ export class SocketioService {
     });
   }
 
-  sendFeedback(type: number, doctor: string, user: string) {
-    this.socket.emit('feedback', {
-      type: type,
-      user: user,
-      to: doctor,
-      created: moment()
-    });
-
+  sendFeedback(room: string, feedback: UserFeedback) {
+    this.socket.emit('feedback', room, feedback);
   }
 
 }

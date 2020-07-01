@@ -14,6 +14,9 @@ import *  as qqface from 'wx-qqface';
 import { UploadService } from '../../shared/service/upload.service';
 import { AppStoreService } from '../../shared/store/app-store.service';
 import { NbMediaBreakpoint, NbMediaBreakpointsService } from '@nebular/theme';
+import { NotificationType } from '../../models/io/notification.model';
+import { UserFeedbackService } from '../../services/user-feedback.service';
+import { UserFeedback } from '../../models/io/user-feedback.model';
 
 @Component({
   selector: 'ngx-chat',
@@ -22,8 +25,10 @@ import { NbMediaBreakpoint, NbMediaBreakpointsService } from '@nebular/theme';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ChatComponent implements OnInit, OnDestroy {
+  type: number;
   doctor: Doctor;
   chats: Chat[];
+  feedbacks: UserFeedback[];
   selectedPatient: User;
   room: string;
   myInput = '';
@@ -48,6 +53,7 @@ export class ChatComponent implements OnInit, OnDestroy {
     private auth: AuthService,
     private socketio: SocketioService,
     private chatService: ChatService,
+    private feedbackService: UserFeedbackService,
     private doctorService: DoctorService,
     private uploadService: UploadService,
     private cd: ChangeDetectorRef,
@@ -81,15 +87,14 @@ export class ChatComponent implements OnInit, OnDestroy {
   }
 
   selectPatientFromQuery() {
+    this.type = +this.route.snapshot.queryParams?.type || NotificationType.chat;
     const pid = this.route.snapshot.queryParams?.pid;
     if (pid && !this.selectedPatient) {
       // search from doctor-group/relationships
       this.doctorGroups.map(dg => {
         this.getGroupMembers(dg._id)?.map(r => {
           if (r.user?._id === pid) {
-            this.selectChatPatient(r.user);
-            // select in the left
-            return;
+            this.selectPatient(r.user);
           }
         });
       });
@@ -126,6 +131,7 @@ export class ChatComponent implements OnInit, OnDestroy {
         }
       })
     ).subscribe();
+
   }
 
   ngOnDestroy() {
@@ -135,6 +141,14 @@ export class ChatComponent implements OnInit, OnDestroy {
   toggleShowInSm() {
     this.showInSm = !this.showInSm;
     this.cd.markForCheck();
+  }
+
+  selectPatient(patient: User) {
+    if (this.type === NotificationType.chat) {
+      this.selectChatPatient(patient);
+    } else {
+      this.selectFeedbackPatient(patient, this.type);
+    }
   }
 
   selectChatPatient(patient: User) {
@@ -154,12 +168,45 @@ export class ChatComponent implements OnInit, OnDestroy {
         } else {
           this.chats = [];
         }
+        this.cd.markForCheck();
+      })
+    ).subscribe();
+  }
+
+  selectFeedbackPatient(patient: User, type: number) {
+    // console.log(patient);
+    this.selectedPatient = patient;
+    this.showInSm = false;
+
+    // get chat history
+    this.feedbackService.getByUserIdDoctorId(this.doctor._id, patient._id, type).pipe(
+      tap(results => {
+        if (results?.length) {
+          this.feedbacks = results.sort((a, b) => (+new Date(a.createdAt) - +new Date(b.createdAt)));
+          this.scrollBottom();
+
+          //
+          this.feedbackService.removeFromNotificationList(this.selectedPatient._id, 0);
+        } else {
+          this.feedbacks = [];
+        }
+        this.cd.markForCheck();
       })
     ).subscribe();
   }
 
   send(imgPath?: string) {
     this.showEmoji = false;
+    if (this.type === 0) {
+      this.sendChat(imgPath);
+    } else {
+      this.sendFeedback(imgPath);
+    }
+    this.scrollBottom();
+    this.myInput = '';
+  }
+
+  sendChat(imgPath?: string) {
     let chat;
     if (imgPath) {
       // Picture
@@ -187,8 +234,35 @@ export class ChatComponent implements OnInit, OnDestroy {
 
     this.socketio.sendChat(this.room, chat);
     this.chatService.sendChat(chat).subscribe();
-    this.scrollBottom();
-    this.myInput = '';
+  }
+
+  sendFeedback(imgPath?: string) {
+    let feedback;
+    if (imgPath) {
+      // Picture
+      feedback = {
+        user: this.selectedPatient._id,
+        doctor: this.doctor._id,
+        type: this.type,
+        name: '请参阅图片',
+        upload: imgPath,
+        status: 2,
+      };
+    } else {
+      // Text
+      if (this.myInput.trim() === '') return; // avoid sending empty
+      feedback = {
+        user: this.selectedPatient._id,
+        doctor: this.doctor._id,
+        type: this.type,
+        name: this.myInput,
+        status: 2,
+      };
+    }
+    this.feedbacks.push(feedback);
+
+    this.socketio.sendFeedback(this.room, feedback);
+    this.feedbackService.sendFeedback(feedback).subscribe();
   }
 
   scrollBottom() {
