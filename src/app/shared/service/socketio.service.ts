@@ -20,10 +20,6 @@ export class SocketioService {
     }
   }
 
-  onChat(next) {
-    this.socket.on('chat', next);
-  }
-
   onRoom(room, next) {
     this.socket.on(room, next);
   }
@@ -36,11 +32,21 @@ export class SocketioService {
     this.socket.emit('leaveRoom', room);
   }
 
+  // Chat
+  onChat(next) {
+    this.socket.on('chat', next);
+  }
+
   sendChat(room: string, chat: Chat) {
     this.socket.emit('chat', room, {
       ...chat,
       created: moment()
     });
+  }
+
+  // Feedback
+  onFeedback(next) {
+    this.socket.on('feedback', next);
   }
 
   sendFeedback(room: string, feedback: UserFeedback) {

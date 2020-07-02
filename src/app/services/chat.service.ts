@@ -36,22 +36,21 @@ export class ChatService {
   convertNotificationList(chats: Chat[]): Notification[] {
     if (!chats?.length) return [];
     const keys: string[] = [];
-    const notifications = chats.reduce((notis, chat) => {
-      const notiType = chat.type % 10; // convert chat type to noti type
-      const key = chat.sender + notiType;
+    const chatNotifications = chats.reduce((notis, chat) => {
+      const key = chat.sender + 0;
       if (keys.indexOf(key) === -1) {
         keys.push(key);
         notis.push({
           patientId: chat.sender,
-          type: notiType,
-          name: chat.senderName || 'Test', // to remove
+          type: 0,
+          name: chat.senderName || '', // to remove
           count: 1,
           created: chat.created
         });
         return notis;
       }
       notis = notis.map(_ => {
-        if (_.patientId === chat.sender && _.type === notiType) {
+        if (_.patientId === chat.sender) {
           _.count = _.count + 1;
         }
         return _;
@@ -59,33 +58,30 @@ export class ChatService {
       return notis;
     }, []);
     // save to store
-    this.appStore.updateNotifications(notifications);
-
-    return notifications;
+    this.appStore.updateChatNotifications(chatNotifications);
+    return chatNotifications;
   }
 
   // receive notification from socket.io
   addChatToNotificationList(chat: Chat) {
     // get from store
-    let notifications = this.appStore.state.notifications;
-    const notiType = chat.type % 10; // convert chat type to noti type
-
+    let notifications = this.appStore.state.chatNotifications;
     if (!notifications?.length) {
       notifications = [{
         patientId: chat.sender,
-        type: notiType,
-        name: chat.senderName || 'Test', // to remove
+        type: 0,
+        name: chat.senderName || '', // to remove
         count: 1,
         created: chat.created
       }];
     } else {
-      const index = notifications.findIndex(_ => _.patientId === chat.sender && _.type === notiType);
+      const index = notifications.findIndex(_ => _.patientId === chat.sender);
       // if new
       if (index === -1) {
         notifications.push({
           patientId: chat.sender,
-          type: notiType,
-          name: chat.senderName || 'Test', // to remove
+          type: 0,
+          name: chat.senderName || '', // to remove
           count: 1,
           created: chat.created
         });
@@ -96,19 +92,18 @@ export class ChatService {
     }
 
     // save back
-    this.appStore.updateNotifications(notifications);
+    this.appStore.updateChatNotifications(notifications);
   }
 
   // after chatroom loaded (once a time)
   removeChatsFromNotificationList(patientId: string, type: number) {
     // get from store
-    let notifications = this.appStore.state.notifications;
+    let notifications = this.appStore.state.chatNotifications;
     if (!notifications?.length) return;
-    const notiType = type % 10; // convert chat type to noti type
-    notifications = notifications.filter(_ => _.patientId !== patientId || _.type !== notiType);
+    notifications = notifications.filter(_ => _.patientId !== patientId);
 
     // save back
-    this.appStore.updateNotifications(notifications);
+    this.appStore.updateChatNotifications(notifications);
   }
 
 }

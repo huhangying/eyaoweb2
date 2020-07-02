@@ -11,7 +11,8 @@ export class AppState {
         public readonly cms?: boolean,
         public readonly loading?: boolean,
         public readonly breakpoint?: NbMediaBreakpoint,
-        public readonly notifications?: Notification[],
+        public readonly chatNotifications?: Notification[],
+        public readonly feedbackNotifications?: Notification[],
         public readonly pending?: Pending,
     ) { }
 }

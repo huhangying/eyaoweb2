@@ -9,6 +9,7 @@ import { ChatService } from '../../../services/chat.service';
 import { Doctor } from '../../../models/crm/doctor.model';
 import { Notification, NotificationType } from '../../../models/io/notification.model';
 import { LayoutService } from '../../utils/layout.service';
+import { UserFeedbackService } from '../../../services/user-feedback.service';
 
 @Component({
   selector: 'ngx-header',
@@ -33,7 +34,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
     { title: '退出', icon: 'power-outline', data: 'logout' },
   ];
 
-  constructor(private sidebarService: NbSidebarService,
+  constructor(
+    private sidebarService: NbSidebarService,
     private menuService: NbMenuService,
     private themeService: NbThemeService,
     private auth: AuthService,
@@ -43,6 +45,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     private router: Router,
     private route: ActivatedRoute,
     private chat: ChatService,
+    private feedback: UserFeedbackService,
   ) {
     this.isCms = this.route.snapshot.data?.app === 'cms';
     if (this.isCms !== this.appStore.cms) {
@@ -93,23 +96,35 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
     // moniter notifications
     this.appStore.state$.pipe(
-      pluck('notifications'),
+      pluck('chatNotifications'),
       distinctUntilChanged(),
       tap(notis => {
         // init
         this.chatUnread = 0;
         this.chatNotifications = [];
+        if (!notis?.length) {
+          return;
+        }
+        this.chatNotifications = notis;
+        this.chatUnread = this.chatNotifications.reduce((total, noti) => {
+          total += noti.count;
+          return total;
+        }, 0);
+      }),
+      takeUntil(this.destroy$),
+    ).subscribe();
+
+    this.appStore.state$.pipe(
+      pluck('feedbackNotifications'),
+      distinctUntilChanged(),
+      tap(notis => {
+        // init
         this.feedbackUnread = 0;
         this.feedbackNotifications = [];
         if (!notis?.length) {
           return;
         }
-        this.chatNotifications = notis.filter(_ => _.type === NotificationType.chat);
-        this.chatUnread = this.chatNotifications.reduce((total, noti) => {
-          total += noti.count;
-          return total;
-        }, 0);
-        this.feedbackNotifications = notis.filter(_ => _.type !== NotificationType.chat);
+        this.feedbackNotifications = notis;
         this.feedbackUnread = this.feedbackNotifications.reduce((total, noti) => {
           total += noti.count;
           return total;
@@ -147,23 +162,25 @@ export class HeaderComponent implements OnInit, OnDestroy {
       }),
       takeUntil(this.destroy$)
     ).subscribe();
+    this.feedback.getUnreadListByDocter(this.doctor._id).pipe(
+      tap(results => {
+        this.feedback.convertNotificationList(results);
+      }),
+      takeUntil(this.destroy$)
+    ).subscribe();
   }
 
   viewChat(noti: Notification) {
-    if (noti.type === NotificationType.chat) {
-      this.router.navigate(['/main/chat'], { queryParams: { pid: noti.patientId } });
-    } else {
-      //todo:
-    }
+    this.router.navigate(['/main/chat'], {
+      queryParams: {
+        pid: noti.patientId,
+        type: noti.type
+      }
+    });
   }
 
   nav(target: string) {
     this.router.navigate([target]);
-  }
-
-  statusChanged(event) {
-    console.log(event);
-
   }
 
 }

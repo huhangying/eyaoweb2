@@ -145,7 +145,7 @@
                       <div class="msg-data text-break">
                         {{doctor.name + doctor.title}}回复：
                         <div class="text-muted small">发送于
-                          {{ (feedback.createdAt || feedback.startDate) | localDate: 'full'}}
+                          {{ feedback.createdAt | localDate: 'full'}}
                         </div>
                         <hr class="my-2">
                         <div class="mb-1 text-break" [innerHTML]="translateEmoji(feedback.name)">

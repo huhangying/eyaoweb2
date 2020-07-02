@@ -37,10 +37,17 @@ export class AppStoreService extends Store<AppState> {
     store2.set('hid', hid);
   }
 
-  updateNotifications(notifications: Notification[]) {
+  updateChatNotifications(chatNotifications: Notification[]) {
     this.setState({
       ...this.state,
-      notifications,
+      chatNotifications,
+    });
+  }
+
+  updateFeedbackNotifications(feedbackNotifications: Notification[]) {
+    this.setState({
+      ...this.state,
+      feedbackNotifications,
     });
   }
 

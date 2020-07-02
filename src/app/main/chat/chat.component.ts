@@ -75,8 +75,22 @@ export class ChatComponent implements OnInit, OnDestroy {
       { _id: '', name: '未分组' },
       ...this.doctorGroups
     ];
-    this.cd.markForCheck();
-    this.selectPatientFromQuery(); //
+    this.route.queryParams.pipe(
+      tap(queryParams => {
+        this.type = +queryParams?.type || NotificationType.chat;
+        const pid = queryParams?.pid;
+        if (pid) {// && !this.selectedPatient) {
+          // search from doctor-group/relationships
+          this.doctorGroups.map(dg => {
+            this.getGroupMembers(dg._id)?.map(r => {
+              if (r.user?._id === pid) {
+                this.selectPatient(r.user);
+              }
+            });
+          });
+        }
+      })
+    ).subscribe();
   }
 
   getGroupMembers(doctorGroup: string) {
@@ -86,26 +100,12 @@ export class ChatComponent implements OnInit, OnDestroy {
     return this.relationships?.filter(_ => _.group === doctorGroup);
   }
 
-  selectPatientFromQuery() {
-    this.type = +this.route.snapshot.queryParams?.type || NotificationType.chat;
-    const pid = this.route.snapshot.queryParams?.pid;
-    if (pid && !this.selectedPatient) {
-      // search from doctor-group/relationships
-      this.doctorGroups.map(dg => {
-        this.getGroupMembers(dg._id)?.map(r => {
-          if (r.user?._id === pid) {
-            this.selectPatient(r.user);
-          }
-        });
-      });
-    }
-  }
-
   //------------------------------------------------------------
   // Chat
   //------------------------------------------------------------
 
   ngOnInit(): void {
+    // socket.io
     this.room = this.doctor._id;
     this.socketio.joinRoom(this.room);
 
@@ -119,8 +119,13 @@ export class ChatComponent implements OnInit, OnDestroy {
       this.scrollBottom();
     });
 
-    this.setChatBodyHeight();
+    this.socketio.onFeedback((msg) => {
+      this.feedbacks.push(msg);
+      this.scrollBottom();
+    });
 
+
+    this.setChatBodyHeight();
     const { md } = this.breakpointService.getBreakpointsMap();
     this.appStore.state$.pipe(
       pluck('breakpoint'),
@@ -186,7 +191,7 @@ export class ChatComponent implements OnInit, OnDestroy {
           this.scrollBottom();
 
           //
-          this.feedbackService.removeFromNotificationList(this.selectedPatient._id, 0);
+          this.feedbackService.removeFromNotificationList(this.selectedPatient._id, this.type);
         } else {
           this.feedbacks = [];
         }
@@ -243,10 +248,12 @@ export class ChatComponent implements OnInit, OnDestroy {
       feedback = {
         user: this.selectedPatient._id,
         doctor: this.doctor._id,
+        senderName: this.selectedPatient.name,
         type: this.type,
         name: '请参阅图片',
         upload: imgPath,
         status: 2,
+        createdAt: new Date()
       };
     } else {
       // Text
@@ -254,9 +261,11 @@ export class ChatComponent implements OnInit, OnDestroy {
       feedback = {
         user: this.selectedPatient._id,
         doctor: this.doctor._id,
+        senderName: this.selectedPatient.name,
         type: this.type,
         name: this.myInput,
         status: 2,
+        createdAt: new Date()
       };
     }
     this.feedbacks.push(feedback);

@@ -26,16 +26,90 @@ export class UserFeedbackService {
     return this.api.post<UserFeedback>('feedback', feedback);
   }
 
+  // unread list
+  getUnreadListByDocter(doctorId: string) {
+    return this.api.get<UserFeedback[]>(`feedbacks/unread/doctor/${doctorId}`);
+  }
+  //---------------------------------------------------
+  // Notifications
+  //---------------------------------------------------
+
+  // after app started
+  convertNotificationList(feedbacks: UserFeedback[]): Notification[] {
+    if (!feedbacks?.length) return [];
+    const keys: string[] = [];
+    const feedbackNotifications = feedbacks.reduce((notis, feedback) => {
+      const key = feedback.user + feedback.type;
+      if (keys.indexOf(key) === -1) {
+        keys.push(key);
+        notis.push({
+          patientId: feedback.user,
+          type: feedback.type,
+          name: feedback.senderName || '', // to remove
+          count: 1,
+          created: feedback.createdAt
+        });
+        return notis;
+      }
+      notis = notis.map(_ => {
+        if (_.patientId === feedback.user && _.type === feedback.type) {
+          _.count = _.count + 1;
+        }
+        return _;
+      });
+      return notis;
+    }, []);
+    // save to store
+    this.appStore.updateFeedbackNotifications(feedbackNotifications);
+
+    return feedbackNotifications;
+  }
+
+  // receive notification from socket.io
+  addChatToNotificationList(feedback: UserFeedback) {
+    // get from store
+    let notifications = this.appStore.state.feedbackNotifications;
+    const notiType = feedback.type;
+
+    if (!notifications?.length) {
+      notifications = [{
+        patientId: feedback.user,
+        type: notiType,
+        name: feedback.senderName || '', // to remove
+        count: 1,
+        created: feedback.createdAt
+      }];
+    } else {
+      const index = notifications.findIndex(_ => _.patientId === feedback.user && _.type === notiType);
+      // if new
+      if (index === -1) {
+        notifications.push({
+          patientId: feedback.user,
+          type: notiType,
+          name: feedback.senderName || '', // to remove
+          count: 1,
+          created: feedback.createdAt
+        });
+      } else { // if existed
+        notifications[index].count += 1;
+        notifications[index].created = feedback.createdAt;
+      }
+    }
+
+    // save back
+    this.appStore.updateFeedbackNotifications(notifications);
+  }
+
   // after chatroom loaded (once a time)
   removeFromNotificationList(patientId: string, type: number) {
     // get from store
-    let notifications = this.appStore.state.notifications;
+    let notifications = this.appStore.state.feedbackNotifications;
     if (!notifications?.length) return;
-    const notiType = type % 10; // convert chat type to noti type ???
+    const notiType = type;
     notifications = notifications.filter(_ => _.patientId !== patientId || _.type !== notiType);
 
     // save back
-    this.appStore.updateNotifications(notifications);
+    this.appStore.updateFeedbackNotifications(notifications);
   }
 
 }
