@@ -1,0 +1,11 @@
+<button type="button" class="close px-2 py-1" mat-dialog-close aria-label="Close">
+  <span aria-hidden="true">&times;</span>
+</button>
+<div class="pl-2 pt-2">
+  {{data.title || ''}}
+</div>
+<div class="">
+  <img [src]="data.imgPath | imgPath" onerror="this.src='assets/images/none.png';this.onerror='';"
+  alt="" class="img-fluid img-thumbnail">
+</div>
+

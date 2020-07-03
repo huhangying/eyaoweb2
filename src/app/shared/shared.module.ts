@@ -40,6 +40,8 @@ import { MatMenuModule } from '@angular/material/menu';
 import { FooterComponent, HeaderComponent } from '../@theme/components';
 import { OneColumnLayoutComponent } from '../@theme/layouts/one-column/one-column.layout';
 import { FlatLayoutComponent } from '../@theme/layouts/flat/flat.layout';
+import { ImageComponent } from './modal/image/image.component';
+import { ImgClickViewDirective } from './directive/img-click-view.directive';
 
 @NgModule({
   imports: [
@@ -57,7 +59,6 @@ import { FlatLayoutComponent } from '../@theme/layouts/flat/flat.layout';
     MatTabsModule,
     MatBadgeModule,
     MatIconModule,
-    MatDialogModule,
     MatCardModule,
     MatRadioModule,
     DragDropModule,
@@ -115,6 +116,7 @@ import { FlatLayoutComponent } from '../@theme/layouts/flat/flat.layout';
     ImageUploaderComponent,
     ImageCropComponent,
     // AccessControlDirective,
+    ImgClickViewDirective,
     LocalDatePipe,
     GenderPipe,
     ImgPathPipe,
@@ -125,6 +127,7 @@ import { FlatLayoutComponent } from '../@theme/layouts/flat/flat.layout';
     OneColumnLayoutComponent,
     FlatLayoutComponent,
     ConfirmComponent,
+    ImageComponent,
     DoctorProfileComponent,
     SelectDoctorComponent,
     SelectDepartmentComponent,
@@ -137,6 +140,7 @@ import { FlatLayoutComponent } from '../@theme/layouts/flat/flat.layout';
     ImageCropComponent,
     SelectPatientComponent,
     SelectDoctorPatientsComponent,
+    ImgClickViewDirective,
   ],
   providers: [
     MatDatepickerModule,

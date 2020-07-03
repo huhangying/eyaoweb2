@@ -75,7 +75,7 @@
                     <div class="msg-data" [ngSwitch]="chat.type">
                       <div *ngSwitchCase="dataType.picture">
                         <img [src]="chat.data | imgPath" onerror="this.src='assets/images/no-image.png';this.onerror='';"
-                          class="img-fluid img-thumbnail">
+                          class="img-fluid img-thumbnail" ngxImgClickView>
                       </div>
                       <div *ngSwitchDefault class="text-break" [innerHTML]="translateEmoji(chat.data)">
                       </div>
@@ -92,7 +92,7 @@
                     <div class="msg-data" [ngSwitch]="chat.type">
                       <div *ngSwitchCase="dataType.picture">
                         <img [src]="chat.data | imgPath" onerror="this.src='assets/images/no-image.png';this.onerror='';"
-                          class="img-fluid img-thumbnail">
+                          class="img-fluid img-thumbnail" ngxImgClickView>
                       </div>
                       <div *ngSwitchDefault class="text-break" [innerHTML]="translateEmoji(chat.data)">
                       </div>
@@ -127,7 +127,7 @@
                           结束日期: {{ feedback.endDate ? (feedback.endDate | localDate): '未设置' }}
                         </div>
                         <div *ngIf="feedback.upload">
-                          <img [src]="feedback.upload | imgPath"
+                          <img [src]="feedback.upload | imgPath" ngxImgClickView
                             onerror="this.src='assets/images/no-image.png';this.onerror='';" class="img-fluid img-thumbnail">
                         </div>
                       </div>
@@ -151,7 +151,7 @@
                         <div class="mb-1 text-break" [innerHTML]="translateEmoji(feedback.name)">
                         </div>
                         <div *ngIf="feedback.upload">
-                          <img [src]="feedback.upload | imgPath"
+                          <img [src]="feedback.upload | imgPath" ngxImgClickView
                             onerror="this.src='assets/images/no-image.png';this.onerror='';" class="img-fluid img-thumbnail">
                         </div>
                       </div>

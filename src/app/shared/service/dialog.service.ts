@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmComponent } from '../modal/confirm/confirm.component';
 import { Observable } from 'rxjs';
+import { ImageComponent } from '../modal/image/image.component';
 
 @Injectable()
 export class DialogService {
@@ -26,6 +27,17 @@ export class DialogService {
       data: {
         title: title || '请确认',
         content: message
+      }
+    }).afterClosed();
+  }
+
+  viewImage(imgPath: string, title?: string) {
+    return this.dialog.open(ImageComponent, {
+      // minWidth: '460px',
+      maxWidth: '100vw',
+      data: {
+        title: title,
+        imgPath: imgPath
       }
     }).afterClosed();
   }
