@@ -14,7 +14,7 @@ import *  as qqface from 'wx-qqface';
 import { UploadService } from '../../shared/service/upload.service';
 import { AppStoreService } from '../../shared/store/app-store.service';
 import { NbMediaBreakpoint, NbMediaBreakpointsService } from '@nebular/theme';
-import { NotificationType } from '../../models/io/notification.model';
+import { NotificationType, Notification } from '../../models/io/notification.model';
 import { UserFeedbackService } from '../../services/user-feedback.service';
 import { UserFeedback } from '../../models/io/user-feedback.model';
 
@@ -114,14 +114,18 @@ export class ChatComponent implements OnInit, OnDestroy {
       this.scrollBottom();
     });
 
-    this.socketio.onChat((msg) => {
-      this.chats.push(msg);
-      this.scrollBottom();
+    this.socketio.onChat((msg: Chat) => {
+      if (msg.sender === this.selectedPatient._id) {
+        this.chats.push(msg);
+        this.scrollBottom();
+      }
     });
 
-    this.socketio.onFeedback((msg) => {
-      this.feedbacks.push(msg);
-      this.scrollBottom();
+    this.socketio.onFeedback((msg: UserFeedback) => {
+      if (msg.user === this.selectedPatient._id) {
+        this.feedbacks.push(msg);
+        this.scrollBottom();
+      }
     });
 
 
