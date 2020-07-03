@@ -23,10 +23,6 @@ export class SocketioService {
     }
   }
 
-  onRoom(room, next) {
-    this.socket.on(room, next);
-  }
-
   joinRoom(room: string) {
     this.socket.emit('joinRoom', room);
   }
