@@ -1,20 +1,22 @@
 import { AppStoreService } from '../../../shared/store/app-store.service';
 import { Router, ActivatedRoute } from '@angular/router';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { NbMediaBreakpointsService, NbMenuService, NbSidebarService, NbThemeService, NbMediaBreakpoint } from '@nebular/theme';
 import { map, takeUntil, filter, tap, pluck, distinctUntilChanged } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { AuthService } from '../../../shared/service/auth.service';
 import { ChatService } from '../../../services/chat.service';
 import { Doctor } from '../../../models/crm/doctor.model';
-import { Notification, NotificationType } from '../../../models/io/notification.model';
+import { Notification } from '../../../models/io/notification.model';
 import { LayoutService } from '../../utils/layout.service';
 import { UserFeedbackService } from '../../../services/user-feedback.service';
+import { SocketioService } from '../../../shared/service/socketio.service';
 
 @Component({
   selector: 'ngx-header',
   styleUrls: ['./header.component.scss'],
   templateUrl: './header.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HeaderComponent implements OnInit, OnDestroy {
   isCms: boolean;
@@ -23,6 +25,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
   userPictureOnly = false;
   doctor: Doctor;
 
+  room: string;
+  pid: string;
+  notiType: number;
   chatNotifications: Notification[];
   chatUnread = 0;
   feedbackNotifications: Notification[];
@@ -46,11 +51,19 @@ export class HeaderComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private chat: ChatService,
     private feedback: UserFeedbackService,
+    private socketio: SocketioService,
+    private cd: ChangeDetectorRef,
   ) {
     this.isCms = this.route.snapshot.data?.app === 'cms';
     if (this.isCms !== this.appStore.cms) {
       this.appStore.updateCms(this.isCms);
     }
+    this.route.queryParams.subscribe(queryParams => {
+      this.pid = queryParams?.pid;
+      this.notiType = queryParams?.type;
+    });
+
+    this.socketio.setupSocketConnection();
   }
 
   ngOnInit() {
@@ -68,6 +81,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
           this.isXl = currentBreakpoint.width >= xl;
           this.userPictureOnly = !this.isXl;
           this.appStore.updateBreakpoint(currentBreakpoint);
+          this.cd.markForCheck();
         }
       );
 
@@ -76,7 +90,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
         map(({ name }) => name),
         takeUntil(this.destroy$),
       )
-      .subscribe(themeName => this.themeService.currentTheme = themeName);
+      .subscribe(themeName => {
+        this.themeService.currentTheme = themeName;
+        this.cd.markForCheck();
+      });
 
     this.menuService.onItemClick()
       .pipe(
@@ -94,6 +111,22 @@ export class HeaderComponent implements OnInit, OnDestroy {
         }
       });
 
+    // socket.io
+    this.room = this.doctor._id;
+    this.socketio.joinRoom(this.room);
+
+    this.socketio.onNotification((noti: Notification) => {
+      if (noti.patientId === this.pid && noti.type === +this.notiType) return; // skip
+      this.socketio.addNotification(noti);
+      // if (noti.type === 0) {
+      //   this.chatNotifications.push(noti);
+      //   this.appStore.updateChatNotifications(this.chatNotifications);
+      // } else if (noti.type === 1 || noti.type === 2) {
+      //   this.feedbackNotifications.push(noti);
+      //   this.appStore.updateFeedbackNotifications(this.feedbackNotifications);
+      // }
+    });
+
     // moniter notifications
     this.appStore.state$.pipe(
       pluck('chatNotifications'),
@@ -110,6 +143,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
           total += noti.count;
           return total;
         }, 0);
+        this.cd.markForCheck();
       }),
       takeUntil(this.destroy$),
     ).subscribe();
@@ -129,6 +163,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
           total += noti.count;
           return total;
         }, 0);
+        this.cd.markForCheck();
       }),
       takeUntil(this.destroy$),
     ).subscribe();
@@ -142,7 +177,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   toggleSidebar(): boolean {
     this.sidebarService.toggle(true, 'menu-sidebar');
     this.layoutService.changeLayoutSize();
-
+    this.cd.markForCheck();
     return false;
   }
 

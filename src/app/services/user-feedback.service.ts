@@ -65,8 +65,9 @@ export class UserFeedbackService {
     return feedbackNotifications;
   }
 
+  // no use!
   // receive notification from socket.io
-  addChatToNotificationList(feedback: UserFeedback) {
+  addFeedbackToNotificationList(feedback: UserFeedback) {
     // get from store
     let notifications = this.appStore.state.feedbackNotifications;
     const notiType = feedback.type;

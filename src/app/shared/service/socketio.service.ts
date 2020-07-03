@@ -4,14 +4,17 @@ import { environment } from '../../../environments/environment';
 import { ChatType, Chat } from '../../models/io/chat.model';
 import * as moment from 'moment';
 import { UserFeedback } from '../../models/io/user-feedback.model';
-
+import { AppStoreService } from '../store/app-store.service';
+import { Notification } from '../../models/io/notification.model';
 @Injectable({
   providedIn: 'root'
 })
 export class SocketioService {
   socket: SocketIOClient.Socket;
 
-  constructor() { }
+  constructor(
+    private appStore: AppStoreService,
+  ) { }
 
   setupSocketConnection() {
     if (!this.socket) {
@@ -53,4 +56,30 @@ export class SocketioService {
     this.socket.emit('feedback', room, feedback);
   }
 
+  // Notifications
+  onNotification(next) {
+    this.socket.on('notification', next);
+  }
+
+  addNotification(noti: Notification) {
+    let notifications = noti.type === 0 ?
+      this.appStore.state.chatNotifications :
+      this.appStore.state.feedbackNotifications;
+    if (!notifications?.length) {
+      notifications = [noti];
+    } else {
+      const index = notifications.findIndex(_ => _.patientId === noti.patientId);
+      // if new
+      if (index === -1) {
+        notifications.push(noti);
+      } else { // if existed
+        notifications[index].count += 1;
+        notifications[index].created = noti.created;
+      }
+    }
+    // save to store
+    noti.type === 0 ?
+      this.appStore.updateChatNotifications(notifications) :
+      this.appStore.updateFeedbackNotifications(notifications);
+  }
 }

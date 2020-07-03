@@ -62,6 +62,7 @@ export class ChatService {
     return chatNotifications;
   }
 
+  // no use!
   // receive notification from socket.io
   addChatToNotificationList(chat: Chat) {
     // get from store
