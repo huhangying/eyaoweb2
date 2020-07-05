@@ -11,6 +11,7 @@ export function getMenuItems(role: number, queryParams: Params): NbMenuItem[] {
     {
       title: '医院科室管理',
       icon: 'settings-2',
+      hidden: role < 2,
       children: [
         {
           title: '医院设置',
