@@ -9,13 +9,13 @@
 
 <div class="header-container">
 
-  <ng-container *ngIf="isCms">
+  <div *ngIf="isCms">
     <button mat-icon-button color="primary" class="mr-2" title="返回主頁" (click)="nav('/main')">
       <mat-icon>home</mat-icon>
     </button>
-  </ng-container>
+  </div>
   <ng-container *ngIf="!isCms">
-    <button mat-icon-button color="primary" class="ml-1" title="管理后台" (click)="nav('/cms')">
+    <button mat-icon-button color="primary" *ngxAcl="1" class="ml-1" title="管理后台" (click)="nav('/cms')">
       <mat-icon>admin_panel_settings</mat-icon>
     </button>
 

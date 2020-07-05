@@ -42,6 +42,7 @@ import { OneColumnLayoutComponent } from '../@theme/layouts/one-column/one-colum
 import { FlatLayoutComponent } from '../@theme/layouts/flat/flat.layout';
 import { ImageComponent } from './modal/image/image.component';
 import { ImgClickViewDirective } from './directive/img-click-view.directive';
+import { DisableByRoleDirective } from './directive/disable-by-role.directive';
 
 @NgModule({
   imports: [
@@ -117,6 +118,7 @@ import { ImgClickViewDirective } from './directive/img-click-view.directive';
     ImageCropComponent,
     // AccessControlDirective,
     ImgClickViewDirective,
+    DisableByRoleDirective,
     LocalDatePipe,
     GenderPipe,
     ImgPathPipe,
@@ -141,6 +143,7 @@ import { ImgClickViewDirective } from './directive/img-click-view.directive';
     SelectPatientComponent,
     SelectDoctorPatientsComponent,
     ImgClickViewDirective,
+    DisableByRoleDirective,
   ],
   providers: [
     MatDatepickerModule,
