@@ -51,12 +51,6 @@ export class DoctorProfileComponent implements OnInit, OnDestroy {
     private doctorService: DoctorService,
     private uploadService: UploadService,
   ) {
-  }
-
-  public get password() { return this.form.get('password'); }
-  public get passwordConfirm() { return this.form.get('passwordConfirm'); }
-
-  ngOnInit() {
     this.form = this.fb.group({
       _id: '',
       user_id: [{ value: '', disabled: this.mode !== 1 }, Validators.required], //只有mode=1， add mode 时允许编辑
@@ -76,6 +70,13 @@ export class DoctorProfileComponent implements OnInit, OnDestroy {
     }, {
       validators: [mustMatch('password', 'passwordConfirm')]
     });
+  }
+
+  public get password() { return this.form.get('password'); }
+  public get passwordConfirm() { return this.form.get('passwordConfirm'); }
+
+  ngOnInit() {
+
 
     this.form.valueChanges.pipe(
       startWith(this.form.value),
