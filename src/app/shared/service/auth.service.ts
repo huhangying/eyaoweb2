@@ -16,7 +16,7 @@ export class AuthService {
 
   login(userId: string, password: string) {
     return this.api.patch<Doctor>('login/doctor', {
-      user_id: userId,
+      user_id: userId.toLowerCase(),
       password: password,
     });
   }
