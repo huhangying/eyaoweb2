@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, ChangeDetectionStrategy } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MessageService } from '../../shared/service/message.service';
 import { SelectDoctorPatientsComponent } from '../../shared/components/select-doctor-patients/select-doctor-patients.component';
@@ -22,7 +22,8 @@ import { environment } from '../../../environments/environment';
 @Component({
   selector: 'ngx-article-push',
   templateUrl: './article-push.component.html',
-  styleUrls: ['./article-push.component.scss']
+  styleUrls: ['./article-push.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ArticlePushComponent implements OnInit {
   doctor: Doctor;
@@ -42,9 +43,10 @@ export class ArticlePushComponent implements OnInit {
     private wxService: WeixinService,
     private imgPath: ImgPathPipe,
     private articleService: ArticleService,
+    private cd: ChangeDetectorRef,
   ) {
     this.doctor = this.auth.doctor;
-    this.config = configService.editorConfig;
+    this.config = this.configService.editorConfig;
     this.articlePage = {
       doctor: this.doctor._id
     };
@@ -62,6 +64,7 @@ export class ArticlePushComponent implements OnInit {
       tap(results => {
         if (results?.length) {
           this.sendees = results;
+          this.cd.markForCheck();
         }
       }),
     ).subscribe();
@@ -86,6 +89,7 @@ export class ArticlePushComponent implements OnInit {
             content: result.content,
           };
           this.selectedPage = null;
+          this.cd.markForCheck();
         }
       }),
     ).subscribe();
@@ -111,6 +115,7 @@ export class ArticlePushComponent implements OnInit {
             content: result.content,
           };
           this.selectedTemplate = null;
+          this.cd.markForCheck();
         }
       }),
     ).subscribe();
