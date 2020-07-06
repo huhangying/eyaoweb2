@@ -51,16 +51,20 @@ export class ReservationService {
   }
 
   // Booking
-  getAllBookingsByDoctorId(did: string) {
-    return this.api.get<Booking[]>('bookings/doctor/' + did);
+  getAllBookingsByDoctorId(doctorId: string) {
+    return this.api.get<Booking[]>('bookings/doctor/' + doctorId);
   }
 
   updateBookingById(data: Booking) {
     return this.api.patch<Booking>('booking/' + data._id, data);
   }
 
-  getTodayBookingsByDoctorId(did: string) {
-    return this.api.get<Booking[]>('bookings/today/doctor/' + did);
+  getTodayBookingsByDoctorId(doctorId: string) {
+    return this.api.get<Booking[]>('bookings/today/doctor/' + doctorId);
+  }
+
+  getStatByDoctorId(doctorId: string) {
+    return this.api.get<{date: Date; status: number}[]>('bookings/counts/doctor/' + doctorId);
   }
 
 }

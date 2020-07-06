@@ -24,6 +24,16 @@ export class CoreService {
     return true;
   }
 
+  isThisMonth(date: Date) {
+    if (!date) return false;
+    return moment(date).format('YYYY M') === moment().format('YYYY M');
+  }
+
+  isToday(date: Date) {
+    if (!date) return false;
+    return moment(date).diff(moment(), 'day') === 0;
+  }
+
   getMinutes(date: Date): number {
     return moment(date).minute();
   }

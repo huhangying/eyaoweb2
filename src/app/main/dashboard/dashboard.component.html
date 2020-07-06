@@ -6,8 +6,19 @@
         how_to_reg
       </span>
       <div class="float-right text-right br-3">
-        <div class="display-4">120</div>
+        <div class="display-4">{{patientTotal}}</div>
         <div class="py-2">患者总人数</div>
+      </div>
+    </mat-card>
+  </div>
+  <div class="col-xxxl-3 col-md-6">
+    <mat-card class="bg-info text-white mb-3">
+      <span class="material-icons display-1">
+        attach_file
+      </span>
+      <div class="float-right text-right br-3">
+        <div class="display-4">{{bookingTodayTotal}}</div>
+        <div class="py-2">今日预约门诊</div>
       </div>
     </mat-card>
   </div>
@@ -15,10 +26,10 @@
     <mat-card class="bg-success text-white mb-3">
       <span class="material-icons display-1">
         group
-        </span>
+      </span>
       <div class="float-right text-right br-3">
-        <div class="display-4">120</div>
-        <div class="py-2">患者组总数</div>
+        <div class="display-4">{{bookingTotal}}</div>
+        <div class="py-2">病患预约门诊总数</div>
       </div>
     </mat-card>
   </div>
@@ -28,19 +39,8 @@
         insert_invitation
       </span>
       <div class="float-right text-right br-3">
-        <div class="display-4">120</div>
-        <div class="py-2">预约门诊总数</div>
-      </div>
-    </mat-card>
-  </div>
-  <div class="col-xxxl-3 col-md-6">
-    <mat-card class="bg-info text-white mb-3">
-      <span class="material-icons display-1">
-        attach_file
-        </span>
-      <div class="float-right text-right br-3">
-        <div class="display-4">120</div>
-        <div class="py-2">今日预约门诊数</div>
+        <div class="display-4">{{bookingFinishedTotal}}</div>
+        <div class="py-2">预约门诊完成总数</div>
       </div>
     </mat-card>
   </div>
@@ -48,22 +48,24 @@
     <mat-card class="bg-purple text-white mb-3">
       <span class="material-icons display-1">
         check_box
-        </span>
+      </span>
       <div class="float-right text-right br-3">
-        <div class="display-4">120</div>
-        <div class="py-2">当月门诊完成数</div>
+        <div class="display-4">{{diagnoseTotal}}</div>
+        <div class="py-2">门诊总数</div>
       </div>
     </mat-card>
   </div>
+
   <div class="col-xxxl-3 col-md-6">
     <mat-card class="bg-light-blue text-white mb-3">
       <span class="material-icons display-1">
         sms
       </span>
       <div class="float-right text-right br-3">
-        <div class="display-4">120</div>
-        <div class="py-2">今日预约门诊数</div>
+        <div class="display-4">{{diagnoseFinishedTotal}}</div>
+        <div class="py-2">门诊完成数</div>
       </div>
     </mat-card>
   </div>
+
 </div>

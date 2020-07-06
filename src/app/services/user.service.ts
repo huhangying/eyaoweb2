@@ -49,6 +49,10 @@ export class UserService {
     return this.api.get<Relationship2[]>(`relationships/doctor/${doctorId}/select`);
   }
 
+  getUserCountByDoctorId(doctorId: string) {
+    return this.api.get<{total: number}>(`relationships/count/doctor/${doctorId}`);
+  }
+
   // Patient search
   searchByCriteria(search: any) {
     return this.api.patch<User[]>('users/search', search);

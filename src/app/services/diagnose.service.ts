@@ -46,4 +46,8 @@ export class DiagnoseService {
     return this.api.delete<Diagnose>('diagnose/' + id);
   }
 
+  getStatByDoctorId(doctorId: string) {
+    return this.api.get<{createdAt: Date; status: number}[]>('diagnoses/counts/' + doctorId);
+  }
+
 }
