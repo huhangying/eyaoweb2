@@ -31,7 +31,7 @@ export class CoreService {
 
   isToday(date: Date) {
     if (!date) return false;
-    return moment(date).diff(moment(), 'day') === 0;
+    return moment(date).diff(moment().startOf('day'), 'day') === 0;
   }
 
   getMinutes(date: Date): number {
