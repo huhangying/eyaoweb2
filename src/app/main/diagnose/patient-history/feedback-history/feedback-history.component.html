@@ -42,13 +42,16 @@
     <ng-container matColumnDef="status">
       <th mat-header-cell *matHeaderCellDef> 状态</th>
       <td mat-cell *matCellDef="let element">
-        {{ element.status }} </td>
+        <small>
+          {{ element.status === 2 ? '药师回复': '病患发送' }}
+        </small>
+      </td>
     </ng-container>
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   </table>
- </ng-container>
+</ng-container>
 
 <ng-container *ngIf="!dataSource?.data?.length">
   <div class="alert alert-warning" role="alert">
