@@ -75,6 +75,7 @@ export class ChatComponent implements OnInit, OnDestroy {
       { _id: '', name: '未分组' },
       ...this.doctorGroups
     ];
+    this.cd.markForCheck();
     this.route.queryParams.pipe(
       tap(queryParams => {
         this.type = +queryParams?.type || NotificationType.chat;
