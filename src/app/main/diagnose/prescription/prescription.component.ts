@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { Medicine } from '../../../models/hospital/medicine.model';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { MatDialog } from '@angular/material/dialog';
@@ -9,7 +9,8 @@ import { MedicineReferences } from '../../../models/hospital/medicine-references
 @Component({
   selector: 'ngx-prescription',
   templateUrl: './prescription.component.html',
-  styleUrls: ['./prescription.component.scss']
+  styleUrls: ['./prescription.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PrescriptionComponent implements OnInit {
   @Input() prescription: Medicine[];
@@ -19,6 +20,7 @@ export class PrescriptionComponent implements OnInit {
   constructor(
     public dialog: MatDialog,
     private dialogService: DialogService,
+    private cd: ChangeDetectorRef,
   ) {
   }
 
@@ -27,6 +29,7 @@ export class PrescriptionComponent implements OnInit {
 
   drop(event: CdkDragDrop<string[]>) {
     moveItemInArray(this.prescription, event.previousIndex, event.currentIndex);
+    this.cd.markForCheck();
   }
 
   add() {
@@ -51,7 +54,7 @@ export class PrescriptionComponent implements OnInit {
             // create
             this.prescription.push(result);
           }
-
+          this.cd.markForCheck();
         }
       });
   }
@@ -61,6 +64,7 @@ export class PrescriptionComponent implements OnInit {
       .subscribe(result => {
         if (result) {
           this.prescription.splice(index, 1);
+          this.cd.markForCheck();
         }
       });
   }
