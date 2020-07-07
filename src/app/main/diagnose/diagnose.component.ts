@@ -54,7 +54,10 @@ export class DiagnoseComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     if (this.appStore.pending?.diagnose) {
       this.diagnoseService.getDiagnoseById(this.appStore.pending.diagnose).subscribe(result => {
-        this.diagnose = result;
+        if (result) {
+          this.diagnose = result;
+          this.cd.markForCheck();
+        }
       });
     }
     if (this.appStore.pending?.user) {
@@ -162,6 +165,11 @@ export class DiagnoseComponent implements OnInit, OnDestroy {
         status: 1 // 1:
       };
     }
+    this.appStore.updatePending({
+      diagnose: this.diagnose?._id,
+      user: this.selectedPatient,
+      booking: this.selectedBooking
+    });
     this.cd.markForCheck();
 
     if (booking) {
