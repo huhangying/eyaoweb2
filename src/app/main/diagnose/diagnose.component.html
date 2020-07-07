@@ -17,10 +17,10 @@
 
   <nb-card-body>
     <div class="border-bottom pb-2">
-      <button nbButton size="small" hero [status]="selectedBooking ? 'info' : ''" (click)="selectAppointment()">
+      <button nbButton size="small" [status]="selectedBooking ? 'info' : 'basic'" (click)="selectAppointment()">
         <nb-icon icon="checkmark-circle-2-outline" *ngIf="selectedBooking"></nb-icon> 选择预约
       </button>&nbsp;&nbsp;
-      <button nbButton size="small" hero [status]="selectedPatient ? 'info' : ''" (click)="selectPatient()">
+      <button nbButton size="small" [status]="selectedPatient ? 'info' : 'basic'" (click)="selectPatient()">
         <nb-icon icon="checkmark-circle-2-outline" *ngIf="selectedPatient"></nb-icon> 选择病患
       </button>
       <span class="float-right">

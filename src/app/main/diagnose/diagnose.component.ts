@@ -215,6 +215,7 @@ export class DiagnoseComponent implements OnInit, OnDestroy {
     this.diagnose = null;
     this.selectedPatient = null;
     this.selectedBooking = null;
+    this.appStore.updatePending(null);
     this.cd.markForCheck();
   }
 
