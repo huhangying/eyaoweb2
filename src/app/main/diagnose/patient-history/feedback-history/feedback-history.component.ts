@@ -14,7 +14,7 @@ export class FeedbackHistoryComponent implements OnInit {
   @Input() patientId: string;
   @Input() doctorId: string;
 
-  displayedColumns: string[] = ['name', 'how', 'startDate', 'endDate', 'notes', 'status'];
+  displayedColumns: string[];
   dataSource: MatTableDataSource<UserFeedback>;
 
   constructor(
@@ -23,6 +23,9 @@ export class FeedbackHistoryComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.displayedColumns = this.type === 1 ?
+      ['name', 'startDate', 'endDate', 'upload', 'status'] :
+      ['name', 'how', 'startDate', 'endDate', 'upload', 'status'];
     this.feedbackService.getByUserIdDoctorId(this.doctorId, this.patientId, this.type).pipe(
       tap(results => {
         this.dataSource = new MatTableDataSource<UserFeedback>(results || []);
