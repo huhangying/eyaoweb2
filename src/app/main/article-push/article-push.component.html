@@ -6,13 +6,13 @@
 
   <nb-card-body>
     <div class="border-bottom pb-2">
-      <button nbButton size="small" [status]="sendees?.length ? 'info' : ''" (click)="selectSendees()">
+      <button nbButton size="small" [status]="sendees?.length ? 'info' : 'basic'" (click)="selectSendees()">
         选择患者
       </button>&nbsp;&nbsp;
-      <button nbButton size="small" [status]="selectedTemplate ? 'info' : ''" (click)="selectTemplate()">
+      <button nbButton size="small" [status]="selectedTemplate ? 'info' : 'basic'" (click)="selectTemplate()">
         选择模板
       </button>&nbsp;&nbsp;
-      <button nbButton size="small" [status]="selectedPage ? 'info' : ''" (click)="selectFromHistory()">
+      <button nbButton size="small" [status]="selectedPage ? 'info' : 'basic'" (click)="selectFromHistory()">
         选择已发送文章
       </button>
       <span class="float-right">
