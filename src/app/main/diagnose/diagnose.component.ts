@@ -301,4 +301,49 @@ export class DiagnoseComponent implements OnInit, OnDestroy {
     return this.diagnose.surveys.findIndex(_ => _.type === 5) >= 0;
   }
 
+  editPatientDiagnoses() {
+    this.dialogService.editChips(this.selectedPatient.diagnoses, '编辑疾病诊断').pipe(
+      tap(result => {
+        if (result?.save) {
+          this.userService.updateUserById( {
+            _id: this.selectedPatient._id,
+            diagnoses: result.content
+          }).subscribe(_ => {
+            if (_) {
+              this.selectedPatient.diagnoses = _.diagnoses;
+              this.appStore.updatePending({
+                diagnose: this.diagnose._id,
+                user: this.selectedPatient,
+                booking: this.selectedBooking
+              });
+            }
+          });
+        }
+      })
+    ).subscribe();
+  }
+
+  editPatientNotes() {
+    this.dialogService.editChips(this.selectedPatient.notes, '编辑诊断提醒').pipe(
+      tap(result => {
+        if (result?.save) {
+          this.userService.updateUserById( {
+            _id: this.selectedPatient._id,
+            notes: result.content
+          }).subscribe(_ => {
+            if (_) {
+              this.selectedPatient.notes = _.notes;
+              this.appStore.updatePending({
+                diagnose: this.diagnose._id,
+                user: this.selectedPatient,
+                booking: this.selectedBooking
+              });
+            }
+          });
+        }
+
+      })
+    ).subscribe();
+  }
+
 }

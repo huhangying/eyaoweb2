@@ -3,6 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ConfirmComponent } from '../modal/confirm/confirm.component';
 import { Observable } from 'rxjs';
 import { ImageComponent } from '../modal/image/image.component';
+import { EditChipsComponent } from '../modal/edit-chips/edit-chips.component';
 
 @Injectable()
 export class DialogService {
@@ -38,6 +39,16 @@ export class DialogService {
       data: {
         title: title,
         imgPath: imgPath
+      }
+    }).afterClosed();
+  }
+
+  editChips(content?: string, title?: string) {
+    return this.dialog.open(EditChipsComponent, {
+      minWidth: '320px',
+      data:  {
+        title: title || '编辑',
+        content: content || ''
       }
     }).afterClosed();
   }

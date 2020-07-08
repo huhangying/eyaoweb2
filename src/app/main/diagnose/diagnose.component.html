@@ -12,6 +12,16 @@
         <nb-icon icon="person-outline"></nb-icon>
         {{ selectedPatient.name }}
       </button>
+      <button nbButton outline size="small" class="float-right mr-2" status="info" (click)="editPatientNotes()"
+        [matTooltip]="selectedPatient.notes ? '提醒： ' + selectedPatient.notes.replace('|', ', ') : '点击编辑'">
+        <nb-icon icon="bell-outline"></nb-icon>
+        诊断提醒
+      </button>
+      <button nbButton outline size="small" class="float-right mr-2" status="info" (click)="editPatientDiagnoses()"
+        [matTooltip]="selectedPatient.diagnoses ? '诊断： ' + selectedPatient.diagnoses.replace('|', ', ') :  '点击编辑'">
+        <nb-icon icon="headphones-outline"></nb-icon>
+        疾病诊断
+      </button>
     </ng-container>
   </nb-card-header>
 
@@ -27,7 +37,8 @@
         <button nbButton hero size="small" status="primary" (click)="saveDiagnose()" *ngIf="diagnose?._id" class="mr-3">
           <nb-icon icon="save-outline"></nb-icon> 保存
         </button>
-        <button nbButton hero size="small" status="primary" [disabled]="!checkIfFinished()" (click)="closeDiagnose()" *ngIf="diagnose?._id">
+        <button nbButton hero size="small" status="primary" [disabled]="!checkIfFinished()" (click)="closeDiagnose()"
+          *ngIf="diagnose?._id">
           <nb-icon icon="archive-outline"></nb-icon> 结束门诊
         </button>
       </span>
@@ -83,7 +94,8 @@
             门诊结论
           </ng-template>
           <ng-template matTabContent>
-            <ngx-survey-edit [type]="5" [data]="getDataByType(5)" (dataChange)="surveyGroupChanged($event)"></ngx-survey-edit>
+            <ngx-survey-edit [type]="5" [data]="getDataByType(5)" (dataChange)="surveyGroupChanged($event)">
+            </ngx-survey-edit>
           </ng-template>
         </mat-tab>
 

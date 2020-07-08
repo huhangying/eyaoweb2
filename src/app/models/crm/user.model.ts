@@ -2,10 +2,10 @@ import { Department } from '../hospital/department.model';
 
 export interface User {
   _id: string;
-  user_id: string;
+  user_id?: string; //?
   link_id?: string;
-  cell: string;
-  name: string;
+  cell?: string;
+  name?: string;
   // password: string;
   role?: number;
   // updated: Date;
@@ -14,7 +14,7 @@ export interface User {
   //   huid: string,
   // }];
   icon?: string;
-  gender: string;
+  gender?: string;
   // height?: string;
   // weight?: string;
   birthdate?: Date;
@@ -25,4 +25,6 @@ export interface User {
   // apply: boolean;
   department?: string;
   title?: string;
+  diagnoses?: string; // 疾病诊断
+  notes?: string; // 诊断提醒
 }

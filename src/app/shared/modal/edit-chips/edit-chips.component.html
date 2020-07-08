@@ -1,0 +1,32 @@
+<nb-card status="info">
+  <nb-card-header>
+    <mat-icon inline="true"> create </mat-icon>&nbsp;
+    {{ data.title }}
+    <button nbButton shape="round" size="tiny" class="float-right" mat-dialog-close>
+      <nb-icon icon="close"></nb-icon>
+    </button>
+  </nb-card-header>
+
+  <nb-card-body>
+    <mat-form-field class="w-100">
+      <mat-chip-list #chipList>
+        <mat-chip *ngFor="let chip of chips" [selectable]="true" [removable]="true" (removed)="remove(chip)">
+          {{chip}}
+          <mat-icon matChipRemove>cancel</mat-icon>
+        </mat-chip>
+        <input placeholder="请输入" [matChipInputFor]="chipList"
+          [matChipInputSeparatorKeyCodes]="separatorKeysCodes" [matChipInputAddOnBlur]="true"
+          (matChipInputTokenEnd)="add($event)">
+      </mat-chip-list>
+    </mat-form-field>
+
+    <div class="text-muted">
+      输入并按回车键确定；或点击删除键删除。保存请点击确定。
+    </div>
+
+    <div mat-dialog-actions class="d-block pt-4">
+      <button nbButton status="basic" mat-dialog-close>取消</button>
+      <button nbButton status="primary" class="float-right" (click)="confirm()" cdkFocusInitial>确定</button>
+    </div>
+  </nb-card-body>
+</nb-card>

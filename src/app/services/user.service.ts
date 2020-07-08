@@ -44,6 +44,10 @@ export class UserService {
     return this.api.patch<User>('user/wechat/' + data.link_id, data);
   }
 
+  updateUserById(data: User) {
+    return this.api.patch<User>('user/' + data._id, data);
+  }
+
   // get doctor patients
   getUsersByDoctorId(doctorId: string) {
     return this.api.get<Relationship2[]>(`relationships/doctor/${doctorId}/select`);

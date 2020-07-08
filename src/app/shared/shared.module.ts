@@ -43,6 +43,9 @@ import { FlatLayoutComponent } from '../@theme/layouts/flat/flat.layout';
 import { ImageComponent } from './modal/image/image.component';
 import { ImgClickViewDirective } from './directive/img-click-view.directive';
 import { DisableByRoleDirective } from './directive/disable-by-role.directive';
+import { EditChipsComponent } from './modal/edit-chips/edit-chips.component';
+import { MatChipsModule } from '@angular/material/chips';
+import {MatFormFieldModule} from '@angular/material/form-field';
 
 @NgModule({
   imports: [
@@ -66,6 +69,8 @@ import { DisableByRoleDirective } from './directive/disable-by-role.directive';
     MatExpansionModule,
     MatListModule,
     MatMenuModule,
+    MatChipsModule,
+    MatFormFieldModule,
 
     ImageCropperModule,
 
@@ -101,6 +106,8 @@ import { DisableByRoleDirective } from './directive/disable-by-role.directive';
     MatExpansionModule,
     MatListModule,
     MatMenuModule,
+    MatChipsModule,
+    MatFormFieldModule,
 
     FooterComponent,
     HeaderComponent,
@@ -144,6 +151,7 @@ import { DisableByRoleDirective } from './directive/disable-by-role.directive';
     SelectDoctorPatientsComponent,
     ImgClickViewDirective,
     DisableByRoleDirective,
+    EditChipsComponent,
   ],
   providers: [
     MatDatepickerModule,
