@@ -105,4 +105,18 @@ export class DoctorService {
     );
   }
 
+  // 其它功能
+  getRoleLabel(role: number) {
+    switch(role) {
+      case 0:
+        return '药师';
+      case 1:
+        return '药师/科室管理';
+      case 2:
+        return '药师/医院管理';
+      default:
+        return '';
+    }
+  }
+
 }

@@ -152,4 +152,8 @@ export class DoctorComponent implements OnInit, OnDestroy {
   getDepartmentLabel(id: string) {
     return this.departments.find(item => item._id === id)?.name;
   }
+
+  getRoleLabel(role: number) {
+    return this.doctorService.getRoleLabel(role);
+  }
 }

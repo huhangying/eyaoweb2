@@ -12,7 +12,8 @@
       </nb-form-field>
     </div>
 
-    <ngx-select-department [departments]="departments" (departmentSelected)="departmentSelected($event)"></ngx-select-department>
+    <ngx-select-department [departments]="departments" (departmentSelected)="departmentSelected($event)">
+    </ngx-select-department>
   </nb-card-header>
 
   <nb-card-body>
@@ -40,7 +41,7 @@
         <ng-container matColumnDef="role">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> 权限</th>
           <td mat-cell *matCellDef="let element">
-            {{element.role}} </td>
+            {{getRoleLabel(element.role)}} </td>
         </ng-container>
 
         <ng-container matColumnDef="title">
