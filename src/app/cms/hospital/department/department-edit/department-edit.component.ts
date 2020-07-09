@@ -6,6 +6,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { HospitalService } from '../../../../services/hospital.service';
 import { tap, catchError, takeUntil } from 'rxjs/operators';
 import { MessageService } from '../../../../shared/service/message.service';
+import { UploadService } from '../../../../shared/service/upload.service';
 
 @Component({
   selector: 'ngx-department-edit',
@@ -15,6 +16,8 @@ import { MessageService } from '../../../../shared/service/message.service';
 export class DepartmentEditComponent implements OnInit, OnDestroy {
   form: FormGroup;
   destroy$ = new Subject<void>();
+  depMap: any;
+  direction: string; // map in db
 
   constructor(
     public dialogRef: MatDialogRef<DepartmentEditComponent>,
@@ -22,13 +25,14 @@ export class DepartmentEditComponent implements OnInit, OnDestroy {
     private fb: FormBuilder,
     private hospitalService: HospitalService,
     private message: MessageService,
+    private uploadService: UploadService,
   ) {
-
+    this.direction = data.direction;
+    this.depMap = this.direction;
     this.form = this.fb.group({
       name: ['', Validators.required],
       desc: [''],
       address: [''],
-      direction: [''],
       assetFolder: [''],
       order: [''],
       apply: false,
@@ -39,6 +43,7 @@ export class DepartmentEditComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.dialogRef.updateSize('80%');
   }
 
   ngOnDestroy() {
@@ -46,19 +51,50 @@ export class DepartmentEditComponent implements OnInit, OnDestroy {
     this.destroy$.unsubscribe();
   }
 
-  update() {
+  update(donotClose = false) {
     const response = this.data?._id ?
       // update
-      this.hospitalService.updateDepartment({ ...this.data, ...this.form.value }) :
+      this.hospitalService.updateDepartment({ ...this.data, ...this.form.value, direction: this.direction }) :
       // create
-      this.hospitalService.createDepartment({ ...this.form.value });
+      this.hospitalService.createDepartment({ ...this.form.value, direction: this.direction });
     response.pipe(
-      tap(rsp => {
-        this.dialogRef.close(rsp);
+      tap((rsp: Department) => {
+        if (rsp?._id) {
+          if (!donotClose) {
+            this.dialogRef.close(rsp);
+          }
+        }
       }),
       catchError(rsp => this.message.updateErrorHandle(rsp)),
       takeUntil(this.destroy$)
     ).subscribe();
+  }
+
+  onFileSelected(event) {
+    if (event.target.files?.length) {
+      const [file] = event.target.files;
+      const dep = this.form.getRawValue() as Department;
+
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => {
+
+        const fileName = `.${file.name.split('.').pop()}`; // [department_map_xxxxxxxxxxx].[ext]
+        this.uploadService.uploadDoctorDir('department', 'map', file, fileName).pipe(
+          tap((result: { path: string }) => {
+            if (result?.path) {
+              this.direction = result.path;
+              // update directly to db after finished uploading if EDIT!
+              if (this.data?._id) {
+                this.update(true);
+              }
+              this.depMap = reader.result;
+              // this.cd.markForCheck();
+            }
+          }),
+        ).subscribe();
+      };
+    }
   }
 
 }

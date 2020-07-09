@@ -8,32 +8,44 @@
 
   <mat-dialog-content class="px-3 pt-0">
     <div class="field row">
-      <label for="name" class="label required"> 名称 </label>
-      <input nbInput fullWidth id="name" formControlName="name">
+      <div class="col-md-6">
+        <label for="name" class="label required"> 名称 </label>
+        <input nbInput fullWidth id="name" formControlName="name">
+
+        <label for="desc" class="label"> 描述 </label>
+        <textarea nbInput fullWidth id="desc" formControlName="desc" rows="2"></textarea>
+
+        <label for="assetFolder" class="label"> 专属目录名 </label>
+        <input nbInput fullWidth id="assetFolder" formControlName="assetFolder" placeholder="暂不支持">
+
+      </div>
+      <div class="col-md-6">
+        <label for="address" class="label"> 地址 </label>
+        <input nbInput fullWidth id="address" formControlName="address">
+        <label for="direction" class="label"> 地址指示图 </label>
+        <div>
+          <img src="{{ depMap | imgPath }}" ngxImgClickView onerror="this.src='/assets/images/icon/default.svg';this.onerror='';"
+            class="img-fluid img-thumbnail z-depth-1" alt="">
+          <div>
+            <input hidden="true" type="file" accept="image/*" (change)="onFileSelected($event)" #fileInput>
+            <button mat-flat-button color="primary" class="w-75" (click)="fileInput.click()" class="UppyModalOpenerBtn">
+              更改地图
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
 
     <div class="field row">
-      <label for="desc" class="label"> 描述 </label>
-      <textarea nbInput fullWidth id="desc" formControlName="desc" rows="2"></textarea>
-    </div>
-    <div class="field row">
-      <label for="address" class="label"> 地址 </label>
-      <input nbInput fullWidth id="address" formControlName="address">
-    </div>
-    <div class="field row">
-      <label for="direction" class="label"> 地址指示图 </label>
-      <input nbInput fullWidth id="direction" formControlName="direction">
-    </div>
-    <div class="field row">
-      <label for="assetFolder" class="label"> 专属目录名 </label>
-      <input nbInput fullWidth id="assetFolder" formControlName="assetFolder" placeholder="暂不支持">
-    </div>
-    <div class="field row">
-      <label for="order" class="label"> 顺序 </label>
-      <input nbInput type="number" fullWidth id="order" formControlName="order">
-    </div>
-    <div class="field row pt-3">
-      <nb-checkbox formControlName="apply"> 开关 </nb-checkbox>
+      <div class="col-md-6">
+        <label for="order" class="label"> 顺序 </label>
+        <input nbInput type="number" fullWidth id="order" formControlName="order">
+      </div>
+      <div class="col-md-6">
+        <div class="pt-2">
+          <nb-checkbox formControlName="apply"> 开关 </nb-checkbox>
+        </div>
+      </div>
     </div>
 
   </mat-dialog-content>
