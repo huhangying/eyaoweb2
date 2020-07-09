@@ -27,7 +27,7 @@ export class DepartmentEditComponent implements OnInit, OnDestroy {
     private message: MessageService,
     private uploadService: UploadService,
   ) {
-    this.direction = data.direction;
+    this.direction = data?.direction || '';
     this.depMap = this.direction;
     this.form = this.fb.group({
       name: ['', Validators.required],
