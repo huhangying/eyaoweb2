@@ -5,14 +5,14 @@ import { AuthService } from '../service/auth.service';
   selector: '[ngxDisableByRole]'
 })
 export class DisableByRoleDirective {
-  @Input() requireRole?: number = 1;
+  @Input() requireRole?: number = 2;
 
   constructor(
     private el: ElementRef,
     private renderer: Renderer2,
     private authService: AuthService,
   ) {
-    if (this.authService.getDoctorRole() >= this.requireRole) {
+    if (this.authService.getDoctorRole() < this.requireRole) {
       setTimeout(() => {
         this.renderer.setAttribute(this.el.nativeElement, 'disabled', 'true');
       });
