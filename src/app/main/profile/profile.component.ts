@@ -5,6 +5,8 @@ import { Subject } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { Department } from '../../models/hospital/department.model';
 import { AppStoreService } from '../../shared/store/app-store.service';
+import { tap } from 'rxjs/operators';
+import { MessageService } from '../../shared/service/message.service';
 
 @Component({
   selector: 'ngx-profile',
@@ -23,6 +25,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private doctorService: DoctorService,
     private appStore: AppStoreService,
+    private message: MessageService,
   ) {
     this.departments = this.route.snapshot.data.departments;
     this.doctorService.getDoctorById(this.appStore.doctor?._id)
@@ -49,9 +52,15 @@ export class ProfileComponent implements OnInit, OnDestroy {
   updateProfile() {
     const profile = { ...this.doctor };
     delete profile.password;
-    this.doctorService.updateDoctor(profile)
-      .subscribe();
-    //todo: update store if logged-in doctor
+    this.doctorService.updateDoctor(profile).pipe(
+      tap(result => {
+        if (result?._id) {
+          // update store if logged-in doctor
+          this.appStore.updateDoctor(result);
+          this.message.updateSuccess();
+        }
+      })
+    ).subscribe();
   }
 
 }

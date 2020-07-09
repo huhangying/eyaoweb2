@@ -105,7 +105,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
           this.appStore.reset();
           this.router.navigate(['auth/login']);
         } else if (menuBag && menuBag.item.data === 'profile') {
-          this.router.navigate(['cms/profile']);
+          const targetProfile = this.isCms ? 'cms/profile' : 'main/profile';
+          this.router.navigate([targetProfile]);
         } else if (menuBag && menuBag.item.data === 'preferences') {
           this.router.navigate(['main/preferences']);
         }
