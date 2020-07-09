@@ -77,7 +77,7 @@
         </ng-template>
 
         <div class="field">
-          <ngx-medicine-notices-edit [notices]="data.medicine.notices" (valueChange)="noticesChanged($event)"></ngx-medicine-notices-edit>
+          <ngx-medicine-notices-edit [notices]="data.medicine?.notices" (valueChange)="noticesChanged($event)"></ngx-medicine-notices-edit>
         </div>
       </mat-tab>
     </mat-tab-group>
