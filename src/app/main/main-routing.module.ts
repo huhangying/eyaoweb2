@@ -11,6 +11,7 @@ import { ChatComponent } from './chat/chat.component';
 import { DiagnoseComponent } from './diagnose/diagnose.component';
 import { ArticlePushComponent } from './article-push/article-push.component';
 import { MedicineReferencesResolver } from '../services/resolvers/medicine-references.resolver';
+import { PatientSearchComponent } from './patient-search/patient-search.component';
 
 const routes: Routes = [{
   path: '',
@@ -29,6 +30,10 @@ const routes: Routes = [{
       path: 'diagnose',
       component: DiagnoseComponent,
       resolve: { medicineReferences: MedicineReferencesResolver }
+    },
+    {
+      path: 'patient-search',
+      component: PatientSearchComponent,
     },
     {
       path: 'article-push',

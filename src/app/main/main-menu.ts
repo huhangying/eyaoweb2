@@ -14,6 +14,11 @@ export function getMenuItems(role: number, queryParams: Params): NbMenuItem[] {
       link: '/main/diagnose',
     },
     {
+      title: '病患档案',
+      icon: 'search-outline',
+      link: '/main/patient-search',
+    },
+    {
       title: '在线咨询',
       icon: 'message-circle-outline',
       link: '/main/chat',

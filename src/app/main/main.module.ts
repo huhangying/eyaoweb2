@@ -27,6 +27,7 @@ import { SurveysComponent } from './diagnose/surveys/surveys.component';
 import { SurveyEditComponent } from './diagnose/surveys/survey-edit/survey-edit.component';
 import { FeedbackHistoryComponent } from './diagnose/patient-history/feedback-history/feedback-history.component';
 import { TodayNoticeComponent } from './diagnose/patient-history/today-notice/today-notice.component';
+import { PatientSearchComponent } from './patient-search/patient-search.component';
 
 @NgModule({
   declarations: [
@@ -55,6 +56,7 @@ import { TodayNoticeComponent } from './diagnose/patient-history/today-notice/to
     SurveyEditComponent,
     FeedbackHistoryComponent,
     TodayNoticeComponent,
+    PatientSearchComponent,
   ],
   imports: [
     SharedModule,
