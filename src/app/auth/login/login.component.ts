@@ -55,8 +55,9 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.authService.login(this.userId.value, this.password.value).pipe(
       tap(doctor => {
         if (doctor?._id) {
+          this.appStore.updateHidAndToken(doctor.hid, doctor.token);
+          delete doctor.token;
           this.appStore.updateDoctor(doctor);
-          this.appStore.updateHid(doctor.hid);
           // console.log(this.appStore.state);
           this.router.navigate(['/main']);
         } else {

@@ -17,6 +17,7 @@ export class AppStoreService extends Store<AppState> {
 
   // selectors
   get hid() { return this.state?.hid || store2.get('hid'); }
+  get token() { return this.state?.token || store2.get('token'); }
   get doctor() { return this.state?.doctor || store2.get('doctor'); }
   get pending() { return this.state?.pending || store2.get('pending'); }
   get cms() { return this.state?.cms || false; }
@@ -29,12 +30,14 @@ export class AppStoreService extends Store<AppState> {
     store2.set('doctor', doctor);
   }
 
-  updateHid(hid: number) {
+  updateHidAndToken(hid: number, token: string) {
     this.setState({
       ...this.state,
       hid,
+      token,
     });
     store2.set('hid', hid);
+    store2.set('token', token);
   }
 
   updateChatNotifications(chatNotifications: Notification[]) {

@@ -6,6 +6,7 @@ import { Pending } from '../../models/pending.model';
 export class AppState {
     constructor(
         public readonly doctor?: Doctor,
+        public readonly token?: string,
         public readonly hid?: number,
         public readonly currentUrl?: string,
         public readonly cms?: boolean,

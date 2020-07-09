@@ -22,7 +22,7 @@ export class AuthService {
   }
 
   get isLoggedIn(): boolean {
-    return !!this.appStore.doctor;
+    return !!this.appStore.doctor && this.appStore.token;
   }
 
   logout() {

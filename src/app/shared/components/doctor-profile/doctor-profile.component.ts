@@ -9,6 +9,8 @@ import { environment } from '../../../../environments/environment';
 import { Doctor } from '../../../models/crm/doctor.model';
 import { map, takeUntil, distinctUntilChanged, tap, startWith, concatMap } from 'rxjs/operators';
 import { HttpEventType } from '@angular/common/http';
+import { MessageService } from '../../service/message.service';
+import { AppStoreService } from '../../store/app-store.service';
 
 @Component({
   selector: 'ngx-doctor-profile',
@@ -50,6 +52,8 @@ export class DoctorProfileComponent implements OnInit, OnDestroy {
     private cd: ChangeDetectorRef,
     private doctorService: DoctorService,
     private uploadService: UploadService,
+    private message: MessageService,
+    private appStore: AppStoreService,
   ) {
     this.form = this.fb.group({
       _id: '',
@@ -76,8 +80,6 @@ export class DoctorProfileComponent implements OnInit, OnDestroy {
   public get passwordConfirm() { return this.form.get('passwordConfirm'); }
 
   ngOnInit() {
-
-
     this.form.valueChanges.pipe(
       startWith(this.form.value),
       distinctUntilChanged(),
@@ -118,16 +120,14 @@ export class DoctorProfileComponent implements OnInit, OnDestroy {
   }
 
   updatePassword(passwd: string) {
-    this.doctorService.updateProfile(this.user_id, { password: passwd })
-      .subscribe();
+    this.updateDoctor({ user_id: this.user_id, password: passwd });
   }
 
   updateProfile() {
     const profile = { ...this.form.getRawValue() };
     delete profile.password;
     delete profile.passwordConfirm;
-    this.doctorService.updateDoctor(profile)
-      .subscribe();
+    this.updateDoctor(profile, true);
   }
 
   onFileSelected(event) {
@@ -144,10 +144,11 @@ export class DoctorProfileComponent implements OnInit, OnDestroy {
           tap((result: { path: string }) => {
             if (result?.path) {
               // update icon to db after finished uploading
-              this.doctorService.updateDoctor({
+              this.updateDoctor({
                 user_id: doctor.user_id,
                 icon: result.path
-              }).subscribe();
+              }, true);
+
               // this.avatar = result.path;
               this.avatar = reader.result;
               this.cd.markForCheck();
@@ -156,6 +157,20 @@ export class DoctorProfileComponent implements OnInit, OnDestroy {
         ).subscribe();
       };
     }
+  }
+
+  updateDoctor(doctor: Doctor, updateStore = false) {
+    this.doctorService.updateDoctor(doctor).pipe(
+      tap(result => {
+        if (result?._id) {
+          // update store if apply
+          if (updateStore) {
+            this.appStore.updateDoctor(result);
+          }
+          this.message.updateSuccess();
+        }
+      })
+    ).subscribe();
   }
 
   generateQrcode() {

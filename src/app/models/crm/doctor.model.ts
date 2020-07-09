@@ -10,7 +10,7 @@ export interface Doctor {
   cell?: string;
   gender?: string;
   hours?: string;
-  expertise?:  string;
+  expertise?: string;
   bulletin?: string;
   honor?: string;
   icon?: string;
@@ -25,4 +25,5 @@ export interface Doctor {
   order?: number;
 
   password?: string;
+  token?: string; // temp
 }
