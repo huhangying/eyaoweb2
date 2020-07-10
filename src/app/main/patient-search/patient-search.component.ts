@@ -29,8 +29,6 @@ export class PatientSearchComponent implements OnInit {
   }
 
   viewPatientHistory(user: User) {
-    console.log(user);
-
     this.dialog.open(PatientHistoryComponent, {
       data: {
         patient: user,

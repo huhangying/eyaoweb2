@@ -14,8 +14,6 @@ import { Doctor } from '../../../../models/crm/doctor.model';
 })
 export class DiagnoseHistoryComponent implements OnInit {
   @Input() set diagnoses(values: Diagnose[]) {
-    console.log(values);
-
     this.dataSource = new MatTableDataSource<Diagnose>(values || []);
   }
   @Input() medicineReferences: MedicineReferences;
