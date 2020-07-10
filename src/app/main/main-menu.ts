@@ -10,17 +10,23 @@ export function getMenuItems(role: number, queryParams: Params): NbMenuItem[] {
     },
     {
       title: '药师门诊',
-      icon: 'headphones-outline',
+      icon: {
+        icon: 'user-md',
+        pack: 'fas'
+      },
       link: '/main/diagnose',
     },
     {
       title: '病患档案',
-      icon: 'search-outline',
+      icon: 'search',
       link: '/main/patient-search',
     },
     {
       title: '在线咨询',
-      icon: 'message-circle-outline',
+      icon: {
+        icon: 'comments',
+        pack: 'far'
+      },
       link: '/main/chat',
     },
     {
@@ -62,7 +68,10 @@ export function getMenuItems(role: number, queryParams: Params): NbMenuItem[] {
     },
     {
       title: '宣教材料推送',
-      icon: 'at-outline',
+      icon: {
+        icon: 'newspaper',
+        pack: 'far'
+      },
       link: '/main/article-push',
     },
     {
