@@ -1,0 +1,19 @@
+<nb-card status="info">
+  <nb-card-header>
+    选择病患
+    <button nbButton shape="round" size="tiny" class="float-right" mat-dialog-close>
+      <nb-icon icon="close"></nb-icon>
+    </button>
+  </nb-card-header>
+
+  <nb-card-body>
+    <ngx-select-patient (patientSelected)="selectPatient($event)"></ngx-select-patient>
+  </nb-card-body>
+
+  <nb-card-footer class="d-block">
+    <button nbButton mat-dialog-close>取消</button>
+    <button nbButton hero status="primary" class="float-right" [disabled]="!selectedPatient" (click)="select()">
+      <nb-icon icon="checkmark-circle"></nb-icon>确定
+    </button>
+  </nb-card-footer>
+</nb-card>

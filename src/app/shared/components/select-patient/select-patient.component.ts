@@ -1,11 +1,9 @@
-import { Component, OnInit, OnDestroy, Inject, Optional, SkipSelf } from '@angular/core';
+import { Component, OnInit, OnDestroy, Output, EventEmitter } from '@angular/core';
 import { User } from '../../../models/crm/user.model';
 import { Subject, Observable } from 'rxjs';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MessageService } from '../../service/message.service';
 import { UserService } from '../../../services/user.service';
 import { tap, catchError } from 'rxjs/operators';
-import { DialogService } from '../../service/dialog.service';
 
 @Component({
   selector: 'ngx-select-patient',
@@ -13,6 +11,7 @@ import { DialogService } from '../../service/dialog.service';
   styleUrls: ['./select-patient.component.scss']
 })
 export class SelectPatientComponent implements OnInit, OnDestroy {
+  @Output() patientSelected = new EventEmitter<User>();
   destroy$ = new Subject<void>();
   users$: Observable<User[]>;
   selectedPatient: User;
@@ -20,17 +19,13 @@ export class SelectPatientComponent implements OnInit, OnDestroy {
   searchValue: string;
 
   constructor(
-    public dialogRef: MatDialogRef<SelectPatientComponent>,
-    @Inject(MAT_DIALOG_DATA) @Optional() @SkipSelf() public data: { doctorId: string },
     private userService: UserService,
-    private dialogService: DialogService,
     private message: MessageService,
   ) {
     this.searchOption = 2; // default is 姓名
   }
 
   ngOnInit(): void {
-    this.dialogRef.updateSize('80%');
   }
 
   ngOnDestroy() {
@@ -64,29 +59,15 @@ export class SelectPatientComponent implements OnInit, OnDestroy {
         if (results?.length === 1) {
           // select it if only one user
           this.selectedPatient = results[0];
+          this.patientSelected.emit(results[0]);
         }
       }),
-      catchError(rsp => this.message.updateErrorHandle(rsp))
     );
   }
 
-  async select() {
-    // check if relationship existed
-    const existed = await this.userService.checkIfRelationshipExisted(this.data.doctorId, this.selectedPatient._id);
-    if (existed) {
-      return this.dialogRef.close(this.selectedPatient);
-    }
-    this.dialogService.confirm(`病患${this.selectedPatient.name}还没有关注您, 确定要建立关联？`)
-      .subscribe(result => {
-        if (result) {
-          // build relationship
-          this.userService.addRelationship(this.data.doctorId, this.selectedPatient._id).pipe(
-            tap(() => {
-              this.dialogRef.close(this.selectedPatient);
-            })
-          ).subscribe();
-        }
-      });
+  select(user: User) {
+    this.selectedPatient = user;
+    this.patientSelected.emit(user);
   }
 
 }

@@ -46,6 +46,7 @@ import { DisableByRoleDirective } from './directive/disable-by-role.directive';
 import { EditChipsComponent } from './modal/edit-chips/edit-chips.component';
 import { MatChipsModule } from '@angular/material/chips';
 import {MatFormFieldModule} from '@angular/material/form-field';
+import { SelectPatientDialogComponent } from './components/select-patient/select-patient-dialog/select-patient-dialog.component';
 
 @NgModule({
   imports: [
@@ -148,6 +149,7 @@ import {MatFormFieldModule} from '@angular/material/form-field';
     ImageUploaderComponent,
     ImageCropComponent,
     SelectPatientComponent,
+    SelectPatientDialogComponent,
     SelectDoctorPatientsComponent,
     ImgClickViewDirective,
     DisableByRoleDirective,

@@ -4,7 +4,6 @@ import { MatDialog } from '@angular/material/dialog';
 import { MessageService } from '../../shared/service/message.service';
 import { Doctor } from '../../models/crm/doctor.model';
 import { SelectAppointmentComponent } from './select-appointment/select-appointment.component';
-import { SelectPatientComponent } from '../../shared/components/select-patient/select-patient.component';
 import { Booking } from '../../models/reservation/booking.model';
 import { tap, catchError } from 'rxjs/operators';
 import { User } from '../../models/crm/user.model';
@@ -20,6 +19,7 @@ import { UserService } from '../../services/user.service';
 import { WeixinService } from '../../shared/service/weixin.service';
 import { environment } from '../../../environments/environment';
 import { AppStoreService } from '../../shared/store/app-store.service';
+import { SelectPatientDialogComponent } from '../../shared/components/select-patient/select-patient-dialog/select-patient-dialog.component';
 
 @Component({
   selector: 'ngx-diagnose',
@@ -98,7 +98,7 @@ export class DiagnoseComponent implements OnInit, OnDestroy {
   }
 
   selectPatient() {
-    this.dialog.open(SelectPatientComponent, {
+    this.dialog.open(SelectPatientDialogComponent, {
       data: {
         doctorId: this.doctor._id
       }
