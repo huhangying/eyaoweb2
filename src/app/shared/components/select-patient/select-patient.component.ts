@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, OnDestroy, Output, EventEmitter, Input } from '@angular/core';
 import { User } from '../../../models/crm/user.model';
 import { Subject, Observable } from 'rxjs';
 import { MessageService } from '../../service/message.service';
@@ -11,6 +11,7 @@ import { tap, catchError } from 'rxjs/operators';
   styleUrls: ['./select-patient.component.scss']
 })
 export class SelectPatientComponent implements OnInit, OnDestroy {
+  @Input() defaultSelect?: boolean = true;
   @Output() patientSelected = new EventEmitter<User>();
   destroy$ = new Subject<void>();
   users$: Observable<User[]>;
@@ -56,7 +57,7 @@ export class SelectPatientComponent implements OnInit, OnDestroy {
     }
     this.users$ = this.userService.searchByCriteria(searchCriteria).pipe(
       tap(results => {
-        if (results?.length === 1) {
+        if (results?.length === 1 && this.defaultSelect) {
           // select it if only one user
           this.selectedPatient = results[0];
           this.patientSelected.emit(results[0]);

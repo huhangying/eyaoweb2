@@ -4,6 +4,6 @@
   </nb-card-header>
 
   <nb-card-body>
-    <nb-icon icon="star" pack="far"></nb-icon>
+    <ngx-select-patient (patientSelected)="viewPatientHistory($event)" [defaultSelect]="false"></ngx-select-patient>
   </nb-card-body>
 </nb-card>

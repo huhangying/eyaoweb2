@@ -34,6 +34,7 @@ const routes: Routes = [{
     {
       path: 'patient-search',
       component: PatientSearchComponent,
+      resolve: { medicineReferences: MedicineReferencesResolver }
     },
     {
       path: 'article-push',

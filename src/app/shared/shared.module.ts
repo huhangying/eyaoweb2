@@ -118,7 +118,7 @@ import { SelectPatientDialogComponent } from './components/select-patient/select
     SelectDoctorComponent,
     SelectDepartmentComponent,
     SelectArticleCatComponent,
-    // SelectPatientComponent,
+    SelectPatientComponent,
     // SelectDoctorPatientsComponent,
 
     ImageCropperModule,

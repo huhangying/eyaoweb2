@@ -1,6 +1,6 @@
 <div class="pt-2">
   <div class="text-muted">请根据选项搜索病患</div>
-  <div class="field row border-bottom pb-2">
+  <div class="field row border-bottom pt-2 pb-3 mb-3">
     <nb-form-field class="col-12 col-sm-5">
       <nb-select hero fullWidth placeholder="选择搜索选项" [(ngModel)]="searchOption">
         <nb-option [value]="1">门诊号</nb-option>
@@ -19,24 +19,29 @@
   </div>
 </div>
 
-<mat-dialog-content>
-  <ng-container *ngIf="users$ | async; let users">
-    <mat-radio-group class="list-group list-group-flush" [(ngModel)]="selectedPatient">
-      <mat-radio-button class="list-group-item list-group-item-action pb-1" *ngFor="let user of users" [value]="user" (itemClick)="select(user)">
-        <span class="text-wrap">
-          <span class="text-primary pr-1">{{ user.name }}</span>
-          {{ user.gender? ' ' + (user.gender | gender) : '' }}
-          {{ user.cell? ' 手机:' + user.cell : '' }}
-          {{ user.birthdate? ' 生日:' + (user.birthdate | localDate) : '' }}
-        </span>
-      </mat-radio-button>
-    </mat-radio-group>
-  </ng-container>
+<ng-container *ngIf="users$ | async; let users">
+  <mat-radio-group class="list-group list-group-flush" [(ngModel)]="selectedPatient">
+    <mat-radio-button class="list-group-item list-group-item-action pb-1" *ngFor="let user of users" [value]="user"
+      (click)="select(user)">
+      <span class="text-wrap">
+        <span class="text-primary pr-1">{{ user.name }}</span>
+        {{ user.gender ? ' ' + (user.gender | gender) : '' }}
+        <ng-container *ngIf="user.cell">
+          <span class="text-muted small pl-2 pr-1">手机:</span>
+          {{ user.cell}}
+        </ng-container>
+        <ng-container *ngIf="user.birthdate">
+          <span class="text-muted small pl-2 pr-1">生日:</span>
+          {{ user.birthdate | localDate }}
+        </ng-container>
+      </span>
+      <mat-icon color="primary" class="float-right">pageview</mat-icon>
+    </mat-radio-button>
+  </mat-radio-group>
+</ng-container>
 
-  <ng-container *ngIf="!(users$ | async)?.length">
-    <div class="alert alert-warning" role="alert">
-      没有找到相关记录。
-    </div>
-  </ng-container>
-
-</mat-dialog-content>
+<ng-container *ngIf="!(users$ | async)?.length">
+  <div class="alert alert-warning" role="alert">
+    没有找到相关记录。
+  </div>
+</ng-container>
