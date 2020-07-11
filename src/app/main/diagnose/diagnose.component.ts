@@ -126,16 +126,6 @@ export class DiagnoseComponent implements OnInit, OnDestroy {
     return !this.selectedPatient.visitedDepartments.find(_ => _ === this.doctor.department);
   }
 
-  //todo: remove
-  tabChanged(index: number) {
-    console.log(index);
-    switch (index) {
-      case 1:
-        break;
-    }
-
-  }
-
   async setDiagnoseUserAndMore(patient: User, booking?: Booking) {
     this.selectedPatient = patient;
 

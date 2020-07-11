@@ -31,7 +31,6 @@ export class PatientHistoryComponent implements OnInit {
   }
 
   tabChanged(index: number) {
-    console.log(index);
     switch (index) {
       case 1:
         if (!this.diagnoses) {
