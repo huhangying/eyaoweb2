@@ -91,14 +91,19 @@ export class BookingComponent implements OnInit, OnDestroy {
   }
 
   forceCancel(data?: BookingFlatten) {
-    this.updateBookingStatus(data, 3);
+    this.dialogService.prompt('确认取消用户门诊', '门诊取消原因').subscribe(result => {
+      if (result) {
+        this.updateBookingStatus(data, 3, result);
+      }
+    });
   }
 
-  private updateBookingStatus(data: BookingFlatten, status: number) {
+  private updateBookingStatus(data: BookingFlatten, status: number, cancelReason?: string) {
     const booking: Booking = {
       _id: data._id,
       doctor: data.doctor,
       status: status,
+      notes: cancelReason
     };
     this.reservationService.updateBookingById(booking).pipe(
       tap(result => {

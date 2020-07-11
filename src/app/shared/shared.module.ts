@@ -47,6 +47,8 @@ import { EditChipsComponent } from './modal/edit-chips/edit-chips.component';
 import { MatChipsModule } from '@angular/material/chips';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import { SelectPatientDialogComponent } from './components/select-patient/select-patient-dialog/select-patient-dialog.component';
+import { PromptComponent } from './modal/prompt/prompt.component';
+import {MatInputModule} from '@angular/material/input';
 
 @NgModule({
   imports: [
@@ -72,6 +74,7 @@ import { SelectPatientDialogComponent } from './components/select-patient/select
     MatMenuModule,
     MatChipsModule,
     MatFormFieldModule,
+    MatInputModule,
 
     ImageCropperModule,
 
@@ -109,6 +112,7 @@ import { SelectPatientDialogComponent } from './components/select-patient/select
     MatMenuModule,
     MatChipsModule,
     MatFormFieldModule,
+    MatInputModule,
 
     FooterComponent,
     HeaderComponent,
@@ -154,6 +158,7 @@ import { SelectPatientDialogComponent } from './components/select-patient/select
     ImgClickViewDirective,
     DisableByRoleDirective,
     EditChipsComponent,
+    PromptComponent,
   ],
   providers: [
     MatDatepickerModule,

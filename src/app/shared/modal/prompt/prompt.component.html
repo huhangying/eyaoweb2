@@ -1,0 +1,22 @@
+<nb-card>
+  <nb-card-header>
+    {{ data.title }}
+    <button nbButton shape="round" size="tiny" class="float-right" mat-dialog-close>
+      <nb-icon icon="close"></nb-icon>
+    </button>
+  </nb-card-header>
+
+  <nb-card-body>
+    <form class="">
+      <mat-form-field class="w-100">
+        <mat-label>请输入{{ data.subtitle }}</mat-label>
+        <textarea matInput placeholder="请输入..." name="content" [(ngModel)]="content" cdkFocusInitial></textarea>
+      </mat-form-field>
+    </form>
+
+    <div mat-dialog-actions class="d-block pt-4">
+      <button nbButton status="basic" mat-dialog-close>取消</button>
+      <button nbButton status="primary" class="float-right" [disabled]="!content" (click)="confirm()">确定</button>
+    </div>
+  </nb-card-body>
+</nb-card>

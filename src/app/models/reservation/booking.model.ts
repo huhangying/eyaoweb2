@@ -12,6 +12,7 @@ export interface Booking {
   status: number;
   created?: Date;
   score?: number;
+  notes?: string;
 }
 
 export interface BookingFlatten {
@@ -24,4 +25,5 @@ export interface BookingFlatten {
   status: number;
   created?: Date;
   score?: number;
+  notes?: string;
 }

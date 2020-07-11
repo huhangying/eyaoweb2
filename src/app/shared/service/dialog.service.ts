@@ -4,6 +4,7 @@ import { ConfirmComponent } from '../modal/confirm/confirm.component';
 import { Observable } from 'rxjs';
 import { ImageComponent } from '../modal/image/image.component';
 import { EditChipsComponent } from '../modal/edit-chips/edit-chips.component';
+import { PromptComponent } from '../modal/prompt/prompt.component';
 
 @Injectable()
 export class DialogService {
@@ -28,6 +29,16 @@ export class DialogService {
       data: {
         title: title || '请确认',
         content: message
+      }
+    }).afterClosed();
+  }
+
+  prompt(title: string, subtitle?: string): Observable<string> {
+    return this.dialog.open(PromptComponent, {
+      width: '460px',
+      data: {
+        title: title || '请输入',
+        subtitle: subtitle
       }
     }).afterClosed();
   }
