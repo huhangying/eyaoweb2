@@ -4,15 +4,14 @@ import { Component, OnDestroy, OnInit, ChangeDetectionStrategy, ChangeDetectorRe
 import { NbMenuItem, NbSidebarService, NbMenuService } from '@nebular/theme';
 import { getMenuItems } from './main-menu';
 import { AppStoreService } from '../shared/store/app-store.service';
-import { tap, takeUntil, filter, pluck } from 'rxjs/operators';
-import { Subject, Observable, of } from 'rxjs';
-import { SocketioService } from '../shared/service/socketio.service';
+import { tap, takeUntil, pluck, distinctUntilChanged } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'ngx-main',
   styleUrls: ['main.component.scss'],
   template: `
-  <div [nbSpinner]="loading$ | async" nbSpinnerStatus="info">
+  <div [nbSpinner]="!!loading" nbSpinnerSize="giant" nbSpinnerStatus="info">
     <ngx-one-column-layout>
       <nb-menu [items]="menu" tag="menu" autoCollapse="true"></nb-menu>
       <router-outlet></router-outlet>
@@ -25,14 +24,14 @@ export class MainComponent implements OnInit, OnDestroy {
   role: number;
   menu: NbMenuItem[];
   private destroy$ = new Subject<void>();
-  loading$: Observable<boolean> = of(false);
+  // loading$: Observable<boolean> = of(false);
+  loading: boolean;
 
   constructor(
     private auth: AuthService,
     private sidebarService: NbSidebarService,
     private menuService: NbMenuService,
     private appStore: AppStoreService,
-    private socketService: SocketioService,
     private cd: ChangeDetectorRef,
   ) {
     const doc = this.auth.doctor;
@@ -70,13 +69,15 @@ export class MainComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.socketService.setupSocketConnection();
-
-    this.loading$ = this.appStore.state$.pipe(
-      filter(store => !!store),
+    this.appStore.state$.pipe(
       pluck('loading'),
-      filter(_ => (typeof _ === 'boolean')),
-    );
+      distinctUntilChanged(),
+      tap(_ => {
+        this.loading = _;
+        this.cd.detectChanges();
+      }),
+      takeUntil(this.destroy$)
+    ).subscribe();
   }
 
   ngOnDestroy() {
