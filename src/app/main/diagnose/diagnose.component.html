@@ -33,15 +33,17 @@
       <button nbButton size="small" [status]="selectedPatient ? 'info' : 'basic'" (click)="selectPatient()">
         <nb-icon icon="checkmark-circle-2-outline" *ngIf="selectedPatient"></nb-icon> 选择病患
       </button>
-      <span class="float-right">
-        <button nbButton hero size="small" status="primary" (click)="saveDiagnose()" *ngIf="diagnose?._id" class="mr-3">
-          <nb-icon icon="save-outline"></nb-icon> 保存
-        </button>
-        <button nbButton hero size="small" status="primary" [disabled]="!checkIfFinished()" (click)="closeDiagnose()"
-          *ngIf="diagnose?._id">
-          <nb-icon icon="archive-outline"></nb-icon> 结束门诊
-        </button>
-      </span>
+      <ng-container *ngIf="diagnose?._id">
+        <span class="float-right">
+          <button nbButton hero size="small" status="primary" [disabled]="!checkIfFinished()" (click)="printDiagnose()" class="mr-3">
+            <nb-icon icon="printer-outline"></nb-icon> 打印门诊
+          </button>
+          <button nbButton hero size="small" status="primary" [disabled]="!checkIfFinished()" (click)="closeDiagnose()"
+            *ngIf="diagnose?._id">
+            <nb-icon icon="archive-outline"></nb-icon> 结束门诊
+          </button>
+        </span>
+      </ng-container>
     </div>
 
     <ng-container *ngIf="selectedPatient">
