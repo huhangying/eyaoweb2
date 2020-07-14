@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ChangeDetectionStrategy, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import { Survey } from '../../../../models/survey/survey.model';
 import { SurveyService } from '../../../../services/survey.service';
 import { map, tap } from 'rxjs/operators';
@@ -13,7 +13,7 @@ import * as moment from 'moment';
   styleUrls: ['./survey-edit.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SurveyEditComponent implements OnInit {
+export class SurveyEditComponent implements OnInit, OnDestroy {
   @Input() type: number; // 0 - 6
   @Input() data: {
     list: string[];
@@ -75,20 +75,39 @@ export class SurveyEditComponent implements OnInit {
     }
   }
 
-  changeRadioSelection(question: Question, index: number) {
-    // const checked = options[index].selected;
-    question.options.forEach((option, i) => option.selected = i === index);
+  // 自动保存问卷（支持多个）
+  // 1.
+  ngOnDestroy() {
+    if (this.surveys?.length) {
+      // save all surveys
+      this.surveys.map(survey => {
+        if (survey.dirty) {
+          this.saveSurvey(survey);
+        }
+      });
+    }
   }
 
   saveSurvey(survey: Survey) {
-    if (survey._id) {
+    if (survey._id && survey.questions?.length) {
       // update
-      this.surveyService.updateSurvey(survey).subscribe( result => {
+      this.surveyService.updateSurvey(survey).subscribe(result => {
         if (result?._id) {
+          survey.dirty = false; //clear flag after save
           this.message.updateSuccess();
         }
       });
     }
+  }
+
+  changeRadioSelection(question: Question, index: number, survey: Survey) {
+    // const checked = options[index].selected;
+    question.options.forEach((option, i) => option.selected = i === index);
+    survey.dirty = true;
+  }
+
+  markSurveyDirty(survey: Survey) {
+    survey.dirty = true;
   }
 
   createSurvey(survey: Survey) {

@@ -13,4 +13,6 @@ export interface Survey {
   order?: number;
   availableBy?: Date; // 有效期
   finished: boolean;
+
+  dirty?: boolean; // helper flag to save
 }
