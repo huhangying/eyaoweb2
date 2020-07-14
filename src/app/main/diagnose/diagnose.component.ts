@@ -224,13 +224,13 @@ export class DiagnoseComponent implements OnInit, OnDestroy {
         this.cd.markForCheck();
       }),
       catchError(err => this.message.deleteErrorHandle(err))
-    );
+    ).subscribe();
   }
 
   closeDiagnose() {
     this.dialogService.confirm('本操作将结束当前门诊，并发送门诊结论。').subscribe(async result => {
       if (result) {
-        await this.saveDiagnose(DiagnoseStatus.archived).toPromise();
+        this.saveDiagnose(DiagnoseStatus.archived);
         if (this.isFirstVisit) {
           // add into visist
           this.selectedPatient.visitedDepartments = this.selectedPatient.visitedDepartments || [];
@@ -283,6 +283,7 @@ export class DiagnoseComponent implements OnInit, OnDestroy {
         return newSurveys;
       }, []);
 
+    // attach to diagnose
     this.saveDiagnose();
   }
 
