@@ -10,6 +10,7 @@
 
 export const environment = {
   production: false,
+  fontUrl: 'http://localhost:4200/assets/FZYTK.TTF',
   apiUrl: 'http://192.168.87.250:3000/api/',
   // apiUrl: 'api/',
   // apiUrl: 'http://192.168.87.35:3000/', //local

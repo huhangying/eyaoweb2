@@ -20,6 +20,7 @@ import { WeixinService } from '../../shared/service/weixin.service';
 import { environment } from '../../../environments/environment';
 import { AppStoreService } from '../../shared/store/app-store.service';
 import { SelectPatientDialogComponent } from '../../shared/components/select-patient/select-patient-dialog/select-patient-dialog.component';
+import { PdfService } from '../../shared/service/pdf.service';
 
 @Component({
   selector: 'ngx-diagnose',
@@ -46,6 +47,7 @@ export class DiagnoseComponent implements OnInit, OnDestroy {
     private message: MessageService,
     private cd: ChangeDetectorRef,
     private appStore: AppStoreService,
+    private pdf: PdfService,
   ) {
     this.doctor = this.auth.doctor;
     this.medicineReferences = { ...this.route.snapshot.data.medicineReferences };
@@ -288,6 +290,7 @@ export class DiagnoseComponent implements OnInit, OnDestroy {
   }
 
   printDiagnose() {
+    this.pdf.generatePdf(this.diagnose);
 
   }
 

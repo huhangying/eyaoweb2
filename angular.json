@@ -36,7 +36,9 @@
               "node_modules/pace-js/pace.min.js",
               "node_modules/@ckeditor/ckeditor5-build-classic/build/translations/zh-cn.js",
               "node_modules/moment/min/moment.min.js",
-              "node_modules/moment/locale/zh-cn.js"
+              "node_modules/moment/locale/zh-cn.js",
+              "node_modules/pdfmake/build/pdfmake.min.js",
+              "node_modules/pdfmake/build/vfs_fonts.js"
             ]
           },
           "configurations": {

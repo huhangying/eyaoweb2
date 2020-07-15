@@ -5,6 +5,7 @@
  */
 export const environment = {
   production: true,
+  fontUrl: 'http://www.zhaoyaoshi885.cn/assets/FZYTK.TTF',
   apiUrl: 'api/',
   imageServer: 'http://www.zhaoyaoshi885.cn/images/',
   socketUrl: 'http://www.zhaoyaoshi885.cn:3000',

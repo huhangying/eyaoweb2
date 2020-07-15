@@ -13,6 +13,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ToastrModule } from 'ngx-toastr';
 import { ApiInterceptor } from './shared/service/api-interceptor';
 import { ImgPathPipe } from './shared/pipe/img-path.pipe';
+import { LocalDatePipe } from './shared/pipe/local-date.pipe';
 
 @NgModule({
   declarations: [
@@ -35,6 +36,7 @@ import { ImgPathPipe } from './shared/pipe/img-path.pipe';
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: ApiInterceptor, multi: true },
     ImgPathPipe,
+    LocalDatePipe,
   ],
   bootstrap: [AppComponent]
 })

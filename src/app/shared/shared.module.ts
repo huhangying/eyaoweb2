@@ -166,7 +166,7 @@ import {MatInputModule} from '@angular/material/input';
     { provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS },
     { provide: MAT_DATE_LOCALE, useValue: 'zh-cn' }, //注意 moment 是 zh-cn 和 ng 不一样
     { provide: MatPaginatorIntl, useClass: PaginatorProvider },
-    DialogService
+    DialogService,
   ]
 })
 export class SharedModule { }
