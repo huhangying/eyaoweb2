@@ -28,6 +28,10 @@ export class ChatService {
     return this.api.get<Chat[]>(`chats/unread/doctor/${doctorId}`);
   }
 
+  setReadByDocterAndPatient(doctorId: string, patientId: string) {
+    return this.api.get(`chats/read/doctor/${doctorId}/${patientId}`);
+  }
+
   //---------------------------------------------------
   // Notifications
   //---------------------------------------------------
@@ -97,7 +101,7 @@ export class ChatService {
   }
 
   // after chatroom loaded (once a time)
-  removeChatsFromNotificationList(patientId: string, type: number) {
+  removeChatsFromNotificationList(doctorId: string, patientId: string) {
     // get from store
     let notifications = this.appStore.state.chatNotifications;
     if (!notifications?.length) return;
@@ -105,6 +109,9 @@ export class ChatService {
 
     // save back
     this.appStore.updateChatNotifications(notifications);
+
+    // mark read in db
+    this.setReadByDocterAndPatient(doctorId, patientId).subscribe();
   }
 
 }

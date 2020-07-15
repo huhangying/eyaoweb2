@@ -169,7 +169,7 @@ export class ChatComponent implements OnInit, OnDestroy {
           this.scrollBottom();
 
           //
-          this.chatService.removeChatsFromNotificationList(this.selectedPatient._id, 0);
+          this.chatService.removeChatsFromNotificationList(this.doctor._id, this.selectedPatient._id);
         } else {
           this.chats = [];
         }
