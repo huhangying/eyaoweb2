@@ -26,14 +26,19 @@
               <mat-selection-list [multiple]="false">
                 <ng-container *ngFor="let member of getGroupMembers(dg._id)">
                   <mat-list-option *ngIf="member.user" (click)="selectPatient(member.user)">
-                    <div class="d-flex align-items-center flex-row">
-                      <div mat-list-icon>
-                        <img [src]="member.user.icon" alt="头像" class="avatar"
-                          onerror="this.src='/assets/images/noimage.jpg';this.onerror='';">
+                    <div class="d-flex align-items-center justify-content-between">
+                      <div class="d-flex align-items-center flex-row">
+                        <div mat-list-icon>
+                          <img [src]="member.user.icon" alt="头像" class="avatar"
+                            onerror="this.src='/assets/images/noimage.jpg';this.onerror='';">
+                        </div>
+                        <div class="pl-4">
+                          {{member.user.name}}
+                          <div class="text-hint"> {{member.user.gender | gender}} </div>
+                        </div>
                       </div>
-                      <div class="pl-4">
-                        {{member.user.name}}
-                        <div class="text-hint"> {{member.user.gender | gender}} </div>
+                      <div class="pr-2" *ngIf="showBadge(member.user._id)">
+                        <span [matBadge]="showBadgeCount(member.user._id)" matBadgeOverlap="false" matBadgeColor="warn"></span>
                       </div>
                     </div>
                   </mat-list-option>

@@ -4,7 +4,7 @@ import { AuthService } from '../../shared/service/auth.service';
 import { Doctor } from '../../models/crm/doctor.model';
 import { ChatType, Chat } from '../../models/io/chat.model';
 import { ChatService } from '../../services/chat.service';
-import { tap, pluck, distinctUntilChanged } from 'rxjs/operators';
+import { tap, pluck, distinctUntilChanged, takeUntil } from 'rxjs/operators';
 import { DoctorGroup } from '../../models/crm/doctor-group.model';
 import { DoctorService } from '../../services/doctor.service';
 import { Relationship } from '../../models/crm/relationship.model';
@@ -18,6 +18,7 @@ import { NotificationType, Notification } from '../../models/io/notification.mod
 import { UserFeedbackService } from '../../services/user-feedback.service';
 import { UserFeedback } from '../../models/io/user-feedback.model';
 import { MessageService } from '../../shared/service/message.service';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'ngx-chat',
@@ -26,6 +27,8 @@ import { MessageService } from '../../shared/service/message.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ChatComponent implements OnInit, OnDestroy {
+  private destroy$: Subject<void> = new Subject<void>();
+  chatNotifications: Notification[];
   type: number;
   doctor: Doctor;
   chats: Chat[];
@@ -99,7 +102,8 @@ export class ChatComponent implements OnInit, OnDestroy {
             this.message.info('该病患不再是药师的用户，或者病患已经取消关注。', '操作取消！');
           }
         }
-      })
+      }),
+      takeUntil(this.destroy$),
     ).subscribe();
   }
 
@@ -143,18 +147,50 @@ export class ChatComponent implements OnInit, OnDestroy {
         if (bp) {
           this.isMd = (bp.width >= md);
         }
-      })
+      }),
+      takeUntil(this.destroy$),
+    ).subscribe();
+
+    // moniter notifications
+    this.appStore.state$.pipe(
+      pluck('chatNotifications'),
+      distinctUntilChanged(),
+      tap(notis => {
+        // init
+        this.chatNotifications = [];
+        if (!notis?.length) {
+          return;
+        }
+        this.chatNotifications = notis;
+        // this.chatUnread = this.chatNotifications.reduce((total, noti) => {
+        //   total += noti.count;
+        //   return total;
+        // }, 0);
+        this.cd.markForCheck();
+      }),
+      takeUntil(this.destroy$),
     ).subscribe();
 
   }
 
   ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
     this.socketio.leaveRoom(this.room);
   }
 
   toggleShowInSm() {
     this.showInSm = !this.showInSm;
     this.cd.markForCheck();
+  }
+
+  showBadge(pid: string): boolean {
+    if (!this.chatNotifications?.length) return false;
+    return this.chatNotifications.findIndex(noti => noti.patientId === pid) > -1;
+  }
+
+  showBadgeCount(pid: string): number {
+    return this.chatNotifications.find(noti => noti.patientId === pid)?.count;
   }
 
   selectPatient(patient: User) {
@@ -183,7 +219,8 @@ export class ChatComponent implements OnInit, OnDestroy {
           this.chats = [];
         }
         this.cd.markForCheck();
-      })
+      }),
+      takeUntil(this.destroy$),
     ).subscribe();
   }
 
@@ -205,7 +242,8 @@ export class ChatComponent implements OnInit, OnDestroy {
           this.feedbacks = [];
         }
         this.cd.markForCheck();
-      })
+      }),
+      takeUntil(this.destroy$),
     ).subscribe();
   }
 
