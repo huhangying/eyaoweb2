@@ -117,7 +117,6 @@ export class UserFeedbackService {
     // save back
     this.appStore.updateFeedbackNotifications(notifications);
 
-
     // mark read in db
     this.setReadByDocterPatientAndType(doctorId, patientId, type).subscribe();
   }

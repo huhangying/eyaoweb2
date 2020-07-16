@@ -17,6 +17,7 @@ import { NbMediaBreakpoint, NbMediaBreakpointsService } from '@nebular/theme';
 import { NotificationType, Notification } from '../../models/io/notification.model';
 import { UserFeedbackService } from '../../services/user-feedback.service';
 import { UserFeedback } from '../../models/io/user-feedback.model';
+import { MessageService } from '../../shared/service/message.service';
 
 @Component({
   selector: 'ngx-chat',
@@ -60,6 +61,7 @@ export class ChatComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private appStore: AppStoreService,
     private breakpointService: NbMediaBreakpointsService,
+    private message: MessageService,
   ) {
     this.doctor = this.auth.doctor;
     this.loadData(this.doctor._id);
@@ -81,14 +83,21 @@ export class ChatComponent implements OnInit, OnDestroy {
         this.type = +queryParams?.type || NotificationType.chat;
         const pid = queryParams?.pid;
         if (pid) {// && !this.selectedPatient) {
+          let found = false;
           // search from doctor-group/relationships
           this.doctorGroups.map(dg => {
             this.getGroupMembers(dg._id)?.map(r => {
               if (r.user?._id === pid) {
+                found = true;
                 this.selectPatient(r.user);
+                return;
               }
             });
           });
+          if (!found) {
+            this.chatService.removeChatsFromNotificationList(this.doctor._id, pid);
+            this.message.info('该病患不再是药师的用户，或者病患已经取消关注。', '操作取消！');
+          }
         }
       })
     ).subscribe();
