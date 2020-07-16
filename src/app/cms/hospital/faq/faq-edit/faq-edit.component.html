@@ -14,15 +14,17 @@
 
     <div class="field row">
       <label for="answer" class="label required"> 答案 </label>
-      <textarea nbInput fullWidth id="answer" formControlName="answer" rows="2"></textarea>
+      <textarea nbInput fullWidth id="answer" formControlName="answer" rows="4"></textarea>
     </div>
 
     <div class="field row">
-      <label for="order" class="label"> 顺序 </label>
-      <input nbInput type="number" fullWidth id="order" formControlName="order">
-    </div>
-    <div class="field row pt-3">
-      <nb-checkbox formControlName="apply"> 开关 </nb-checkbox>
+      <div class="col-3 pl-0">
+        <label for="order" class="label"> 顺序 </label>
+        <input nbInput type="number" fullWidth id="order" formControlName="order">
+      </div>
+      <div class="col-3 pt-5">
+        <nb-checkbox formControlName="apply"> 开关 </nb-checkbox>
+      </div>
     </div>
 
   </mat-dialog-content>

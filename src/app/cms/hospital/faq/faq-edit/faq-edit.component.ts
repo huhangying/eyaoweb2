@@ -36,6 +36,7 @@ export class FaqEditComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.dialogRef.updateSize('80%');
   }
 
   ngOnDestroy() {

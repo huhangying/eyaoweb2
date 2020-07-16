@@ -41,12 +41,12 @@ export function getMenuItems(role: number, queryParams: Params): NbMenuItem[] {
       icon: 'people-outline',
       children: [
         {
-          title: '药师',
+          title: '药师管理',
           link: '/cms/crm/doctor',
           queryParams: queryParams, // dep
         },
         {
-          title: '病患',
+          title: '病患管理',
           link: '/cms/crm/patient',
         },
         {
