@@ -191,7 +191,7 @@ export class ChatComponent implements OnInit, OnDestroy {
           this.scrollBottom();
 
           //
-          this.feedbackService.removeFromNotificationList(this.selectedPatient._id, this.type);
+          this.feedbackService.removeFromNotificationList(this.doctor._id, this.selectedPatient._id, this.type);
         } else {
           this.feedbacks = [];
         }

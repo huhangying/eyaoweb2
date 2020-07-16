@@ -30,6 +30,11 @@ export class UserFeedbackService {
   getUnreadListByDocter(doctorId: string) {
     return this.api.get<UserFeedback[]>(`feedbacks/unread/doctor/${doctorId}`);
   }
+
+  setReadByDocterPatientAndType(doctorId: string, patientId: string, type: number) {
+    return this.api.get(`feedbacks/read/doctor/${type}/${doctorId}/${patientId}`);
+  }
+
   //---------------------------------------------------
   // Notifications
   //---------------------------------------------------
@@ -102,7 +107,7 @@ export class UserFeedbackService {
   }
 
   // after chatroom loaded (once a time)
-  removeFromNotificationList(patientId: string, type: number) {
+  removeFromNotificationList(doctorId: string, patientId: string, type: number) {
     // get from store
     let notifications = this.appStore.state.feedbackNotifications;
     if (!notifications?.length) return;
@@ -111,6 +116,10 @@ export class UserFeedbackService {
 
     // save back
     this.appStore.updateFeedbackNotifications(notifications);
+
+
+    // mark read in db
+    this.setReadByDocterPatientAndType(doctorId, patientId, type).subscribe();
   }
 
 }

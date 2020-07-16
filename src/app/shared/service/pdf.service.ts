@@ -63,7 +63,7 @@ export class PdfService {
             body: [
               ['姓名：', '性别：', '年龄：', '日期：' + this.localDate.transform(diagnose.updatedAt)],
               ['科室：', { colSpan: 3, text: '药师：' }],
-              [{ text: 'Bold value', bold: true }, 'Val 2', 'Val 3', 'Val 4'],
+              // [{ text: 'Bold value', bold: true }, 'Val 2', 'Val 3', 'Val 4'],
               [{
                 // rowSpan: 3,
                 colSpan: 4,
