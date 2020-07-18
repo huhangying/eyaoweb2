@@ -1,6 +1,6 @@
 <nb-card>
   <nb-card-header>
-    门诊预约
+    病患预约
 
     <ngx-select-doctor [class.d-none]="!isCms" [departments]="departments" (doctorSelected)="doctorSelected($event)">
     </ngx-select-doctor>
@@ -14,7 +14,7 @@
           <th mat-header-cell *matHeaderCellDef mat-sort-header> 预约 </th>
           <td mat-cell *matCellDef="let element">
             {{ element?.scheduleDate | localDate }} -
-            {{ element.schedulePeriod }}
+            <span class="text-primary">{{ element.schedulePeriod }}</span>
           </td>
         </ng-container>
 
