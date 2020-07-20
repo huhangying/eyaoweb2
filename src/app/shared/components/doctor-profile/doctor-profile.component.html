@@ -78,7 +78,7 @@
                 <img src="{{ qrcode }}" onerror="this.src='/assets/images/icon/default.svg';this.onerror='';"
                   class="img-fluid img-thumbnail z-depth-1 w-50" alt="">
               </ng-container>
-              <div *ngIf="!qrcode">
+              <div *ngIf="true || !qrcode">
                 <button mat-flat-button color="primary" class="w-75" (click)="generateQrcode()"
                   class="UppyModalOpenerBtn">
                   生成二维码

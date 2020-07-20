@@ -39,7 +39,7 @@ export function getMenuItems(role: number, queryParams: Params): NbMenuItem[] {
           queryParams: queryParams,
         },
         {
-          title: '门诊预约',
+          title: '病患预约',
           link: '/main/reservation/booking',
           queryParams: queryParams,
         },
