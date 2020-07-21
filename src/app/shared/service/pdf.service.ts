@@ -4,7 +4,9 @@ import pdfFonts from 'pdfmake/build/vfs_fonts';
 import { environment } from '../../../environments/environment';
 import { LocalDatePipe } from '../pipe/local-date.pipe';
 import { Diagnose } from '../../models/diagnose/diagnose.model';
-
+import { Survey } from '../../models/survey/survey.model';
+import { SurveyGroup } from '../../models/survey/survey-group.model';
+import { SurveyService } from '../../services/survey.service';
 @Injectable({
   providedIn: 'root'
 })
@@ -12,6 +14,7 @@ export class PdfService {
 
   constructor(
     private localDate: LocalDatePipe,
+    private surveyService: SurveyService,
   ) {
     pdfMake.fonts = {
       fzytk: {
@@ -22,7 +25,10 @@ export class PdfService {
     // pdfMake.vfs = pdfFonts.pdfMake.vfs;
   }
 
-  generatePdf(diagnose: Diagnose) {
+  async generatePdf(diagnose: Diagnose, surveyType: number) {
+    const surveyContent = await this.buildSurveyContent(diagnose.doctor, diagnose.user, surveyType, diagnose.surveys);
+
+
     const documentDefinition = {
       pageSize: 'A4',
       defaultStyle: {
@@ -76,6 +82,7 @@ export class PdfService {
                 // rowSpan: 3,
                 text: '门诊结论：\n\n\n\n\n'
               }],
+
             ]
           }
         },
@@ -109,6 +116,56 @@ export class PdfService {
         // }
       ]
     };
+
+    if (surveyContent?.length) {
+      let surveyText = surveyType === 1 ? '门诊问卷\n' : '复诊问卷\n';
+      surveyText += surveyContent + '\n';
+      documentDefinition.content[1].table.body.push([{
+        colSpan: 4,
+        style: 'block',
+        text: surveyText
+      }]);
+    }
+
     pdfMake.createPdf(documentDefinition).open();
   }
+
+  async buildSurveyContent(doctor: any, patientId: string, surveyType: number, surveyGroups: SurveyGroup[]) {
+    const surveyGroup = surveyGroups.find(sg => sg.type === surveyType);
+    const list = surveyGroup?.list;
+    if (!list?.length) return '';
+    const doctorId = doctor?._id ? doctor._id : doctor;
+    const surveys = await this.surveyService.GetSurveysByUserTypeAndList(doctorId, patientId, surveyType, list.join('|')).toPromise();
+
+    let text = '';
+    surveys.map((survey: Survey) => {
+      // survey name
+      text += `\n**** ${survey.name} ****\n`;
+      survey.questions.map((question, index) => {
+        // 只显示病患已经回答的问题和答案
+        let isAnswered = false;
+        let answerText = '';
+        if (question.answer_type === 3) {
+          isAnswered = !!question.options[0].answer;
+          answerText = '       ' + question.options[0].answer + '\n';
+        } else {
+          question.options.map(option => {
+            if (option.selected) {
+              isAnswered = true;
+              answerText += `✓\t ${option.answer}\n`;
+            } else {
+              answerText += ` \t ${option.answer}\n`;
+            }
+          });
+        }
+        if (isAnswered) {
+          // index + question name
+          text += `${index + 1}. ${question.question}\n`;
+          text += answerText + '\n';
+        }
+      });
+    });
+    return text;
+  }
+
 }

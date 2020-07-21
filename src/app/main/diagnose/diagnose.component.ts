@@ -290,8 +290,7 @@ export class DiagnoseComponent implements OnInit, OnDestroy {
   }
 
   printDiagnose() {
-    this.pdf.generatePdf(this.diagnose);
-
+    this.pdf.generatePdf(this.diagnose, this.isFirstVisit? 1 : 2);
   }
 
   checkIfFinished() {
