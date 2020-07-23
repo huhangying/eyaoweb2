@@ -266,7 +266,7 @@ export class ChatComponent implements OnInit, OnDestroy {
         room: this.room,
         sender: this.doctor._id,
         senderName: this.doctor.name,
-        to: this.doctor._id,
+        to: this.selectedPatient._id,
         type: ChatType.picture,
         data: imgPath
       };
@@ -277,7 +277,7 @@ export class ChatComponent implements OnInit, OnDestroy {
         room: this.room,
         sender: this.doctor._id,
         senderName: this.doctor.name,
-        to: this.doctor._id,
+        to: this.selectedPatient._id,
         type: ChatType.text,
         data: this.myInput
       };
