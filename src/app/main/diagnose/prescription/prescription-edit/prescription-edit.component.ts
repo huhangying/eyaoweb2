@@ -14,7 +14,7 @@ import { MessageService } from '../../../../shared/service/message.service';
   styleUrls: ['./prescription-edit.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class PrescriptionEditComponent implements OnInit , OnDestroy {
+export class PrescriptionEditComponent implements OnInit, OnDestroy {
   form: FormGroup;
   destroy$ = new Subject<void>();
   medicines$: Observable<Medicine[]>;
@@ -92,7 +92,16 @@ export class PrescriptionEditComponent implements OnInit , OnDestroy {
   }
 
   update() {
-    this.dialogRef.close(this.form.value);
+    const _medicine = this.selectedMedicine?.notices?.length ?
+      { ...this.form.value, notices: this.selectedMedicine.notices } :
+      this.form.value;
+    this.dialogRef.close(_medicine);
+  }
+
+  getNoticeContent() {
+    return `提醒内容：
+    ${this.selectedMedicine.notices.map(notice => notice.notice).join('; ')}
+    `;
   }
 
 }

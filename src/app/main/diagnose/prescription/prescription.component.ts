@@ -1,10 +1,11 @@
-import { Component, OnInit, Input, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, Input, ChangeDetectionStrategy, ChangeDetectorRef, Output, EventEmitter } from '@angular/core';
 import { Medicine } from '../../../models/hospital/medicine.model';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogService } from '../../../shared/service/dialog.service';
 import { PrescriptionEditComponent } from './prescription-edit/prescription-edit.component';
 import { MedicineReferences } from '../../../models/hospital/medicine-references.model';
+import { MedicineNotice } from '../../../models/hospital/medicine-notice.model';
 
 @Component({
   selector: 'ngx-prescription',
@@ -16,6 +17,7 @@ export class PrescriptionComponent implements OnInit {
   @Input() prescription: Medicine[];
   @Input() medicineReferences: MedicineReferences;
   @Input() readonly?: boolean;
+  @Output() noticesFound = new EventEmitter<MedicineNotice[]>();
 
   constructor(
     public dialog: MatDialog,
@@ -45,7 +47,7 @@ export class PrescriptionComponent implements OnInit {
         medicineReferences: this.medicineReferences
       }
     }).afterClosed()
-      .subscribe(result => {
+      .subscribe((result: Medicine) => {
         if (result) {
           if (isEdit) {
             // update
@@ -54,6 +56,12 @@ export class PrescriptionComponent implements OnInit {
             // create
             this.prescription.push(result);
           }
+          // check if notices
+          if (result.notices?.length) {
+            // add into diagnose.notices
+            this.noticesFound.emit(result.notices);
+          }
+
           this.cd.markForCheck();
         }
       });

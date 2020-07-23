@@ -21,6 +21,7 @@ import { environment } from '../../../environments/environment';
 import { AppStoreService } from '../../shared/store/app-store.service';
 import { SelectPatientDialogComponent } from '../../shared/components/select-patient/select-patient-dialog/select-patient-dialog.component';
 import { PdfService } from '../../shared/service/pdf.service';
+import { MedicineNotice } from '../../models/hospital/medicine-notice.model';
 
 @Component({
   selector: 'ngx-diagnose',
@@ -341,6 +342,24 @@ export class DiagnoseComponent implements OnInit, OnDestroy {
 
       })
     ).subscribe();
+  }
+
+  prescriptionNoticesFound(notices: MedicineNotice[]) {
+    if (notices?.length) {
+      if (!this.diagnose.notices?.length) {
+        this.diagnose.notices = [...notices];
+      } else {
+        notices.map(notice => {
+          const index = this.diagnose.notices.findIndex(_ => _.notice === notice.notice);
+          if (index > -1) {
+            this.diagnose.notices[index] = notice;
+          } else {
+            this.diagnose.notices.push(notice);
+          }
+        });
+      }
+      this.cd.markForCheck();
+    }
   }
 
 }

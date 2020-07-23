@@ -54,7 +54,7 @@
             门诊处方
           </ng-template>
           <ng-template matTabContent>
-            <ngx-prescription [prescription]="diagnose?.prescription" [medicineReferences]="medicineReferences">
+            <ngx-prescription [prescription]="diagnose?.prescription" [medicineReferences]="medicineReferences" (noticesFound)="prescriptionNoticesFound($event)">
             </ngx-prescription>
           </ng-template>
         </mat-tab>
@@ -62,7 +62,9 @@
         <mat-tab>
           <ng-template mat-tab-label>
             <mat-icon>notifications_active</mat-icon>
-            监测计划
+            <span [matBadge]="diagnose.notices?.length || ''" matBadgeColor="warn">
+              监测计划
+            </span>
           </ng-template>
           <ng-template matTabContent>
             <ngx-notices [notices]="diagnose?.notices"></ngx-notices>

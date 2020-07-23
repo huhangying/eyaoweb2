@@ -95,9 +95,16 @@
           <textarea nbInput fullWidth id="notes" formControlName="notes" rows="3"></textarea>
         </div>
         <div class="col-md-3 pull-right pt-2">
-          <button nbButton hero status="primary" (click)="caculateEndDate()">
+          <button nbButton hero status="primary" class="mr-3" (click)="caculateEndDate()">
             自动设置结束日期
           </button>
+
+          <ng-container *ngIf="selectedMedicine?.notices?.length">
+            <button nbButton hero status="primary" class="mt-2" [matTooltip]="getNoticeContent()"
+              matTooltipPosition="above">
+              <mat-icon>add_alert</mat-icon>包含监测提醒
+            </button>
+          </ng-container>
         </div>
       </div>
 
