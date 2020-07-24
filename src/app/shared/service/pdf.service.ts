@@ -7,6 +7,9 @@ import { Diagnose } from '../../models/diagnose/diagnose.model';
 import { Survey } from '../../models/survey/survey.model';
 import { SurveyGroup } from '../../models/survey/survey-group.model';
 import { SurveyService } from '../../services/survey.service';
+import { User } from '../../models/crm/user.model';
+import { GenderPipe } from '../pipe/gender.pipe';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -14,6 +17,7 @@ export class PdfService {
 
   constructor(
     private localDate: LocalDatePipe,
+    private gender: GenderPipe,
     private surveyService: SurveyService,
   ) {
     pdfMake.fonts = {
@@ -25,7 +29,7 @@ export class PdfService {
     // pdfMake.vfs = pdfFonts.pdfMake.vfs;
   }
 
-  async generatePdf(diagnose: Diagnose, surveyType: number) {
+  async generatePdf(diagnose: Diagnose, doctor: any, patient: User, surveyType: number) {
     const surveyContent = await this.buildSurveyContent(diagnose.doctor, diagnose.user, surveyType, diagnose.surveys);
 
 
@@ -53,7 +57,7 @@ export class PdfService {
       },
       content: [
         {
-          text: '新华医院药师门诊',
+          text: '新华医院药师门诊', //todo: not hardcoded
           style: 'header',
           alignment: 'center'
         },
@@ -64,11 +68,18 @@ export class PdfService {
             // headers are automatically repeated if the table spans over multiple pages
             // you can declare how many rows should be treated as headers
             headerRows: 1,
-            widths: ['*', 'auto', 100, '*'],
+            widths: ['*', 80, 80, '*'],
 
             body: [
-              ['姓名：', '性别：', '年龄：', '日期：' + this.localDate.transform(diagnose.updatedAt)],
-              ['科室：', { colSpan: 3, text: '药师：' }],
+              [
+                '姓名：' + patient.name,
+                '性别：' + this.gender.transform(patient.gender),
+                '年龄：' + this.localDate.transform(patient.birthdate, 'age'),
+                '日期：' + this.localDate.transform(diagnose.updatedAt)
+              ],
+              [
+                '科室：' + doctor.department?.name,
+                { colSpan: 3, text: `药师：${doctor.name} ${doctor.title}` }],
               // [{ text: 'Bold value', bold: true }, 'Val 2', 'Val 3', 'Val 4'],
               [{
                 // rowSpan: 3,

@@ -14,6 +14,7 @@ import { ToastrModule } from 'ngx-toastr';
 import { ApiInterceptor } from './shared/service/api-interceptor';
 import { ImgPathPipe } from './shared/pipe/img-path.pipe';
 import { LocalDatePipe } from './shared/pipe/local-date.pipe';
+import { GenderPipe } from './shared/pipe/gender.pipe';
 
 @NgModule({
   declarations: [
@@ -37,6 +38,7 @@ import { LocalDatePipe } from './shared/pipe/local-date.pipe';
     { provide: HTTP_INTERCEPTORS, useClass: ApiInterceptor, multi: true },
     ImgPathPipe,
     LocalDatePipe,
+    GenderPipe,
   ],
   bootstrap: [AppComponent]
 })

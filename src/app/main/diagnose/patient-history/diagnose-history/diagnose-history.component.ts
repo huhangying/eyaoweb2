@@ -31,7 +31,6 @@ export class DiagnoseHistoryComponent implements OnInit {
   ngOnInit(): void {
   }
 
-
   viewDiagnoseDetails(diagnose: Diagnose) {
     this.dialog.open(DiagnoseDetailsComponent, {
       data: {
@@ -42,6 +41,5 @@ export class DiagnoseHistoryComponent implements OnInit {
       }
     });
   }
-
 
 }
