@@ -31,6 +31,10 @@ export function getMenuItems(role: number, queryParams: Params): NbMenuItem[] {
           link: '/cms/hospital/medicine',
         },
         {
+          title: '化验单模板管理',
+          link: '/cms/hospital/test-form',
+        },
+        {
           title: '常问问题管理',
           link: '/cms/hospital/faq',
         },

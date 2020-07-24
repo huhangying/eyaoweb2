@@ -1,0 +1,102 @@
+<nb-card [status]="data.testForm ? 'info' : 'success'">
+  <nb-card-header>
+    {{data.testForm? '编辑化验单模板' : '新增化验单模板'}}
+    <button nbButton shape="round" size="tiny" class="float-right" mat-dialog-close>
+      <nb-icon icon="close"></nb-icon>
+    </button>
+  </nb-card-header>
+
+  <mat-dialog-content class="container pt-2" [formGroup]="form">
+
+    <div class="container">
+      <div class="field row">
+        <div class="col-md-6">
+          <label for="name" class="label required"> 化验单名 </label>
+          <input nbInput fullWidth id="name" formControlName="name">
+        </div>
+        <div class="col-md-6">
+          <label for="type" class="label"> 类型 </label>
+          <input nbInput fullWidth id="type" formControlName="type">
+        </div>
+      </div>
+
+      <div class="field row">
+        <div class="col-12">
+          <div class="py-2">
+            <button nbButton hero status="success" (click)="add()">
+              <nb-icon icon="plus-outline"></nb-icon>新增提醒
+            </button>
+          </div>
+          <div [class.d-none]="!dataSource?.data?.length">
+            <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 table-striped table-hover">
+
+              <ng-container matColumnDef="item">
+                <th mat-header-cell *matHeaderCellDef> 测试项 </th>
+                <td mat-cell *matCellDef="let element"> {{element.item}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="code">
+                <th mat-header-cell *matHeaderCellDef> 代码 </th>
+                <td mat-cell *matCellDef="let element"> {{element.code}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="unit">
+                <th mat-header-cell *matHeaderCellDef> 单位 </th>
+                <td mat-cell *matCellDef="let element"> {{element.unit}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="reference">
+                <th mat-header-cell *matHeaderCellDef> 参考值 </th>
+                <td mat-cell *matCellDef="let element">
+                  {{ element.reference }}
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="_id">
+                <th mat-header-cell *matHeaderCellDef class="text-center"> 操作 </th>
+                <td mat-cell *matCellDef="let element" class="actions">
+                  <button nbButton hero shape="round" size="tiny" status="info" title="编辑" (click)="edit(element)">
+                    <nb-icon icon="edit-2"></nb-icon>
+                  </button>
+                  &nbsp;
+                  <button nbButton hero shape="round" size="tiny" status="danger" title="删除"
+                    (click)="delete(element._id)">
+                    <nb-icon icon="trash-2-outline"></nb-icon>
+                  </button>
+                </td>
+              </ng-container>
+
+              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+          </div>
+          <ng-container *ngIf="!dataSource?.data?.length">
+            <div class="alert alert-warning" role="alert">
+              暂无测试项。
+            </div>
+          </ng-container>
+        </div>
+      </div>
+
+      <div class="field row">
+        <div class="col-md-6">
+          <label for="order" class="label"> 顺序 </label>
+          <input nbInput type="number" fullWidth id="order" formControlName="order">
+        </div>
+        <div class="col-md-6">
+          <div class="pt-5">
+            <nb-checkbox formControlName="apply"> 开关 </nb-checkbox>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </mat-dialog-content>
+
+  <nb-card-footer class="d-block">
+    <button nbButton mat-dialog-close>取消</button>
+    <button nbButton hero status="primary" class="float-right" [disabled]="form.invalid" (click)="update()">
+      <nb-icon icon="checkmark-circle"></nb-icon>更新
+    </button>
+  </nb-card-footer>
+</nb-card>

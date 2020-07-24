@@ -7,6 +7,9 @@ import { DepartmentEditComponent } from './department/department-edit/department
 import { FaqEditComponent } from './faq/faq-edit/faq-edit.component';
 import { MedicineNoticesEditComponent } from './medicine/medicine-notices-edit/medicine-notices-edit.component';
 import { GroupSettingsComponent } from './hospital-settings/group-settings/group-settings.component';
+import { TestFormComponent } from './test-form/test-form.component';
+import { TestFormEditComponent } from './test-form/test-form-edit/test-form-edit.component';
+import { TestItemEditComponent } from './test-form/test-form-edit/test-item-edit/test-item-edit.component';
 
 @NgModule({
   imports: [
@@ -21,6 +24,9 @@ import { GroupSettingsComponent } from './hospital-settings/group-settings/group
     FaqEditComponent,
     MedicineNoticesEditComponent,
     GroupSettingsComponent,
+    TestFormComponent,
+    TestFormEditComponent,
+    TestItemEditComponent,
   ]
 })
 export class HospitalModule { }
