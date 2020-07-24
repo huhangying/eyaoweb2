@@ -33,7 +33,7 @@
         <ng-container matColumnDef="items">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> 内容 </th>
           <td mat-cell *matCellDef="let element">
-            {{ element.items[0].item }}
+            {{ element.items ? element.items[0]?.item : [] }}
           </td>
         </ng-container>
 

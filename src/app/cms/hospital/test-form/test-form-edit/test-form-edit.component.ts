@@ -19,8 +19,7 @@ import { TestItemEditComponent } from './test-item-edit/test-item-edit.component
 export class TestFormEditComponent implements OnInit, OnDestroy {
   form: FormGroup;
   destroy$ = new Subject<void>();
-  items: TestItem[];
-  displayedColumns: string[] = ['item', 'code', 'unit', 'reference', '_id'];
+  displayedColumns: string[] = ['item', 'code', 'unit', 'reference', 'index'];
   dataSource: MatTableDataSource<TestItem>;
 
   constructor(
@@ -30,7 +29,6 @@ export class TestFormEditComponent implements OnInit, OnDestroy {
     private testFormService: TestFormService,
     public dialog: MatDialog,
     private dialogService: DialogService,
-    private message: MessageService,
     private cd: ChangeDetectorRef,
   ) {
     this.form = this.fb.group({
@@ -46,7 +44,7 @@ export class TestFormEditComponent implements OnInit, OnDestroy {
     } else {
       this.loadData([]);
     }
-   }
+  }
 
   ngOnInit() {
     this.dialogRef.updateSize('80%');
@@ -60,9 +58,9 @@ export class TestFormEditComponent implements OnInit, OnDestroy {
   update() {
     const response = this.data.testForm?._id ?
       // update
-      this.testFormService.update({ ...this.data.testForm, ...this.form.value }) :
+      this.testFormService.update({ ...this.data.testForm, ...this.form.value, items: this.dataSource.data }) :
       // create
-      this.testFormService.add({ ...this.form.value });
+      this.testFormService.add({ ...this.form.value, items: this.dataSource.data });
     response.pipe(
       tap(result => {
         this.dialogRef.close(result);
@@ -76,17 +74,12 @@ export class TestFormEditComponent implements OnInit, OnDestroy {
   // 以下是编辑 化验单测试项
   ///////////////////////////////////////////////////////////
 
-  delete(id: string) {
-    this.dialogService?.deleteConfirm().pipe(
+  delete(index: number) {
+    this.dialogService?.deleteConfirm('本操作删除化验单模板测试项。').pipe(
       tap(result => {
         if (result) {
-          // this.TestFormService.deleteById(id)
-          //   .subscribe(result => {
-          //     if (result?._id) {
-          //       this.loadData(this.dataSource.data.filter(item => item._id !== result._id)); // remove from list
-          //       this.message.deleteSuccess();
-          //     }
-          //   });
+          this.dataSource.data.splice(index, 1); // remove from list
+          this.loadData(this.dataSource.data);
         }
       }),
     ).subscribe();
@@ -112,7 +105,6 @@ export class TestFormEditComponent implements OnInit, OnDestroy {
             this.dataSource.data.unshift(result);
           }
           this.loadData(this.dataSource.data, isEdit); // add to list
-          // this.message.updateSuccess();
         }
       }),
     ).subscribe();
@@ -122,7 +114,7 @@ export class TestFormEditComponent implements OnInit, OnDestroy {
     this.edit();
   }
 
-  loadData(data: TestItem[], isEdit=true) {
+  loadData(data: TestItem[], isEdit = true) {
     this.dataSource = new MatTableDataSource<TestItem>(data);
     this.cd.markForCheck();
   }
