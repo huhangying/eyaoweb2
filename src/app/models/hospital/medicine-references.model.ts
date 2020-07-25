@@ -1,6 +1,11 @@
 export interface MedicineReferences {
   units: string[];
   usages: string[];
-  periods: { name: string; value: number }[];
+  periods: MedicinePeriod[];
   ways: string[];
+}
+
+export interface MedicinePeriod {
+  name: string;
+  value: number;
 }

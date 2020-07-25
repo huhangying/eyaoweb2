@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from '../shared/service/api.service';
 import { Medicine, Dosage } from '../models/hospital/medicine.model';
+import { MedicinePeriod } from '../models/hospital/medicine-references.model';
 
 @Injectable({
   providedIn: 'root'
@@ -32,7 +33,7 @@ export class MedicineService {
     return this.api.post<Medicine>('medicine', data);
   }
 
-  showDosageInstruction(dosage: Dosage, unit: string, medicinePeriods: { name: string; value: number }[]): string {
+  showDosageInstruction(dosage: Dosage, unit: string, medicinePeriods: MedicinePeriod[]): string {
     if (!medicinePeriods?.length) return '';
     const selectedIntervalDay = (dosage.intervalDay > -1 && medicinePeriods) ?
       medicinePeriods.find(item => item.value === dosage.intervalDay) : null;

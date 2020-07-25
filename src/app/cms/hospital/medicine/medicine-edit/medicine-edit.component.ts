@@ -6,7 +6,7 @@ import { Subject } from 'rxjs';
 import { MedicineService } from '../../../../services/medicine.service';
 import { tap, catchError, takeUntil } from 'rxjs/operators';
 import { MessageService } from '../../../../shared/service/message.service';
-import { MedicineReferences } from '../../../../models/hospital/medicine-references.model';
+import { MedicineReferences, MedicinePeriod } from '../../../../models/hospital/medicine-references.model';
 import { MedicineNotice } from '../../../../models/hospital/medicine-notice.model';
 
 @Component({
@@ -21,7 +21,7 @@ export class MedicineEditComponent implements OnInit, OnDestroy {
   units: string[];
   ways: string[];
   usages: string[];
-  periods: { name: string; value: number }[];
+  periods: MedicinePeriod[];
   notices: MedicineNotice[];
 
   constructor(

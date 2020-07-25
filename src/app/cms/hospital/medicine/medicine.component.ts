@@ -12,6 +12,7 @@ import { takeUntil, catchError, tap } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
 import { MessageService } from '../../../shared/service/message.service';
 import { MedicineService } from '../../../services/medicine.service';
+import { MedicinePeriod } from '../../../models/hospital/medicine-references.model';
 
 @Component({
   selector: 'ngx-medicine',
@@ -27,7 +28,7 @@ export class MedicineComponent implements OnInit, OnDestroy {
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
 
-  intervalDays: { name: string; value: number }[];
+  intervalDays: MedicinePeriod[];
 
   constructor(
     private fb: FormBuilder,
