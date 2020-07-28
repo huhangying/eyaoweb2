@@ -1,4 +1,4 @@
-<nb-card [status]="data ? 'info' : 'success'">
+<nb-card [status]="data.doctor ? 'info' : 'success'">
   <nb-card-header>
     {{data.doctor ? '编辑药师' : '新增药师'}}
     <button nbButton shape="round" size="tiny" class="float-right" mat-dialog-close>

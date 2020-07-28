@@ -39,7 +39,7 @@ export class DoctorEditComponent implements OnInit, OnDestroy {
   }
 
   update() {
-    const response = this.data.doctor?._id ?
+    const response = this.data.isEdit ?
       // update
       this.doctorService.updateDoctor({ ...this.data.doctor, ...this.doctor }) :
       // create

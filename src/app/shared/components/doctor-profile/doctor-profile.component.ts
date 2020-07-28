@@ -7,8 +7,7 @@ import { UploadService } from '../../service/upload.service';
 import { mustMatch } from '../../helper/must-match.validator';
 import { environment } from '../../../../environments/environment';
 import { Doctor } from '../../../models/crm/doctor.model';
-import { map, takeUntil, distinctUntilChanged, tap, startWith, concatMap } from 'rxjs/operators';
-import { HttpEventType } from '@angular/common/http';
+import { takeUntil, distinctUntilChanged, tap, startWith, concatMap } from 'rxjs/operators';
 import { MessageService } from '../../service/message.service';
 import { AppStoreService } from '../../store/app-store.service';
 
@@ -57,7 +56,7 @@ export class DoctorProfileComponent implements OnInit, OnDestroy {
   ) {
     this.form = this.fb.group({
       _id: '',
-      user_id: [{ value: '', disabled: this.mode !== 1 }, Validators.required], //只有mode=1， add mode 时允许编辑
+      user_id: ['', Validators.required],
       name: ['', Validators.required],
       department: ['', Validators.required],
       title: ['', Validators.required],
@@ -78,6 +77,7 @@ export class DoctorProfileComponent implements OnInit, OnDestroy {
 
   public get password() { return this.form.get('password'); }
   public get passwordConfirm() { return this.form.get('passwordConfirm'); }
+  public get userId() { return this.form.get('user_id'); }
 
   ngOnInit() {
     this.form.valueChanges.pipe(
@@ -86,9 +86,11 @@ export class DoctorProfileComponent implements OnInit, OnDestroy {
       tap(value => {
         if (!value?.name) return;
         const updated = { ...value };
-        delete updated.password;
+        if (this.mode !== 1) {
+          delete updated.password;
+          updated.user_id = this.user_id;
+        }
         delete updated.passwordConfirm;
-        updated.user_id = this.user_id;
         this.valueChange.emit({
           doctor: updated,
           invalid: this.form.invalid
@@ -97,6 +99,11 @@ export class DoctorProfileComponent implements OnInit, OnDestroy {
       }),
       takeUntil(this.destroy$)
     ).subscribe();
+
+    //只有mode=1， add mode 时允许编辑
+    if (this.mode !== 1) {
+      this.userId.disable();
+    }
     setTimeout(() => {
       this.cd.markForCheck();
     });
