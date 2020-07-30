@@ -21,7 +21,6 @@ import {
   NbFormFieldModule,
   NbCheckboxModule,
   NbToggleModule,
-  NbIconLibraries,
 } from '@nebular/theme';
 import { NbEvaIconsModule } from '@nebular/eva-icons';
 import { DEFAULT_THEME } from './styles/theme.default';
@@ -63,10 +62,7 @@ const COMPONENTS = [
   exports: [CommonModule, ...COMPONENTS, ...NB_MODULES],
 })
 export class ThemeModule {
-  constructor(private iconLibraries: NbIconLibraries) {
-    this.iconLibraries.registerFontPack('fas', { packClass: 'fas', iconClassPrefix: 'fa' });
-    this.iconLibraries.registerFontPack('far', { packClass: 'far', iconClassPrefix: 'fa' });
-    // this.iconLibraries.setDefaultPack('font-awesome'); // <---- set as default
+  constructor() {
   }
 
   static forRoot(): ModuleWithProviders {
