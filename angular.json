@@ -30,7 +30,8 @@
               "node_modules/pace-js/templates/pace-theme-flash.tmpl.css",
               "node_modules/ngx-toastr/toastr.css",
               "src/app/@theme/styles/styles.scss",
-              "node_modules/@fortawesome/fontawesome-free/css/all.min.css"
+              "node_modules/@fortawesome/fontawesome-free/css/regular.min.css",
+              "node_modules/@fortawesome/fontawesome-free/css/solid.min.css"
             ],
             "scripts": [
               "node_modules/pace-js/pace.min.js",
