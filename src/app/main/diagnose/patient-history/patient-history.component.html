@@ -41,7 +41,9 @@
           门诊记录
         </ng-template>
         <ng-template matTabContent>
-          <ngx-diagnose-history [diagnoses]="diagnoses" [medicineReferences]="data.medicineReferences" [patient]="data.patient" [doctor]="data.doctor"></ngx-diagnose-history>
+          <div class="mt-3 mb-2">
+            <ngx-diagnose-history [diagnoses]="diagnoses" [medicineReferences]="data.medicineReferences" [patient]="data.patient" [doctor]="data.doctor"></ngx-diagnose-history>
+          </div>
         </ng-template>
       </mat-tab>
 
@@ -50,8 +52,11 @@
           <mat-icon>opacity</mat-icon>
           化验结果
         </ng-template>
-
-        化验单功能开发中。。。
+        <ng-template matTabContent>
+          <div class="mt-3 mb-2">
+            化验单功能开发中。。。
+          </div>
+        </ng-template>
       </mat-tab>
 
       <mat-tab>
@@ -60,7 +65,9 @@
           不良反应
         </ng-template>
         <ng-template matTabContent>
-          <ngx-feedback-history [type]="1" [patientId]="data.patient._id" [doctorId]="data.doctor._id"></ngx-feedback-history>
+          <div class="mt-3 mb-2">
+            <ngx-feedback-history [type]="1" [patientId]="data.patient._id" [doctorId]="data.doctor._id"></ngx-feedback-history>
+          </div>
         </ng-template>
       </mat-tab>
 
@@ -70,7 +77,9 @@
           联合用药
         </ng-template>
         <ng-template matTabContent>
-          <ngx-feedback-history [type]="2" [patientId]="data.patient._id" [doctorId]="data.doctor._id"></ngx-feedback-history>
+          <div class="mt-3 mb-2">
+            <ngx-feedback-history [type]="2" [patientId]="data.patient._id" [doctorId]="data.doctor._id"></ngx-feedback-history>
+          </div>
         </ng-template>
       </mat-tab>
 
@@ -79,8 +88,11 @@
           <mat-icon>event-outline</mat-icon>
           今日用药
         </ng-template>
-
-        <ngx-today-notice [patientId]="data.patient._id" [medicineReferences]="data.medicineReferences"></ngx-today-notice>
+        <ng-template matTabContent>
+          <div class="mt-3 mb-2">
+            <ngx-today-notice [patientId]="data.patient._id" [medicineReferences]="data.medicineReferences"></ngx-today-notice>
+          </div>
+        </ng-template>
       </mat-tab>
     </mat-tab-group>
 
