@@ -1,7 +1,6 @@
 import { ModuleWithProviders, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
-  NbActionsModule,
   NbLayoutModule,
   NbMenuModule,
   NbSidebarModule,
@@ -15,9 +14,7 @@ import {
   NbCardModule,
   NbInputModule,
   NbSpinnerModule,
-  NbDatepickerModule,
   NbRadioModule,
-  NbListModule,
   NbFormFieldModule,
   NbCheckboxModule,
   NbToggleModule,
@@ -34,7 +31,6 @@ const NB_MODULES = [
   NbLayoutModule,
   NbMenuModule,
   NbUserModule,
-  NbActionsModule,
   NbSidebarModule,
   NbContextMenuModule,
   NbButtonModule,
@@ -47,9 +43,7 @@ const NB_MODULES = [
   NbInputModule,
   NbCheckboxModule,
   NbSpinnerModule,
-  NbDatepickerModule,
   NbRadioModule,
-  NbListModule,
   NbToggleModule,
 ];
 const COMPONENTS = [
@@ -78,7 +72,6 @@ export class ThemeModule {
         ).providers,
         NbMenuModule.forRoot().providers,
         NbSidebarModule.forRoot().providers,
-        NbDatepickerModule.forRoot().providers,
       ],
     } as ModuleWithProviders;
   }
