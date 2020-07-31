@@ -37,7 +37,7 @@ export class MedicineService {
     if (!medicinePeriods?.length) return '';
     const selectedIntervalDay = (dosage.intervalDay > -1 && medicinePeriods) ?
       medicinePeriods.find(item => item.value === dosage.intervalDay) : null;
-    return `${dosage.way}, ${selectedIntervalDay ? selectedIntervalDay.name : '空'} ${dosage.frequency || 0}次, 每次${dosage.count}${unit}`;
+    return `${dosage.way !== '没有限制' ? dosage.way + ',' : ''} ${selectedIntervalDay ? selectedIntervalDay.name : ''} ${dosage.frequency ? dosage.frequency + '次,' : '多次,'} 每次${dosage.count ? dosage.count + '' + unit : '剂量不一样'}`;
   }
 
 }

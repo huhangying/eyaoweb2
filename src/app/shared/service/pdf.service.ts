@@ -11,6 +11,7 @@ import { User } from '../../models/crm/user.model';
 import { GenderPipe } from '../pipe/gender.pipe';
 import { Medicine } from '../../models/hospital/medicine.model';
 import { MedicinePeriod } from '../../models/hospital/medicine-references.model';
+import { MedicineService } from '../../services/medicine.service';
 
 @Injectable({
   providedIn: 'root'
@@ -21,6 +22,7 @@ export class PdfService {
     private localDate: LocalDatePipe,
     private gender: GenderPipe,
     private surveyService: SurveyService,
+    private medicineService: MedicineService,
   ) {
     pdfMake.fonts = {
       fzytk: {
@@ -163,14 +165,9 @@ export class PdfService {
     return prescription.map(medicine => {
       return `
         药名: ${medicine.name} (共${medicine.capacity} ${medicine.unit} X ${medicine.quantity})
-        服用方法: ${medicine.usage}: ${this.showInterval(medicine.dosage.intervalDay, periods)} ${medicine.dosage.way} ${medicine.dosage.frequency} 次, 每次 ${medicine.dosage.count} ${medicine.unit}
+        服用方法: ${medicine.usage}: ${this.medicineService.showDosageInstruction(medicine.dosage, medicine.unit, periods)}
         ${medicine.notes ? '备注: ' + medicine.notes + '\n' : ''}\n`;
     });
-
-  }
-
-  showInterval(value: number, periods: MedicinePeriod[]) {
-    return periods?.find(_ => _.value === value)?.name;
   }
 
 }

@@ -1,11 +1,12 @@
 import { Component, OnInit, Input, ChangeDetectionStrategy, ChangeDetectorRef, Output, EventEmitter } from '@angular/core';
-import { Medicine } from '../../../models/hospital/medicine.model';
+import { Medicine, Dosage } from '../../../models/hospital/medicine.model';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogService } from '../../../shared/service/dialog.service';
 import { PrescriptionEditComponent } from './prescription-edit/prescription-edit.component';
 import { MedicineReferences } from '../../../models/hospital/medicine-references.model';
 import { MedicineNotice } from '../../../models/hospital/medicine-notice.model';
+import { MedicineService } from '../../../services/medicine.service';
 
 @Component({
   selector: 'ngx-prescription',
@@ -21,6 +22,7 @@ export class PrescriptionComponent implements OnInit {
 
   constructor(
     public dialog: MatDialog,
+    private medicineService: MedicineService,
     private dialogService: DialogService,
     private cd: ChangeDetectorRef,
   ) {
@@ -77,8 +79,8 @@ export class PrescriptionComponent implements OnInit {
       });
   }
 
-  showInterval(value: number) {
-    return this.medicineReferences.periods?.find(_ => _.value === value)?.name;
+  showDosageInstruction(dosage: Dosage, unit: string) {
+    return this.medicineService.showDosageInstruction(dosage, unit, this.medicineReferences.periods);
   }
 
 }
