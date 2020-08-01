@@ -94,9 +94,10 @@
           <label for="notes" class="label"> 备注 </label>
           <textarea nbInput fullWidth id="notes" formControlName="notes" rows="3"></textarea>
         </div>
-        <div class="col-md-3 pull-right pt-2">
-          <button nbButton hero status="primary" class="mr-3" (click)="caculateEndDate()">
-            自动设置结束日期
+        <div class="col-md-3 pull-right pt-4">
+          <button nbButton hero status="primary" class="mr-3" *ngIf="dosageCount.value && dosageFrequency.value"
+            (click)="caculateEndDate()">
+            自动计算结束日期
           </button>
 
           <ng-container *ngIf="selectedMedicine?.notices?.length">

@@ -7,6 +7,7 @@ import { MedicineService } from '../../../../services/medicine.service';
 import { MedicineReferences } from '../../../../models/hospital/medicine-references.model';
 import * as moment from 'moment';
 import { MessageService } from '../../../../shared/service/message.service';
+import { distinctUntilChanged, tap, startWith } from 'rxjs/operators';
 
 @Component({
   selector: 'ngx-prescription-edit',
@@ -38,7 +39,7 @@ export class PrescriptionEditComponent implements OnInit, OnDestroy {
       unit: ['', Validators.required],
       quantity: [1, Validators.required],
       startDate: ['', Validators.required],
-      endDate: ['', Validators.required],
+      endDate: [''],
       usage: ['', Validators.required],
       dosage: this.fb.group({
         count: ['', Validators.required],
@@ -52,6 +53,8 @@ export class PrescriptionEditComponent implements OnInit, OnDestroy {
 
   get unitCtrl() { return this.form.get('unit'); }
   get endDateCtrl() { return this.form.get('endDate'); }
+  get dosageCount() { return this.form.get('dosage.count'); }
+  get dosageFrequency() { return this.form.get('dosage.frequency'); }
 
   ngOnInit(): void {
     this.dialogRef.updateSize('90%');
@@ -62,6 +65,27 @@ export class PrescriptionEditComponent implements OnInit, OnDestroy {
     } else {
       this.fromMinDate = moment(); // today if 新增
     }
+
+    this.form.get('dosage.frequency').valueChanges.pipe(
+      startWith(this.data.medicine?.dosage?.frequency),
+      distinctUntilChanged(),
+      tap(val => {
+        if (val === 0) {
+          this.endDateCtrl.patchValue('');
+          this.cd.markForCheck();
+        }
+      })
+    ).subscribe();
+    this.form.get('dosage.count').valueChanges.pipe(
+      startWith(this.data.medicine?.dosage?.count),
+      distinctUntilChanged(),
+      tap(val => {
+        if (val === 0) {
+          this.endDateCtrl.patchValue('');
+          this.cd.markForCheck();
+        }
+      })
+    ).subscribe();
   }
 
   ngOnDestroy() {
@@ -85,9 +109,12 @@ export class PrescriptionEditComponent implements OnInit, OnDestroy {
     const med: Medicine = this.form.value;
     const total = med.capacity * med.quantity;
     const everyPeriod = med.dosage.frequency * med.dosage.count;
-    const days = total * med.dosage.intervalDay / everyPeriod;
-
-    this.endDateCtrl.patchValue(new Date(moment(med.startDate).add(days, 'days').format()));
+    if (everyPeriod === 0) {
+      this.endDateCtrl.patchValue('');
+    } else {
+      const days = total * med.dosage.intervalDay / everyPeriod;
+      this.endDateCtrl.patchValue(new Date(moment(med.startDate).add(days, 'days').format()));
+    }
     this.cd.markForCheck();
   }
 
