@@ -36,8 +36,16 @@
               "node_modules/@ckeditor/ckeditor5-build-classic/build/translations/zh-cn.js",
               "node_modules/moment/min/moment.min.js",
               "node_modules/moment/locale/zh-cn.js",
-              "node_modules/pdfmake/build/pdfmake.min.js",
-              "node_modules/pdfmake/build/vfs_fonts.js"
+              {
+                "input":"node_modules/pdfmake/build/pdfmake.min.js",
+                "lazy": true,
+                "bundleName": "lazy-loaded-pdfmake"
+              },
+              {
+                "input":"node_modules/pdfmake/build/vfs_fonts.js",
+                "lazy": true,
+                "bundleName": "lazy-loaded-pdfmake"
+              }
             ]
           },
           "configurations": {
