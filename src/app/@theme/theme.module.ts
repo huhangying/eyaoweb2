@@ -59,7 +59,7 @@ export class ThemeModule {
   constructor() {
   }
 
-  static forRoot(): ModuleWithProviders {
+  static forRoot(): ModuleWithProviders<ThemeModule> {
     return {
       ngModule: ThemeModule,
       providers: [
@@ -73,6 +73,6 @@ export class ThemeModule {
         NbMenuModule.forRoot().providers,
         NbSidebarModule.forRoot().providers,
       ],
-    } as ModuleWithProviders;
+    };
   }
 }
