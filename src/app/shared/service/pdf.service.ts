@@ -144,9 +144,9 @@ export class PdfService {
           question.options.map(option => {
             if (option.selected) {
               isAnswered = true;
-              answerText += `✓\t ${option.answer}\n`;
+              answerText += `•\t ${option.answer}\n`;
             } else {
-              answerText += ` \t ${option.answer}\n`;
+              answerText += `-\t ${option.answer}\n`;
             }
           });
         }
