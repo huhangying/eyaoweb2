@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { DoctorService } from '../../services/doctor.service';
 import { AuthService } from '../../shared/service/auth.service';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
@@ -11,7 +11,8 @@ import { tap, catchError } from 'rxjs/operators';
 @Component({
   selector: 'ngx-shortcuts',
   templateUrl: './shortcuts.component.html',
-  styleUrls: ['./shortcuts.component.scss']
+  styleUrls: ['./shortcuts.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ShortcutsComponent implements OnInit {
   doctorUserId: string;
@@ -24,12 +25,14 @@ export class ShortcutsComponent implements OnInit {
     public dialog: MatDialog,
     private dialogService: DialogService,
     private message: MessageService,
+    private cd: ChangeDetectorRef,
   ) {
     this.doctorUserId = this.auth.doctor.user_id;
     this.doctorService.getShortcutsByDoctor(this.doctorUserId)
       .subscribe(result => {
         this.shortcuts = result ? result?.split('|'): [];
         this.originalShortcuts = [...this.shortcuts];
+        this.cd.markForCheck();
       });
   }
 
@@ -56,6 +59,7 @@ export class ShortcutsComponent implements OnInit {
             this.shortcuts[index] = result;
           }
         }
+        this.cd.markForCheck();
       })
     ).subscribe();
   }
@@ -66,6 +70,7 @@ export class ShortcutsComponent implements OnInit {
         if (result) {
           this.shortcuts.splice(index, 1);
         }
+        this.cd.markForCheck();
       }),
     ).subscribe();
 
@@ -73,6 +78,7 @@ export class ShortcutsComponent implements OnInit {
 
   reset() {
     this.shortcuts = [...this.originalShortcuts];
+    this.cd.markForCheck();
   }
 
   update() {
