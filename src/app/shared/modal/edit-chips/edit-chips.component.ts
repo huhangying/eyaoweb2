@@ -2,6 +2,8 @@ import { Component, OnInit, Inject, ViewChild, ElementRef, ChangeDetectionStrate
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { BACKSLASH, ENTER } from '@angular/cdk/keycodes';
 import { MatChipInputEvent } from '@angular/material/chips';
+import { HospitalService } from '../../../services/hospital.service';
+import { tap } from 'rxjs/operators';
 
 @Component({
   selector: 'ngx-edit-chips',
@@ -18,16 +20,26 @@ export class EditChipsComponent implements OnInit {
 
   constructor(
     public dialogRef: MatDialogRef<EditChipsComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { title: string; content: string },
+    @Inject(MAT_DIALOG_DATA) public data: { title: string; content: string; type?: number }, // type=1: edit-disease
     private cd: ChangeDetectorRef,
+    private hospitalService: HospitalService,
   ) {
     this.chips = !data.content ? [] : data.content.split('|');
-    this.diseases = [
-      'sdfsd',
-      'ddddd',
-      'fffff'
-    ];
-    this.tags = [...this.diseases];
+    this.tags = [];
+    if (data.type) {
+      this.diseases = [
+        'sdfsd',
+        'ddddd',
+        'fffff'
+      ];
+      this.tags = [...this.diseases];
+      this.hospitalService.getDiseases().pipe(
+        tap(ds => {
+          console.log(ds);
+
+        })
+      ).subscribe();
+    }
   }
 
   ngOnInit(): void {

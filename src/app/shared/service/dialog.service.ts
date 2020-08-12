@@ -54,12 +54,13 @@ export class DialogService {
     }).afterClosed();
   }
 
-  editChips(content?: string, title?: string) {
+  editChips(content?: string, title?: string, type?: number) {
     return this.dialog.open(EditChipsComponent, {
       minWidth: '320px',
       data:  {
         title: title || '编辑',
-        content: content || ''
+        content: content || '',
+        type: type
       }
     }).afterClosed();
   }

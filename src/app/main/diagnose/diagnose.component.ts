@@ -302,12 +302,12 @@ export class DiagnoseComponent implements OnInit, OnDestroy {
   }
 
   editPatientDiagnoses() {
-    this.dialogService.editChips(this.selectedPatient.diagnoses, '编辑疾病诊断').pipe(
+    this.dialogService.editChips(this.selectedPatient.diagnoses, '编辑疾病诊断', 1).pipe(
       tap(result => {
         if (result?.save) {
           this.userService.updateUserById( {
             _id: this.selectedPatient._id,
-            diagnoses: result.content
+            diagnoses: result.content,
           }).subscribe(_ => {
             if (_) {
               this.selectedPatient.diagnoses = _.diagnoses;
