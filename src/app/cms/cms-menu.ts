@@ -24,7 +24,7 @@ export function getMenuItems(role: number, queryParams: Params): NbMenuItem[] {
         {
           title: '疾病类型',
           link: '/cms/hospital/disease',
-          hidden: true
+          hidden: false
         },
         {
           title: '药品管理',

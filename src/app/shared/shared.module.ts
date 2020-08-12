@@ -21,7 +21,6 @@ import { SelectArticleCatComponent } from '../cms/shared/select-article-cat/sele
 import { PaginatorProvider } from './helper/paginator.provider';
 import { DialogService } from './service/dialog.service';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { AccessControlDirective } from './directive/access-control.directive';
 import { LocalDatePipe } from './pipe/local-date.pipe';
 import { ConfirmComponent } from './modal/confirm/confirm.component';
 import { ImageUploaderComponent } from './components/image-uploader/image-uploader.component';
@@ -45,10 +44,11 @@ import { ImgClickViewDirective } from './directive/img-click-view.directive';
 import { DisableByRoleDirective } from './directive/disable-by-role.directive';
 import { EditChipsComponent } from './modal/edit-chips/edit-chips.component';
 import { MatChipsModule } from '@angular/material/chips';
-import {MatFormFieldModule} from '@angular/material/form-field';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { SelectPatientDialogComponent } from './components/select-patient/select-patient-dialog/select-patient-dialog.component';
 import { PromptComponent } from './modal/prompt/prompt.component';
-import {MatInputModule} from '@angular/material/input';
+import { MatInputModule } from '@angular/material/input';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
 @NgModule({
   imports: [
@@ -75,6 +75,7 @@ import {MatInputModule} from '@angular/material/input';
     MatChipsModule,
     MatFormFieldModule,
     MatInputModule,
+    MatAutocompleteModule,
 
     ImageCropperModule,
 
@@ -113,6 +114,7 @@ import {MatInputModule} from '@angular/material/input';
     MatChipsModule,
     MatFormFieldModule,
     MatInputModule,
+    MatAutocompleteModule,
 
     FooterComponent,
     HeaderComponent,
