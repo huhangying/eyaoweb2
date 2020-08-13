@@ -44,6 +44,18 @@ export class HospitalService {
     return this.api.get<Disease[]>('diseases/');
   }
 
+  deleteDiseaseById(id: string) {
+    return this.api.delete<any>('disease/' + id);
+  }
+
+  createDisease(data: any) {
+    return this.api.post<Disease>('disease', data);
+  }
+
+  updateDisease(data: Disease) {
+    return this.api.patch<Disease>('disease/' + data._id, data);
+  }
+
   // 医院全局变量
   getHospitalSettings() {
     return this.api.get<Const[]>('consts');

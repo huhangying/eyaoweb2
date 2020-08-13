@@ -10,6 +10,7 @@ import { GroupSettingsComponent } from './hospital-settings/group-settings/group
 import { TestFormComponent } from './test-form/test-form.component';
 import { TestFormEditComponent } from './test-form/test-form-edit/test-form-edit.component';
 import { TestItemEditComponent } from './test-form/test-form-edit/test-item-edit/test-item-edit.component';
+import { DiseaseEditComponent } from './disease/disease-edit/disease-edit.component';
 
 @NgModule({
   imports: [
@@ -27,6 +28,7 @@ import { TestItemEditComponent } from './test-form/test-form-edit/test-item-edit
     TestFormComponent,
     TestFormEditComponent,
     TestItemEditComponent,
+    DiseaseEditComponent,
   ]
 })
 export class HospitalModule { }

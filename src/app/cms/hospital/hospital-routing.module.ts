@@ -8,6 +8,7 @@ import { MedicineComponent } from './medicine/medicine.component';
 import { FaqComponent } from './faq/faq.component';
 import { MedicineReferencesResolver } from '../../services/resolvers/medicine-references.resolver';
 import { TestFormComponent } from './test-form/test-form.component';
+import { DepartmentResolver } from '../../services/resolvers/department.resolver';
 
 const routes: Routes = [{
   path: '',
@@ -23,6 +24,9 @@ const routes: Routes = [{
     {
       path: 'disease',
       component: DiseaseComponent,
+      resolve: {
+        departments: DepartmentResolver
+      }
     },
     {
       path: 'medicine',
