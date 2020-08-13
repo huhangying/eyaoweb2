@@ -14,12 +14,12 @@
           {{chip}}
           <mat-icon matChipRemove>cancel</mat-icon>
         </mat-chip>
-        <input #tagInput placeholder="请输入" [matChipInputFor]="chipList" [matAutocomplete]="auto"
+        <input #tagInput placeholder="请输入" [matChipInputFor]="chipList" [matAutocomplete]="auto" [formControl]="filterCtrl"
           [matChipInputSeparatorKeyCodes]="separatorKeysCodes" [matChipInputAddOnBlur]="true"
           (matChipInputTokenEnd)="add($event)">
       </mat-chip-list>
       <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onSelected($event.option.value)">
-        <mat-option *ngFor="let t of tags" [value]="t">
+        <mat-option *ngFor="let t of filteredTags" [value]="t">
           {{ t }}
         </mat-option>
       </mat-autocomplete>
