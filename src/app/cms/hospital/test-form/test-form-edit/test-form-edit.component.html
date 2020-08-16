@@ -24,7 +24,7 @@
         <div class="col-12">
           <div class="py-2">
             <button nbButton hero status="success" (click)="add()">
-              <nb-icon icon="plus-outline"></nb-icon>新增提醒
+              <nb-icon icon="plus-outline"></nb-icon>新增测试项
             </button>
           </div>
           <div [class.d-none]="!dataSource?.data?.length">
@@ -78,11 +78,11 @@
       </div>
 
       <div class="field row">
-        <div class="col-md-6">
+        <div class="col-md-3">
           <label for="order" class="label"> 顺序 </label>
           <input nbInput type="number" fullWidth id="order" formControlName="order">
         </div>
-        <div class="col-md-6">
+        <div class="col-md-3">
           <div class="pt-5">
             <nb-checkbox formControlName="apply"> 开关 </nb-checkbox>
           </div>
