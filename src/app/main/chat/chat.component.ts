@@ -120,8 +120,8 @@ export class ChatComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     // socket.io
-    this.room = this.doctor._id;
-    this.socketio.joinRoom(this.room);
+    // this.room = this.doctor._id;
+    // this.socketio.joinRoom(this.room);
 
     this.socketio.onChat((msg: Chat) => {
       if (msg.sender === this.selectedPatient._id) {
@@ -146,6 +146,7 @@ export class ChatComponent implements OnInit, OnDestroy {
       tap((bp: NbMediaBreakpoint) => {
         if (bp) {
           this.isMd = (bp.width >= md);
+          this.cd.markForCheck();
         }
       }),
       takeUntil(this.destroy$),
@@ -158,14 +159,13 @@ export class ChatComponent implements OnInit, OnDestroy {
       tap(notis => {
         // init
         this.chatNotifications = [];
-        if (!notis?.length) {
-          return;
+        if (notis?.length) {
+          this.chatNotifications = notis;
+          // this.chatUnread = this.chatNotifications.reduce((total, noti) => {
+          //   total += noti.count;
+          //   return total;
+          // }, 0);
         }
-        this.chatNotifications = notis;
-        // this.chatUnread = this.chatNotifications.reduce((total, noti) => {
-        //   total += noti.count;
-        //   return total;
-        // }, 0);
         this.cd.markForCheck();
       }),
       takeUntil(this.destroy$),
@@ -176,7 +176,7 @@ export class ChatComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.destroy$.next();
     this.destroy$.complete();
-    this.socketio.leaveRoom(this.room);
+    // this.socketio.leaveRoom(this.room);
   }
 
   toggleShowInSm() {

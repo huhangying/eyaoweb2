@@ -119,6 +119,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.socketio.onNotification((noti: Notification) => {
       if (noti.patientId === this.pid && noti.type === +this.notiType) return; // skip
       this.socketio.addNotification(noti);
+      this.cd.markForCheck();
       // if (noti.type === 0) {
       //   this.chatNotifications.push(noti);
       //   this.appStore.updateChatNotifications(this.chatNotifications);
@@ -136,14 +137,13 @@ export class HeaderComponent implements OnInit, OnDestroy {
         // init
         this.chatUnread = 0;
         this.chatNotifications = [];
-        if (!notis?.length) {
-          return;
+        if (notis?.length) {
+          this.chatNotifications = notis;
+          this.chatUnread = this.chatNotifications.reduce((total, noti) => {
+            total += noti.count;
+            return total;
+          }, 0);
         }
-        this.chatNotifications = notis;
-        this.chatUnread = this.chatNotifications.reduce((total, noti) => {
-          total += noti.count;
-          return total;
-        }, 0);
         this.cd.markForCheck();
       }),
       takeUntil(this.destroy$),
@@ -156,14 +156,13 @@ export class HeaderComponent implements OnInit, OnDestroy {
         // init
         this.feedbackUnread = 0;
         this.feedbackNotifications = [];
-        if (!notis?.length) {
-          return;
+        if (notis?.length) {
+          this.feedbackNotifications = notis;
+          this.feedbackUnread = this.feedbackNotifications.reduce((total, noti) => {
+            total += noti.count;
+            return total;
+          }, 0);
         }
-        this.feedbackNotifications = notis;
-        this.feedbackUnread = this.feedbackNotifications.reduce((total, noti) => {
-          total += noti.count;
-          return total;
-        }, 0);
         this.cd.markForCheck();
       }),
       takeUntil(this.destroy$),
@@ -173,6 +172,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.destroy$.next();
     this.destroy$.complete();
+    this.socketio.leaveRoom(this.room);
   }
 
   toggleSidebar(): boolean {
