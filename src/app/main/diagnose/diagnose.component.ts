@@ -291,9 +291,7 @@ export class DiagnoseComponent implements OnInit, OnDestroy {
   }
 
   printDiagnose() {
-    // console.log(this.diagnose);
-
-    this.pdf.generatePdf(this.diagnose, this.diagnose.doctor || this.doctor, this.selectedPatient, this.isFirstVisit? 1 : 2, this.medicineReferences.periods);
+    this.pdf.generatePdf(this.diagnose, this.doctor || this.diagnose.doctor, this.selectedPatient, this.isFirstVisit? 1 : 2, this.medicineReferences.periods);
   }
 
   checkIfFinished() {

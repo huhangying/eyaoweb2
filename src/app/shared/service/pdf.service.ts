@@ -12,6 +12,7 @@ import { GenderPipe } from '../pipe/gender.pipe';
 import { Medicine } from '../../models/hospital/medicine.model';
 import { MedicinePeriod } from '../../models/hospital/medicine-references.model';
 import { MedicineService } from '../../services/medicine.service';
+import { HospitalService } from '../../services/hospital.service';
 
 @Injectable({
   providedIn: 'root'
@@ -23,6 +24,7 @@ export class PdfService {
     private gender: GenderPipe,
     private surveyService: SurveyService,
     private medicineService: MedicineService,
+    private departmentService: HospitalService
   ) {
     pdfMake.fonts = {
       fzytk: {
@@ -36,6 +38,9 @@ export class PdfService {
   async generatePdf(diagnose: Diagnose, doctor: any, patient: User, surveyType: number, periods: MedicinePeriod[]) {
     const surveyContent = await this.buildSurveyContent(diagnose.doctor, diagnose.user, surveyType, diagnose.surveys);
     const conclusionSurvey = await this.buildSurveyContent(diagnose.doctor, diagnose.user, 5, diagnose.surveys);
+    const departmentName = (!doctor.department?.name) ?
+      (await this.departmentService.getDepartmentById(doctor.department).toPromise())?.name:
+      doctor.department?.name;
 
     const documentDefinition = {
       pageSize: 'A4',
@@ -82,23 +87,21 @@ export class PdfService {
                 '日期：' + this.localDate.transform(diagnose.updatedAt)
               ],
               [
-                '科室：' + doctor.department?.name,
+                '科室：' + departmentName,
                 { colSpan: 3, text: `药师：${doctor.name} ${doctor.title}` }],
               // [{ text: 'Bold value', bold: true }, 'Val 2', 'Val 3', 'Val 4'],
               [{
                 // rowSpan: 3,
                 colSpan: 4,
                 style: 'block',
-                text: '处方：\n'
-                  + this.buildPrescription(diagnose.prescription, periods) + '\n'
+                text: '处方：\n\n' + this.buildPrescription(diagnose.prescription, periods) + '\n'
               }],
               [{
                 colSpan: 4,
                 style: 'block',
                 // rowSpan: 3,
-                text: `门诊结论:
-                ${conclusionSurvey}\n
-                `
+                text: `门诊结论:\n
+                ${conclusionSurvey}\n`
               }],
 
             ]
@@ -163,11 +166,10 @@ export class PdfService {
   buildPrescription(prescription: Medicine[], periods: MedicinePeriod[]) {
     if (!prescription?.length) return '\n\n';
     return prescription.map(medicine => {
-      return `
-        药名: ${medicine.name} (共${medicine.capacity} ${medicine.unit} X ${medicine.quantity})
+      return `药名: ${medicine.name} (共${medicine.capacity} ${medicine.unit} X ${medicine.quantity})
         服用方法: ${medicine.usage}: ${this.medicineService.showDosageInstruction(medicine.dosage, medicine.unit, periods)}
         ${medicine.notes ? '备注: ' + medicine.notes + '\n' : ''}\n`;
-    });
+    }).join('');
   }
 
 }
