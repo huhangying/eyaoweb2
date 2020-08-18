@@ -120,18 +120,18 @@ export class ChatComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     // socket.io
-    // this.room = this.doctor._id;
+    this.room = this.doctor._id;
     // this.socketio.joinRoom(this.room);
 
     this.socketio.onChat((msg: Chat) => {
-      if (msg.sender === this.selectedPatient._id) {
+      if (msg.sender === this.selectedPatient?._id) {
         this.chats.push(msg);
         this.scrollBottom();
       }
     });
 
     this.socketio.onFeedback((msg: UserFeedback) => {
-      if (msg.user === this.selectedPatient._id) {
+      if (msg.user === this.selectedPatient?._id) {
         this.feedbacks.push(msg);
         this.scrollBottom();
       }
