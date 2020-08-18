@@ -30,6 +30,10 @@ export class PatientEditComponent implements OnInit, OnDestroy {
       gender: [''],
       birthdate: [''],
       cell: [''],
+      sin: [''],
+      admissionNumber: [''],
+      diagnoses: [''],
+      notes: [''],
       link_id: [''],
       apply: false,
     });
@@ -39,6 +43,7 @@ export class PatientEditComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.dialogRef.updateSize('50%');
   }
 
   ngOnDestroy() {
