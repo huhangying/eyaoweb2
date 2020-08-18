@@ -85,7 +85,7 @@ export class TestFormEditComponent implements OnInit, OnDestroy {
     ).subscribe();
   }
 
-  edit(data?: TestForm) {
+  edit(data?: TestForm, index?: number) {
     const isEdit = !!data;
     this.dialog.open(TestItemEditComponent, {
       data: {
@@ -97,9 +97,7 @@ export class TestFormEditComponent implements OnInit, OnDestroy {
         if (result) {
           if (isEdit) {
             // update
-            this.dataSource.data = this.dataSource.data.map(_ => {
-              return _.item === result.item ? result : _;
-            });
+            this.dataSource.data[index] = result;
           } else {
             // create
             this.dataSource.data.unshift(result);

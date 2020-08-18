@@ -13,7 +13,7 @@ export class TestItemEditComponent implements OnInit {
 
   constructor(
     public dialogRef: MatDialogRef<TestItemEditComponent>,
-    @Inject(MAT_DIALOG_DATA) @Optional() @SkipSelf() public data: { testItem: TestItem; isEdit: boolean },
+    @Inject(MAT_DIALOG_DATA) @Optional() @SkipSelf() public data: { testItem: TestItem; isEdit: boolean; index?: number },
     private fb: FormBuilder,
   ) {
     this.form = this.fb.group({
