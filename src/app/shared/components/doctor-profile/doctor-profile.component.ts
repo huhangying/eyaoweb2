@@ -67,7 +67,7 @@ export class DoctorProfileComponent implements OnInit, OnDestroy {
       bulletin: '',
       hours: '',
       honor: '',
-      icon: [''],
+      // icon: [''],
       password: [''],
       passwordConfirm: ['']
     }, {
