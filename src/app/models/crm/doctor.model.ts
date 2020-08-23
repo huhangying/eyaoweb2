@@ -26,4 +26,5 @@ export interface Doctor {
 
   password?: string;
   token?: string; // temp
+  hospitalName?: string;
 }
