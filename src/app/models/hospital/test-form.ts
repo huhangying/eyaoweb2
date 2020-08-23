@@ -13,4 +13,12 @@ export interface TestItem {
   code: string;
   unit: string;
   reference: string;
+  riskValues?: TestFormRiskValue[];
+}
+
+export interface TestFormRiskValue {
+  value: number;
+  name: string; // optional
+  from: number;
+  to: number;
 }

@@ -49,6 +49,7 @@ import { SelectPatientDialogComponent } from './components/select-patient/select
 import { PromptComponent } from './modal/prompt/prompt.component';
 import { MatInputModule } from '@angular/material/input';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatSelectModule } from '@angular/material/select';
 
 @NgModule({
   imports: [
@@ -76,6 +77,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
     MatFormFieldModule,
     MatInputModule,
     MatAutocompleteModule,
+    MatSelectModule,
 
     ImageCropperModule,
 
@@ -115,6 +117,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
     MatFormFieldModule,
     MatInputModule,
     MatAutocompleteModule,
+    MatSelectModule,
 
     FooterComponent,
     HeaderComponent,

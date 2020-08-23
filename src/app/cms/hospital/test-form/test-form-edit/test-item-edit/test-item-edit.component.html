@@ -9,25 +9,46 @@
   <mat-dialog-content class="container pt-2" [formGroup]="form">
     <div class="container">
       <div class="field row">
-        <div class="col-md-6">
+        <div class="col-sm-6">
           <label for="item" class="label required"> 测试项 </label>
           <input nbInput fullWidth id="item" formControlName="item">
         </div>
-        <div class="col-md-6">
+        <div class="col-sm-3">
           <label for="code" class="label"> 测试项代码 </label>
           <input nbInput fullWidth id="code" formControlName="code">
         </div>
-      </div>
-      <div class="field row">
-        <div class="col-md-6">
+        <div class="col-sm-3">
           <label for="unit" class="label required"> 单位 </label>
           <input nbInput fullWidth id="unit" formControlName="unit">
         </div>
-        <div class="col-md-6">
-          <label for="reference" class="label"> 参考值 </label>
-          <input nbInput fullWidth id="reference" formControlName="reference">
-        </div>
       </div>
+      <ng-container formArrayName="riskValues">
+        <div class="field row">
+          <div class="col-12">
+            <label for="reference" class="label required"> 未达标/危险值设定 </label>
+            <ng-container *ngFor="let riskValue of riskValues.controls; let i=index">
+              <div class="field row" [formGroupName]="i">
+                <mat-form-field  class="col-3">
+                  <mat-label>设定级别</mat-label>
+                  <input matInput type="number" min="-3" max="3" formControlName="value">
+                </mat-form-field>
+                <mat-form-field class="example-full-width" class="col-3">
+                  <mat-label>设定级别名称</mat-label>
+                  <input matInput placeholder="偏高" formControlName="name">
+                </mat-form-field>
+                <mat-form-field class="example-full-width" class="col-3">
+                  <mat-label>从</mat-label>
+                  <input matInput type="number" placeholder="开始值" formControlName="from">
+                </mat-form-field>
+                <mat-form-field class="example-full-width" class="col-3">
+                  <mat-label>到</mat-label>
+                  <input matInput type="number" placeholder="结束值" formControlName="to">
+                </mat-form-field>
+              </div>
+            </ng-container>
+          </div>
+        </div>
+      </ng-container>
     </div>
 
   </mat-dialog-content>
