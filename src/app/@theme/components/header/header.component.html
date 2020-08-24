@@ -3,7 +3,7 @@
     <a (click)="toggleSidebar()" href="#" class="sidebar-toggle" *ngIf="!isXl">
       <nb-icon icon="menu-2-outline"></nb-icon>
     </a>
-    <a class="logo" href="#" (click)="navigateHome()">{{doctor.hospitalName || ''}}{{ isCms? '管理后台': '' }}</a>
+    <a class="logo" href="#" (click)="navigateHome()">{{title}}</a>
   </div>
 </div>
 

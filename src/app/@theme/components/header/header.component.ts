@@ -66,6 +66,14 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.socketio.setupSocketConnection();
   }
 
+  get title() {
+    const _title = (this.doctor.hospitalName || '') +  (this.isCms? '管理后台': '');
+    if (_title !== document.title) {
+      document.title = _title;
+    }
+    return _title;
+  }
+
   ngOnInit() {
     this.doctor = this.auth.doctor;
     this.getUnreadList();
