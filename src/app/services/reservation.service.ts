@@ -3,6 +3,7 @@ import { ApiService } from '../shared/service/api.service';
 import { Schedule } from '../models/reservation/schedule.model';
 import { ScheduleBatch } from '../models/reservation/schedule-batch.model';
 import { Booking } from '../models/reservation/booking.model';
+import { Doctor } from '../models/crm/doctor.model';
 
 @Injectable({
   providedIn: 'root'
@@ -48,6 +49,10 @@ export class ReservationService {
 
   batchDelete(data: ScheduleBatch) {
     return this.api.post<any>('schedules-bat-delete', data);
+  }
+
+  getForwardAvailableDoctors(departmentId: string, date: Date, period: string) {
+    return this.api.get<Doctor[]>(`schedules/find/doctors/${departmentId}/${date.toISOString()}/${period}`);
   }
 
   // Booking

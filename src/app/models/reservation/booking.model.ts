@@ -18,7 +18,7 @@ export interface Booking {
 export interface BookingFlatten {
   _id: string;
   scheduleDate: Date;
-  schedulePeriod: string;
+  schedulePeriod: string; // period id
   date?: Date; // same as in schedule
   doctor: string; // id
   userName: string;

@@ -14,6 +14,7 @@ import { MessageService } from '../../../shared/service/message.service';
 import { Period } from '../../../models/reservation/schedule.model';
 import { tap, catchError } from 'rxjs/operators';
 import { AppStoreService } from '../../../shared/store/app-store.service';
+import { BookingForwardDoctorComponent } from './booking-forward-doctor/booking-forward-doctor.component';
 
 @Component({
   selector: 'ngx-booking',
@@ -75,7 +76,7 @@ export class BookingComponent implements OnInit, OnDestroy {
               created: new Date(_.created),
               status: _.status,
               scheduleDate: new Date(_.schedule.date),
-              schedulePeriod: this.getPeriodLabel(_.schedule.period),
+              schedulePeriod: _.schedule.period,
               userName: _.user?.name
             });
           }
@@ -98,6 +99,35 @@ export class BookingComponent implements OnInit, OnDestroy {
     });
   }
 
+  forwardAnotherDoctor(data?: BookingFlatten) {
+    this.dialog.open(BookingForwardDoctorComponent, {
+      data: {
+        booking: data,
+        periods: this.periods,
+        doctor: this.selectedDoctor
+      },
+      width: '600px'
+    }).afterClosed().pipe(
+      tap(result => {
+        if (result?._id) {
+          const isEdit = !!this.dataSource.data.find(item => item._id === result._id);
+          if (isEdit) {
+            // update
+            this.dataSource.data = this.dataSource.data.map(item => {
+              return item._id === result._id ? result : item;
+            });
+          } else {
+            // create
+            this.dataSource.data.unshift(result);
+          }
+          this.loadData(this.dataSource.data); // add to list
+          this.message.updateSuccess();
+        }
+      }),
+      catchError(rsp => this.message.updateErrorHandle(rsp))
+    ).subscribe();
+  }
+
   private updateBookingStatus(data: BookingFlatten, status: number, cancelReason?: string) {
     const booking: Booking = {
       _id: data._id,
@@ -118,60 +148,11 @@ export class BookingComponent implements OnInit, OnDestroy {
     ).subscribe();
   }
 
-  edit(data?: BookingFlatten) {
-    // this.dialog.open(ScheduleEditComponent, {
-    //   data: {
-    //     Booking: data,
-    //     periods: this.periods,
-    //     doctor: this.selectedDoctor
-    //   },
-    //   width: '600px'
-    // }).afterClosed().pipe(
-    //   tap(result => {
-    //     if (result?._id) {
-    //       const isEdit = !!this.dataSource.data.find(item => item._id === result._id);
-    //       if (isEdit) {
-    //         // update
-    //         this.dataSource.data = this.dataSource.data.map(item => {
-    //           return item._id === result._id ? result : item;
-    //         });
-    //       } else {
-    //         // create
-    //         this.dataSource.data.unshift(result);
-    //       }
-    //       this.loadData(this.dataSource.data); // add to list
-    //       isEdit && this.dataSource.paginator.firstPage(); // created goes first
-    //       this.message.updateSuccess();
-    //     }
-    //   }),
-    //   catchError(rsp => this.message.updateErrorHandle(rsp))
-    // ).subscribe();
-  }
-
-  delete(id: string) {
-    // this.dialogService?.deleteConfirm().pipe(
-    //   tap(result => {
-    //     if (result) {
-    //       this.reservationService.deleteById(id)
-    //         .subscribe(result => {
-    //           if (result?._id) {
-    //             this.loadData(this.dataSource.data.filter(item => item._id !== result._id)); // remove from list
-    //             this.message.deleteSuccess();
-    //           }
-    //         });
-    //     }
-    //   }),
-    //   catchError(rsp => this.message.deleteErrorHandle(rsp))
-    // ).subscribe();
-  }
-
-
   loadData(data: BookingFlatten[]) {
     this.dataSource = new MatTableDataSource<BookingFlatten>(data);
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
     this.cd.markForCheck();
-    // this.cd.detectChanges();
   }
 
   getPeriodLabel(id: string) {
@@ -183,5 +164,9 @@ export class BookingComponent implements OnInit, OnDestroy {
   getStatusLabel(status: number) {
     if (status < 1 || status > 6) return '';
     return this.statusList[status];
+  }
+
+  isForwarAvailable(booking: BookingFlatten) {
+    return booking.status === 1 && booking.scheduleDate > new Date();
   }
 }

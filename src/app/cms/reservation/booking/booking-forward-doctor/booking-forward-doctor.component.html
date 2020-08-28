@@ -1,0 +1,28 @@
+<nb-card status="warning">
+  <nb-card-header>
+    通知病患接手药师或取消
+    <button nbButton shape="round" size="tiny" class="float-right" mat-dialog-close>
+      <nb-icon icon="close"></nb-icon>
+    </button>
+  </nb-card-header>
+
+  <mat-dialog-content class="px-3">
+    <label>相同时间段内可选的同科室药师</label>
+    <mat-radio-group class="d-flex flex-column p-2" [(ngModel)]="selectedDoctor">
+      <mat-radio-button class="mx-3" *ngFor="let doc of doctors" [value]="doc">
+        {{doc.name + ' ' + doc.title}}
+      </mat-radio-button>
+    </mat-radio-group>
+
+    <div class="text-hint pt-3">
+      * 选择“发送”会发送微信公众号内消息给病患，提供病患两个选项：1.同意更换药师；2.选择取消预约。不保证用户一定会有所操作。
+    </div>{{selectedDoctor|json}}
+  </mat-dialog-content>
+
+  <nb-card-footer class="d-block">
+    <button nbButton mat-dialog-close>取消</button>
+    <button nbButton hero status="primary" class="float-right" [disabled]="!selectedDoctor" (click)="submit()">
+      <nb-icon icon="checkmark-circle"></nb-icon>发送
+    </button>
+  </nb-card-footer>
+</nb-card>

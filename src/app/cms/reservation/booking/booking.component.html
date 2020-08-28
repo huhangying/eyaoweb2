@@ -14,7 +14,7 @@
           <th mat-header-cell *matHeaderCellDef mat-sort-header> 预约 </th>
           <td mat-cell *matCellDef="let element">
             {{ element?.scheduleDate | localDate }} -
-            <span class="text-primary">{{ element.schedulePeriod }}</span>
+            <span class="text-primary">{{ getPeriodLabel(element.schedulePeriod) }}</span>
           </td>
         </ng-container>
 
@@ -50,6 +50,11 @@
             <button nbButton hero shape="round" size="tiny" status="danger" title="药师取消" *ngIf="element.status === 1"
               (click)="forceCancel(element)">
               <nb-icon icon="close-outline"></nb-icon>
+            </button>
+            &nbsp;
+            <button nbButton hero shape="round" size="tiny" status="warning" title="通知病患接手药师或取消" *ngIf="isForwarAvailable(element)"
+              (click)="forwardAnotherDoctor(element)">
+              <nb-icon icon="share-outline"></nb-icon>
             </button>
           </td>
         </ng-container>
