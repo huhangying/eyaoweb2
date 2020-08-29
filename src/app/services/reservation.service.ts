@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { ApiService } from '../shared/service/api.service';
 import { Schedule } from '../models/reservation/schedule.model';
 import { ScheduleBatch } from '../models/reservation/schedule-batch.model';
-import { Booking } from '../models/reservation/booking.model';
+import { Booking, OriginBooking } from '../models/reservation/booking.model';
 import { Doctor } from '../models/crm/doctor.model';
 
 @Injectable({
@@ -20,7 +20,7 @@ export class ReservationService {
       '用户预约', // 1
       '用户取消', // 2
       '药师取消', // 3
-      '用户爽约', // 4
+      '药师接手中', // 4
       '门诊完成', // 5
       '标记完成' // 6
     ];
@@ -35,7 +35,7 @@ export class ReservationService {
     return this.api.patch<Schedule>('schedule/' + data._id, data);
   }
 
-  create(data: Schedule) {
+  createSchedule(data: Schedule) {
     return this.api.post<Schedule>('schedule', data);
   }
 
@@ -55,9 +55,16 @@ export class ReservationService {
     return this.api.get<Doctor[]>(`schedules/find/doctors/${departmentId}/${date.toISOString()}/${period}`);
   }
 
+  reserveScheduleSpace(doctorId: string,date: Date, period: string) {
+    return this.api.get<Schedule>(`schedules/reserve-space/${doctorId}/${date.toISOString()}/${period}`);
+  }
   // Booking
   getAllBookingsByDoctorId(doctorId: string) {
     return this.api.get<Booking[]>('bookings/doctor/' + doctorId);
+  }
+
+  createBooking(booking: OriginBooking) {
+    return this.api.post<OriginBooking>('booking', booking);
   }
 
   updateBookingById(data: Booking) {

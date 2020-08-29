@@ -50,7 +50,7 @@ export class ScheduleEditComponent implements OnInit, OnDestroy {
       // update
       this.reservationService.updateSchedule({ ...this.data.schedule, ...this.form.value, doctor: this.data.doctor._id }) :
       // create
-      this.reservationService.create({ ...this.form.value, doctor: this.data.doctor._id });
+      this.reservationService.createSchedule({ ...this.form.value, doctor: this.data.doctor._id });
     response.pipe(
       tap(rsp => {
         this.dialogRef.close(rsp);

@@ -77,7 +77,10 @@ export class BookingComponent implements OnInit, OnDestroy {
               status: _.status,
               scheduleDate: new Date(_.schedule.date),
               schedulePeriod: _.schedule.period,
-              userName: _.user?.name
+              userId: _.user?._id,
+              userName: _.user?.name,
+              userLinkId: _.user?.link_id,
+              periodName: this.getPeriodLabel(_.schedule.period),
             });
           }
         });
@@ -104,22 +107,17 @@ export class BookingComponent implements OnInit, OnDestroy {
       data: {
         booking: data,
         periods: this.periods,
-        doctor: this.selectedDoctor
+        doctor: this.selectedDoctor,
+        department: this.departments.find(_ => _._id === this.selectedDoctor.department)
       },
       width: '600px'
     }).afterClosed().pipe(
       tap(result => {
         if (result?._id) {
-          const isEdit = !!this.dataSource.data.find(item => item._id === result._id);
-          if (isEdit) {
-            // update
-            this.dataSource.data = this.dataSource.data.map(item => {
-              return item._id === result._id ? result : item;
-            });
-          } else {
-            // create
-            this.dataSource.data.unshift(result);
-          }
+          // update
+          this.dataSource.data = this.dataSource.data.map(item => {
+            return item._id === result._id ? result : item;
+          });
           this.loadData(this.dataSource.data); // add to list
           this.message.updateSuccess();
         }
@@ -167,6 +165,6 @@ export class BookingComponent implements OnInit, OnDestroy {
   }
 
   isForwarAvailable(booking: BookingFlatten) {
-    return booking.status === 1 && booking.scheduleDate > new Date();
+    return (booking.status === 1 || booking.status === 4) && booking.scheduleDate > new Date();
   }
 }
