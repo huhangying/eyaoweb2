@@ -26,7 +26,8 @@
           监测计划
         </ng-template>
         <ng-template matTabContent>
-          <ngx-notices [notices]="diagnose?.notices"  [readonly]="true"></ngx-notices>
+          <ngx-notices [notices]="diagnose?.notices" [readonly]="true" [diagnose]="diagnose" [user]="data.patient" [doctor]="data.doctor">
+          </ngx-notices>
         </ng-template>
       </mat-tab>
 

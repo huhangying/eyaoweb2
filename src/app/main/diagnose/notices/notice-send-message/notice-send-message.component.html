@@ -1,0 +1,29 @@
+<nb-card status="success">
+  <nb-card-header>
+    发送阶段性提醒
+    <button nbButton shape="round" size="tiny" class="float-right" mat-dialog-close>
+      <nb-icon icon="close"></nb-icon>
+    </button>
+  </nb-card-header>
+
+  <mat-dialog-content class="px-3">
+    <div class="field row m-0">
+      <label for="name" class="label required"> 提醒内容 </label>
+      <input nbInput fullWidth id="name" [(ngModel)]="noticeName">
+    </div>
+
+    {{data | json}}
+    <div class="text-hint pt-3 px-3">
+      * 系统将已登录药师的名义给病患<b>{{data.user.name}}</b>发送微信信息。
+    </div>
+    {{notice | json}}
+
+  </mat-dialog-content>
+
+  <nb-card-footer class="d-block">
+    <button nbButton mat-dialog-close>取消</button>
+    <button nbButton hero status="primary" class="float-right" [disabled]="!noticeName" (click)="send()">
+      <nb-icon icon="paper-plane-outline"></nb-icon>发送
+    </button>
+  </nb-card-footer>
+</nb-card>
