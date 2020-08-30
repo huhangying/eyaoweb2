@@ -17,7 +17,6 @@ import { DialogService } from '../../shared/service/dialog.service';
 import { SurveyGroup } from '../../models/survey/survey-group.model';
 import { UserService } from '../../services/user.service';
 import { WeixinService } from '../../shared/service/weixin.service';
-import { environment } from '../../../environments/environment';
 import { AppStoreService } from '../../shared/store/app-store.service';
 import { SelectPatientDialogComponent } from '../../shared/components/select-patient/select-patient-dialog/select-patient-dialog.component';
 import { PdfService } from '../../shared/service/pdf.service';
@@ -246,7 +245,7 @@ export class DiagnoseComponent implements OnInit, OnDestroy {
           this.selectedPatient.link_id,
           '门诊结论',
           `${this.doctor.name + ' ' + this.doctor.title} 给您发送了本次门诊结论`,
-          `${environment.wechatServer}diagnose-history?openid=${this.selectedPatient.link_id}&state=${this.auth.hid}&id=${this.diagnose._id}`,
+          `${this.doctor.wechatUrl}diagnose-history?openid=${this.selectedPatient.link_id}&state=${this.auth.hid}&id=${this.diagnose._id}`,
           ''
         ).subscribe();
         // reset if success

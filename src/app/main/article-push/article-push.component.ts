@@ -17,7 +17,6 @@ import { ArticlePreviewComponent } from './article-preview/article-preview.compo
 import { WeixinService } from '../../shared/service/weixin.service';
 import { ImgPathPipe } from '../../shared/pipe/img-path.pipe';
 import { ArticleService } from '../../services/article.service';
-import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'ngx-article-push',
@@ -146,7 +145,7 @@ export class ArticlePushComponent implements OnInit {
           if (sendee.link_id) {
             await this.wxService.sendUserMsg(sendee.link_id, this.articlePage.title,
               `${this.doctor.name + ' ' + this.doctor.title} 给您发送了一篇文章`,
-              environment.wechatServer + 'article;id=' + result?._id,
+              this.doctor.wechatUrl + 'article;id=' + result?._id,
               this.imgPath.transform(this.articlePage.title_image)
             ).toPromise();
           }

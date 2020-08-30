@@ -27,5 +27,5 @@ export interface Doctor {
   password?: string;
   token?: string; // temp
   hospitalName?: string;  // for localstorage
-  // wechatUrl?: string;     // for localstorage
+  wechatUrl?: string;     // for localstorage
 }
