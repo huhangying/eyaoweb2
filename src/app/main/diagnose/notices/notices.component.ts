@@ -8,6 +8,7 @@ import { NoticeSendMessageComponent } from './notice-send-message/notice-send-me
 import { Diagnose } from '../../../models/diagnose/diagnose.model';
 import { User } from '../../../models/crm/user.model';
 import { Doctor } from '../../../models/crm/doctor.model';
+import { DiagnoseService } from '../../../services/diagnose.service';
 
 @Component({
   selector: 'ngx-notices',
@@ -19,11 +20,11 @@ export class NoticesComponent implements OnInit {
   @Input() readonly?: boolean;
   @Input() diagnose?: Diagnose;
   @Input() user?: User;
-  @Input() doctor?: Doctor;
 
   constructor(
     public dialog: MatDialog,
     private dialogService: DialogService,
+    private diagnoseService: DiagnoseService,
   ) {
   }
 
@@ -43,14 +44,14 @@ export class NoticesComponent implements OnInit {
     this.dialog.open(NoticeEditComponent, {
       data: item
     }).afterClosed()
-      .subscribe(result => {
+      .subscribe((result) => {
         if (result) {
           if (isEdit) {
             // update
             this.notices[index] = result;
           } else {
             // create
-            this.notices.push(result);
+            this.notices.unshift(result);
           }
 
         }
@@ -70,20 +71,16 @@ export class NoticesComponent implements OnInit {
     this.dialog.open(NoticeSendMessageComponent, {
       data: {
         user: this.user,
-        doctor: this.doctor
+        diagnoseId: this.diagnose._id
       }
     }).afterClosed()
-      .subscribe(result => {
-        // if (result) {
-        //   if (isEdit) {
-        //     // update
-        //     this.notices[index] = result;
-        //   } else {
-        //     // create
-        //     this.notices.push(result);
-        //   }
-
-        // }
+      .subscribe((result: MedicineNotice) => {
+        if (result) {
+          // create
+          this.notices.unshift(result);
+          // save diagnose
+          this.diagnoseService.updateDiagnose(this.diagnose).subscribe();
+        }
       });
   }
 

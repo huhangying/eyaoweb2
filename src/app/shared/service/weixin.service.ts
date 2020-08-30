@@ -4,6 +4,7 @@ import { LocalDatePipe } from '../pipe/local-date.pipe';
 import { Booking, BookingFlatten } from '../../models/reservation/booking.model';
 import { Doctor } from '../../models/crm/doctor.model';
 import { Department } from '../../models/hospital/department.model';
+import { WechatResponse } from '../../models/wechat-response.model';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +17,7 @@ export class WeixinService {
   ) { }
 
   sendUserMsg(openid: string, title: string, description: string, url: string, picUrl: string) {
-    return this.api.post('wechat/send-client-msg/' + openid, {
+    return this.api.post<WechatResponse>('wechat/send-client-msg/' + openid, {
       article: {
         title: title,
         description: description,
@@ -54,7 +55,7 @@ export class WeixinService {
     header: string,
     footer: string) {
 
-    const x = {
+    return {
       templateid: templateId,
       openid: openid,
       bookingid: booking._id,
@@ -88,8 +89,6 @@ export class WeixinService {
         }
       }
     };
-    console.log(x);
-    return x;
   }
 
 }
