@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from '../shared/service/api.service';
-import { TestForm } from '../models/hospital/test-form';
+import { TestForm } from '../models/hospital/test-form.model';
 
 @Injectable({
   providedIn: 'root'

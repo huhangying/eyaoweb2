@@ -1,1 +1,45 @@
 <p>化验单功能开发中。。。</p>
+<ng-container *ngIf="!tests?.length">
+  <div class="alert alert-warning" role="alert">
+    暂无化验单。
+  </div>
+</ng-container>
+
+<div class="p-2" [class.d-none]="readonly">
+  <button nbButton hero size="small" status="success" (click)="add()">
+    <nb-icon icon="plus-outline"></nb-icon> 新增化验单
+  </button>
+</div>
+
+<ng-container *ngIf="tests?.length">
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">测试单名称</th>
+        <th scope="col">类型</th>
+        <th scope="col">单位</th>
+        <th scope="col" [class.d-none]="readonly"></th>
+      </tr>
+    </thead>
+    <tbody cdkDropList (cdkDropListDropped)="drop($event)">
+      <tr *ngFor="let test of tests; let i=index" cdkDrag>
+        <th scope="row">{{i+1}}</th>
+        <td>{{ test.name }}</td>
+        <td>
+          {{ test.type }}:
+        </td>
+        <td>{{ test.items?.length || 0 }}</td>
+        <td [class.d-none]="readonly">
+          <button nbButton hero shape="round" size="tiny" status="info" title="编辑" (click)="edit(i, test)">
+            <nb-icon icon="edit-2"></nb-icon>
+          </button>
+          &nbsp;
+          <button nbButton hero shape="round" size="tiny" status="danger" title="删除" (click)="delete(i)">
+            <nb-icon icon="trash-2-outline"></nb-icon>
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</ng-container>

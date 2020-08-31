@@ -29,6 +29,7 @@ import { FeedbackHistoryComponent } from './diagnose/patient-history/feedback-hi
 import { TodayNoticeComponent } from './diagnose/patient-history/today-notice/today-notice.component';
 import { PatientSearchComponent } from './patient-search/patient-search.component';
 import { NoticeSendMessageComponent } from './diagnose/notices/notice-send-message/notice-send-message.component';
+import { TestEditComponent } from './diagnose/lab-results/test-edit/test-edit.component';
 
 @NgModule({
   declarations: [
@@ -59,6 +60,7 @@ import { NoticeSendMessageComponent } from './diagnose/notices/notice-send-messa
     TodayNoticeComponent,
     PatientSearchComponent,
     NoticeSendMessageComponent,
+    TestEditComponent,
   ],
   imports: [
     SharedModule,

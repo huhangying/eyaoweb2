@@ -1,6 +1,6 @@
 import { Component, OnInit, Inject, Optional, SkipSelf, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { TestItem, TestFormRiskValue } from '../../../../../models/hospital/test-form';
+import { TestFormItem, TestFormRiskValue } from '../../../../../models/hospital/test-form.model';
 import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
 
 @Component({
@@ -23,7 +23,7 @@ export class TestItemEditComponent implements OnInit {
 
   constructor(
     public dialogRef: MatDialogRef<TestItemEditComponent>,
-    @Inject(MAT_DIALOG_DATA) @Optional() @SkipSelf() public data: { testItem: TestItem; isEdit: boolean; index?: number },
+    @Inject(MAT_DIALOG_DATA) @Optional() @SkipSelf() public data: { testItem: TestFormItem; isEdit: boolean; index?: number },
     private fb: FormBuilder,
     private cd: ChangeDetectorRef,
   ) {

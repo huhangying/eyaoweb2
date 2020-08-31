@@ -9,7 +9,7 @@ import { DialogService } from '../../../shared/service/dialog.service';
 import { MessageService } from '../../../shared/service/message.service';
 import { takeUntil, tap } from 'rxjs/operators';
 import { TestFormEditComponent } from './test-form-edit/test-form-edit.component';
-import { TestForm } from '../../../models/hospital/test-form';
+import { TestForm } from '../../../models/hospital/test-form.model';
 import { TestFormService } from '../../../services/test-form.service';
 
 @Component({

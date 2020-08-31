@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy, Inject, Optional, SkipSelf, ChangeDetecto
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
-import { TestForm, TestItem } from '../../../../models/hospital/test-form';
+import { TestForm, TestFormItem } from '../../../../models/hospital/test-form.model';
 import { TestFormService } from '../../../../services/test-form.service';
 import { tap, takeUntil } from 'rxjs/operators';
 import { MatTableDataSource } from '@angular/material/table';
@@ -20,7 +20,7 @@ export class TestFormEditComponent implements OnInit, OnDestroy {
   form: FormGroup;
   destroy$ = new Subject<void>();
   displayedColumns: string[] = ['item', 'code', 'unit', 'reference', 'index'];
-  dataSource: MatTableDataSource<TestItem>;
+  dataSource: MatTableDataSource<TestFormItem>;
 
   constructor(
     public dialogRef: MatDialogRef<TestFormEditComponent>,
@@ -112,8 +112,8 @@ export class TestFormEditComponent implements OnInit, OnDestroy {
     this.edit();
   }
 
-  loadData(data: TestItem[], isEdit = true) {
-    this.dataSource = new MatTableDataSource<TestItem>(data);
+  loadData(data: TestFormItem[], isEdit = true) {
+    this.dataSource = new MatTableDataSource<TestFormItem>(data);
     this.cd.markForCheck();
   }
 

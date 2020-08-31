@@ -3,12 +3,12 @@ export interface TestForm {
   _id: string;
   name: string;
   type?: string;
-  items?: TestItem[];
+  items?: TestFormItem[];
   order?: number;
   apply?: boolean;
 }
 
-export interface TestItem {
+export interface TestFormItem {
   item: string;
   code: string;
   unit: string;
