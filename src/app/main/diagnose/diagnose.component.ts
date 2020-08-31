@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef, OnDestroy } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef, OnDestroy, ViewChild } from '@angular/core';
 import { AuthService } from '../../shared/service/auth.service';
 import { MatDialog } from '@angular/material/dialog';
 import { MessageService } from '../../shared/service/message.service';
@@ -21,6 +21,9 @@ import { AppStoreService } from '../../shared/store/app-store.service';
 import { SelectPatientDialogComponent } from '../../shared/components/select-patient/select-patient-dialog/select-patient-dialog.component';
 import { PdfService } from '../../shared/service/pdf.service';
 import { MedicineNotice } from '../../models/hospital/medicine-notice.model';
+import { PrescriptionComponent } from './prescription/prescription.component';
+import { SurveyEditComponent } from './surveys/survey-edit/survey-edit.component';
+import { of } from 'rxjs';
 
 @Component({
   selector: 'ngx-diagnose',
@@ -34,6 +37,9 @@ export class DiagnoseComponent implements OnInit, OnDestroy {
   selectedBooking: Booking;
   selectedPatient: User;
   diagnose: Diagnose;
+  selectedTabIndex = 0;
+  @ViewChild('diagnosePrescription') diagnosePrescription: PrescriptionComponent;
+  @ViewChild('diagnoseResult') diagnoseResult: SurveyEditComponent;
 
   constructor(
     private route: ActivatedRoute,
@@ -211,7 +217,12 @@ export class DiagnoseComponent implements OnInit, OnDestroy {
     this.cd.markForCheck();
   }
 
+
   saveDiagnose(status = DiagnoseStatus.doctorSaved) {
+    this.updateDiagnose(status).subscribe();
+  }
+
+  updateDiagnose(status = DiagnoseStatus.doctorSaved) {
     this.diagnose.status = status;
     return this.diagnoseService.updateDiagnose(this.diagnose).pipe(
       tap(result => {
@@ -226,10 +237,38 @@ export class DiagnoseComponent implements OnInit, OnDestroy {
         this.cd.markForCheck();
       }),
       catchError(err => this.message.deleteErrorHandle(err))
-    ).subscribe();
+    );
+  }
+
+  private checkAndSavePendings() {
+    switch (this.selectedTabIndex) {
+      case 0:
+        // check diagnose-prescription tab
+        if (this.diagnosePrescription.dirty) {
+          return this.updateDiagnose().pipe(
+            tap(_ => {
+              this.diagnosePrescription.dirty = false;
+            })
+          );
+        }
+        break;
+      case 4:
+        // check diagnose-result tab
+        return this.diagnoseResult.saveAllSurveys();
+    }
+    return of(null);
+  }
+
+  printDiagnose() {
+    this.checkAndSavePendings().subscribe(() => {
+      this.pdf.generatePdf(this.diagnose, this.doctor || this.diagnose.doctor, this.selectedPatient, this.isFirstVisit ? 1 : 2, this.medicineReferences.periods);
+    });
   }
 
   closeDiagnose() {
+    // check if any pendings
+    this.checkAndSavePendings().subscribe();
+
     this.dialogService.confirm('本操作将结束当前门诊，并发送门诊结论。').subscribe(async result => {
       if (result) {
         this.saveDiagnose(DiagnoseStatus.archived);
@@ -289,10 +328,6 @@ export class DiagnoseComponent implements OnInit, OnDestroy {
     this.saveDiagnose();
   }
 
-  printDiagnose() {
-    this.pdf.generatePdf(this.diagnose, this.doctor || this.diagnose.doctor, this.selectedPatient, this.isFirstVisit? 1 : 2, this.medicineReferences.periods);
-  }
-
   checkIfFinished() {
     if (!this.diagnose.surveys?.length) return false;
     return this.diagnose.surveys.findIndex(_ => _.type === 5) >= 0;
@@ -302,7 +337,7 @@ export class DiagnoseComponent implements OnInit, OnDestroy {
     this.dialogService.editChips(this.selectedPatient.diagnoses, '编辑疾病诊断', 1).pipe(
       tap(result => {
         if (result?.save) {
-          this.userService.updateUserById( {
+          this.userService.updateUserById({
             _id: this.selectedPatient._id,
             diagnoses: result.content,
           }).subscribe(_ => {
@@ -324,7 +359,7 @@ export class DiagnoseComponent implements OnInit, OnDestroy {
     this.dialogService.editChips(this.selectedPatient.notes, '编辑诊断提醒').pipe(
       tap(result => {
         if (result?.save) {
-          this.userService.updateUserById( {
+          this.userService.updateUserById({
             _id: this.selectedPatient._id,
             notes: result.content
           }).subscribe(_ => {
@@ -359,6 +394,10 @@ export class DiagnoseComponent implements OnInit, OnDestroy {
       }
       this.cd.markForCheck();
     }
+  }
+
+  tabChanged(index: number) {
+    this.selectedTabIndex = index;
   }
 
 }

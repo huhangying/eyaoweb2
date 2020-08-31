@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ChangeDetectionStrategy, ChangeDetectorRef, Output, EventEmitter } from '@angular/core';
 import { MedicineNotice } from '../../../models/hospital/medicine-notice.model';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogService } from '../../../shared/service/dialog.service';
@@ -13,18 +13,21 @@ import { DiagnoseService } from '../../../services/diagnose.service';
 @Component({
   selector: 'ngx-notices',
   templateUrl: './notices.component.html',
-  styleUrls: ['./notices.component.scss']
+  styleUrls: ['./notices.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NoticesComponent implements OnInit {
   @Input() notices: MedicineNotice[];
   @Input() readonly?: boolean;
   @Input() diagnose?: Diagnose;
   @Input() user?: User;
+  @Output() saveDiagnose = new EventEmitter();
 
   constructor(
     public dialog: MatDialog,
     private dialogService: DialogService,
     private diagnoseService: DiagnoseService,
+    private cd: ChangeDetectorRef,
   ) {
   }
 
@@ -53,7 +56,7 @@ export class NoticesComponent implements OnInit {
             // create
             this.notices.unshift(result);
           }
-
+          this.cd.markForCheck();
         }
       });
   }
@@ -64,6 +67,7 @@ export class NoticesComponent implements OnInit {
         if (result) {
           this.notices.splice(index, 1);
         }
+        this.cd.markForCheck();
       });
   }
 
@@ -78,8 +82,10 @@ export class NoticesComponent implements OnInit {
         if (result) {
           // create
           this.notices.unshift(result);
-          // save diagnose
+          // save diagnose directly
           this.diagnoseService.updateDiagnose(this.diagnose).subscribe();
+          this.cd.markForCheck();
+          // this.saveDiagnose.emit();
         }
       });
   }

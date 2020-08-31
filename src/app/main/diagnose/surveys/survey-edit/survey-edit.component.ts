@@ -6,6 +6,7 @@ import { Question } from '../../../../models/survey/survey-template.model';
 import { SurveyGroup } from '../../../../models/survey/survey-group.model';
 import { MessageService } from '../../../../shared/service/message.service';
 import * as moment from 'moment';
+import { combineLatest, of, EMPTY } from 'rxjs';
 
 @Component({
   selector: 'ngx-survey-edit',
@@ -75,29 +76,40 @@ export class SurveyEditComponent implements OnInit, OnDestroy {
     }
   }
 
-  // 自动保存问卷（支持多个）
-  // 1.
   ngOnDestroy() {
+    // 自动保存问卷（支持多个）
+    this.saveAllSurveys().subscribe(results => {
+      if (results?.length) {
+        this.message.updateSuccess();
+      }
+    });
+  }
+
+  saveAllSurveys() {
     if (this.surveys?.length) {
+      const surveys$ = [];
       // save all surveys
       this.surveys.map(survey => {
         if (survey.dirty) {
-          this.saveSurvey(survey);
+          surveys$.push(this.surveyService.updateSurvey(survey));
         }
       });
-    }
-  }
 
-  saveSurvey(survey: Survey) {
-    if (survey._id && survey.questions?.length) {
-      // update
-      this.surveyService.updateSurvey(survey).subscribe(result => {
-        if (result?._id) {
-          survey.dirty = false; //clear flag after save
-          this.message.updateSuccess();
-        }
-      });
+      return combineLatest(...surveys$).pipe(
+        tap(_surveys => {
+          _surveys.map(_survey => {
+            if (_survey?._id) {
+              // clear dirty flag
+              const found = this.surveys.find(_ => _._id === _survey._id);
+              if (found) {
+                found.dirty = false;  //clear flag after save
+              }
+            }
+          });
+        })
+      );
     }
+    return of(null);
   }
 
   changeRadioSelection(question: Question, index: number, survey: Survey) {
@@ -108,10 +120,6 @@ export class SurveyEditComponent implements OnInit, OnDestroy {
 
   markSurveyDirty(survey: Survey) {
     survey.dirty = true;
-  }
-
-  createSurvey(survey: Survey) {
-    this.surveyService.addSurvey(survey);
   }
 
   test(obj) {

@@ -35,7 +35,8 @@
       </button>
       <ng-container *ngIf="diagnose?._id">
         <span class="float-right">
-          <button nbButton hero size="small" status="primary" [disabled]="!checkIfFinished()" (click)="printDiagnose()" class="mr-3">
+          <button nbButton hero size="small" status="primary" [disabled]="!checkIfFinished()" (click)="printDiagnose()"
+            class="mr-3">
             <nb-icon icon="printer-outline"></nb-icon> 打印门诊
           </button>
           <button nbButton hero size="small" status="primary" [disabled]="!checkIfFinished()" (click)="closeDiagnose()"
@@ -47,7 +48,7 @@
     </div>
 
     <ng-container *ngIf="selectedPatient">
-      <mat-tab-group class="w-100" mat-stretch-tabs>
+      <mat-tab-group #tabGroup class="w-100" mat-stretch-tabs (selectedTabChange)="tabChanged($event.index)">
         <mat-tab>
           <ng-template mat-tab-label>
             <mat-icon>assignment</mat-icon>
@@ -55,7 +56,8 @@
           </ng-template>
           <ng-template matTabContent>
             <div class="my-3">
-              <ngx-prescription [prescription]="diagnose?.prescription" [medicineReferences]="medicineReferences" (noticesFound)="prescriptionNoticesFound($event)">
+              <ngx-prescription #diagnosePrescription [prescription]="diagnose?.prescription" [medicineReferences]="medicineReferences"
+                (noticesFound)="prescriptionNoticesFound($event)" (saveDiagnose)="saveDiagnose()">
               </ngx-prescription>
             </div>
           </ng-template>
@@ -70,7 +72,7 @@
           </ng-template>
           <ng-template matTabContent>
             <div class="my-3">
-              <ngx-notices [notices]="diagnose?.notices"></ngx-notices>
+              <ngx-notices [notices]="diagnose?.notices" (saveDiagnose)="saveDiagnose()"></ngx-notices>
             </div>
           </ng-template>
         </mat-tab>
@@ -107,7 +109,7 @@
           </ng-template>
           <ng-template matTabContent>
             <div class="my-3">
-              <ngx-survey-edit [type]="5" [data]="getDataByType(5)" (dataChange)="surveyGroupChanged($event)">
+              <ngx-survey-edit #diagnoseResult [type]="5" [data]="getDataByType(5)" (dataChange)="surveyGroupChanged($event)">
               </ngx-survey-edit>
             </div>
           </ng-template>
@@ -121,6 +123,5 @@
         请点击"选择预约"或"选择病患"按键开始一个门诊。
       </div>
     </ng-container>
-
   </nb-card-body>
 </nb-card>

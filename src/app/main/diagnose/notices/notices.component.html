@@ -48,7 +48,7 @@
   </table>
 </ng-container>
 
-<div class="pb-2">
+<div class="pb-2" *ngIf="diagnose">
   <button nbButton hero size="small" status="primary" (click)="sendNoticeMsg()">
     <nb-icon icon="paper-plane-outline"></nb-icon>
     手动发送阶段性提醒

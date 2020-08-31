@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ChangeDetectionStrategy, ChangeDetectorRef, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, ChangeDetectionStrategy, ChangeDetectorRef, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { Medicine, Dosage } from '../../../models/hospital/medicine.model';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { MatDialog } from '@angular/material/dialog';
@@ -14,11 +14,13 @@ import { MedicineService } from '../../../services/medicine.service';
   styleUrls: ['./prescription.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class PrescriptionComponent implements OnInit {
+export class PrescriptionComponent implements OnInit, OnDestroy {
   @Input() prescription: Medicine[];
   @Input() medicineReferences: MedicineReferences;
   @Input() readonly?: boolean;
   @Output() noticesFound = new EventEmitter<MedicineNotice[]>();
+  @Output() saveDiagnose = new EventEmitter();
+  dirty = false;
 
   constructor(
     public dialog: MatDialog,
@@ -29,11 +31,22 @@ export class PrescriptionComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.cd.markForCheck();
+  }
+
+  ngOnDestroy() {
+    if (this.dirty) {
+      this.saveDiagnose.emit();
+      this.dirty = false;
+    }
   }
 
   drop(event: CdkDragDrop<string[]>) {
-    moveItemInArray(this.prescription, event.previousIndex, event.currentIndex);
-    this.cd.markForCheck();
+    if (event.previousIndex !== event.currentIndex) {
+      moveItemInArray(this.prescription, event.previousIndex, event.currentIndex);
+      this.dirty = true;
+      this.cd.markForCheck();
+    }
   }
 
   add() {
@@ -63,7 +76,7 @@ export class PrescriptionComponent implements OnInit {
             // add into diagnose.notices
             this.noticesFound.emit(result.notices);
           }
-
+          this.dirty = true;
           this.cd.markForCheck();
         }
       });
@@ -74,6 +87,7 @@ export class PrescriptionComponent implements OnInit {
       .subscribe(result => {
         if (result) {
           this.prescription.splice(index, 1);
+          this.dirty = true;
           this.cd.markForCheck();
         }
       });

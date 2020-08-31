@@ -12,11 +12,9 @@
       <input nbInput fullWidth id="name" [(ngModel)]="noticeName">
     </div>
 
-    {{data | json}}
     <div class="text-hint pt-3 px-3">
       * 系统将已登录药师的名义给病患<b>{{data.user.name}}</b>发送微信信息。
     </div>
-    {{notice | json}}
 
   </mat-dialog-content>
 
