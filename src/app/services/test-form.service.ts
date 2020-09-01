@@ -12,7 +12,11 @@ export class TestFormService {
   ) { }
 
   // 化验单模板
-  getTestForms() {
+  getAllTestForms() {
+    return this.api.get<TestForm[]>('testforms/cms-all');
+  }
+
+  getAvailableTestForms() {
     return this.api.get<TestForm[]>('testforms');
   }
 

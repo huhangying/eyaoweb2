@@ -10,10 +10,13 @@ export interface TestForm {
 
 export interface TestFormItem {
   item: string;
-  code: string;
+  code?: string;
   unit: string;
-  reference: string;
+  reference?: string;
+  referenceFrom?: number;
+  referenceTo?: number;
   riskValues?: TestFormRiskValue[];
+
 }
 
 export interface TestFormRiskValue {

@@ -29,7 +29,7 @@ export class TestFormComponent implements OnInit, OnDestroy {
   constructor(
     private fb: FormBuilder,
     private cd: ChangeDetectorRef,
-    private TestFormService: TestFormService,
+    private testFormService: TestFormService,
     public dialog: MatDialog,
     private dialogService: DialogService,
     private message: MessageService,
@@ -40,7 +40,7 @@ export class TestFormComponent implements OnInit, OnDestroy {
    }
 
    ngOnInit() {
-    this.TestFormService.getTestForms().subscribe(
+    this.testFormService.getAllTestForms().subscribe(
       data => {
         this.loadData(data);
       }
@@ -62,7 +62,7 @@ export class TestFormComponent implements OnInit, OnDestroy {
     this.dialogService?.deleteConfirm().pipe(
       tap(result => {
         if (result) {
-          this.TestFormService.deleteById(id)
+          this.testFormService.deleteById(id)
             .subscribe(result => {
               if (result?._id) {
                 this.loadData(this.dataSource.data.filter(item => item._id !== result._id)); // remove from list

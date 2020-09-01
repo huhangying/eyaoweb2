@@ -12,7 +12,6 @@ import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
 export class TestItemEditComponent implements OnInit {
   form: FormGroup;
   defaultRiskValues: TestFormRiskValue[] = [
-    { value: 0, name: '正常参考值', from: 0, to: 0 },
     { value: 3, name: '很高', from: 0, to: 0 },
     { value: 2, name: '高', from: 0, to: 0 },
     { value: 1, name: '偏高', from: 0, to: 0 },
@@ -31,15 +30,10 @@ export class TestItemEditComponent implements OnInit {
       item: ['', Validators.required],
       code: [''],
       unit: ['', Validators.required],
-      // reference: [''],
+      referenceFrom: [''],
+      referenceTo: [''],
 
       riskValues: this.fb.array([
-        this.fb.group({
-          value: 0,
-          name: '正常参考值',
-          from: '',
-          to: '',
-        }),
         this.fb.group({
           value: 3,
           name: '',
@@ -78,12 +72,12 @@ export class TestItemEditComponent implements OnInit {
         })
       ])
     });
+
     if (!data.testItem) {
       data.testItem = {
         item: '',
         code: '',
         unit: '',
-        reference: ''
       };
     }
     if (!data.testItem.riskValues?.length) {
@@ -91,6 +85,14 @@ export class TestItemEditComponent implements OnInit {
     }
     console.log(data.testItem);
 
+
+    if (data.testItem.reference) {
+      const refs = data.testItem.reference?.split('-');
+      if (refs?.length === 2) {
+        data.testItem.referenceFrom = +refs[0];
+        data.testItem.referenceTo = +refs[1];
+      }
+    }
     this.form.patchValue(data.testItem);
     this.cd.markForCheck();
   }
@@ -101,16 +103,23 @@ export class TestItemEditComponent implements OnInit {
   get unitCtrl() {
     return this.form.get('unit');
   }
+  get referenceFromCtrl() {
+    return this.form.get('referenceFrom');
+  }
+  get referenceToCtrl() {
+    return this.form.get('referenceTo');
+  }
 
   ngOnInit(): void {
     this.dialogRef.updateSize('80%');
   }
 
   update() {
-    const normalValue = (this.riskValues.value as TestFormRiskValue[]).find(_ => _.value === 0);
+    const refFrom = +this.referenceFromCtrl.value;
+    const refTo = +this.referenceToCtrl.value;
     this.dialogRef.close({
       ...this.form.value,
-      reference: normalValue ? `${normalValue.from} ~ ${normalValue.to} ${this.unitCtrl.value}`: ''
+      reference: (refFrom && refTo) ? `${refFrom}-${refTo}`: ''
     });
   }
 

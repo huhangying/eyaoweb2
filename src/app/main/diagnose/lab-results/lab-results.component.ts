@@ -50,10 +50,11 @@ export class LabResultsComponent implements OnInit, OnDestroy {
 
   edit(index=-1, item?: Test) {
     const isEdit = index > -1;
+    this.tests = this.tests || [];
     this.dialog.open(TestEditComponent, {
       data: {
         test: item,
-        tests: this.tests || [],
+        tests: this.tests,
       }
     }).afterClosed()
       .subscribe((result: Test) => {
