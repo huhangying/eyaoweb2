@@ -5,11 +5,11 @@ import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
 
 @Component({
   selector: 'ngx-test-item-edit',
-  templateUrl: './test-item-edit.component.html',
-  styleUrls: ['./test-item-edit.component.scss'],
+  templateUrl: './test-form-item-edit.component.html',
+  styleUrls: ['./test-form-item-edit.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class TestItemEditComponent implements OnInit {
+export class TestFormItemEditComponent implements OnInit {
   form: FormGroup;
   defaultRiskValues: TestFormRiskValue[] = [
     { value: 3, name: '很高', from: 0, to: 0 },
@@ -21,7 +21,7 @@ export class TestItemEditComponent implements OnInit {
   ];
 
   constructor(
-    public dialogRef: MatDialogRef<TestItemEditComponent>,
+    public dialogRef: MatDialogRef<TestFormItemEditComponent>,
     @Inject(MAT_DIALOG_DATA) @Optional() @SkipSelf() public data: { testItem: TestFormItem; isEdit: boolean; index?: number },
     private fb: FormBuilder,
     private cd: ChangeDetectorRef,

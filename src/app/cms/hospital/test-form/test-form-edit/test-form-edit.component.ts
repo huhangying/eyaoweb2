@@ -8,7 +8,7 @@ import { tap, takeUntil } from 'rxjs/operators';
 import { MatTableDataSource } from '@angular/material/table';
 import { DialogService } from '../../../../shared/service/dialog.service';
 import { MessageService } from '../../../../shared/service/message.service';
-import { TestItemEditComponent } from './test-item-edit/test-item-edit.component';
+import { TestFormItemEditComponent } from './test-form-item-edit/test-form-item-edit.component';
 
 @Component({
   selector: 'ngx-test-form-edit',
@@ -87,7 +87,7 @@ export class TestFormEditComponent implements OnInit, OnDestroy {
 
   edit(data?: TestForm, index?: number) {
     const isEdit = !!data;
-    this.dialog.open(TestItemEditComponent, {
+    this.dialog.open(TestFormItemEditComponent, {
       data: {
         testItem: data,
         isEdit: isEdit,

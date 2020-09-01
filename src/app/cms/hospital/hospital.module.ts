@@ -9,7 +9,7 @@ import { MedicineNoticesEditComponent } from './medicine/medicine-notices-edit/m
 import { GroupSettingsComponent } from './hospital-settings/group-settings/group-settings.component';
 import { TestFormComponent } from './test-form/test-form.component';
 import { TestFormEditComponent } from './test-form/test-form-edit/test-form-edit.component';
-import { TestItemEditComponent } from './test-form/test-form-edit/test-item-edit/test-item-edit.component';
+import { TestFormItemEditComponent } from './test-form/test-form-edit/test-form-item-edit/test-form-item-edit.component';
 import { DiseaseEditComponent } from './disease/disease-edit/disease-edit.component';
 
 @NgModule({
@@ -27,7 +27,7 @@ import { DiseaseEditComponent } from './disease/disease-edit/disease-edit.compon
     GroupSettingsComponent,
     TestFormComponent,
     TestFormEditComponent,
-    TestItemEditComponent,
+    TestFormItemEditComponent,
     DiseaseEditComponent,
   ]
 })
