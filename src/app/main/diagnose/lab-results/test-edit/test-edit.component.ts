@@ -9,6 +9,7 @@ import { TestFormService } from '../../../../services/test-form.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { DialogService } from '../../../../shared/service/dialog.service';
 import { tap } from 'rxjs/operators';
+import { TestItemEditComponent } from './test-item-edit/test-item-edit.component';
 
 @Component({
   selector: 'ngx-test-edit',
@@ -103,25 +104,25 @@ export class TestEditComponent implements OnInit, OnDestroy {
 
   edit(data?: Test, index?: number) {
     const isEdit = !!data;
-    // this.dialog.open(TestItemEditComponent, {
-    //   data: {
-    //     testItem: data,
-    //     isEdit: isEdit,
-    //   },
-    // }).afterClosed().pipe(
-    //   tap(result => {
-    //     if (result) {
-    //       if (isEdit) {
-    //         // update
-    //         this.dataSource.data[index] = result;
-    //       } else {
-    //         // create
-    //         this.dataSource.data.unshift(result);
-    //       }
-    //       this.loadData(this.dataSource.data, isEdit); // add to list
-    //     }
-    //   }),
-    // ).subscribe();
+    this.dialog.open(TestItemEditComponent, {
+      data: {
+        testItem: data,
+        isEdit: isEdit,
+      },
+    }).afterClosed().pipe(
+      tap(result => {
+        if (result) {
+          // if (isEdit) {
+          //   // update
+          //   this.dataSource.data[index] = result;
+          // } else {
+          //   // create
+          //   this.dataSource.data.unshift(result);
+          // }
+          // this.loadData(this.dataSource.data, isEdit); // add to list
+        }
+      }),
+    ).subscribe();
   }
 
   add() {

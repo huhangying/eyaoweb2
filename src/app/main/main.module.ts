@@ -30,6 +30,7 @@ import { TodayNoticeComponent } from './diagnose/patient-history/today-notice/to
 import { PatientSearchComponent } from './patient-search/patient-search.component';
 import { NoticeSendMessageComponent } from './diagnose/notices/notice-send-message/notice-send-message.component';
 import { TestEditComponent } from './diagnose/lab-results/test-edit/test-edit.component';
+import { TestItemEditComponent } from './diagnose/lab-results/test-edit/test-item-edit/test-item-edit.component';
 
 @NgModule({
   declarations: [
@@ -61,6 +62,7 @@ import { TestEditComponent } from './diagnose/lab-results/test-edit/test-edit.co
     PatientSearchComponent,
     NoticeSendMessageComponent,
     TestEditComponent,
+    TestItemEditComponent,
   ],
   imports: [
     SharedModule,
