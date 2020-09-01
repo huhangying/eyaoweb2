@@ -1,1 +1,28 @@
-<p>test-edit works!</p>
+<nb-card [status]="data.test ? 'info' : 'success'">
+  <nb-card-header>
+    {{data.test ? '编辑化验单' : '新增化验单'}}
+    <button nbButton shape="round" size="tiny" class="float-right" mat-dialog-close>
+      <nb-icon icon="close"></nb-icon>
+    </button>
+  </nb-card-header>
+
+  <mat-dialog-content class="px-3 pt-1">
+    <div class="field row">
+      <label for="fromTemplate" class="label"> 选择化验单模板 </label>
+      <!-- <nb-select id="fromTemplate" fullWidth [(ngModel)]="selectedMedicine" (selectedChange)="templateSelected($event)"
+        placeholder="选择或搜索化验单模板...">
+        <nb-option *ngFor="let m of medicines$ | async" [value]="m">{{m.name}}</nb-option>
+      </nb-select> -->
+    </div>
+    <hr class="mb-2">
+    <div [formGroup]="form">
+    </div>
+  </mat-dialog-content>
+
+  <nb-card-footer class="d-block">
+    <button nbButton mat-dialog-close>取消</button>
+    <button nbButton hero status="primary" class="float-right" [disabled]="form.invalid" (click)="update()">
+      <nb-icon icon="checkmark-circle"></nb-icon>更新
+    </button>
+  </nb-card-footer>
+</nb-card>

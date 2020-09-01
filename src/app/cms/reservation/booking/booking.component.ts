@@ -165,6 +165,6 @@ export class BookingComponent implements OnInit, OnDestroy {
   }
 
   isForwarAvailable(booking: BookingFlatten) {
-    return (booking.status === 1 || booking.status === 4);// && booking.scheduleDate > new Date();
+    return (booking.status === 1 || booking.status === 4) && booking.scheduleDate > new Date();
   }
 }

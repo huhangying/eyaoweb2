@@ -7,16 +7,24 @@
   </nb-card-header>
 
   <mat-dialog-content class="px-3">
-    <label>相同时间段内可选的同科室药师</label>
-    <mat-radio-group class="d-flex flex-column p-2" [(ngModel)]="selectedDoctor">
-      <mat-radio-button class="mx-3" *ngFor="let doc of doctors" [value]="doc">
-        {{doc.name + ' ' + doc.title}}
-      </mat-radio-button>
-    </mat-radio-group>
+    <ng-container *ngIf="doctors?.length">
+      <label>相同时间段内可选的同科室药师</label>
+      <mat-radio-group class="d-flex flex-column p-2" [(ngModel)]="selectedDoctor">
+        <mat-radio-button class="mx-3" *ngFor="let doc of doctors" [value]="doc">
+          {{doc.name + ' ' + doc.title}}
+        </mat-radio-button>
+      </mat-radio-group>
 
-    <div class="text-hint pt-3">
-      * 选择“发送”会发送微信公众号内消息给病患，提供病患两个选项：1.同意更换药师；2.选择取消预约。不保证用户一定会有所操作。
-    </div>{{selectedDoctor|json}}
+      <div class="text-hint pt-3">
+        * 选择“发送”会发送微信公众号内消息给病患，提供病患两个选项：1.同意更换药师；2.选择取消预约。不保证用户一定会有所操作。
+      </div>
+    </ng-container>
+
+    <ng-container *ngIf="!doctors?.length">
+      <div class="alert alert-warning mx-3 mt-2" role="alert">
+        没有可选的同科室药师。
+      </div>
+    </ng-container>
   </mat-dialog-content>
 
   <nb-card-footer class="d-block">

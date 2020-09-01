@@ -33,7 +33,9 @@ export class BookingForwardDoctorComponent implements OnInit {
   ngOnInit(): void {
     this.reservationService.getForwardAvailableDoctors(this.data.doctor.department, this.data.booking.scheduleDate, this.data.booking.schedulePeriod).pipe(
       tap(results => {
-        this.doctors = results;
+        if (results?.length) {
+          this.doctors = results.filter(_ => _._id !== this.data.doctor._id);
+        }
       })
     ).subscribe();
   }
