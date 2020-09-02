@@ -400,4 +400,9 @@ export class DiagnoseComponent implements OnInit, OnDestroy {
     this.selectedTabIndex = index;
   }
 
+  saveDiagnoseTest(testIds: string[]) {
+    this.diagnose.labResults = testIds;
+    this.saveDiagnose();
+  }
+
 }

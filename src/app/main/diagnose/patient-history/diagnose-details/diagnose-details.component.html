@@ -37,7 +37,7 @@
           化验结果
         </ng-template>
         <ng-template matTabContent>
-          <ngx-lab-results  [readonly]="true"></ngx-lab-results>
+          <ngx-lab-results [user]="diagnose.user" [testIds]="diagnose.labResults"  [readonly]="true"></ngx-lab-results>
         </ng-template>
       </mat-tab>
 

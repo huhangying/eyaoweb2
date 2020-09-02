@@ -21,6 +21,7 @@ export class TestEditComponent implements OnInit, OnDestroy {
   destroy$ = new Subject<void>();
   selectedTestForm: TestForm;
   testForms: TestForm[];
+  maxDate = new Date();
 
   displayedColumns: string[] = ['item', 'code', 'reference', 'unit', 'result', 'index'];
   dataSource: MatTableDataSource<TestItem>;
@@ -30,6 +31,7 @@ export class TestEditComponent implements OnInit, OnDestroy {
     @Inject(MAT_DIALOG_DATA) @Optional() @SkipSelf() public data: {
       test: Test;
       tests: Test[];
+      readonly: boolean;
     },
     private fb: FormBuilder,
     private testFormService: TestFormService,
@@ -41,7 +43,14 @@ export class TestEditComponent implements OnInit, OnDestroy {
     this.form = this.fb.group({
       name: ['', Validators.required],
       type: [''],
+      date: ['']
     });
+
+    // if in Edit mode
+    if (data.test) {
+      this.form.patchValue(data.test);
+      this.loadData(data.test.items);
+    }
 
     // load test form templates
     this.testFormService.getAvailableTestForms().subscribe(results => {
@@ -81,10 +90,11 @@ export class TestEditComponent implements OnInit, OnDestroy {
   }
 
   update() {
-    const _test = this.selectedTestForm?.items?.length ?
-      { ...this.form.value, items: this.selectedTestForm.items } :
-      this.form.value;
-    this.dialogRef.close(_test);
+    this.dialogRef.close({
+      ...this.data.test,
+      ...this.form.value,
+      items: this.dataSource.data
+    });
   }
 
     ///////////////////////////////////////////////////////////
@@ -112,14 +122,14 @@ export class TestEditComponent implements OnInit, OnDestroy {
     }).afterClosed().pipe(
       tap(result => {
         if (result) {
-          // if (isEdit) {
-          //   // update
-          //   this.dataSource.data[index] = result;
-          // } else {
-          //   // create
-          //   this.dataSource.data.unshift(result);
-          // }
-          // this.loadData(this.dataSource.data, isEdit); // add to list
+          if (isEdit) {
+            // update
+            this.dataSource.data[index] = result;
+          } else {
+            // create
+            this.dataSource.data.push(result);
+          }
+          this.loadData(this.dataSource.data, isEdit); // add to list
         }
       }),
     ).subscribe();

@@ -1,20 +1,22 @@
 <nb-card [status]="data.test ? 'info' : 'success'">
   <nb-card-header>
-    {{data.test ? '编辑化验单' : '新增化验单'}}
+    {{ data.readonly ? '查看' : (data.test ? '编辑' : '新增')}}化验单
     <button nbButton shape="round" size="tiny" class="float-right" mat-dialog-close>
       <nb-icon icon="close"></nb-icon>
     </button>
   </nb-card-header>
 
   <mat-dialog-content class="px-3 pt-1">
-    <div class="field row">
-      <label for="fromTemplate" class="label"> 选择化验单模板 </label>
-      <nb-select id="fromTemplate" fullWidth [(ngModel)]="selectedTestForm" (selectedChange)="testFormSelected($event)"
-        placeholder="选择或搜索化验单模板...">
-        <nb-option *ngFor="let tf of testForms" [value]="tf">{{tf.name}}</nb-option>
-      </nb-select>
+    <div [class.d-none]="data.readonly">
+      <div class="field row">
+        <label for="fromTemplate" class="label"> 选择化验单模板 </label>
+        <nb-select id="fromTemplate" fullWidth [(ngModel)]="selectedTestForm"
+          (selectedChange)="testFormSelected($event)" placeholder="选择或搜索化验单模板...">
+          <nb-option *ngFor="let tf of testForms" [value]="tf">{{tf.name}}</nb-option>
+        </nb-select>
+      </div>
+      <hr class="mb-2">
     </div>
-    <hr class="mb-2">
 
     <div [formGroup]="form">
       <div class="field row">
@@ -30,8 +32,8 @@
 
       <div class="field row">
         <div class="col-12">
-          <div class="py-2">
-            <button nbButton hero status="success" (click)="add()">
+          <div class="py-2" [class.d-none]="data.readonly">
+            <button nbButton hero size="small" status="success" (click)="add()">
               <nb-icon icon="plus-outline"></nb-icon>新增测试项
             </button>
           </div>
@@ -66,8 +68,8 @@
               </ng-container>
 
               <ng-container matColumnDef="index">
-                <th mat-header-cell *matHeaderCellDef class="text-center"> 操作 </th>
-                <td mat-cell *matCellDef="let element; let i=index" class="actions">
+                <th mat-header-cell *matHeaderCellDef class="text-center"  [class.d-none]="data.readonly"> 操作 </th>
+                <td mat-cell *matCellDef="let element; let i=index" class="actions" [class.d-none]="data.readonly">
                   <button nbButton hero shape="round" size="tiny" status="info" title="编辑" (click)="edit(element, i)">
                     <nb-icon icon="edit-2"></nb-icon>
                   </button>
@@ -89,14 +91,30 @@
           </ng-container>
         </div>
       </div>
+
+      <div class="d-flex flex-row-reverse align-items-end">
+        <div class="px-3 mt-3 mb-n4">
+          <mat-form-field appearance="fill">
+            <mat-label>化验日期</mat-label>
+            <input matInput [matDatepicker]="picker" [max]="maxDate" formControlName="date">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
+        </div>
+      </div>
     </div>
   </mat-dialog-content>
 
   <nb-card-footer class="d-block">
-    <button nbButton mat-dialog-close>取消</button>
-    <button nbButton hero status="primary" class="float-right" [disabled]="form.invalid || !dataSource?.data?.length"
-      (click)="update()">
-      <nb-icon icon="checkmark-circle"></nb-icon>更新
-    </button>
+    <div [class.d-none]="data.readonly">
+      <button nbButton mat-dialog-close>取消</button>
+      <button nbButton hero status="primary" class="float-right" [disabled]="form.invalid || !dataSource?.data?.length"
+        (click)="update()">
+        <nb-icon icon="checkmark-circle"></nb-icon>更新
+      </button>
+    </div>
+    <div [class.d-none]="!data.readonly">
+      <button nbButton hero status="primary" class="float-right" mat-dialog-close>关闭</button>
+    </div >
   </nb-card-footer>
 </nb-card>

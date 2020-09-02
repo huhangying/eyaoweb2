@@ -84,7 +84,7 @@
           </ng-template>
           <ng-template matTabContent>
             <div class="my-3">
-              <ngx-lab-results></ngx-lab-results>
+              <ngx-lab-results [user]="diagnose.user" [testIds]="diagnose.labResults" (saveDiagnose)="saveDiagnoseTest($event)"></ngx-lab-results>
             </div>
           </ng-template>
         </mat-tab>
