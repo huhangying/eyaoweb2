@@ -81,6 +81,7 @@ export class ArticlePushComponent implements OnInit {
           // reset article page
           this.articlePage = {
             doctor: this.doctor._id,
+            doctor_name: `${this.doctor.name}${this.doctor.title}`,
             cat: result.cat,
             name: result.name,
             title: result.title,
@@ -107,6 +108,7 @@ export class ArticlePushComponent implements OnInit {
           // reset article page
           this.articlePage = {
             doctor: this.doctor._id,
+            doctor_name: `${this.doctor.name}${this.doctor.title}`,
             cat: result.cat,
             name: result.name,
             title: result.title,
@@ -144,7 +146,7 @@ export class ArticlePushComponent implements OnInit {
           // setTimeout(() => {
           if (sendee.link_id) {
             await this.wxService.sendUserMsg(sendee.link_id, this.articlePage.title,
-              `${this.doctor.name + ' ' + this.doctor.title} 给您发送了一篇文章`,
+              `${this.doctor.name + '' + this.doctor.title} 给您发送了一篇文章`,
               this.doctor.wechatUrl + 'article;id=' + result?._id,
               this.imgPath.transform(this.articlePage.title_image)
             ).toPromise();
