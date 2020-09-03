@@ -100,7 +100,7 @@ export class ChatService {
     this.appStore.updateChatNotifications(notifications);
   }
 
-  // after chatroom loaded (once a time)
+  // after chatroom loaded (once a time), after doctor mark it read
   removeChatsFromNotificationList(doctorId: string, patientId: string) {
     // get from store
     let notifications = this.appStore.state.chatNotifications;

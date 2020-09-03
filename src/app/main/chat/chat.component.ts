@@ -28,11 +28,14 @@ import { Subject } from 'rxjs';
 })
 export class ChatComponent implements OnInit, OnDestroy {
   private destroy$: Subject<void> = new Subject<void>();
-  chatNotifications: Notification[];
   type: number;
-  doctor: Doctor;
+
+  chatNotifications: Notification[];
+  feedbackNotifications: Notification[];
   chats: Chat[];
   feedbacks: UserFeedback[];
+
+  doctor: Doctor;
   selectedPatient: User;
   room: string;
   myInput = '';
@@ -97,9 +100,12 @@ export class ChatComponent implements OnInit, OnDestroy {
               }
             });
           });
+
           if (!found) {
-            this.chatService.removeChatsFromNotificationList(this.doctor._id, pid);
-            this.message.info('该病患不再是药师的用户，或者病患已经取消关注。', '操作取消！');
+            if (this.type === NotificationType.chat) {
+              this.chatService.removeChatsFromNotificationList(this.doctor._id, pid);
+              this.message.info('该病患不再是药师的用户，或者病患已经取消关注。', '操作取消！');
+            }
           }
         }
       }),
@@ -171,6 +177,24 @@ export class ChatComponent implements OnInit, OnDestroy {
       takeUntil(this.destroy$),
     ).subscribe();
 
+    this.appStore.state$.pipe(
+      pluck('feedbackNotifications'),
+      distinctUntilChanged(),
+      tap(notis => {
+        // init
+        this.feedbackNotifications = [];
+        if (notis?.length) {
+          this.feedbackNotifications = notis;
+          // this.chatUnread = this.chatNotifications.reduce((total, noti) => {
+          //   total += noti.count;
+          //   return total;
+          // }, 0);
+        }
+        this.cd.markForCheck();
+      }),
+      takeUntil(this.destroy$),
+    ).subscribe();
+
   }
 
   ngOnDestroy() {
@@ -185,8 +209,14 @@ export class ChatComponent implements OnInit, OnDestroy {
   }
 
   showBadge(pid: string): boolean {
-    if (!this.chatNotifications?.length) return false;
-    return this.chatNotifications.findIndex(noti => noti.patientId === pid) > -1;
+    if (!pid) return false;
+    if (this.type === NotificationType.chat) {
+      if (!this.chatNotifications?.length) return false;
+      return this.chatNotifications.findIndex(noti => noti.patientId === pid) > -1;
+    } else {
+      if (!this.feedbackNotifications?.length) return false;
+      return this.feedbackNotifications.findIndex(noti => noti.patientId === pid) > -1;
+    }
   }
 
   showBadgeCount(pid: string): number {
@@ -202,7 +232,6 @@ export class ChatComponent implements OnInit, OnDestroy {
   }
 
   selectChatPatient(patient: User) {
-    // console.log(patient);
     this.selectedPatient = patient;
     this.showInSm = false;
 
@@ -213,8 +242,8 @@ export class ChatComponent implements OnInit, OnDestroy {
           this.chats = results.sort((a, b) => (+new Date(a.created) - +new Date(b.created)));
           this.scrollBottom();
 
-          //
-          this.chatService.removeChatsFromNotificationList(this.doctor._id, this.selectedPatient._id);
+          // !! 取消自动去除“未读”。改成手动
+          // this.chatService.removeChatsFromNotificationList(this.doctor._id, this.selectedPatient._id);
         } else {
           this.chats = [];
         }
@@ -225,19 +254,18 @@ export class ChatComponent implements OnInit, OnDestroy {
   }
 
   selectFeedbackPatient(patient: User, type: number) {
-    // console.log(patient);
     this.selectedPatient = patient;
     this.showInSm = false;
 
-    // get chat history
+    // get history
     this.feedbackService.getByUserIdDoctorId(this.doctor._id, patient._id, type).pipe(
       tap(results => {
         if (results?.length) {
           this.feedbacks = results.sort((a, b) => (+new Date(a.createdAt) - +new Date(b.createdAt)));
           this.scrollBottom();
 
-          //
-          this.feedbackService.removeFromNotificationList(this.doctor._id, this.selectedPatient._id, this.type);
+          // !! 取消自动去除“未读”。改成手动
+          // this.feedbackService.removeFromNotificationList(this.doctor._id, this.selectedPatient._id, this.type);
         } else {
           this.feedbacks = [];
         }
@@ -372,4 +400,14 @@ export class ChatComponent implements OnInit, OnDestroy {
     }
   }
 
+  // 药师标识完成
+  markRead() {
+    if (this.type === NotificationType.chat) {
+      this.chatService.removeChatsFromNotificationList(this.doctor._id, this.selectedPatient._id);
+      this.message.success('药师标记消息已读！');
+    } else if (this.type === NotificationType.adverseReaction || this.type === NotificationType.doseCombination) {
+      this.feedbackService.removeFromNotificationList(this.doctor._id, this.selectedPatient._id, this.type);
+      this.message.success('药师标记已读完成！');
+    }
+  }
 }

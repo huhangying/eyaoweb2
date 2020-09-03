@@ -61,8 +61,30 @@
   .chat-header {
     border-radius: 15px 15px 0 0 !important;
     border-bottom: 0 !important;
-    padding: 0.75rem 1rem 0 1.25rem;
+    padding: 0.35rem 1rem 0.25rem 1rem;
     position: relative;
+    .img_cont {
+      position: relative;
+      height: 70px;
+      width: 70px;
+    }
+    .user_info {
+      margin-top: auto;
+      margin-bottom: auto;
+      margin-left: 15px;
+      span {
+        font-size: 20px;
+        color: white;
+      }
+      p {
+        padding-top: 4px;
+        font-size: 14px;
+        color: rgba(255, 255, 255, 0.6);
+      }
+    }
+    .status-action {
+      color: white;
+    }
   }
   .card-footer {
     border-radius: 0 0 15px 15px !important;
@@ -116,11 +138,7 @@
     width: 40px;
     border: 1.5px solid #f5f6fa;
   }
-  .img_cont {
-    position: relative;
-    height: 70px;
-    width: 70px;
-  }
+
   .img_cont_msg {
     height: 40px;
     width: 40px;
@@ -143,20 +161,7 @@
     bottom: 0.2em;
     right: 0.4em;
   }
-  .user_info {
-    margin-top: auto;
-    margin-bottom: auto;
-    margin-left: 15px;
-    span {
-      font-size: 20px;
-      color: white;
-    }
-    p {
-      padding-top: 4px;
-      font-size: 14px;
-      color: rgba(255, 255, 255, 0.6);
-    }
-  }
+
 
   .sender {
     .msg-data {

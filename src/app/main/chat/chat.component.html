@@ -38,7 +38,8 @@
                         </div>
                       </div>
                       <div class="pr-2" *ngIf="showBadge(member.user._id)">
-                        <span [matBadge]="showBadgeCount(member.user._id)" matBadgeOverlap="false" matBadgeColor="warn"></span>
+                        <span [matBadge]="showBadgeCount(member.user._id)" matBadgeOverlap="false"
+                          matBadgeColor="warn"></span>
                       </div>
                     </div>
                   </mat-list-option>
@@ -51,7 +52,7 @@
 
       <div class="col-12 col-md-8 col-xl-9">
         <div class="card" [style.height]="chatBodyHeight" *ngIf="selectedPatient">
-          <div class="chat-header">
+          <div class="chat-header d-flex justify-content-between">
             <div class="d-flex bd-highlight">
               <div class="img_cont">
                 <img [src]="selectedPatient?.icon" class="rounded-circle user_img">
@@ -64,6 +65,16 @@
                   {{ selectedPatient?.birthdate ? '年龄：' + (selectedPatient.birthdate | localDate: 'age') : '' }} <br>
                   {{ selectedPatient?.cell ? '电话：' + selectedPatient.cell : '' }}
                 </p>
+              </div>
+            </div>
+            <div class="status-action d-flex flex-column justify-content-center pr-2">
+              <div *ngIf="showBadge(selectedPatient?._id)">
+                <span>
+                  新消息
+                </span>
+                <button mat-icon-button color="primary" matTooltip="标识完成" (click)="markRead()">
+                  <mat-icon>check_circle</mat-icon>
+                </button>
               </div>
             </div>
           </div>
@@ -79,7 +90,8 @@
                     </div>
                     <div class="msg-data" [ngSwitch]="chat.type">
                       <div *ngSwitchCase="dataType.picture">
-                        <img [src]="chat.data | imgPath" onerror="this.src='assets/images/no-image.png';this.onerror='';"
+                        <img [src]="chat.data | imgPath"
+                          onerror="this.src='assets/images/no-image.png';this.onerror='';"
                           class="img-fluid img-thumbnail" ngxImgClickView>
                       </div>
                       <div *ngSwitchDefault class="text-break" [innerHTML]="translateEmoji(chat.data)">
@@ -96,7 +108,8 @@
                     </div>
                     <div class="msg-data" [ngSwitch]="chat.type">
                       <div *ngSwitchCase="dataType.picture">
-                        <img [src]="chat.data | imgPath" onerror="this.src='assets/images/no-image.png';this.onerror='';"
+                        <img [src]="chat.data | imgPath"
+                          onerror="this.src='assets/images/no-image.png';this.onerror='';"
                           class="img-fluid img-thumbnail" ngxImgClickView>
                       </div>
                       <div *ngSwitchDefault class="text-break" [innerHTML]="translateEmoji(chat.data)">
@@ -133,7 +146,8 @@
                         </div>
                         <div *ngIf="feedback.upload">
                           <img [src]="feedback.upload | imgPath" ngxImgClickView
-                            onerror="this.src='assets/images/no-image.png';this.onerror='';" class="img-fluid img-thumbnail">
+                            onerror="this.src='assets/images/no-image.png';this.onerror='';"
+                            class="img-fluid img-thumbnail">
                         </div>
                       </div>
                     </div>
@@ -157,7 +171,8 @@
                         </div>
                         <div *ngIf="feedback.upload">
                           <img [src]="feedback.upload | imgPath" ngxImgClickView
-                            onerror="this.src='assets/images/no-image.png';this.onerror='';" class="img-fluid img-thumbnail">
+                            onerror="this.src='assets/images/no-image.png';this.onerror='';"
+                            class="img-fluid img-thumbnail">
                         </div>
                       </div>
                     </div>
