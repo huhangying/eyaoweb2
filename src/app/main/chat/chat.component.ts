@@ -127,7 +127,6 @@ export class ChatComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     // socket.io
     this.room = this.doctor._id;
-    // this.socketio.joinRoom(this.room);
 
     this.socketio.onChat((msg: Chat) => {
       if (msg.sender === this.selectedPatient?._id) {
@@ -200,7 +199,6 @@ export class ChatComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.destroy$.next();
     this.destroy$.complete();
-    // this.socketio.leaveRoom(this.room);
   }
 
   toggleShowInSm() {
