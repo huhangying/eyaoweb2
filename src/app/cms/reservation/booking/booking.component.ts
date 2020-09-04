@@ -15,6 +15,7 @@ import { Period } from '../../../models/reservation/schedule.model';
 import { tap, catchError } from 'rxjs/operators';
 import { AppStoreService } from '../../../shared/store/app-store.service';
 import { BookingForwardDoctorComponent } from './booking-forward-doctor/booking-forward-doctor.component';
+import { WeixinService } from '../../../shared/service/weixin.service';
 
 @Component({
   selector: 'ngx-booking',
@@ -28,6 +29,7 @@ export class BookingComponent implements OnInit, OnDestroy {
   periods: Period[];
   doctors: Doctor[];
   selectedDoctor: Doctor;
+  selectedDepartment: Department;
   statusList: string[];
   displayedColumns: string[] = ['scheduleDate', 'userName', 'status', 'created', '_id'];
   dataSource: MatTableDataSource<BookingFlatten>;
@@ -41,6 +43,7 @@ export class BookingComponent implements OnInit, OnDestroy {
     public dialog: MatDialog,
     private cd: ChangeDetectorRef,
     private dialogService: DialogService,
+    private weixinService: WeixinService,
     private message: MessageService,
     private appStore: AppStoreService,
   ) {
@@ -60,6 +63,7 @@ export class BookingComponent implements OnInit, OnDestroy {
 
   doctorSelected(doctor: Doctor) {
     this.selectedDoctor = doctor;
+    this.selectedDepartment = this.departments.find(_ => _._id === this.selectedDoctor.department);
     if (!doctor?._id) {
       this.loadData([]);
       return;
@@ -98,6 +102,14 @@ export class BookingComponent implements OnInit, OnDestroy {
     this.dialogService.prompt('确认取消用户门诊', '门诊取消原因').subscribe(result => {
       if (result) {
         this.updateBookingStatus(data, 3, result);
+
+        // send msg to patient
+        this.weixinService.sendBookingCancelTemplateMsg(
+          data.userLinkId,
+          data, this.selectedDoctor,
+          this.selectedDepartment,
+          data.periodName
+        ).subscribe();
       }
     });
   }
@@ -108,7 +120,7 @@ export class BookingComponent implements OnInit, OnDestroy {
         booking: data,
         periods: this.periods,
         doctor: this.selectedDoctor,
-        department: this.departments.find(_ => _._id === this.selectedDoctor.department)
+        department: this.selectedDepartment
       },
       width: '600px'
     }).afterClosed().pipe(
