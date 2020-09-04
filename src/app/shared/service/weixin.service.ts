@@ -52,7 +52,7 @@ export class WeixinService {
     periodName: string
   ) {
     return this.api.post('wechat/send-wechat-msg',
-      this.buildBookingCancelMsg('booking_forward_template', openid,
+      this.buildBookingCancelMsg('booking_cancel_template', openid,
         booking, doctor, department, periodName,
         `非常抱歉，${doctor.name}${doctor.title}在您预约的时间内不能坐诊, 特向您通知取消。详情如下`,
         '谢谢理解！')

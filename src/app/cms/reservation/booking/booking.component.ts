@@ -99,7 +99,7 @@ export class BookingComponent implements OnInit, OnDestroy {
   }
 
   forceCancel(data?: BookingFlatten) {
-    this.dialogService.prompt('确认取消用户门诊', '门诊取消原因').subscribe(result => {
+    this.dialogService.prompt('确认取消用户门诊', '门诊取消原因 (用于内部存档)').subscribe(result => {
       if (result) {
         this.updateBookingStatus(data, 3, result);
 
