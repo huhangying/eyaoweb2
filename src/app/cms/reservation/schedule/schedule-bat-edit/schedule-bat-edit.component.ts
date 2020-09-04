@@ -32,7 +32,7 @@ export class ScheduleBatEditComponent implements OnInit, OnDestroy {
     private message: MessageService,
   ) {
     this.form = this.fb.group({
-      periods: [[''], Validators.required],
+      periods: ['', Validators.required],
       limit: ['', Validators.required],
       from: ['', Validators.required],
       to: ['', Validators.required],

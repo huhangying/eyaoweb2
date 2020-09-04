@@ -31,7 +31,7 @@ export class ScheduleBatDeleteComponent implements OnInit, OnDestroy {
     private message: MessageService,
   ) {
     this.form = this.fb.group({
-      periods: [[''], Validators.required],
+      periods: ['', Validators.required],
       from: ['', Validators.required],
       to: ['', Validators.required],
       day1: true,
