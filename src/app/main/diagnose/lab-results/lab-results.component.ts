@@ -14,7 +14,8 @@ import { AuthService } from '../../../shared/service/auth.service';
 })
 export class LabResultsComponent implements OnInit, OnDestroy {
   @Input() user: string;
-  @Input() testIds: string[];
+  @Input() getAll?: string;
+  @Input() testIds?: string[];
   @Input() readonly?: boolean;
   @Output() saveDiagnose: EventEmitter<string[]> = new EventEmitter();
   tests: Test[];
@@ -32,8 +33,17 @@ export class LabResultsComponent implements OnInit, OnDestroy {
 
 
   ngOnInit(): void {
-    if (this.testIds?.length) {
-      this.testService.getByList(this.testIds.join('|')).subscribe(results => {
+    if (!this.getAll) {
+      if (this.testIds?.length) {
+        this.testService.getByList(this.testIds.join('|')).subscribe(results => {
+          if (results?.length) {
+            this.tests = results;
+            this.cd.markForCheck();
+          }
+        });
+      }
+    } else {
+      this.testService.getByUser(this.user).subscribe(results => {
         if (results?.length) {
           this.tests = results;
           this.cd.markForCheck();

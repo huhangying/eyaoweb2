@@ -5,6 +5,8 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Diagnose } from '../../../models/diagnose/diagnose.model';
 import { DiagnoseService } from '../../../services/diagnose.service';
 import { MedicineReferences } from '../../../models/hospital/medicine-references.model';
+import { TestService } from '../../../services/test.service';
+import { Test } from '../../../models/hospital/test.model';
 
 @Component({
   selector: 'ngx-patient-history',
@@ -14,6 +16,7 @@ import { MedicineReferences } from '../../../models/hospital/medicine-references
 })
 export class PatientHistoryComponent implements OnInit {
   diagnoses: Diagnose[];
+  tests: Test[];
 
   constructor(
     public dialogRef: MatDialogRef<PatientHistoryComponent>,
@@ -23,6 +26,7 @@ export class PatientHistoryComponent implements OnInit {
       medicineReferences: MedicineReferences;
     },
     private diagnoseService: DiagnoseService,
+    private testService: TestService,
     private cd: ChangeDetectorRef,
   ) { }
 
@@ -32,11 +36,21 @@ export class PatientHistoryComponent implements OnInit {
 
   tabChanged(index: number) {
     switch (index) {
-      case 1:
+      case 1: // 门诊记录
         if (!this.diagnoses) {
           this.diagnoseService.getDiagnoseHistory(this.data.patient._id).subscribe(
             results => {
               this.diagnoses = results;
+              this.cd.markForCheck();
+            }
+          );
+        }
+        break;
+      case 2: // 化验结果
+        if (!this.tests) {
+          this.testService.getByUser(this.data.patient._id).subscribe(
+            results => {
+              this.tests = results;
               this.cd.markForCheck();
             }
           );

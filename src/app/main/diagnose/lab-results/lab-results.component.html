@@ -15,22 +15,22 @@
     <thead>
       <tr>
         <th scope="col">#</th>
+        <th scope="col">化验日期</th>
         <th scope="col">测试单名称</th>
         <th scope="col">类型</th>
         <th scope="col">测试项个数</th>
-        <th scope="col">化验日期</th>
-        <th scope="col" [class.d-none]="readonly"></th>
+        <th scope="col"></th>
       </tr>
     </thead>
     <tbody>
       <tr *ngFor="let test of tests; let i=index" cdkDrag>
         <th scope="row">{{i+1}}</th>
+        <td>{{ test.date | localDate }}</td>
         <td>{{ test.name }}</td>
         <td>
           {{ test.type }}
         </td>
         <td>{{ test.items?.length || 0 }}</td>
-        <td>{{ test.date | localDate }}</td>
         <td>
           <div [class.d-none]="readonly">
             <button nbButton hero shape="round" size="tiny" status="info" title="编辑" (click)="edit(i, test)">
