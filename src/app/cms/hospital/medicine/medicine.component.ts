@@ -67,10 +67,8 @@ export class MedicineComponent implements OnInit, OnDestroy {
   }
 
 
-  showInstruction(dosage: Dosage): string {
-    const selectedIntervalDay = (dosage.intervalDay > -1 && this.intervalDays) ?
-      this.intervalDays.find(item => item.value === dosage.intervalDay) : null;
-    return `${selectedIntervalDay ? selectedIntervalDay.name : '空'} ${dosage.frequency || 0}次`;
+  showInstruction(dosage: Dosage, unit: string): string {
+    return this.medicineService.showDosageInstruction(dosage, unit, this.intervalDays);
   }
 
   delete(id: string) {

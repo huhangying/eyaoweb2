@@ -35,9 +35,9 @@
         </ng-container>
 
         <ng-container matColumnDef="dosage">
-          <th mat-header-cell *matHeaderCellDef> 服药周期 </th>
+          <th mat-header-cell *matHeaderCellDef> 服药方法 </th>
           <td mat-cell *matCellDef="let element">
-            {{showInstruction(element.dosage)}} </td>
+            {{showInstruction(element.dosage, element.unit)}} </td>
         </ng-container>
 
         <ng-container matColumnDef="notices">

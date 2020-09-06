@@ -7,7 +7,7 @@ import { MedicineService } from '../../../../services/medicine.service';
 import { MedicineReferences } from '../../../../models/hospital/medicine-references.model';
 import * as moment from 'moment';
 import { MessageService } from '../../../../shared/service/message.service';
-import { distinctUntilChanged, tap, startWith } from 'rxjs/operators';
+import { distinctUntilChanged, tap, startWith, takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'ngx-prescription-edit',
@@ -46,6 +46,7 @@ export class PrescriptionEditComponent implements OnInit, OnDestroy {
         frequency: ['', Validators.required],
         intervalDay: ['', Validators.required],
         way: ['', Validators.required],
+        customized: ['']
       }),
       notes: '',
     });
@@ -53,6 +54,8 @@ export class PrescriptionEditComponent implements OnInit, OnDestroy {
 
   get unitCtrl() { return this.form.get('unit'); }
   get endDateCtrl() { return this.form.get('endDate'); }
+  get dosageCtrl() { return this.form.get('dosage'); }
+  get dosageCustomizedCtrl() { return this.dosageCtrl.get('customized'); }
   get dosageCount() { return this.form.get('dosage.count'); }
   get dosageFrequency() { return this.form.get('dosage.frequency'); }
 
@@ -65,6 +68,27 @@ export class PrescriptionEditComponent implements OnInit, OnDestroy {
     } else {
       this.fromMinDate = moment(); // today if 新增
     }
+
+    this.dosageCustomizedCtrl.valueChanges.pipe(
+      takeUntil(this.destroy$)
+    ).subscribe(val => {
+      if (!val) {
+        this.dosageCtrl.get('count').setValidators([Validators.required]);
+        this.dosageCtrl.get('frequency').setValidators([Validators.required]);
+        this.dosageCtrl.get('intervalDay').setValidators([Validators.required]);
+        this.dosageCtrl.get('way').setValidators([Validators.required]);
+
+      } else {
+        this.dosageCtrl.get('count').clearValidators();
+        this.dosageCtrl.get('frequency').clearValidators();
+        this.dosageCtrl.get('intervalDay').clearValidators();
+        this.dosageCtrl.get('way').clearValidators();
+      }
+      this.dosageCtrl.get('count').updateValueAndValidity();
+      this.dosageCtrl.get('frequency').updateValueAndValidity();
+      this.dosageCtrl.get('intervalDay').updateValueAndValidity();
+      this.dosageCtrl.get('way').updateValueAndValidity();
+    });
 
     this.form.get('dosage.frequency').valueChanges.pipe(
       startWith(this.data.medicine?.dosage?.frequency),
@@ -96,13 +120,14 @@ export class PrescriptionEditComponent implements OnInit, OnDestroy {
   templateSelected(selectedTemplate: Medicine) {
     // check if exist
     if (this.data.prescription.length && this.data.prescription.find(_ => _.name === selectedTemplate.name)) {
-      this.message.warning('已经开过了的处方药, 不能再次被开。');
+      this.message.warning('本门诊已经包含该处方药, 不能再次应用。');
       return;
     }
     this.selectedMedicine.startDate = new Date();
     this.form.patchValue(selectedTemplate);
-
-    this.caculateEndDate();
+    if (!selectedTemplate.dosage.customized) {
+      this.caculateEndDate();
+    }
   }
 
   caculateEndDate() {

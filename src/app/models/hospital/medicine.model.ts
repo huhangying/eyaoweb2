@@ -19,8 +19,9 @@ export interface Medicine {
 }
 
 export interface Dosage {
-  intervalDay: number; // default: 1, min: 0, // 每几天
-  way: string; // 饭前/饭后/隔几小时
-  frequency: number;
-  count: number;
+  intervalDay?: number; // default: 1, min: 0, // 每几天
+  way?: string; // 饭前/饭后/隔几小时
+  frequency?: number;
+  count?: number;
+  customized?: string;
 }

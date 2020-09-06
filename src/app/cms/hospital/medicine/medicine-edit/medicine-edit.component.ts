@@ -43,6 +43,7 @@ export class MedicineEditComponent implements OnInit, OnDestroy {
         frequency: ['', Validators.required],
         intervalDay: ['', Validators.required],
         way: ['', Validators.required],
+        customized: [''],
       }),
       apply: [false],
     });
@@ -52,9 +53,32 @@ export class MedicineEditComponent implements OnInit, OnDestroy {
   }
 
   get unitCtrl() { return this.form.get('unit'); }
+  get dosageCtrl() { return this.form.get('dosage'); }
+  get dosageCustomizedCtrl() { return this.dosageCtrl.get('customized'); }
 
   ngOnInit() {
     this.dialogRef.updateSize('80%');
+
+    this.dosageCustomizedCtrl.valueChanges.pipe(
+      takeUntil(this.destroy$)
+    ).subscribe(val => {
+      if (!val) {
+        this.dosageCtrl.get('count').setValidators([Validators.required]);
+        this.dosageCtrl.get('frequency').setValidators([Validators.required]);
+        this.dosageCtrl.get('intervalDay').setValidators([Validators.required]);
+        this.dosageCtrl.get('way').setValidators([Validators.required]);
+
+      } else {
+        this.dosageCtrl.get('count').clearValidators();
+        this.dosageCtrl.get('frequency').clearValidators();
+        this.dosageCtrl.get('intervalDay').clearValidators();
+        this.dosageCtrl.get('way').clearValidators();
+      }
+      this.dosageCtrl.get('count').updateValueAndValidity();
+      this.dosageCtrl.get('frequency').updateValueAndValidity();
+      this.dosageCtrl.get('intervalDay').updateValueAndValidity();
+      this.dosageCtrl.get('way').updateValueAndValidity();
+    });
   }
 
   ngOnDestroy() {

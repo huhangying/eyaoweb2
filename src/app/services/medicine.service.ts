@@ -34,6 +34,9 @@ export class MedicineService {
   }
 
   showDosageInstruction(dosage: Dosage, unit: string, medicinePeriods: MedicinePeriod[]): string {
+    if (dosage.customized) {
+      return dosage.customized;
+    }
     if (!medicinePeriods?.length) return '';
     const selectedIntervalDay = (dosage.intervalDay > -1 && medicinePeriods) ?
       medicinePeriods.find(item => item.value === dosage.intervalDay) : null;

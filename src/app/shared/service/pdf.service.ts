@@ -167,7 +167,7 @@ export class PdfService {
     if (!prescription?.length) return '\n\n';
     return prescription.map(medicine => {
       return `药名: ${medicine.name} (共${medicine.capacity} ${medicine.unit} X ${medicine.quantity})
-        服用方法: ${medicine.usage}: ${this.medicineService.showDosageInstruction(medicine.dosage, medicine.unit, periods)}
+        服用方法: ${medicine.usage}, ${this.medicineService.showDosageInstruction(medicine.dosage, medicine.unit, periods)}
         ${medicine.notes ? '备注: ' + medicine.notes + '\n' : ''}\n`;
     }).join('');
   }

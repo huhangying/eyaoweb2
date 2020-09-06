@@ -26,7 +26,7 @@
         <th scope="row">{{i+1}}</th>
         <td>{{medicine.name}}(共{{ medicine.capacity }} {{ medicine.unit}} X {{medicine.quantity}})</td>
         <td>
-          {{medicine.usage}}:
+          {{medicine.usage}},
           {{showDosageInstruction(medicine.dosage, medicine.unit )}}
         </td>
         <td>{{medicine.notes || '无'}}</td>
