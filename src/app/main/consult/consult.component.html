@@ -35,9 +35,9 @@
           <mat-checkbox [(ngModel)]="textServiceEnabled">
             开启图文咨询
           </mat-checkbox>
-          <mat-form-field class="ml-3" [class.d-none]="!textServiceEnabled">
+          <mat-form-field class="ml-3" *ngIf="textServiceEnabled">
             <mat-label>服务价格 (元/次)</mat-label>
-            <input matInput type="number" placeholder="请输入价格">
+            <input matInput type="number" placeholder="请输入价格" [(ngModel)]="textServicePrice.amount">
           </mat-form-field>
         </div>
 
@@ -45,17 +45,19 @@
           <mat-checkbox [(ngModel)]="phoneServiceEnabled">
             开启电话咨询
           </mat-checkbox>
-          <mat-form-field class="ml-3" [class.d-none]="!phoneServiceEnabled">
-            <mat-label>服务价格 (元)</mat-label>
-            <input matInput type="number" placeholder="请输入价格">
-          </mat-form-field>
-          <mat-form-field class="ml-2" [class.d-none]="!phoneServiceEnabled">
-            <mat-label>服务时间 (分钟)</mat-label>
-            <input matInput type="number" placeholder="请输入分钟数">
-          </mat-form-field>
+          <ng-container *ngIf="phoneServiceEnabled">
+            <mat-form-field class="ml-3">
+              <mat-label>服务价格 (元)</mat-label>
+              <input matInput type="number" placeholder="请输入价格" [(ngModel)]="phoneServicePrice.amount">
+            </mat-form-field>
+            <mat-form-field class="ml-2">
+              <mat-label>服务时间 (分钟)</mat-label>
+              <input matInput type="number" placeholder="请输入分钟数" [(ngModel)]="phoneServicePrice.unit_count">
+            </mat-form-field>
+          </ng-container>
         </div>
         <div [class.d-none]="!phoneServiceEnabled && !textServiceEnabled">
-          <button nbButton status="primary" class="float-right" (click)="saveSelfTags()">确定</button>
+          <button nbButton status="primary" class="float-right" (click)="saveServicePrices()">确定</button>
         </div>
       </nb-card-body>
     </nb-card>
