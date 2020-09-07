@@ -7,12 +7,11 @@ export interface DoctorConsult {
   score?: number;  // 总体评分
   response_time?: string; // 平均响应时间
 
-  presetComments?: [
-    {
-      preset: string;
-      count: number;
-    }
-  ];
+  presetComments?: {
+    type: number;
+    label?: string;
+    count: number;
+  }[];
 }
 
 export interface ConsultServicePrice {

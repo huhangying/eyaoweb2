@@ -8,6 +8,7 @@ import { AuthService } from '../../shared/service/auth.service';
 import { MessageService } from '../../shared/service/message.service';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { ConsultServicePrice, DoctorConsult } from '../../models/consult/doctor.consult.model';
+import { DoctorConsultComment } from '../../models/consult/doctor.consult.comment.model';
 
 @Component({
   selector: 'ngx-consult',
@@ -19,6 +20,7 @@ export class ConsultComponent implements OnInit, OnDestroy {
   destroy$ = new Subject<void>();
   doctorId: string;
   doctorConsult: DoctorConsult;
+  consultComments: DoctorConsultComment[];
 
   readonly separatorKeysCodes: number[] = [ENTER, BACKSLASH];
   chips: string[];
@@ -65,7 +67,17 @@ export class ConsultComponent implements OnInit, OnDestroy {
               unit_count: 20
             };
           }
+          // populate preset comments' labels
+
           this.cd.markForCheck();
+        }
+      })
+    ).subscribe();
+
+    this.consultService.getDoctorConsultCommentsBy(this.doctorId, 0, 5).pipe(
+      tap(results => {
+        if (results?.length) {
+          this.consultComments = results;
         }
       })
     ).subscribe();

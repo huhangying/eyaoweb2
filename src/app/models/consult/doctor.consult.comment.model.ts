@@ -7,7 +7,8 @@ export interface DoctorConsultComment {
   score?: number;  // 评分
   presetComments?: [
     {
-      preset: string;
+      type: number;
+      label?: string;
       checked: boolean;
     }
   ];

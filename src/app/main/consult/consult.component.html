@@ -88,15 +88,16 @@
           {{doctorConsult?.response_time || '-'}}
         </div>
       </div>
+      <label class="label"> 用户评价 </label>
       <div class="field row">
-        <label for="title_image" class="label"> 评价 </label>
-        <div class="col-sm-3" *ngFor="let pc of doctorConsult?.presetComments">
-          <span> {{pc.preset}} </span>
-          X {{pc.count}}
+        <div class="col-md-3" *ngFor="let pc of doctorConsult?.presetComments">
+          <mat-chip> {{pc.label}} x {{pc.count}}</mat-chip>
         </div>
         <div class="col-md-12">
-          <div class="py-2">
-            内容。。。。
+          <div class="py-2" *ngFor="let comment of consultComments">
+            <p>
+              内容: {{comment.comment}}
+            </p>
 
           </div>
         </div>
