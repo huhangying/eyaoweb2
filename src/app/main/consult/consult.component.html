@@ -1,0 +1,91 @@
+<div class="px-2 pt-1 pb-3">
+  付费咨询相关配置
+</div>
+<div class="row">
+  <div class="col-lg-6">
+    <nb-card>
+      <nb-card-header> 自定义标签 </nb-card-header>
+      <nb-card-body>
+        <mat-form-field class="w-100">
+          <mat-chip-list #chipList cdkDropList (cdkDropListDropped)="drop($event)">
+            <mat-chip *ngFor="let chip of chips" cdkDrag [selectable]="true" [removable]="true" (removed)="remove(chip)">
+              {{chip}}
+              <mat-icon matChipRemove>cancel</mat-icon>
+            </mat-chip>
+            <input #tagInput id="selftags" placeholder="请输入自定义标签" [matChipInputFor]="chipList"
+              [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+              [matChipInputAddOnBlur]="true" (matChipInputTokenEnd)="add($event)">
+          </mat-chip-list>
+        </mat-form-field>
+
+        <div class="text-muted pt-2">
+          * 输入并按回车键增加；或点击删除键删除。拖拽自定义标签改变顺序。保存请点击确定。
+        </div>
+        <div mat-dialog-actions class="d-block pt-2">{{chips | json}}
+          <button nbButton status="primary" class="float-right" (click)="saveSelfTags()">确定</button>
+        </div>
+      </nb-card-body>
+    </nb-card>
+  </div>
+  <div class="col-lg-6">
+    <nb-card>
+      <nb-card-header> 咨询服务设定 </nb-card-header>
+      <nb-card-body>
+        <div class="d-flex align-items-baseline">
+          <mat-checkbox [(ngModel)]="textServiceEnabled">
+            开启图文咨询
+          </mat-checkbox>
+          <mat-form-field class="ml-3" [class.d-none]="!textServiceEnabled">
+            <mat-label>服务价格 (元/次)</mat-label>
+            <input matInput type="number" placeholder="请输入价格">
+          </mat-form-field>
+        </div>
+
+        <div class="d-flex align-items-baseline">
+          <mat-checkbox [(ngModel)]="phoneServiceEnabled">
+            开启电话咨询
+          </mat-checkbox>
+          <mat-form-field class="ml-3" [class.d-none]="!phoneServiceEnabled">
+            <mat-label>服务价格 (元)</mat-label>
+            <input matInput type="number" placeholder="请输入价格">
+          </mat-form-field>
+          <mat-form-field class="ml-2" [class.d-none]="!phoneServiceEnabled">
+            <mat-label>服务时间 (分钟)</mat-label>
+            <input matInput type="number" placeholder="请输入分钟数">
+          </mat-form-field>
+        </div>
+        <div [class.d-none]="!phoneServiceEnabled && !textServiceEnabled">
+          <button nbButton status="primary" class="float-right" (click)="saveSelfTags()">确定</button>
+        </div>
+      </nb-card-body>
+    </nb-card>
+  </div>
+</div>
+
+<nb-card>
+  <nb-card-header>
+    用户反馈信息
+  </nb-card-header>
+
+  <nb-card-body>
+    <ng-container>
+      <div class="field row">
+        <div class="col-md-6">
+          <label for="selftag" class="label"> 总体评分 </label>
+          <input nbInput fullWidth id="selftag">
+
+        </div>
+        <div class="col-md-6">
+          <label for="title_image" class="label"> 评价 </label>
+          <div>
+            图文咨询
+
+            电话咨询
+
+          </div>
+        </div>
+      </div>
+    </ng-container>
+
+  </nb-card-body>
+</nb-card>

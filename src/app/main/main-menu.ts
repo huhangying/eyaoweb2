@@ -24,6 +24,11 @@ export function getMenuItems(role: number, queryParams: Params): NbMenuItem[] {
       link: '/main/chat',
     },
     {
+      title: '付费咨询设置',
+      icon: 'smiling-face-outline',
+      link: '/main/consult',
+    },
+    {
       title: '预约管理',
       icon: 'calendar-outline',
       children: [

@@ -12,6 +12,7 @@ import { DiagnoseComponent } from './diagnose/diagnose.component';
 import { ArticlePushComponent } from './article-push/article-push.component';
 import { MedicineReferencesResolver } from '../services/resolvers/medicine-references.resolver';
 import { PatientSearchComponent } from './patient-search/patient-search.component';
+import { ConsultComponent } from './consult/consult.component';
 
 const routes: Routes = [{
   path: '',
@@ -25,6 +26,10 @@ const routes: Routes = [{
     {
       path: 'chat',
       component: ChatComponent,
+    },
+    {
+      path: 'consult',
+      component: ConsultComponent,
     },
     {
       path: 'diagnose',
