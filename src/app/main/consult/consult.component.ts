@@ -7,7 +7,7 @@ import { MatChipInputEvent } from '@angular/material/chips';
 import { AuthService } from '../../shared/service/auth.service';
 import { MessageService } from '../../shared/service/message.service';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
-import { ConsultServicePrice } from '../../models/consult/doctor.consult.model';
+import { ConsultServicePrice, DoctorConsult } from '../../models/consult/doctor.consult.model';
 
 @Component({
   selector: 'ngx-consult',
@@ -18,6 +18,7 @@ import { ConsultServicePrice } from '../../models/consult/doctor.consult.model';
 export class ConsultComponent implements OnInit, OnDestroy {
   destroy$ = new Subject<void>();
   doctorId: string;
+  doctorConsult: DoctorConsult;
 
   readonly separatorKeysCodes: number[] = [ENTER, BACKSLASH];
   chips: string[];
@@ -40,6 +41,7 @@ export class ConsultComponent implements OnInit, OnDestroy {
     this.consultService.getDoctorConsultByDoctorId(this.doctorId).pipe(
       tap(dc => {
         if (dc) {
+          this.doctorConsult = dc;
           this.chips = dc.tags?.split('|').filter(_ => _);
 
           // 服务和价格
