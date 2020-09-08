@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from '../shared/service/api.service';
-import { DoctorConsult } from '../models/consult/doctor.consult.model';
-import { DoctorConsultComment } from '../models/consult/doctor.consult.comment.model';
+import { DoctorConsult } from '../models/consult/doctor-consult.model';
+import { DoctorConsultComment } from '../models/consult/doctor-consult-comment.model';
 import { map } from 'rxjs/operators';
 
 @Injectable({

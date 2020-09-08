@@ -7,8 +7,8 @@ import { MatChipInputEvent } from '@angular/material/chips';
 import { AuthService } from '../../shared/service/auth.service';
 import { MessageService } from '../../shared/service/message.service';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
-import { ConsultServicePrice, DoctorConsult } from '../../models/consult/doctor.consult.model';
-import { DoctorConsultComment } from '../../models/consult/doctor.consult.comment.model';
+import { ConsultServicePrice, DoctorConsult } from '../../models/consult/doctor-consult.model';
+import { DoctorConsultComment } from '../../models/consult/doctor-consult-comment.model';
 
 @Component({
   selector: 'ngx-consult',
