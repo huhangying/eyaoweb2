@@ -3,30 +3,10 @@
 </div>
 <div class="row">
   <div class="col-lg-6">
-    <nb-card>
-      <nb-card-header> 自定义标签 </nb-card-header>
-      <nb-card-body>
-        <mat-form-field class="w-100">
-          <mat-chip-list #chipList cdkDropList (cdkDropListDropped)="drop($event)">
-            <mat-chip *ngFor="let chip of chips" cdkDrag [selectable]="true" [removable]="true"
-              (removed)="remove(chip)">
-              {{chip}}
-              <mat-icon matChipRemove>cancel</mat-icon>
-            </mat-chip>
-            <input #tagInput id="selftags" placeholder="请输入自定义标签" [matChipInputFor]="chipList"
-              [matChipInputSeparatorKeyCodes]="separatorKeysCodes" [matChipInputAddOnBlur]="true"
-              (matChipInputTokenEnd)="add($event)">
-          </mat-chip-list>
-        </mat-form-field>
-
-        <div class="text-muted pt-2">
-          * 输入并按回车键增加；或点击删除键删除。拖拽自定义标签改变顺序。保存请点击确定。
-        </div>
-        <div mat-dialog-actions class="d-block pt-2">
-          <button nbButton status="primary" class="float-right" (click)="saveSelfTags()">确定</button>
-        </div>
-      </nb-card-body>
-    </nb-card>
+    <ngx-input-chips-card title="自定义标签" [chips]="tags" (save)="saveTags($event)"></ngx-input-chips-card>
+  </div>
+  <div class="col-lg-6">
+    <ngx-input-chips-card title="咨询疾病类型" [chips]="diseaseTypes" (save)="saveDieaseTypes($event)"></ngx-input-chips-card>
   </div>
   <div class="col-lg-6">
     <nb-card>

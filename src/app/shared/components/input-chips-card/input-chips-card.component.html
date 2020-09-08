@@ -1,0 +1,24 @@
+<nb-card>
+  <nb-card-header> {{title}} </nb-card-header>
+  <nb-card-body>
+    <mat-form-field class="w-100">
+      <mat-chip-list #chipList cdkDropList (cdkDropListDropped)="drop($event)">
+        <mat-chip *ngFor="let chip of chips" cdkDrag [selectable]="true" [removable]="true"
+          (removed)="remove(chip)">
+          {{chip}}
+          <mat-icon matChipRemove>cancel</mat-icon>
+        </mat-chip>
+        <input #tagInput id="selftags" placeholder="请输入{{title}}" [matChipInputFor]="chipList"
+          [matChipInputSeparatorKeyCodes]="separatorKeysCodes" [matChipInputAddOnBlur]="true"
+          (matChipInputTokenEnd)="add($event)">
+      </mat-chip-list>
+    </mat-form-field>
+
+    <div class="text-muted pt-2">
+      * 输入并按回车键增加; 或点击删除键删除; 拖拽{{title}}改变顺序。保存请点击确定。
+    </div>
+    <div mat-dialog-actions class="d-block pt-2">
+      <button nbButton status="primary" class="float-right" (click)="confirm()">确定</button>
+    </div>
+  </nb-card-body>
+</nb-card>

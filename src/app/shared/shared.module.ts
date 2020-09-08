@@ -50,6 +50,7 @@ import { PromptComponent } from './modal/prompt/prompt.component';
 import { MatInputModule } from '@angular/material/input';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatSelectModule } from '@angular/material/select';
+import { InputChipsCardComponent } from './components/input-chips-card/input-chips-card.component';
 
 @NgModule({
   imports: [
@@ -129,6 +130,7 @@ import { MatSelectModule } from '@angular/material/select';
     SelectArticleCatComponent,
     SelectPatientComponent,
     // SelectDoctorPatientsComponent,
+    InputChipsCardComponent,
 
     ImageCropperModule,
     ImageUploaderComponent,
@@ -164,6 +166,7 @@ import { MatSelectModule } from '@angular/material/select';
     DisableByRoleDirective,
     EditChipsComponent,
     PromptComponent,
+    InputChipsCardComponent,
   ],
   providers: [
     MatDatepickerModule,
