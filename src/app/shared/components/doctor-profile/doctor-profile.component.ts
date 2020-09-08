@@ -69,7 +69,9 @@ export class DoctorProfileComponent implements OnInit, OnDestroy {
       honor: '',
       // icon: [''],
       password: [''],
-      passwordConfirm: ['']
+      passwordConfirm: [''],
+      order: '',
+      apply: ''
     }, {
       validators: [mustMatch('password', 'passwordConfirm')]
     });
@@ -78,6 +80,7 @@ export class DoctorProfileComponent implements OnInit, OnDestroy {
   public get password() { return this.form.get('password'); }
   public get passwordConfirm() { return this.form.get('passwordConfirm'); }
   public get userId() { return this.form.get('user_id'); }
+  public get name() { return this.form.get('name'); }
 
   ngOnInit() {
     this.form.valueChanges.pipe(

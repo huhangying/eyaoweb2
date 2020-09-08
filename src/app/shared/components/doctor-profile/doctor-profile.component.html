@@ -31,19 +31,19 @@
             <input type="text" class="col-sm-9" nbInput fullWidth id="inputTitle" formControlName="title">
           </div>
 
-          <div class="field row clearfix">
+          <div class="field row clearfix d-flex align-items-center">
             <label class="label col-sm-3">头像</label>
 
-            <div class="col-sm-9">
+            <div class="col-sm-4">
               <img src="{{ avatar | imgPath }}" onerror="this.src='/assets/images/icon/default.svg';this.onerror='';"
                 class="avatar-image img-fluid img-thumbnail z-depth-1 rounded-circle" alt="">
-              <div>
-                <input hidden="true" type="file" accept="image/*" (change)="onFileSelected($event)" #fileInput>
-                <button mat-flat-button color="primary" class="w-75" (click)="fileInput.click()"
-                  class="UppyModalOpenerBtn">
-                  更改头像
-                </button>
-              </div>
+              <input hidden="true" type="file" accept="image/*" (change)="onFileSelected($event)" #fileInput>
+            </div>
+            <div class="col-sm-5">
+              <button mat-flat-button color="primary" class="w-75" (click)="fileInput.click()"
+                class="UppyModalOpenerBtn">
+                更改头像
+              </button>
             </div>
           </div>
         </nb-card-body>
@@ -66,18 +66,21 @@
             <label for="inputEmail" class="label col-sm-3">其它联系方式</label>
             <input type="email" class="col-sm-9" nbInput fullWidth id="inputEmail" placeholder="暂不支持">
           </div>
-          <div class="field row">
+          <!-- <div class="field row">
             <label for="inputInternalAddress" class="label col-sm-3">院内地址</label>
             <input type="text" class="col-sm-9" nbInput fullWidth id="inputInternalAddress" placeholder="暂不支持">
-          </div>
-          <div class="field row clearfix">
+          </div> -->
+          <div class="field row clearfix d-flex align-items-center">
             <label class="label col-sm-3">药师二维码</label>
 
-            <div class="col-sm-9">
+            <div class="col-sm-4">
               <ng-container *ngIf="qrcode">
                 <img src="{{ qrcode }}" onerror="this.src='/assets/images/icon/default.svg';this.onerror='';"
-                  class="img-fluid img-thumbnail z-depth-1 w-50" alt="">
+                  class="img-fluid img-thumbnail z-depth-1 w-100" alt="" ngxImgClickView
+                  [imgTitle]="name.value + '药师专属二维码'">
               </ng-container>
+            </div>
+            <div class="col-sm-5">
               <div *ngIf="true || !qrcode">
                 <button mat-flat-button color="primary" class="w-75" (click)="generateQrcode()"
                   class="UppyModalOpenerBtn">
@@ -86,6 +89,16 @@
               </div>
             </div>
           </div>
+          <div class="field row">
+            <label for="order" class="label col-sm-3">顺序</label>
+            <div class="col-sm-4">
+              <input nbInput type="number" fullWidth id="order" formControlName="order">
+            </div>
+            <div class="col-sm-5">
+              <nb-checkbox formControlName="apply">开关</nb-checkbox>
+            </div>
+          </div>
+
         </nb-card-body>
       </nb-card>
     </div>
