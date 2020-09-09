@@ -77,6 +77,11 @@ export class DiagnoseComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    if (!this.appStore.doctor) {
+      // skip if logged out
+      // 不支持logout保存diagnose
+      return;
+    }
     if (this.diagnose?._id) {
       this.saveDiagnose();
       this.appStore.updatePending({
