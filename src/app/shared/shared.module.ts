@@ -51,6 +51,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatSelectModule } from '@angular/material/select';
 import { InputChipsCardComponent } from './components/input-chips-card/input-chips-card.component';
+import { DoctorConsultPricesComponent } from './components/doctor-profile/doctor-consult-prices/doctor-consult-prices.component';
 
 @NgModule({
   imports: [
@@ -167,6 +168,7 @@ import { InputChipsCardComponent } from './components/input-chips-card/input-chi
     EditChipsComponent,
     PromptComponent,
     InputChipsCardComponent,
+    DoctorConsultPricesComponent,
   ],
   providers: [
     MatDatepickerModule,

@@ -10,6 +10,7 @@ import { Doctor } from '../../../models/crm/doctor.model';
 import { takeUntil, distinctUntilChanged, tap, startWith, concatMap } from 'rxjs/operators';
 import { MessageService } from '../../service/message.service';
 import { AppStoreService } from '../../store/app-store.service';
+import { ConsultServicePrice } from '../../../models/consult/doctor-consult.model';
 
 @Component({
   selector: 'ngx-doctor-profile',
@@ -33,6 +34,7 @@ export class DoctorProfileComponent implements OnInit, OnDestroy {
         this.qrcode = data.qrcode;
       }
       this.form.patchValue(data);
+      this.servicePrices = data.prices;
       this.cd.markForCheck();
     }
   }
@@ -45,6 +47,7 @@ export class DoctorProfileComponent implements OnInit, OnDestroy {
   _id: string;
   avatar: any;
   qrcode: any;
+  servicePrices: ConsultServicePrice[];
 
   constructor(
     private fb: FormBuilder,

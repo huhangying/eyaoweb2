@@ -1,3 +1,5 @@
+import { ConsultServicePrice } from '../consult/doctor-consult.model';
+
 export interface Doctor {
   _id?: string;
   hid?: number;
@@ -28,4 +30,6 @@ export interface Doctor {
   token?: string; // temp
   hospitalName?: string;  // for localstorage
   wechatUrl?: string;     // for localstorage
+
+  prices?: ConsultServicePrice[];
 }

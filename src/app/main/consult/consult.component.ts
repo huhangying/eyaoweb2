@@ -4,7 +4,7 @@ import { ConsultService } from '../../services/consult.service';
 import { tap } from 'rxjs/operators';
 import { AuthService } from '../../shared/service/auth.service';
 import { MessageService } from '../../shared/service/message.service';
-import { ConsultServicePrice, DoctorConsult } from '../../models/consult/doctor-consult.model';
+import { DoctorConsult } from '../../models/consult/doctor-consult.model';
 import { DoctorConsultComment } from '../../models/consult/doctor-consult-comment.model';
 
 @Component({
@@ -22,11 +22,6 @@ export class ConsultComponent implements OnInit, OnDestroy {
   tags: string[];
   diseaseTypes: string[];
 
-  textServiceEnabled: boolean;
-  textServicePrice: ConsultServicePrice;
-  phoneServiceEnabled: boolean;
-  phoneServicePrice: ConsultServicePrice;
-
   constructor(
     private consultService: ConsultService,
     private auth: AuthService,
@@ -43,27 +38,6 @@ export class ConsultComponent implements OnInit, OnDestroy {
           this.tags = dc.tags?.split('|').filter(_ => _);
           this.diseaseTypes = dc.disease_types?.split('|').filter(_ => _);
 
-          // 服务和价格
-          this.textServicePrice = this.getServicePriceByType(dc.prices, 0);
-          this.textServiceEnabled = !!this.textServicePrice;
-          if (!this.textServiceEnabled) {
-            // 设定初始值
-            this.textServicePrice = {
-              type: 0,
-              amount: 0,
-              unit_count: 1
-            };
-          }
-          this.phoneServicePrice = this.getServicePriceByType(dc.prices, 1);
-          this.phoneServiceEnabled = !!this.phoneServicePrice;
-          if (!this.phoneServiceEnabled) {
-            // 设定初始值
-            this.phoneServicePrice = {
-              type: 1,
-              amount: 0,
-              unit_count: 20
-            };
-          }
           // populate preset comments' labels
 
           this.cd.markForCheck();
@@ -102,30 +76,6 @@ export class ConsultComponent implements OnInit, OnDestroy {
   // 咨询疾病类型
   saveDieaseTypes(diseaseTypes: string[]) {
     this.consultService.updateDoctorConsult(this.doctorId, { doctor_id: this.doctorId, disease_types: diseaseTypes.join('|') }).pipe(
-      tap(result => {
-        if (result) {
-          this.message.updateSuccess();
-        }
-      })
-    ).subscribe();
-  }
-
-  /////////////////////////////////// 咨询服务和价格设定
-  private getServicePriceByType(servicePrices: ConsultServicePrice[], type: number) {
-    if (!servicePrices?.length) return null;
-    return servicePrices.find(sp => sp.type === type);
-  }
-
-  saveServicePrices() {
-    const servicePrices = [];
-    if (this.textServiceEnabled) {
-      servicePrices.push(this.textServicePrice);
-    }
-    if (this.phoneServiceEnabled) {
-      servicePrices.push(this.phoneServicePrice);
-    }
-    // save
-    this.consultService.updateDoctorConsult(this.doctorId, { doctor_id: this.doctorId, prices: servicePrices }).pipe(
       tap(result => {
         if (result) {
           this.message.updateSuccess();

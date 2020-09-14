@@ -62,14 +62,6 @@
             <label for="inputTel" class="label col-sm-3">工作电话</label>
             <input type="tel" class="col-sm-9" nbInput fullWidth id="inputTel" placeholder="" formControlName="tel">
           </div>
-          <div class="field row">
-            <label for="inputEmail" class="label col-sm-3">其它联系方式</label>
-            <input type="email" class="col-sm-9" nbInput fullWidth id="inputEmail" placeholder="暂不支持">
-          </div>
-          <!-- <div class="field row">
-            <label for="inputInternalAddress" class="label col-sm-3">院内地址</label>
-            <input type="text" class="col-sm-9" nbInput fullWidth id="inputInternalAddress" placeholder="暂不支持">
-          </div> -->
           <div class="field row clearfix d-flex align-items-center">
             <label class="label col-sm-3">药师二维码</label>
 
@@ -94,11 +86,10 @@
             <div class="col-sm-4">
               <input nbInput type="number" fullWidth id="order" formControlName="order">
             </div>
-            <div class="col-sm-5">
+            <div class="col-sm-5 pt-2">
               <nb-checkbox formControlName="apply">开关</nb-checkbox>
             </div>
           </div>
-
         </nb-card-body>
       </nb-card>
     </div>
@@ -130,6 +121,10 @@
           </div>
         </nb-card-body>
       </nb-card>
+    </div>
+
+    <div class="col-lg-6">
+      <ngx-doctor-consult-prices [userId]="user_id" [prices]="servicePrices"></ngx-doctor-consult-prices>
     </div>
 
     <div class="col-lg-6">
