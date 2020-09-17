@@ -62,9 +62,8 @@
             <label for="inputTel" class="label col-sm-3">工作电话</label>
             <input type="tel" class="col-sm-9" nbInput fullWidth id="inputTel" placeholder="" formControlName="tel">
           </div>
-          <div class="field row clearfix d-flex align-items-center">
+          <div class="field row clearfix d-flex align-items-center" *ngIf="mode !== 1">
             <label class="label col-sm-3">药师二维码</label>
-
             <div class="col-sm-4">
               <ng-container *ngIf="qrcode">
                 <img src="{{ qrcode }}" onerror="this.src='/assets/images/icon/default.svg';this.onerror='';"
