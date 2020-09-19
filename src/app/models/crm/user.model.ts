@@ -26,5 +26,6 @@ export interface User {
   department?: string;
   title?: string;
   diagnoses?: string; // 疾病诊断
-  notes?: string; // 诊断提醒
+  prompt?: string; // 诊断提醒
+  notes?: string; // 病患备注
 }

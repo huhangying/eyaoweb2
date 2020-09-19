@@ -13,12 +13,17 @@
         {{ selectedPatient.name }}
       </button>
       <button nbButton outline size="small" class="float-right mr-2" status="info" (click)="editPatientNotes()"
-        [matTooltip]="selectedPatient.notes ? '提醒： ' + selectedPatient.notes.replace('|', ', ') : '点击编辑'">
+        [matTooltip]="selectedPatient.notes ? '备注： ' + selectedPatient.notes?.split('|').join(', ') : '点击编辑'">
+        <nb-icon icon="clipboard-outline"></nb-icon>
+        病患备注
+      </button>
+      <button nbButton outline size="small" class="float-right mr-2" status="info" (click)="editPatientPrompt()"
+        [matTooltip]="selectedPatient.prompt ? '提醒： ' + selectedPatient.prompt?.split('|').join(', ') : '点击编辑'">
         <nb-icon icon="bell-outline"></nb-icon>
         诊断提醒
       </button>
       <button nbButton outline size="small" class="float-right mr-2" status="info" (click)="editPatientDiagnoses()"
-        [matTooltip]="selectedPatient.diagnoses ? '诊断： ' + selectedPatient.diagnoses.replace('|', ', ') :  '点击编辑'">
+        [matTooltip]="selectedPatient.diagnoses ? '诊断： ' + selectedPatient.diagnoses?.split('|').join(', ') :  '点击编辑'">
         <nb-icon icon="headphones-outline"></nb-icon>
         疾病诊断
       </button>

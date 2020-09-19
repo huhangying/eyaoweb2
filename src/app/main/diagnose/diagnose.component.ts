@@ -360,8 +360,31 @@ export class DiagnoseComponent implements OnInit, OnDestroy {
     ).subscribe();
   }
 
+  editPatientPrompt() {
+    this.dialogService.editChips(this.selectedPatient.prompt, '编辑诊断提醒').pipe(
+      tap(result => {
+        if (result?.save) {
+          this.userService.updateUserById({
+            _id: this.selectedPatient._id,
+            prompt: result.content
+          }).subscribe(_ => {
+            if (_) {
+              this.selectedPatient.prompt = _.prompt;
+              this.appStore.updatePending({
+                diagnose: this.diagnose._id,
+                user: this.selectedPatient,
+                booking: this.selectedBooking
+              });
+            }
+          });
+        }
+
+      })
+    ).subscribe();
+  }
+
   editPatientNotes() {
-    this.dialogService.editChips(this.selectedPatient.notes, '编辑诊断提醒').pipe(
+    this.dialogService.editChips(this.selectedPatient.notes, '编辑病患备注').pipe(
       tap(result => {
         if (result?.save) {
           this.userService.updateUserById({
