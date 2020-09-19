@@ -38,7 +38,7 @@
       </div>
 
       <div formGroupName="dosage">
-        <div class="field row" [class.d-none]="dosageCustomizedCtrl.value">
+        <div class="field row">
           <div class="col-md-6">
             <label for="intervalDay" class="label required"> 用药周期 </label>
             <div class="container">
@@ -65,6 +65,7 @@
         <div class="field row">
           <div class="col-md-12">
             <label for="customized" class="label"> 自定义用药周期和服用方法 </label>
+            <span class="text-hint small px-3">(自定义设定会覆写上一行用药方法的设定)</span>
             <input nbInput fullWidth id="customized" formControlName="customized">
           </div>
         </div>
