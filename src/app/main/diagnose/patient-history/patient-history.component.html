@@ -1,6 +1,6 @@
 <nb-card status="info">
   <nb-card-header>
-    {{ data.patient.name }} 门诊记录
+    {{ data.patient.name }} 病患档案
     <button nbButton shape="round" size="tiny" class="float-right" mat-dialog-close>
       <nb-icon icon="close"></nb-icon>
     </button>
@@ -108,6 +108,11 @@
   </mat-dialog-content>
 
   <nb-card-footer class="d-block">
+
+    <button nbButton hero outline status="info" (click)="sendTempSurvey()">
+      <nb-icon icon="file-text-outline"></nb-icon> 发送临时问卷
+    </button>
+
     <button nbButton hero status="primary" class="float-right" mat-dialog-close>
       <nb-icon icon="close-circle"></nb-icon> 关闭
     </button>
