@@ -2,8 +2,6 @@ import { Injectable } from '@angular/core';
 import { ApiService } from '../shared/service/api.service';
 import { SurveyTemplate } from '../models/survey/survey-template.model';
 import { Survey } from '../models/survey/survey.model';
-import { Observable } from 'rxjs';
-import { catchError } from 'rxjs/operators';
 import { MessageService } from '../shared/service/message.service';
 
 @Injectable({

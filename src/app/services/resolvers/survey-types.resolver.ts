@@ -18,7 +18,8 @@ export class SurveyTypesResolver implements Resolve<SurveyType[]> {
       { id: 3, name: '随访问卷' },
       { id: 4, name: '药物知识自测' },
       { id: 5, name: '门诊结论' },
-      { id: 6, name: '药师评估' }
+      { id: 6, name: '药师评估' },
+      { id: 7, name: '临时问卷' }, // 不跟门诊关联
     ]);
   }
 }
