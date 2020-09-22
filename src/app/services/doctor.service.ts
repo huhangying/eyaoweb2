@@ -3,9 +3,10 @@ import { Doctor } from '../models/crm/doctor.model';
 import { Injectable } from '@angular/core';
 import { AppStoreService } from '../shared/store/app-store.service';
 import { ApiService } from '../shared/service/api.service';
-import { Relationship } from '../models/crm/relationship.model';
+import { Relationship, RelationshipRequest } from '../models/crm/relationship.model';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { DeleteResponse } from '../models/delete-response.model';
 
 @Injectable({
   providedIn: 'root'
@@ -79,12 +80,20 @@ export class DoctorService {
     return this.api.get<Relationship[]>('relationships/doctor/' + doctorId);
   }
 
+  addRelationship(rel: RelationshipRequest) {
+    return this.api.post<Relationship>('relationship', rel);
+  }
+
   removeGroupInRelationship(id: string) {
     return this.updateGroupInRelationship(id);
   }
 
   updateGroupInRelationship(id: string, group?: string) {
     return this.api.patch<Relationship>('relationship/' + id, {group: group || null});
+  }
+
+  removeUserRelationship(did: string, uid: string) {
+    return this.api.delete<DeleteResponse>(`relationship/remove/${did}/${uid}`);
   }
 
   // Shortcuts

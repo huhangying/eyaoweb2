@@ -13,11 +13,14 @@
     </ng-container>
 
     <ng-container *ngIf="data.groups?.length > 0">
-      请设置药师（{{data.doctorName}}）和病患（{{data.relationship.user.name}}）的用户组
-      <div [formGroup]="form">
-        <nb-select hero placeholder="选择药师用户组" formControlName="group">
-          <nb-option *ngFor="let group of data.groups" [value]="group._id">{{ group.name }}</nb-option>
-        </nb-select>
+      请设置药师（{{data.doctor.name}}）和病患（{{data.user.name}}）的用户组
+      <div class="px-2 py-3" [formGroup]="form">
+        <mat-form-field appearance="fill">
+          <mat-label>选择用户组</mat-label>
+          <mat-select hero placeholder="选择药师用户组" formControlName="groups" multiple>
+            <mat-option *ngFor="let group of data.groups" [value]="group._id">{{ group.name }}</mat-option>
+          </mat-select>
+        </mat-form-field>
       </div>
     </ng-container>
 

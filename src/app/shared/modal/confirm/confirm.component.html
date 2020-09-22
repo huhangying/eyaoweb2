@@ -1,5 +1,5 @@
-<nb-card>
-  <nb-card-header>
+<nb-card [status]="data.status || ''">
+  <nb-card-header >
     <mat-icon inline="true"> notification_important </mat-icon> {{ data.title }}
     <button nbButton shape="round" size="tiny" class="float-right" mat-dialog-close>
       <nb-icon icon="close"></nb-icon>

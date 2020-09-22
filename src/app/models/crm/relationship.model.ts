@@ -17,3 +17,16 @@ export interface Relationship2 {
   user: User;
   apply?: boolean;
 }
+
+export interface GroupedRelationship {
+  user: User;
+  relationships: Relationship[];
+}
+
+export interface RelationshipRequest {
+  _id?: string;
+  doctor: string; // id
+  group?: string; // id
+  user: string; // id
+  apply: boolean;
+}

@@ -13,22 +13,24 @@ export class DialogService {
     public dialog: MatDialog,
   ) { }
 
-  deleteConfirm(msg?: string): Observable<boolean> {
+  deleteConfirm(msg?: string, status?: string): Observable<boolean> {
     return this.dialog.open(ConfirmComponent, {
       width: '460px',
       data: {
         title: '请确认',
-        content: msg || '本操作从数据库中删除记录！删除的记录将不能恢复。'
+        content: msg || '本操作从数据库中删除记录！删除的记录将不能恢复。',
+        status: status || 'warning'
       }
     }).afterClosed();
   }
 
-  confirm(message: string, title?: string): Observable<boolean> {
+  confirm(message: string, title?: string, status?: string): Observable<boolean> {
     return this.dialog.open(ConfirmComponent, {
       width: '460px',
       data: {
         title: title || '请确认',
-        content: message
+        content: message,
+        status: status
       }
     }).afterClosed();
   }

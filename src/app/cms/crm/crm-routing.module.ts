@@ -3,7 +3,6 @@ import { Routes, RouterModule } from '@angular/router';
 import { DoctorComponent } from './doctor/doctor/doctor.component';
 import { DoctorGroupComponent } from './doctor/doctor-group/doctor-group.component';
 import { DepartmentResolver } from '../../services/resolvers/department.resolver';
-import { DoctorsResolver } from '../../services/resolvers/doctors.resolver';
 import { PatientComponent } from './patient/patient.component';
 import { RelationshipComponent } from './relationship/relationship.component';
 import { PatientAuditComponent } from './patient/patient-audit/patient-audit.component';

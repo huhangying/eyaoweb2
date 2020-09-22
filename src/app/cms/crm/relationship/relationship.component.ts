@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy, ViewChild, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { Subject } from 'rxjs';
-import { Relationship } from '../../../models/crm/relationship.model';
+import { Relationship, GroupedRelationship } from '../../../models/crm/relationship.model';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
@@ -16,6 +16,7 @@ import { Doctor } from '../../../models/crm/doctor.model';
 import { DoctorGroup } from '../../../models/crm/doctor-group.model';
 import { RelationshipEditComponent } from './relationship-edit/relationship-edit.component';
 import { AppStoreService } from '../../../shared/store/app-store.service';
+import { DeleteResponse } from '../../../models/delete-response.model';
 
 @Component({
   selector: 'ngx-relationship',
@@ -31,10 +32,10 @@ export class RelationshipComponent implements OnInit, OnDestroy {
   doctorGroups: DoctorGroup[];
   filterDoctorGroups: DoctorGroup[];
   selectedFilter: string;
-  selectedRelationships: Relationship[];
+  selectedGroupedRelationships: GroupedRelationship[];
   destroy$ = new Subject<void>();
-  displayedColumns: string[] = ['user.name', 'user.gender', 'user.birthdate', 'user.cell', '_id'];
-  dataSource: MatTableDataSource<Relationship>;
+  displayedColumns: string[] = ['user.name', 'user.gender', 'user.birthdate', 'user.cell', 'relationships'];
+  dataSource: MatTableDataSource<GroupedRelationship>;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   isCms: boolean;
@@ -67,6 +68,7 @@ export class RelationshipComponent implements OnInit, OnDestroy {
     ).subscribe(searchName => {
       if (this.dataSource) {
         this.dataSource.filter = searchName;
+        this.cd.markForCheck();
       }
     });
   }
@@ -79,7 +81,7 @@ export class RelationshipComponent implements OnInit, OnDestroy {
   async doctorSelected(doctor: Doctor) {
     this.selectedDoctor = doctor;
     if (!doctor?._id) {
-      this.selectedRelationships = [];
+      this.selectedGroupedRelationships = [];
       this.loadData();
       return;
     }
@@ -90,16 +92,34 @@ export class RelationshipComponent implements OnInit, OnDestroy {
       ...this.doctorGroups
     ];
 
-    this.selectedRelationships = await this.doctorService.getRelationshipsByDoctorId(doctor._id).toPromise();
+    const selectedRelationships: Relationship[] = await this.doctorService.getRelationshipsByDoctorId(doctor._id).toPromise();
+    const userIdList = [];
+    this.selectedGroupedRelationships = selectedRelationships.reduce((newGrouped, relationship) => {
+      const userId = relationship.user?._id;
+      if (userIdList.indexOf(userId) > -1) {
+        // found, add into grouped
+        return newGrouped.map(grouped => {
+          if (grouped.user._id === userId) {
+            grouped.relationships.push(relationship);
+          }
+          return grouped;
+        });
+      }
+      userIdList.push(userId);
+      newGrouped.push({ user: relationship.user, relationships: [relationship] });
+      return newGrouped;
+    }, []);
+
     this.loadData();
   }
 
-  edit(data?: Relationship) {
+  edit(data?: GroupedRelationship) {
     this.dialog.open(RelationshipEditComponent, {
       data: {
-        relationship: data,
+        relationships: data.relationships,
         groups: this.doctorGroups,
-        doctorName: this.selectedDoctor?.name
+        doctor: this.selectedDoctor,
+        user: data.user
       }
     }).afterClosed().pipe(
       tap(result => {
@@ -108,13 +128,15 @@ export class RelationshipComponent implements OnInit, OnDestroy {
     ).subscribe();
   }
 
-  delete(id: string) {
-    this.dialogService?.deleteConfirm().pipe(
-      tap(result => {
-        if (result) { // confirmed
-          this.doctorService.removeGroupInRelationship(id).pipe(
-            tap(result => {
-              this.updateToDataSource(result);
+  disconnectUserRelationship(id: string) {
+    this.dialogService?.deleteConfirm('本操作将删除所有用户群组，并移除同病患的关系！请确认您是否真的要这样做？').pipe(
+      tap(yes => {
+        if (yes) { // confirmed
+          this.doctorService.removeUserRelationship(this.selectedDoctor._id, id).pipe(
+            tap((result: DeleteResponse) => {
+              this.message.success('病患关系移除');
+              this.selectedGroupedRelationships = [];
+              this.loadData();
             }),
             catchError(rsp => this.message.deleteErrorHandle(rsp))
           ).subscribe();
@@ -124,64 +146,47 @@ export class RelationshipComponent implements OnInit, OnDestroy {
   }
 
   redirectToGroup() {
-    this.router.navigate(['../doctor-group'], {relativeTo: this.route, queryParams: this.route.snapshot.queryParams});
+    this.router.navigate(['../doctor-group'], { relativeTo: this.route, queryParams: this.route.snapshot.queryParams });
   }
 
-  // editGroup(data?: DoctorGroup) {
-  //   const isEdit = !!data;
-  //   this.dialog.open(DoctorGroupEditComponent, {
-  //     data: {
-  //       doctorGroup: data,
-  //       doctor: this.selectedDoctor
-  //     },
-  //   }).afterClosed().pipe(
-  //     tap(result => {
-  //       if (result?._id) {
-  //         if (isEdit) {
-  //           // update
-  //           this.filterDoctorGroups = this.filterDoctorGroups.map(item => {
-  //             return item._id === result._id ? result : item;
-  //           });
-  //         } else {
-  //           // create
-  //           this.filterDoctorGroups.push(result);
-  //         }
-  //         this.cd.markForCheck();
-  //         this.message.updateSuccess();
-  //       }
-  //     }),
-  //     catchError(rsp => this.message.updateErrorHandle(rsp))
-  //   ).subscribe();
-  // }
+  updateToDataSource(result: GroupedRelationship) {
+    if (result?.user?._id) {
+      this.selectedGroupedRelationships = this.dataSource.data.map(item => {
+        return item.user._id === result.user._id ? { ...item, relationships: result.relationships } : item;
+      })
+        .filter(item => item.relationships.length); // remove if no relationships
 
-  updateToDataSource(result: Relationship) {
-    if (result?._id) {
-      this.selectedRelationships = this.dataSource.data.map(item => {
-        return item._id === result._id ? { ...item, group: result.group } : item; // udpate only 'group'!
-      });
-      this.loadData();
+      this.loadData(this.selectedFilter);
       this.message.updateSuccess();
     }
   }
 
   loadData(groupFilter = '*') {
+    console.log(this.selectedGroupedRelationships);
+
     let data;
     if (groupFilter === '*') {
-      data = [...this.selectedRelationships];
+      data = [...this.selectedGroupedRelationships];
     } else if (!groupFilter) {
-      data = [...this.selectedRelationships].filter(_ => !_.group);
+      // 查找未分组的所有病患
+      data = [...this.selectedGroupedRelationships].filter(_ => {
+        return _.relationships.length && _.relationships.findIndex(r => !r.group) > -1;
+      });
     } else {
-      data = [...this.selectedRelationships].filter(_ => _.group === groupFilter);
+      // 查找选定组的所有病患
+      data = [...this.selectedGroupedRelationships].filter(_ => {
+        return _.relationships.findIndex(r => r.group === groupFilter) > -1;
+      });
     }
 
-    this.dataSource = new MatTableDataSource<Relationship>(data);
+    this.dataSource = new MatTableDataSource<GroupedRelationship>(data);
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
     this.cd.markForCheck();
   }
 
   setupFilter(column: string) {
-    this.dataSource.filterPredicate = (d: Relationship, filter: string) => {
+    this.dataSource.filterPredicate = (d: GroupedRelationship, filter: string) => {
       const textToSearch = d[column]?.name && d[column]?.name.toLowerCase() || '';
       return textToSearch.indexOf(filter) !== -1;
     };

@@ -73,7 +73,7 @@
                 </td>
               </ng-container>
 
-              <ng-container matColumnDef="_id">
+              <ng-container matColumnDef="relationships">
                 <th mat-header-cell *matHeaderCellDef class="text-center"> 操作 </th>
                 <td mat-cell *matCellDef="let element" class="actions">
                   <button nbButton hero shape="round" size="tiny" status="info" title="编辑药师用户组" (click)="edit(element)">
@@ -81,7 +81,7 @@
                   </button>
                   &nbsp;
                   <button nbButton hero shape="round" size="tiny" status="danger" title="删除药师用户组"
-                    [disabled]="!element.group" (click)="delete(element._id)">
+                    [disabled]="!element.relationships?.length" (click)="disconnectUserRelationship(element.user._id)">
                     <nb-icon icon="trash-2-outline"></nb-icon>
                   </button>
                 </td>
