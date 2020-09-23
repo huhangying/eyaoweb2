@@ -29,18 +29,31 @@
             [min]="toMinDate">
           <mat-datepicker-toggle nbSuffix [for]="pickerEnd"></mat-datepicker-toggle>
           <mat-datepicker #pickerEnd></mat-datepicker>
+          <mat-error *ngIf="days_to_startCtrol.value < 0">
+            提醒开始值为负，请设定结束日期！
+          </mat-error>
         </div>
       </div>
     </div>
 
     <div class="field row">
-      <div class="col-md-6">
+      <div class="col-md-4">
         <label for="days_to_start" class="label required"> 提醒开始 </label>
-          <input nbInput type="number" fullWidth id="days_to_start" formControlName="days_to_start">
+        <input nbInput type="number" fullWidth id="days_to_start" formControlName="days_to_start">
       </div>
-      <div class="col-md-6">
+      <div class="col-md-4">
+        <label for="noticeStartDate" class="label"> 提醒开始日期 </label>
+        <div class="d-flex px-0">
+          <input nbInput fullWidth id="noticeStartDate" #noticeStartDate [matDatepicker]="pickerNoticeStart"
+            formControlName="noticeStartDate" [min]="startDateCtrl.value">
+          <mat-datepicker-toggle nbSuffix [for]="pickerNoticeStart"></mat-datepicker-toggle>
+          <mat-datepicker #pickerNoticeStart></mat-datepicker>
+
+        </div>
+      </div>
+      <div class="col-md-3">
         <label for="during" class="label"> 持续天数 </label>
-          <input nbInput type="number" min="1" fullWidth id="during" formControlName="during">
+        <input nbInput type="number" min="1" fullWidth id="during" formControlName="during">
       </div>
     </div>
 

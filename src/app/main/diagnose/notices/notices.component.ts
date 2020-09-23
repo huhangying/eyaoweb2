@@ -17,7 +17,12 @@ import { DiagnoseService } from '../../../services/diagnose.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NoticesComponent implements OnInit {
-  @Input() notices: MedicineNotice[];
+  private _notices: MedicineNotice[];
+  get notices() { return this._notices; }
+  @Input() set notices(value: MedicineNotice[]) {
+    this._notices = value;
+    this.cd.markForCheck();
+  }
   @Input() readonly?: boolean;
   @Input() diagnose?: Diagnose;
   @Input() user?: User;

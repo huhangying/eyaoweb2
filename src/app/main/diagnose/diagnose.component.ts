@@ -228,7 +228,9 @@ export class DiagnoseComponent implements OnInit, OnDestroy {
   }
 
   updateDiagnose(status = DiagnoseStatus.doctorSaved) {
-    this.diagnose.status = status;
+    if (this.diagnose) {
+      this.diagnose.status = status;
+    }
     return this.diagnoseService.updateDiagnose(this.diagnose).pipe(
       tap(result => {
         if (result?._id) {
@@ -406,15 +408,22 @@ export class DiagnoseComponent implements OnInit, OnDestroy {
     ).subscribe();
   }
 
+  // notices 来自于 药品模板中预设的 notices
   prescriptionNoticesFound(notices: MedicineNotice[]) {
     if (notices?.length) {
+      notices = notices.map(_ => {
+        _.startDate = new Date();
+        return _;
+      });
+
       if (!this.diagnose.notices?.length) {
         this.diagnose.notices = [...notices];
       } else {
         notices.map(notice => {
           const index = this.diagnose.notices.findIndex(_ => _.notice === notice.notice);
           if (index > -1) {
-            this.diagnose.notices[index] = notice;
+            // this.diagnose.notices[index] = notice;
+            this.message.info('与药品相关的监测计划已经存在。');
           } else {
             this.diagnose.notices.push(notice);
           }
