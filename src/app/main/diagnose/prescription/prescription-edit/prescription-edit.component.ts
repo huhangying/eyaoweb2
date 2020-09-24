@@ -1,13 +1,13 @@
 import { Component, OnInit, Inject, Optional, SkipSelf, OnDestroy, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { Medicine } from '../../../../models/hospital/medicine.model';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { Subject, Observable } from 'rxjs';
 import { MedicineService } from '../../../../services/medicine.service';
 import { MedicineReferences } from '../../../../models/hospital/medicine-references.model';
 import * as moment from 'moment';
 import { MessageService } from '../../../../shared/service/message.service';
-import { distinctUntilChanged, tap, startWith, takeUntil } from 'rxjs/operators';
+import { distinctUntilChanged, tap, startWith, takeUntil, map } from 'rxjs/operators';
 
 @Component({
   selector: 'ngx-prescription-edit',
@@ -18,7 +18,9 @@ import { distinctUntilChanged, tap, startWith, takeUntil } from 'rxjs/operators'
 export class PrescriptionEditComponent implements OnInit, OnDestroy {
   form: FormGroup;
   destroy$ = new Subject<void>();
-  medicines$: Observable<Medicine[]>;
+  medicines: Medicine[];
+  medicineFilterCtrl = new FormControl();
+  filteredmedicines$: Observable<Medicine[]>;
   selectedMedicine: Medicine;
   fromMinDate: moment.Moment;
   fromMaxDate: moment.Moment;
@@ -32,7 +34,7 @@ export class PrescriptionEditComponent implements OnInit, OnDestroy {
     private message: MessageService,
     private cd: ChangeDetectorRef,
   ) {
-    this.medicines$ = this.medicineService.getMedicines();
+
     this.form = this.fb.group({
       name: ['', Validators.required],
       capacity: ['', Validators.required],
@@ -61,6 +63,24 @@ export class PrescriptionEditComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.dialogRef.updateSize('90%');
+
+    this.medicineService.getMedicines().pipe(
+      tap(medicines => {
+        this.medicines = medicines;
+        this.filteredmedicines$ = this.medicineFilterCtrl.valueChanges.pipe(
+          startWith(''),
+          map(value => {
+            if (!value?.name) {
+              return medicines;
+            }
+            const filterValue = value.name.toLowerCase();
+            return medicines.filter(option => option.name.search(filterValue) >= 0);
+          }),
+          takeUntil(this.destroy$)
+        );
+      }),
+      takeUntil(this.destroy$)
+    ).subscribe();
 
     if (this.data.medicine) {
       this.form.patchValue(this.data.medicine);
@@ -118,12 +138,15 @@ export class PrescriptionEditComponent implements OnInit, OnDestroy {
   }
 
   templateSelected(selectedTemplate: Medicine) {
+    if (!selectedTemplate?._id) return;
+
     // check if exist
     if (this.data.prescription.length && this.data.prescription.find(_ => _.name === selectedTemplate.name)) {
       this.message.warning('本门诊已经包含该处方药, 不能再次应用。');
       return;
     }
     this.selectedMedicine.startDate = new Date();
+    this.medicineFilterCtrl.patchValue(selectedTemplate.name);
     this.form.patchValue(selectedTemplate);
     if (!selectedTemplate.dosage.customized) {
       this.caculateEndDate();

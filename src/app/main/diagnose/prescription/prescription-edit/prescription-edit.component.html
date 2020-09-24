@@ -6,15 +6,19 @@
     </button>
   </nb-card-header>
 
-  <mat-dialog-content class="px-3 pt-1">
+  <mat-dialog-content class="px-3 pt-3">
     <div class="field row">
-      <label for="fromTemplate" class="label"> 选择药品模板 </label>
-      <nb-select id="fromTemplate" fullWidth [(ngModel)]="selectedMedicine" (selectedChange)="templateSelected($event)"
-        placeholder="选择或搜索药品名...">
-        <nb-option *ngFor="let m of medicines$ | async" [value]="m">{{m.name}}</nb-option>
-      </nb-select>
+      <mat-form-field class="px-3 w-100">
+        <input type="text" placeholder="选择或搜索药品名..." matInput [formControl]="medicineFilterCtrl"
+        [(ngModel)]="selectedMedicine" (ngModelChange)="templateSelected($event)" [matAutocomplete]="auto">
+        <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+          <mat-option *ngFor="let m of this.filteredmedicines$ | async" [value]="m">
+            {{m.name}}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
     </div>
-    <hr class="mb-2">
+
     <div [formGroup]="form">
       <div class="field row">
         <div class="col-md-6">
@@ -44,7 +48,8 @@
             <div class="container">
               <div class="row">
                 <nb-select id="intervalDay" class="col-6" fullWidth formControlName="intervalDay">
-                  <nb-option *ngFor="let period of data.medicineReferences.periods" [value]="period.value">{{period.name}}
+                  <nb-option *ngFor="let period of data.medicineReferences.periods" [value]="period.value">
+                    {{period.name}}
                   </nb-option>
                 </nb-select>
                 <nb-select class="col-6" fullWidth formControlName="way">
