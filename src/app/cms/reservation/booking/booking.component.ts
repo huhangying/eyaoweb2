@@ -62,12 +62,12 @@ export class BookingComponent implements OnInit, OnDestroy {
   }
 
   doctorSelected(doctor: Doctor) {
-    this.selectedDoctor = doctor;
-    this.selectedDepartment = this.departments.find(_ => _._id === this.selectedDoctor.department);
     if (!doctor?._id) {
       this.loadData([]);
       return;
     }
+    this.selectedDoctor = doctor;
+    this.selectedDepartment = this.departments.find(_ => _._id === this.selectedDoctor?.department);
     this.reservationService.getAllBookingsByDoctorId(doctor._id).pipe(
       tap(data => {
         // massage data!
