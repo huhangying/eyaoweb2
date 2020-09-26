@@ -1,6 +1,5 @@
 import { Schedule } from './schedule.model';
 import { User } from '../crm/user.model';
-import * as moment from 'moment';
 
 // flatten booking
 export interface Booking {
@@ -17,6 +16,7 @@ export interface Booking {
 
 export interface BookingFlatten {
   _id: string;
+  scheduleId: string;
   scheduleDate: Date;
   schedulePeriod: string; // period id
   date?: Date; // same as in schedule

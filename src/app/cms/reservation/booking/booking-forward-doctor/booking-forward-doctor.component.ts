@@ -1,5 +1,5 @@
 import { Component, OnInit, Inject, Optional, SkipSelf } from '@angular/core';
-import { Period, Schedule } from '../../../../models/reservation/schedule.model';
+import { Period, Schedule, SchedulePopulated } from '../../../../models/reservation/schedule.model';
 import { Doctor } from '../../../../models/crm/doctor.model';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { BookingFlatten, OriginBooking } from '../../../../models/reservation/booking.model';
@@ -7,7 +7,6 @@ import { ReservationService } from '../../../../services/reservation.service';
 import { tap } from 'rxjs/operators';
 import { WeixinService } from '../../../../shared/service/weixin.service';
 import { Department } from '../../../../models/hospital/department.model';
-import { ThrowStmt } from '@angular/compiler';
 
 @Component({
   selector: 'ngx-booking-forward-doctor',
@@ -16,7 +15,8 @@ import { ThrowStmt } from '@angular/compiler';
 })
 export class BookingForwardDoctorComponent implements OnInit {
   doctors: Doctor[];
-  selectedDoctor: Doctor;
+  availableSchedules: SchedulePopulated[];
+  selectedSchedule: SchedulePopulated;
 
   constructor(
     public dialogRef: MatDialogRef<BookingForwardDoctorComponent>,
@@ -31,23 +31,42 @@ export class BookingForwardDoctorComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.reservationService.getForwardAvailableDoctors(this.data.doctor.department, this.data.booking.scheduleDate, this.data.booking.schedulePeriod).pipe(
-      tap(results => {
+    this.reservationService.getForwardAvailableSchedules(this.data.booking.scheduleDate).pipe(
+      tap((results: SchedulePopulated[]) => {
+        this.doctors = [];
         if (results?.length) {
-          this.doctors = results.filter(_ => _._id !== this.data.doctor._id);
+          // 1. remove self by scheduleId, date and period
+          this.availableSchedules = results.filter(_ => _._id !==this.data.booking.scheduleId);
+          // 2. grouped by doctor
+          this.availableSchedules.map(schedule => {
+            if (this.doctors.findIndex(_ => _._id === schedule.doctor._id) < 0) {
+              this.doctors.push(schedule.doctor);
+            }
+          });
         }
       })
     ).subscribe();
   }
 
+  getSchedulesByDoctorId(doctorId: string) {
+    if (!this.availableSchedules?.length) return [];
+    return this.availableSchedules.filter(_ => _.doctor._id === doctorId);
+  }
+
+  getPeriodLabel(id: string) {
+    return id ?
+      this.data.periods.find(_ => _._id === id)?.name :
+      '';
+  }
+
   submit() {
     // ++ from selected doctor schedule (reserve one space in schedule)
-    this.reservationService.reserveScheduleSpace(this.selectedDoctor._id, this.data.booking.scheduleDate, this.data.booking.schedulePeriod).subscribe(
+    this.reservationService.reserveScheduleSpace(this.selectedSchedule.doctor._id, this.selectedSchedule.date, this.selectedSchedule.period).subscribe(
       (result: Schedule) => {
         if (result) {
           // 创建前转的booking
           this.reservationService.createBooking({
-            doctor: this.selectedDoctor._id,
+            doctor: this.selectedSchedule.doctor._id,
             user: this.data.booking.userId,
             schedule: result._id,
             date: result.date,
@@ -61,7 +80,7 @@ export class BookingForwardDoctorComponent implements OnInit {
                 this.data.booking,
                 forwardedBooking._id,
                 this.data.doctor,
-                this.selectedDoctor,
+                this.selectedSchedule.doctor,
                 this.data.department,
                 this.data.booking.periodName).subscribe();
 

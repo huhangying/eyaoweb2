@@ -79,6 +79,7 @@ export class BookingComponent implements OnInit, OnDestroy {
               doctor: _.doctor,
               created: new Date(_.created),
               status: _.status,
+              scheduleId: _.schedule._id,
               scheduleDate: new Date(_.schedule.date),
               schedulePeriod: _.schedule.period,
               userId: _.user?._id,

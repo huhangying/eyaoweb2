@@ -8,15 +8,26 @@
 
   <mat-dialog-content class="px-3">
     <ng-container *ngIf="doctors?.length">
-      <label>相同时间段内可选的同科室药师</label>
-      <mat-radio-group class="d-flex flex-column p-2" [(ngModel)]="selectedDoctor">
-        <mat-radio-button class="mx-3" *ngFor="let doc of doctors" [value]="doc">
-          {{doc.name + ' ' + doc.title}}
-        </mat-radio-button>
+      <label>可接手的药师和门诊</label>
+
+      <mat-radio-group class="d-flex flex-column p-2" [(ngModel)]="selectedSchedule">
+        <ng-container *ngFor="let doc of doctors; let i=index">
+          <mat-expansion-panel>
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                {{doc.name + ' ' + doc.title}}
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+
+            <mat-radio-button class="mx-3" *ngFor="let schedule of getSchedulesByDoctorId(doc._id)" [value]="schedule">
+              {{schedule.date | localDate}} {{getPeriodLabel(schedule.period)}}
+            </mat-radio-button>
+          </mat-expansion-panel>
+        </ng-container>
       </mat-radio-group>
 
       <div class="text-hint pt-3">
-        * 选择“发送”会发送微信公众号内消息给病患，提供病患两个选项：1.同意更换药师；2.选择取消预约。不保证用户一定会有所操作。
+        * 选择“发送”会发送微信公众号内消息给病患，提供病患两个选项：1.同意更换药师/预约；2.选择取消预约。不保证用户一定会有所操作。
       </div>
     </ng-container>
 
@@ -29,7 +40,7 @@
 
   <nb-card-footer class="d-block">
     <button nbButton mat-dialog-close>取消</button>
-    <button nbButton hero status="primary" class="float-right" [disabled]="!selectedDoctor" (click)="submit()">
+    <button nbButton hero status="primary" class="float-right" [disabled]="!selectedSchedule" (click)="submit()">
       <nb-icon icon="checkmark-circle"></nb-icon>发送
     </button>
   </nb-card-footer>

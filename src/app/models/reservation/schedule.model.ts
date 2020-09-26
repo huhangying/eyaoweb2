@@ -1,3 +1,5 @@
+import { Doctor } from '../crm/doctor.model';
+
 export interface Schedule {
   _id: string;
   doctor: string; // id
@@ -14,4 +16,15 @@ export interface Period {
   name: string;
   from: number;
   to?: number;
+}
+
+export interface SchedulePopulated {
+  _id: string;
+  doctor: Doctor;
+  period: string; // id
+  // period: Period;
+  date: Date;
+  limit?: number;
+  created?: Date;
+  apply?: boolean;
 }
