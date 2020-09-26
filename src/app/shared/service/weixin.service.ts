@@ -84,8 +84,8 @@ export class WeixinService {
           color: '#173177'
         },
         keyword2: {
-          value: department.name,
-          color: '"#173177'
+          value: department?.name,
+          color: '#173177'
         },
         keyword3: {
           value: `${this.localDate.transform(booking.scheduleDate)} ${periodName}`,
@@ -130,7 +130,7 @@ export class WeixinService {
         },
         keyword2: {
           value: department.name,
-          color: '"#173177'
+          color: '#173177'
         },
         keyword3: {
           value: `${this.localDate.transform(booking.scheduleDate)} ${periodName}`,

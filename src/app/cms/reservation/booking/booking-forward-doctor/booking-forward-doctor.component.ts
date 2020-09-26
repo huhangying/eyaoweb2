@@ -7,6 +7,7 @@ import { ReservationService } from '../../../../services/reservation.service';
 import { tap } from 'rxjs/operators';
 import { WeixinService } from '../../../../shared/service/weixin.service';
 import { Department } from '../../../../models/hospital/department.model';
+import { HospitalService } from '../../../../services/hospital.service';
 
 @Component({
   selector: 'ngx-booking-forward-doctor',
@@ -17,6 +18,7 @@ export class BookingForwardDoctorComponent implements OnInit {
   doctors: Doctor[];
   availableSchedules: SchedulePopulated[];
   selectedSchedule: SchedulePopulated;
+  selectedDepartment: Department;
 
   constructor(
     public dialogRef: MatDialogRef<BookingForwardDoctorComponent>,
@@ -28,6 +30,7 @@ export class BookingForwardDoctorComponent implements OnInit {
     },
     private reservationService: ReservationService,
     private weixinService: WeixinService,
+    private hospitalService: HospitalService,
   ) { }
 
   ngOnInit(): void {
@@ -51,6 +54,18 @@ export class BookingForwardDoctorComponent implements OnInit {
   getSchedulesByDoctorId(doctorId: string) {
     if (!this.availableSchedules?.length) return [];
     return this.availableSchedules.filter(_ => _.doctor._id === doctorId);
+  }
+
+  forwardScheduleSelected(selectedSchedule: SchedulePopulated) {
+    if (selectedSchedule.doctor.department === this.data.department._id) {
+      this.selectedDepartment = this.data.department;
+      return;
+    }
+    this.hospitalService.getDepartmentById(selectedSchedule.doctor.department).pipe(
+      tap((result: Department) => {
+        this.selectedDepartment = result;
+      })
+    ).subscribe();
   }
 
   getPeriodLabel(id: string) {
@@ -79,12 +94,12 @@ export class BookingForwardDoctorComponent implements OnInit {
                 this.data.booking.userLinkId,
                 this.data.booking,
                 forwardedBooking._id,
-                this.data.doctor,
-                this.selectedSchedule.doctor,
-                this.data.department,
-                this.data.booking.periodName).subscribe();
+                this.data.doctor, // source
+                this.selectedSchedule.doctor, // target
+                this.selectedDepartment,
+                this.getPeriodLabel(this.selectedSchedule.period)).subscribe();
 
-              // change current doctor status
+              // change origin doctor status
               this.reservationService.updateBookingById({
                 _id: this.data.booking._id,
                 doctor: this.data.booking.doctor,

@@ -10,7 +10,7 @@
     <ng-container *ngIf="doctors?.length">
       <label>可接手的药师和门诊</label>
 
-      <mat-radio-group class="d-flex flex-column p-2" [(ngModel)]="selectedSchedule">
+      <mat-radio-group class="d-flex flex-column p-2" [(ngModel)]="selectedSchedule" (ngModelChange)="forwardScheduleSelected($event)">
         <ng-container *ngFor="let doc of doctors; let i=index">
           <mat-expansion-panel>
             <mat-expansion-panel-header>
