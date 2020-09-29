@@ -29,7 +29,7 @@ export class TestFormItemEditComponent implements OnInit {
     this.form = this.fb.group({
       item: ['', Validators.required],
       code: [''],
-      unit: ['', Validators.required],
+      unit: [''],
       referenceFrom: [''],
       referenceTo: [''],
 
