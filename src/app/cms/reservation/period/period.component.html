@@ -18,12 +18,12 @@
 
         <ng-container matColumnDef="from">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> 开始时间 </th>
-          <td mat-cell *matCellDef="let element"> {{element.from}} </td>
+          <td mat-cell *matCellDef="let element"> {{element.from | timeFormat}} </td>
         </ng-container>
 
         <ng-container matColumnDef="to">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> 结束时间 </th>
-          <td mat-cell *matCellDef="let element"> {{element.to}} </td>
+          <td mat-cell *matCellDef="let element"> {{element.to | timeFormat}} </td>
         </ng-container>
 
         <ng-container matColumnDef="order">

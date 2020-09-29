@@ -16,17 +16,19 @@
 
     <div class="field row">
       <label for="startTime" class="label required col-3"> 开始时间 </label>
-      <input nbInput fullWidth id="startTime" type="number" min="1" max="100" class="col-9" formControlName="from">
+      <input nbInput fullWidth id="startTime" type="number" min="1" max="1439" class="col-5" formControlName="from">
+      <span class="col-4 p-3">等同于 {{fromCtrl.value | timeFormat}}</span>
     </div>
 
     <div class="field row">
       <label for="endTime" class="label required col-3"> 结束时间 </label>
-      <input nbInput fullWidth id="endTime" type="number" min="1" max="100" class="col-9" formControlName="to">
+      <input nbInput fullWidth id="endTime" type="number" min="1" max="1439" class="col-5" formControlName="to">
+      <span class="col-4 p-3">等同于 {{toCtrl.value | timeFormat}}</span>
     </div>
 
     <div class="field row">
       <label for="limit" class="label required col-3"> 顺序 </label>
-      <input nbInput fullWidth id="limit" type="number" class="col-9" formControlName="order">
+      <input nbInput fullWidth id="limit" type="number" class="col-5" formControlName="order">
     </div>
 
   </mat-dialog-content>

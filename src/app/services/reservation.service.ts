@@ -87,4 +87,12 @@ export class ReservationService {
     return this.api.get<Period[]>('periods');
   }
 
+  updatePeriod(data: Period) {
+    return this.api.patch<Period>('period/' + data._id, data);
+  }
+
+  createPeriod(data: Period) {
+    return this.api.post<Period>('period', data);
+  }
+
 }

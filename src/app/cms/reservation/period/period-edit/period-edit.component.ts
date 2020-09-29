@@ -35,13 +35,15 @@ export class PeriodEditComponent implements OnInit, OnDestroy {
       order: true,
     });
     if (data.period) {
-      this.form.patchValue({...data.period});
+      this.form.patchValue({ ...data.period });
     }
-    console.log(this.data.periods);
+  }
 
-   }
+  get fromCtrl() { return this.form.get('from'); }
+  get toCtrl() { return this.form.get('to'); }
 
   ngOnInit(): void {
+    this.dialogRef.updateSize('500px');
   }
 
   ngOnDestroy() {
@@ -52,9 +54,9 @@ export class PeriodEditComponent implements OnInit, OnDestroy {
   update() {
     const response = this.data.period?._id ?
       // update
-      this.reservationService.updateSchedule({ ...this.data.period, ...this.form.value }) :
+      this.reservationService.updatePeriod({ ...this.data.period, ...this.form.value }) :
       // create
-      this.reservationService.createSchedule({ ...this.form.value });
+      this.reservationService.createPeriod({ ...this.form.value });
     response.pipe(
       tap(rsp => {
         this.dialogRef.close(rsp);

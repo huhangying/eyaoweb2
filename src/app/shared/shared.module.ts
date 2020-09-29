@@ -52,6 +52,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatSelectModule } from '@angular/material/select';
 import { InputChipsCardComponent } from './components/input-chips-card/input-chips-card.component';
 import { DoctorConsultPricesComponent } from './components/doctor-profile/doctor-consult-prices/doctor-consult-prices.component';
+import { TimeFormatPipe } from './pipe/time-format.pipe';
 
 @NgModule({
   imports: [
@@ -142,6 +143,7 @@ import { DoctorConsultPricesComponent } from './components/doctor-profile/doctor
     LocalDatePipe,
     GenderPipe,
     ImgPathPipe,
+    TimeFormatPipe,
   ],
   declarations: [
     FooterComponent,
@@ -158,6 +160,7 @@ import { DoctorConsultPricesComponent } from './components/doctor-profile/doctor
     LocalDatePipe,
     GenderPipe,
     ImgPathPipe,
+    TimeFormatPipe,
     ImageUploaderComponent,
     ImageCropComponent,
     SelectPatientComponent,

@@ -15,6 +15,7 @@ import { ApiInterceptor } from './shared/service/api-interceptor';
 import { ImgPathPipe } from './shared/pipe/img-path.pipe';
 import { LocalDatePipe } from './shared/pipe/local-date.pipe';
 import { GenderPipe } from './shared/pipe/gender.pipe';
+import { TimeFormatPipe } from './shared/pipe/time-format.pipe';
 
 @NgModule({
   declarations: [
@@ -39,6 +40,7 @@ import { GenderPipe } from './shared/pipe/gender.pipe';
     ImgPathPipe,
     LocalDatePipe,
     GenderPipe,
+    TimeFormatPipe,
   ],
   bootstrap: [AppComponent]
 })
