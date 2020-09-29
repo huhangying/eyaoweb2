@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from '../shared/service/api.service';
-import { Schedule, SchedulePopulated } from '../models/reservation/schedule.model';
+import { Period, Schedule, SchedulePopulated } from '../models/reservation/schedule.model';
 import { ScheduleBatch } from '../models/reservation/schedule-batch.model';
 import { Booking, OriginBooking } from '../models/reservation/booking.model';
-import { Doctor } from '../models/crm/doctor.model';
 
 @Injectable({
   providedIn: 'root'
@@ -81,6 +80,11 @@ export class ReservationService {
 
   getStatByDoctorId(doctorId: string) {
     return this.api.get<{date: Date; status: number}[]>('bookings/counts/doctor/' + doctorId);
+  }
+
+  // Period
+  getPeriods() {
+    return this.api.get<Period[]>('periods');
   }
 
 }

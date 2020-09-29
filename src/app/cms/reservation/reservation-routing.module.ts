@@ -4,6 +4,7 @@ import { BookingComponent } from './booking/booking.component';
 import { ScheduleComponent } from './schedule/schedule.component';
 import { PeriodsResolver } from '../../services/resolvers/periods.resolver';
 import { DepartmentResolver } from '../../services/resolvers/department.resolver';
+import { PeriodComponent } from './period/period.component';
 
 const routes: Routes = [{
   path: '',
@@ -24,6 +25,10 @@ const routes: Routes = [{
         periods: PeriodsResolver
       }
     },
+    {
+      path: 'period',
+      component: PeriodComponent,
+    },
   ],
 }];
 
@@ -36,4 +41,5 @@ export class ReservationRoutingModule { }
 export const routedComponents = [
   BookingComponent,
   ScheduleComponent,
+  PeriodComponent,
 ];

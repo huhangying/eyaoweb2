@@ -84,6 +84,12 @@ export function getMenuItems(role: number, queryParams: Params): NbMenuItem[] {
           link: '/cms/reservation/booking',
           queryParams: queryParams,
         },
+        {
+          title: '门诊时间段',
+          link: '/cms/reservation/period',
+          hidden: role < 2,
+          queryParams: queryParams,
+        },
       ],
     },
     {

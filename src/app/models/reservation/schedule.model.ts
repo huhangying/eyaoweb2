@@ -16,6 +16,7 @@ export interface Period {
   name: string;
   from: number;
   to?: number;
+  order?: number;
 }
 
 export interface SchedulePopulated {

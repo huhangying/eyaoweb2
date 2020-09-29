@@ -1,0 +1,40 @@
+<nb-card status="info" [formGroup]="form">
+  <nb-card-header>
+    编辑门诊时间段
+    <button nbButton shape="round" size="tiny" class="float-right" mat-dialog-close>
+      <nb-icon icon="close"></nb-icon>
+    </button>
+  </nb-card-header>
+
+  <mat-dialog-content class="px-3">
+    <div class="field row">
+      <label for="name" class="label required col-3"> 名称 </label>
+      <div class="d-inline-flex px-0 col-9">
+        <input nbInput fullWidth id="name" formControlName="name">
+      </div>
+    </div>
+
+    <div class="field row">
+      <label for="startTime" class="label required col-3"> 开始时间 </label>
+      <input nbInput fullWidth id="startTime" type="number" min="1" max="100" class="col-9" formControlName="from">
+    </div>
+
+    <div class="field row">
+      <label for="endTime" class="label required col-3"> 结束时间 </label>
+      <input nbInput fullWidth id="endTime" type="number" min="1" max="100" class="col-9" formControlName="to">
+    </div>
+
+    <div class="field row">
+      <label for="limit" class="label required col-3"> 顺序 </label>
+      <input nbInput fullWidth id="limit" type="number" class="col-9" formControlName="order">
+    </div>
+
+  </mat-dialog-content>
+
+  <nb-card-footer class="d-block">
+    <button nbButton mat-dialog-close>取消</button>
+    <button nbButton hero status="primary" class="float-right" (click)="update()">
+      <nb-icon icon="checkmark-circle"></nb-icon>更新
+    </button>
+  </nb-card-footer>
+</nb-card>
