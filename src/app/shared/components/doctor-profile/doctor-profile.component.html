@@ -1,5 +1,4 @@
 <div [formGroup]="form">
-  <div class="lead pb-3" *ngIf="mode === 0">药师个人资料</div>
   <div class="row">
     <div class="col-lg-6">
       <nb-card>
@@ -7,7 +6,16 @@
         <nb-card-body>
           <div class="field row">
             <label class="label required col-sm-3">用户名</label>
-            <input type="tel" class="col-sm-9" nbInput fullWidth formControlName="user_id">
+            <input type="text" class="col-sm-9" nbInput fullWidth formControlName="user_id">
+          </div>
+          <div class="field row" [hidden]="operatingRole < 2">
+            <label for="selectRole" class="label col-sm-3">角色</label>
+            <nb-select id="selectRole" class="col-sm-9" formControlName="role" [disabled]="mode === 0">
+              <nb-option ngInput [value]="3" [hidden]="operatingRole < 3">系统管理员</nb-option>
+              <nb-option ngInput [value]="2">医院管理员</nb-option>
+              <nb-option ngInput [value]="1">科室管理员</nb-option>
+              <nb-option ngInput [value]="0">药师</nb-option>
+            </nb-select>
           </div>
           <div class="field row">
             <label for="inputName" class="label required col-sm-3">姓名</label>

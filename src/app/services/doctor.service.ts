@@ -15,7 +15,6 @@ export class DoctorService {
 
   constructor(
     private api: ApiService,
-    private appStore: AppStoreService
   ) { }
 
   // 药师
@@ -120,9 +119,9 @@ export class DoctorService {
       case 0:
         return '药师';
       case 1:
-        return '药师/科室管理';
+        return '科室管理员';
       case 2:
-        return '药师/医院管理';
+        return '医院管理员';
       default:
         return '';
     }

@@ -40,6 +40,7 @@ export class DoctorProfileComponent implements OnInit, OnDestroy {
   }
   @Input() departments: Department[];
   @Input() mode: number; // 0: normal profile; 1: add doctor; 2: edit doctor
+  @Input() operatingRole?: number; // <=3
   @Output() valueChange = new EventEmitter<{ doctor: Doctor; invalid: boolean }>();
   form: FormGroup;
   destroy$ = new Subject<void>();
@@ -48,6 +49,7 @@ export class DoctorProfileComponent implements OnInit, OnDestroy {
   avatar: any;
   qrcode: any;
   servicePrices: ConsultServicePrice[];
+
 
   constructor(
     private fb: FormBuilder,
@@ -74,7 +76,8 @@ export class DoctorProfileComponent implements OnInit, OnDestroy {
       password: [''],
       passwordConfirm: [''],
       order: '',
-      apply: ''
+      apply: '',
+      role: ''
     }, {
       validators: [mustMatch('password', 'passwordConfirm')]
     });
@@ -84,6 +87,7 @@ export class DoctorProfileComponent implements OnInit, OnDestroy {
   public get passwordConfirm() { return this.form.get('passwordConfirm'); }
   public get userId() { return this.form.get('user_id'); }
   public get name() { return this.form.get('name'); }
+  public get role() { return this.form.get('role'); }
 
   ngOnInit() {
     this.form.valueChanges.pipe(

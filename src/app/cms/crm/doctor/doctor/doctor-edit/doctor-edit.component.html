@@ -7,10 +7,8 @@
   </nb-card-header>
 
   <mat-dialog-content class="px-3">
-
-    <ngx-doctor-profile [departments]="data.departments" [doctor]="data.doctor" [mode]="mode"
+    <ngx-doctor-profile [departments]="data.departments" [doctor]="data.doctor" [mode]="mode" [operatingRole]="operatingRole"
       (valueChange)="profileChanged($event)"></ngx-doctor-profile>
-
   </mat-dialog-content>
 
   <nb-card-footer class="d-block">

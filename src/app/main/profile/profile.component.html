@@ -1,6 +1,6 @@
 <div class="lead pb-3">药师个人资料</div>
 
-<ngx-doctor-profile [departments]="departments" [doctor]="originDoctor" [mode]="2"
+<ngx-doctor-profile [departments]="departments" [doctor]="originDoctor" [mode]="0" [operatingRole]="originDoctor?.role"
   (valueChange)="profileChanged($event)"></ngx-doctor-profile>
 
 <div class="pb-3 px-2">
