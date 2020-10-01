@@ -94,7 +94,7 @@ export function getMenuItems(role: number, queryParams: Params): NbMenuItem[] {
     },
     {
       title: '问卷管理',
-      icon: 'map-outline',
+      icon: 'clipboard-outline',
       children: [
         {
           title: '问卷模版',
@@ -105,7 +105,7 @@ export function getMenuItems(role: number, queryParams: Params): NbMenuItem[] {
     },
     {
       title: '宣教材料管理',
-      icon: 'layers-outline',
+      icon: 'map-outline',
       children: [
         {
           title: '材料类别',

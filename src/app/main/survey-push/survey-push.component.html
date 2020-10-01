@@ -1,1 +1,32 @@
-<p>survey-push works!</p>
+<nb-card>
+  <nb-card-header>
+    问卷发送
+    &nbsp;&nbsp;
+  </nb-card-header>
+
+  <nb-card-body>
+    <div class="border-bottom pb-2">
+      <button nbButton size="small" [status]="sendees?.length ? 'info' : 'basic'" (click)="selectSendees()">
+        选择患者
+      </button>&nbsp;&nbsp;
+      <button nbButton size="small" [status]="selectedSurvey ? 'info' : 'basic'" (click)="selectSurvey()">
+        选择问卷
+      </button>&nbsp;&nbsp;
+      <span class="float-right">
+        <button nbButton hero size="small" status="primary" (click)="send()" *ngIf="isReady()">
+          <nb-icon icon="paper-plane-outline"></nb-icon> 发送
+        </button>
+      </span>
+    </div>
+
+    <ng-container *ngIf="sendees">
+      <div class="field row pt-4">
+        <div class="col-12 h6">待发送病患</div>
+        <div class="col-2" *ngFor="let sendee of sendees">
+          {{sendee.name}}
+        </div>
+      </div>
+    </ng-container>
+
+  </nb-card-body>
+</nb-card>
