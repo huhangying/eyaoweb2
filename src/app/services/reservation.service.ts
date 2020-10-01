@@ -95,4 +95,8 @@ export class ReservationService {
     return this.api.post<Period>('period', data);
   }
 
+  deletePeriodById(id: string) {
+    return this.api.delete<Period>('period/' + id);
+  }
+
 }

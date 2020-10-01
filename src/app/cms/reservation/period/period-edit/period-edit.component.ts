@@ -30,8 +30,8 @@ export class PeriodEditComponent implements OnInit, OnDestroy {
     this.currentDate = new Date();
     this.form = this.fb.group({
       name: ['', Validators.required],
-      from: ['', Validators.required],
-      to: [''],
+      from: ['', [Validators.required, Validators.min(1), Validators.max(1439)]],
+      to: ['', [Validators.min(1), Validators.max(1439)]],
       order: true,
     });
     if (data.period) {

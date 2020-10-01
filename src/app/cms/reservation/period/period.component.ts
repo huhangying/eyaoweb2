@@ -45,7 +45,13 @@ export class PeriodComponent implements OnInit, OnDestroy {
   }
 
   add() {
-    return this.edit();
+    this.dialogService?.deleteConfirm('请郑重生成的门诊时间段！一旦被使用，删除可能会导致一些数据错误。').pipe(
+      tap(result => {
+        if (result) {
+          this.edit();
+        }
+      })
+    ).subscribe();
   }
 
   edit(data?: Period) {
@@ -77,18 +83,18 @@ export class PeriodComponent implements OnInit, OnDestroy {
   }
 
   delete(id: string) {
-    this.dialogService?.deleteConfirm().pipe(
+    this.dialogService?.deleteConfirm('本操作从数据库中删除记录！删除的记录将不能恢复。而且，如果该门诊时间段已经被使用，那可能导致数据相关的预约和门诊功能不能使用！！！', 'danger').pipe(
       tap(result => {
         if (result) {
-          // this.hospitalService.deleteFaqById(id).pipe(
-          //   tap(result => {
-          //     if (result?._id) {
-          //       this.loadData(this.dataSource.data.filter(item => item._id !== result._id)); // remove from list
-          //       this.message.deleteSuccess();
-          //     }
-          //   }),
-          //   catchError(err => this.message.deleteErrorHandle(err))
-          // ).subscribe();
+          this.reservationService.deletePeriodById(id).pipe(
+            tap(result => {
+              if (result?._id) {
+                this.loadData(this.dataSource.data.filter(item => item._id !== result._id)); // remove from list
+                this.message.deleteSuccess();
+              }
+            }),
+            catchError(err => this.message.deleteErrorHandle(err))
+          ).subscribe();
         }
       }),
     ).subscribe();

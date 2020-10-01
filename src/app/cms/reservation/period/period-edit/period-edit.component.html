@@ -1,6 +1,6 @@
-<nb-card status="info" [formGroup]="form">
+<nb-card [status]="data.period ? 'info' : 'success'" [formGroup]="form">
   <nb-card-header>
-    编辑门诊时间段
+    {{data.period? '编辑门诊时间段' : '新增门诊时间段'}}
     <button nbButton shape="round" size="tiny" class="float-right" mat-dialog-close>
       <nb-icon icon="close"></nb-icon>
     </button>
@@ -16,18 +16,20 @@
 
     <div class="field row">
       <label for="startTime" class="label required col-3"> 开始时间 </label>
-      <input nbInput fullWidth id="startTime" type="number" min="1" max="1439" class="col-5" formControlName="from">
-      <span class="col-4 p-3">等同于 {{fromCtrl.value | timeFormat}}</span>
+      <input nbInput fullWidth id="startTime" type="number" min="1" max="1439" class="col-5"
+        [status]="fromCtrl.invalid? 'danger': ''" formControlName="from">
+      <span class="col-4 p-3"><span class="text-muted small">等同于</span> {{fromCtrl.value | timeFormat}}</span>
     </div>
 
     <div class="field row">
-      <label for="endTime" class="label required col-3"> 结束时间 </label>
-      <input nbInput fullWidth id="endTime" type="number" min="1" max="1439" class="col-5" formControlName="to">
-      <span class="col-4 p-3">等同于 {{toCtrl.value | timeFormat}}</span>
+      <label for="endTime" class="label col-3"> 结束时间 </label>
+      <input nbInput fullWidth id="endTime" type="number" min="1" max="1439" class="col-5"
+        [status]="toCtrl.invalid? 'danger': ''" formControlName="to">
+      <span class="col-4 p-3"><span class="text-muted small">等同于</span> {{toCtrl.value | timeFormat}}</span>
     </div>
 
     <div class="field row">
-      <label for="limit" class="label required col-3"> 顺序 </label>
+      <label for="limit" class="label col-3"> 顺序 </label>
       <input nbInput fullWidth id="limit" type="number" class="col-5" formControlName="order">
     </div>
 
@@ -35,7 +37,7 @@
 
   <nb-card-footer class="d-block">
     <button nbButton mat-dialog-close>取消</button>
-    <button nbButton hero status="primary" class="float-right" (click)="update()">
+    <button nbButton hero status="primary" class="float-right" [disabled]="form.invalid" (click)="update()">
       <nb-icon icon="checkmark-circle"></nb-icon>更新
     </button>
   </nb-card-footer>

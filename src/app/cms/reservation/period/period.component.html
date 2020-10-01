@@ -2,7 +2,7 @@
   <nb-card-header>
     门诊时间段管理
     &nbsp;&nbsp;
-    <button nbButton hero shape="round" size="tiny" status="success" title="门诊时间段" (click)="add()" hidden="true">
+    <button nbButton hero shape="round" size="tiny" status="success" title="门诊时间段" (click)="add()">
       <nb-icon icon="plus" pack="eva" [options]="{ animation: { type: 'shake' } }"></nb-icon>
     </button>
   </nb-card-header>
@@ -39,8 +39,7 @@
               <nb-icon icon="edit-2"></nb-icon>
             </button>
             &nbsp;
-            <button nbButton hero shape="round" size="tiny" status="danger" title="删除" (click)="delete(element._id)"
-              hidden="true">
+            <button nbButton hero shape="round" size="tiny" status="danger" title="删除" (click)="delete(element._id)">
               <nb-icon icon="trash-2-outline"></nb-icon>
             </button>
           </td>
