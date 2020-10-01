@@ -13,6 +13,7 @@ import { ArticlePushComponent } from './article-push/article-push.component';
 import { MedicineReferencesResolver } from '../services/resolvers/medicine-references.resolver';
 import { PatientSearchComponent } from './patient-search/patient-search.component';
 import { ConsultComponent } from './consult/consult.component';
+import { SurveyPushComponent } from './survey-push/survey-push.component';
 
 const routes: Routes = [{
   path: '',
@@ -44,6 +45,10 @@ const routes: Routes = [{
     {
       path: 'article-push',
       component: ArticlePushComponent,
+    },
+    {
+      path: 'survey-push',
+      component: SurveyPushComponent,
     },
     {
       path: 'profile',

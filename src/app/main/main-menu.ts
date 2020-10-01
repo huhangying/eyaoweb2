@@ -71,6 +71,11 @@ export function getMenuItems(role: number, queryParams: Params): NbMenuItem[] {
       link: '/main/article-push',
     },
     {
+      title: '问卷发送',
+      icon: 'clipboard-outline',
+      link: '/main/survey-push',
+    },
+    {
       title: '快捷回复管理',
       icon: 'undo-outline',
       link: '/main/shortcuts',

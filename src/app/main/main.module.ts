@@ -32,6 +32,7 @@ import { NoticeSendMessageComponent } from './diagnose/notices/notice-send-messa
 import { TestEditComponent } from './diagnose/lab-results/test-edit/test-edit.component';
 import { TestItemEditComponent } from './diagnose/lab-results/test-edit/test-item-edit/test-item-edit.component';
 import { ConsultComponent } from './consult/consult.component';
+import { SurveyPushComponent } from './survey-push/survey-push.component';
 
 @NgModule({
   declarations: [
@@ -65,6 +66,7 @@ import { ConsultComponent } from './consult/consult.component';
     TestEditComponent,
     TestItemEditComponent,
     ConsultComponent,
+    SurveyPushComponent,
   ],
   imports: [
     SharedModule,
