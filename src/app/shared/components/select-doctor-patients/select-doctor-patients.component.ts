@@ -63,7 +63,7 @@ export class SelectDoctorPatientsComponent implements OnInit, OnDestroy {
   }
 
   select() {
-    const selected: string[] = [];
+    const selected = [];
     Object.keys(this.groups).map(key => {
       this.groups[key].users.map(_ => {
         if (_.selected) {
@@ -76,7 +76,11 @@ export class SelectDoctorPatientsComponent implements OnInit, OnDestroy {
       return;
     }
 
-    this.dialogRef.close(selected);
+    this.dialogRef.close(this.uniqify(selected, '_id'));
+  }
+
+  private uniqify(array, key) {
+    return array.reduce((prev, curr) => prev.find(a => a[key] === curr[key]) ? prev : prev.push(curr) && prev, []);
   }
 
 }
