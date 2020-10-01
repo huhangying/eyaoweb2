@@ -6,7 +6,7 @@
         <nb-option [value]="1">门诊号</nb-option>
         <nb-option [value]="2">姓名</nb-option>
         <nb-option [value]="3">手机号码</nb-option>
-        <nb-option [value]="4">社保号</nb-option>
+        <nb-option [value]="4">病患备注</nb-option>
       </nb-select>
     </nb-form-field>
     <nb-form-field class="col-12 col-sm-7">
@@ -34,6 +34,13 @@
             <span class="text-muted small pl-2 pr-1">生日:</span>
             {{ user.birthdate | localDate }}
           </ng-container>
+          <ng-container *ngIf="user.notes">
+            <span class="d-inline-block text-truncate align-middle" style="max-width: 300px;">
+              <span class="text-muted small pl-3 pr-2">备注: </span>
+              {{ user.notes?.split('|').join(', ') }}
+            </span>
+          </ng-container>
+
         </span>
         <mat-icon color="primary" class="float-right">pageview</mat-icon>
       </mat-radio-button>

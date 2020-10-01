@@ -47,10 +47,9 @@ export class SelectPatientComponent implements OnInit, OnDestroy {
       case 3: // 手机号码
         searchCriteria = { cell: this.searchValue };
         break;
-      case 4: // 社保号码
-        // searchCriteria.sin = this.searchValue;
-        this.message.warning('暂不支持该搜索项。');
-        return;
+      case 4: // 病患备注
+        searchCriteria = { notes: this.searchValue };
+        break;
       default:
         this.message.warning('暂不支持该搜索项。');
         return;
