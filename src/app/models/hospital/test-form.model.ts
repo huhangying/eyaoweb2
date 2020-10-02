@@ -11,12 +11,17 @@ export interface TestForm {
 export interface TestFormItem {
   item: string;
   code?: string;
-  unit: string;
+
+  isFormatted: boolean;
   reference?: string;
+
+  unit?: string;
   referenceFrom?: number;
   referenceTo?: number;
   riskValues?: TestFormRiskValue[];
 
+  order?: number;
+  apply: boolean;
 }
 
 export interface TestFormRiskValue {

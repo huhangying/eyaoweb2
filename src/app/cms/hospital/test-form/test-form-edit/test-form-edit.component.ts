@@ -19,7 +19,7 @@ import { TestFormItemEditComponent } from './test-form-item-edit/test-form-item-
 export class TestFormEditComponent implements OnInit, OnDestroy {
   form: FormGroup;
   destroy$ = new Subject<void>();
-  displayedColumns: string[] = ['item', 'code', 'unit', 'reference', 'index'];
+  displayedColumns: string[] = ['item', 'code', 'isFormatted', 'order', 'apply', 'index'];
   dataSource: MatTableDataSource<TestFormItem>;
 
   constructor(
@@ -113,8 +113,15 @@ export class TestFormEditComponent implements OnInit, OnDestroy {
   }
 
   loadData(data: TestFormItem[], isEdit = true) {
-    this.dataSource = new MatTableDataSource<TestFormItem>(data);
+    this.dataSource = new MatTableDataSource<TestFormItem>(data.sort((a, b) => (a.order || 0) - (b.order || 0)));
     this.cd.markForCheck();
+  }
+
+  getReferenceLabel(item: TestFormItem) {
+    if (!item) return '';
+    return item.isFormatted ?
+      `${item.referenceFrom || ''} - ${item.referenceTo || ''} ${item.unit}` :
+      (item.reference || '');
   }
 
 }

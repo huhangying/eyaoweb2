@@ -40,15 +40,23 @@
                 <td mat-cell *matCellDef="let element"> {{element.code}} </td>
               </ng-container>
 
-              <ng-container matColumnDef="unit">
-                <th mat-header-cell *matHeaderCellDef> 单位 </th>
-                <td mat-cell *matCellDef="let element"> {{element.unit}} </td>
-              </ng-container>
-
-              <ng-container matColumnDef="reference">
+              <ng-container matColumnDef="isFormatted">
                 <th mat-header-cell *matHeaderCellDef> 参考值 </th>
                 <td mat-cell *matCellDef="let element">
-                  {{ element.reference }}
+                  {{ getReferenceLabel(element) }}
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="order">
+                <th mat-header-cell *matHeaderCellDef style="width: 5rem;"> 顺序 </th>
+                <td mat-cell *matCellDef="let element">
+                  {{element.order}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="apply">
+                <th mat-header-cell *matHeaderCellDef> 开关 </th>
+                <td mat-cell *matCellDef="let element">
+                  {{element.apply ? '开' : '关'}}
                 </td>
               </ng-container>
 
@@ -94,7 +102,8 @@
 
   <nb-card-footer class="d-block">
     <button nbButton mat-dialog-close>取消</button>
-    <button nbButton hero status="primary" class="float-right" [disabled]="form.invalid || !dataSource?.data?.length" (click)="update()">
+    <button nbButton hero status="primary" class="float-right" [disabled]="form.invalid || !dataSource?.data?.length"
+      (click)="update()">
       <nb-icon icon="checkmark-circle"></nb-icon>更新
     </button>
   </nb-card-footer>

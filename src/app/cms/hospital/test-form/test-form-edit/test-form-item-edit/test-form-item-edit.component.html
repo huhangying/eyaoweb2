@@ -19,6 +19,15 @@
         </div>
       </div>
       <div class="field row">
+        <div class="col-sm-4 pt-4">
+          <nb-toggle formControlName="isFormatted">{{isFormatted.value ? '格式化的参考值': '自由输入参考值'}}</nb-toggle>
+        </div>
+        <div class="col-sm-8" [class.d-none]="isFormatted.value">
+          <label for="reference" class="label"> 正常参考值 </label>
+          <input nbInput fullWidth id="reference" formControlName="reference">
+        </div>
+      </div>
+      <div class="field row" [class.d-none]="!isFormatted.value">
         <div class="col-sm-4">
           <label for="referenceFrom" class="label"> 正常参考值 - 起始值 </label>
           <input nbInput fullWidth id="referenceFrom" type="number" min="0" formControlName="referenceFrom">
@@ -33,7 +42,7 @@
         </div>
       </div>
       <ng-container formArrayName="riskValues">
-        <div class="field row">
+        <div class="field row" [class.d-none]="!isFormatted.value">
           <div class="col-12">
             <label class="label"> 未达标/危险值设定 </label>
             <ng-container *ngFor="let riskValue of riskValues.controls; let i=index">
@@ -59,6 +68,16 @@
           </div>
         </div>
       </ng-container>
+
+      <div class="field row">
+        <div class="col-sm-4">
+          <label for="order" class="label"> 顺序 </label>
+          <input nbInput type="number" fullWidth id="order" formControlName="order">
+        </div>
+        <div class="col-sm-4 pt-5">
+          <nb-checkbox formControlName="apply"> 开关 </nb-checkbox>
+        </div>
+      </div>
     </div>
 
   </mat-dialog-content>

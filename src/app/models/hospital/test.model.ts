@@ -14,9 +14,14 @@ export interface Test {
 export interface TestItem {
   item: string;
   code: string;
-  unit: string;
-  reference: string;
+
+  isFormatted: boolean;
+  reference?: string;
+
+  unit?: string;
+  referenceFrom?: number;
+  referenceTo?: number;
   riskValues?: TestFormRiskValue[];
 
-  result: number;
+  result: string;
 }

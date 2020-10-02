@@ -29,10 +29,13 @@ export class TestFormItemEditComponent implements OnInit {
     this.form = this.fb.group({
       item: ['', Validators.required],
       code: [''],
+
+      isFormatted: [true],
+      reference: [''],
+
       unit: [''],
       referenceFrom: [''],
       referenceTo: [''],
-
       riskValues: this.fb.array([
         this.fb.group({
           value: 3,
@@ -70,14 +73,17 @@ export class TestFormItemEditComponent implements OnInit {
           from: '',
           to: '',
         })
-      ])
+      ]),
+      order: [''],
+      apply: [true]
     });
 
     if (!data.testItem) {
       data.testItem = {
         item: '',
         code: '',
-        unit: '',
+        isFormatted: true,
+        apply: true
       };
     }
     if (!data.testItem.riskValues?.length) {
@@ -85,18 +91,11 @@ export class TestFormItemEditComponent implements OnInit {
     }
     console.log(data.testItem);
 
-
-    if (data.testItem.reference) {
-      const refs = data.testItem.reference?.split('-');
-      if (refs?.length === 2) {
-        data.testItem.referenceFrom = +refs[0];
-        data.testItem.referenceTo = +refs[1];
-      }
-    }
     this.form.patchValue(data.testItem);
     this.cd.markForCheck();
   }
 
+  get isFormatted() { return this.form.get('isFormatted'); }
   get riskValues() {
     return this.form.get('riskValues') as FormArray;
   }
@@ -115,11 +114,8 @@ export class TestFormItemEditComponent implements OnInit {
   }
 
   update() {
-    const refFrom = +this.referenceFromCtrl.value;
-    const refTo = +this.referenceToCtrl.value;
     this.dialogRef.close({
       ...this.form.value,
-      reference: (refFrom && refTo) ? `${refFrom}-${refTo}`: ''
     });
   }
 

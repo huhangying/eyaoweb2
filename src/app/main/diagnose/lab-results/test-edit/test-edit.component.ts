@@ -23,7 +23,7 @@ export class TestEditComponent implements OnInit, OnDestroy {
   testForms: TestForm[];
   maxDate = new Date();
 
-  displayedColumns: string[] = ['item', 'code', 'reference', 'unit', 'result', 'index'];
+  displayedColumns: string[] = ['item', 'code', 'reference', 'result', 'index'];
   dataSource: MatTableDataSource<TestItem>;
 
   constructor(
@@ -79,9 +79,12 @@ export class TestEditComponent implements OnInit, OnDestroy {
       return {
         item: tfi.item,
         code: tfi.code,
-        unit: tfi.unit,
         result: undefined,
+        isFormatted: tfi.isFormatted,
         reference: tfi.reference,
+        unit: tfi.unit,
+        referenceFrom: tfi.referenceFrom,
+        referenceTo: tfi.referenceTo,
         riskValues: tfi.riskValues
       };
     });
@@ -142,6 +145,13 @@ export class TestEditComponent implements OnInit, OnDestroy {
   loadData(data: TestItem[], isEdit = true) {
     this.dataSource = new MatTableDataSource<TestItem>(data);
     this.cd.markForCheck();
+  }
+
+  getReferenceLabel(item: TestItem) {
+    if (!item) return '';
+    return item.isFormatted ?
+      `${item.referenceFrom || ''} - ${item.referenceTo || ''} ${item.unit}` :
+      (item.reference || '');
   }
 
 }
