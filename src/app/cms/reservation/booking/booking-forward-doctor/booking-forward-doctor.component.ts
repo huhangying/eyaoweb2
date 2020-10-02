@@ -34,7 +34,8 @@ export class BookingForwardDoctorComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.reservationService.getForwardAvailableSchedules(this.data.booking.scheduleDate).pipe(
+    // this.reservationService.getForwardAvailableSchedules(this.data.booking.scheduleDate).pipe(
+    this.reservationService.getForwardAvailableSchedules().pipe(
       tap((results: SchedulePopulated[]) => {
         this.doctors = [];
         if (results?.length) {

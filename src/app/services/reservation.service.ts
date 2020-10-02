@@ -54,8 +54,11 @@ export class ReservationService {
   //   return this.api.get<Doctor[]>(`schedules/find/doctors/${departmentId}/${date.toISOString()}/${period}`);
   // }
 
-  getForwardAvailableSchedules(date: Date) {
-    return this.api.get<SchedulePopulated[]>(`schedules/find/forward-available/${date.toISOString()}`);
+  // getForwardAvailableSchedules(date: Date) {
+  //   return this.api.get<SchedulePopulated[]>(`schedules/find/forward-available/${date.toISOString()}`);
+  // }
+  getForwardAvailableSchedules() {
+    return this.api.get<SchedulePopulated[]>('schedules/find/forward-available');
   }
 
   reserveScheduleSpace(doctorId: string,date: Date, period: string) {
