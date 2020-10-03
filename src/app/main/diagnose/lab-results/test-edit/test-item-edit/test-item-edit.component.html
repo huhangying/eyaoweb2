@@ -14,32 +14,44 @@
           <input nbInput fullWidth id="item" formControlName="item">
         </div>
         <div class="col-md-5">
-          <label for="code" class="label"> 类型 </label>
+          <label for="code" class="label"> 代码 </label>
           <input nbInput fullWidth id="code" formControlName="code">
         </div>
       </div>
       <div class="field row">
-        <div class="col-md-7">
+        <div class="col-md-12">
           <label for="result" class="label required"> 测试结果 </label>
-          <input nbInput fullWidth id="result" type="number" formControlName="result">
-        </div>
-        <div class="col-md-5">
-          <label for="unit" class="label"> 单位 </label>
-          <input nbInput fullWidth id="unit" formControlName="unit">
+          <input nbInput fullWidth id="result" type="text" formControlName="result">
         </div>
       </div>
 
       <ng-container *ngIf="data.isEdit">
-        <div class="alert alert-light mt-3 mx-3">
-          <div class="row">
-            <div class="col-3">正常参考值:</div>
-            <div class="col-9">{{ data.testItem.reference }}</div>
-          </div>
-          <ng-container *ngFor="let riskValue of data.testItem.riskValues">
+        <div class="alert alert-secondary mt-3">
+          <ng-container *ngIf="!data.testItem.isFormatted">
+            <div class="row">
+              <div class="col-3">正常参考值:</div>
+              <div class="col-9">{{ data.testItem.reference || '无' }}</div>
+            </div>
+          </ng-container>
+          <ng-container *ngIf="data.testItem.isFormatted">
+            <div class="row">
+              <div class="col-3">正常参考值:</div>
+              <div class="col-9">
+                <span *ngIf="!data.testItem.referenceFrom && !data.testItem.referenceTo">
+                  无
+                </span>
+                <span *ngIf="data.testItem.referenceFrom || data.testItem.referenceTo">
+                  {{ data.testItem.referenceFrom || '' }} - {{ data.testItem.referenceTo || ''}}
+                  {{ data.testItem.unit || ''}}
+                </span>
+              </div>
 
-            <div class="row" *ngIf="riskValue.from || riskValue.to">
-              <div class="col-3">{{ riskValue.name }}参考值:</div>
-              <div class="col-9">{{ riskValue.from }} - {{ riskValue.to }}</div>
+              <ng-container *ngFor="let riskValue of data.testItem.riskValues">
+                <div class="row" *ngIf="riskValue.from || riskValue.to">
+                  <div class="col-3">{{ riskValue.name }}参考值:</div>
+                  <div class="col-9">{{ riskValue.from }} - {{ riskValue.to }}</div>
+                </div>
+              </ng-container>
             </div>
           </ng-container>
         </div>
@@ -47,24 +59,18 @@
 
       <ng-container *ngIf="!data.isEdit">
         <div class="field row">
-          <div class="col-sm-4">
-            <label for="referenceFrom" class="label required"> 正常参考值 - 起始值 </label>
-            <input nbInput fullWidth id="referenceFrom" type="number" min="0" formControlName="referenceFrom">
-          </div>
-          <div class="col-sm-4">
-            <label for="referenceTo" class="label required"> 正常参考值 -终止值</label>
-            <input nbInput fullWidth id="referenceTo" type="number" min="0" formControlName="referenceTo">
+          <div class="col-sm-12">
+            <label for="referenceFrom" class="label required"> 正常参考值 </label>
+            <input nbInput fullWidth id="referenceFrom" type="text" formControlName="reference">
           </div>
         </div>
       </ng-container>
-
     </div>
   </mat-dialog-content>
 
   <nb-card-footer class="d-block">
     <button nbButton mat-dialog-close>取消</button>
-    <button nbButton hero status="primary" class="float-right" [disabled]="form.invalid"
-      (click)="update()">
+    <button nbButton hero status="primary" class="float-right" [disabled]="form.invalid" (click)="update()">
       <nb-icon icon="checkmark-circle"></nb-icon>更新
     </button>
   </nb-card-footer>

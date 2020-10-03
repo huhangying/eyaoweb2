@@ -23,7 +23,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let test of tests; let i=index" cdkDrag>
+      <tr *ngFor="let test of tests; let i=index">
         <th scope="row">{{i+1}}</th>
         <td>{{ test.date | localDate }}</td>
         <td>{{ test.name }}</td>

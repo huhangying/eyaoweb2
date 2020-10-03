@@ -24,7 +24,6 @@ export class TestItemEditComponent implements OnInit {
         item: ['', Validators.required],
         code: [''],
         result: [undefined, Validators.required],
-        unit: [''],
       });
       this.form.patchValue(data.testItem);
     } else { // create new
@@ -32,9 +31,7 @@ export class TestItemEditComponent implements OnInit {
         item: ['', Validators.required],
         code: [''],
         result: [undefined, Validators.required],
-        unit: [''],
-        referenceFrom: undefined,
-        referenceTo: undefined,
+        reference: ['']
       });
     }
   }
@@ -50,21 +47,15 @@ export class TestItemEditComponent implements OnInit {
   }
 
   update() {
-    const formValue = { ...this.form.value };
-
-    const _testItem = {
-      ...this.data.testItem,
-      item: formValue.item,
-      code: formValue.code,
-      result: formValue.result,
-      unit: formValue.unit
-    };
-
-    if (!this.data.isEdit) {
-      const refFrom = +this.referenceFromCtrl.value;
-      const refTo = +this.referenceToCtrl.value;
-      _testItem.reference = (refFrom && refTo) ? `${refFrom}-${refTo}` : '';
-    }
+    const _testItem = this.data.isEdit ?
+      {
+        ...this.data.testItem,
+        ...this.form.value,
+      } :
+      {
+        ...this.form.value,
+        isFormatted: false
+      };
 
     this.dialogRef.close(_testItem);
   }

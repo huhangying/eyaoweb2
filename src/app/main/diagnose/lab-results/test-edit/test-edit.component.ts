@@ -23,7 +23,7 @@ export class TestEditComponent implements OnInit, OnDestroy {
   testForms: TestForm[];
   maxDate = new Date();
 
-  displayedColumns: string[] = ['item', 'code', 'reference', 'result', 'index'];
+  displayedColumns: string[] = ['item', 'code', 'result', 'reference', 'index'];
   dataSource: MatTableDataSource<TestItem>;
 
   constructor(
