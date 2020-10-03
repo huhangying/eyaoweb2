@@ -33,6 +33,7 @@ export class PatientEditComponent implements OnInit, OnDestroy {
       sin: [''],
       admissionNumber: [''],
       diagnoses: [''],
+      prompt: [''],
       notes: [''],
       link_id: [''],
       apply: false,
