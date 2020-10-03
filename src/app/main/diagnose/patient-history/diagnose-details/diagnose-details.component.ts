@@ -5,6 +5,7 @@ import { Diagnose } from '../../../../models/diagnose/diagnose.model';
 import { MedicineReferences } from '../../../../models/hospital/medicine-references.model';
 import { User } from '../../../../models/crm/user.model';
 import { Doctor } from '../../../../models/crm/doctor.model';
+import { PdfService } from '../../../../shared/service/pdf.service';
 
 @Component({
   selector: 'ngx-diagnose-details',
@@ -23,6 +24,7 @@ export class DiagnoseDetailsComponent implements OnInit {
       patient: User;
       doctor: Doctor;
     },
+    private pdf: PdfService,
   ) {
     this.diagnose = data.diagnose;
     this.isFirstVisit = this.diagnose.surveys.findIndex(_ => _.type === 1) > -1;
@@ -39,6 +41,10 @@ export class DiagnoseDetailsComponent implements OnInit {
       departmentId: this.data.doctor.department,
       list: this.diagnose.surveys?.find(_ => _.type === type)?.list
     };
+  }
+
+  printDiagnose() {
+    this.pdf.generatePdf(this.diagnose, this.data.doctor || this.data.diagnose.doctor, this.data.patient, this.isFirstVisit ? 1 : 2, this.data.medicineReferences.periods);
   }
 
 }
