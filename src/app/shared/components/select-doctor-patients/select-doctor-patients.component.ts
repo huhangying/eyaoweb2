@@ -63,7 +63,7 @@ export class SelectDoctorPatientsComponent implements OnInit, OnDestroy {
   }
 
   select() {
-    const selected = [];
+    const selected: User[] = [];
     Object.keys(this.groups).map(key => {
       this.groups[key].users.map(_ => {
         if (_.selected) {

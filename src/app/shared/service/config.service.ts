@@ -6,14 +6,6 @@ import { AppStoreService } from '../store/app-store.service';
 })
 export class ConfigService {
   imageRoot: 'assets/images/';
-  surveyTypes = [
-    { id: 1, name: '初诊问卷' },
-    { id: 2, name: '复诊问卷' },
-    { id: 3, name: '随访问卷' },
-    { id: 4, name: '药物知识自测' },
-    { id: 5, name: '门诊结论' },
-    { id: 6, name: '药师评估' },
-  ];
 
   error = {
     internal: 'API接口内部错误',

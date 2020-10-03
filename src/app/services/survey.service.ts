@@ -8,14 +8,27 @@ import { MessageService } from '../shared/service/message.service';
   providedIn: 'root'
 })
 export class SurveyService {
+  surveyTypes = [
+    { type: 1, name: '初诊问卷' },
+    { type: 2, name: '复诊问卷' },
+    { type: 3, name: '随访问卷' },
+    { type: 4, name: '药物知识自测' },
+    { type: 5, name: '门诊结论' },
+    { type: 6, name: '药师评估' },
+    { type: 7, name: '临时问卷' },
+  ];
 
   constructor(
     private api: ApiService,
     private message: MessageService,
   ) { }
 
+  getSurveyNameByType(type: number) {
+    return this.surveyTypes.find(_ => _.type === type)?.name;
+  }
+
   // Survey Template
-  getByDepartmentId(department: string) {
+  getSurveyTemplatesByDepartmentId(department: string) {
     return this.api.get<SurveyTemplate[]>(`surveytemplates/department/${department}`);
   }
 

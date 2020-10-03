@@ -33,6 +33,7 @@ import { TestEditComponent } from './diagnose/lab-results/test-edit/test-edit.co
 import { TestItemEditComponent } from './diagnose/lab-results/test-edit/test-item-edit/test-item-edit.component';
 import { ConsultComponent } from './consult/consult.component';
 import { SurveyPushComponent } from './survey-push/survey-push.component';
+import { SurveyTemplateViewComponent } from './survey-push/survey-template-view/survey-template-view.component';
 
 @NgModule({
   declarations: [
@@ -67,6 +68,7 @@ import { SurveyPushComponent } from './survey-push/survey-push.component';
     TestItemEditComponent,
     ConsultComponent,
     SurveyPushComponent,
+    SurveyTemplateViewComponent,
   ],
   imports: [
     SharedModule,

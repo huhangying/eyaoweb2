@@ -9,14 +9,9 @@
       <button nbButton size="small" [status]="sendees?.length ? 'info' : 'basic'" (click)="selectSendees()">
         选择患者
       </button>&nbsp;&nbsp;
-      <button nbButton size="small" [status]="selectedSurvey ? 'info' : 'basic'" (click)="selectSurvey()">
+      <button nbButton size="small" [status]="selectedSurveyTemplate ? 'info' : 'basic'" (click)="selectSurvey()">
         选择问卷
       </button>&nbsp;&nbsp;
-      <span class="float-right">
-        <button nbButton hero size="small" status="primary" (click)="send()" *ngIf="isReady()">
-          <nb-icon icon="paper-plane-outline"></nb-icon> 发送
-        </button>
-      </span>
     </div>
 
     <ng-container *ngIf="sendees">
@@ -25,6 +20,34 @@
         <div class="col-2" *ngFor="let sendee of sendees">
           {{sendee.name}}
         </div>
+      </div>
+    </ng-container>
+
+    <ng-container *ngIf="availableSurveyTemplates?.length">
+      <ng-container *ngFor="let type of [3, 4, 7]">
+        <mat-expansion-panel class="my-3" *ngIf="checkTypeExisted(type)">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              {{getSurveyNameByType(type)}}
+            </mat-panel-title>
+            <mat-panel-description class="flex-row-reverse px-4">
+              <button nbButton hero outline size="small" status="primary" (click)="send(type); $event.stopPropagation()" *ngIf="isReady()">
+                <nb-icon icon="paper-plane-outline"></nb-icon> 发送
+              </button>
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+
+          <ng-template matExpansionPanelContent>
+            <ngx-survey-template-view [type]="type" [templates]="getSurveyTemplateByType(type)"></ngx-survey-template-view>
+          </ng-template>
+        </mat-expansion-panel>
+      </ng-container>
+
+    </ng-container>
+
+    <ng-container *ngIf="!availableSurveyTemplates?.length">
+      <div class="alert alert-warning" role="alert">
+        没有相关的问卷可以发送。请到后台设置。
       </div>
     </ng-container>
 

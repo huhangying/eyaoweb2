@@ -4,6 +4,7 @@ import { tap } from 'rxjs/operators';
 import { Doctor } from '../../models/crm/doctor.model';
 import { User } from '../../models/crm/user.model';
 import { SurveyTemplate } from '../../models/survey/survey-template.model';
+import { SurveyService } from '../../services/survey.service';
 import { SelectDoctorPatientsComponent } from '../../shared/components/select-doctor-patients/select-doctor-patients.component';
 import { AuthService } from '../../shared/service/auth.service';
 
@@ -17,17 +18,23 @@ export class SurveyPushComponent implements OnInit {
   doctor: Doctor;
   sendees: User[];
 
-  selectedSurvey: SurveyTemplate;
+  selectedSurveyTemplate: SurveyTemplate;
+  availableSurveyTemplates: SurveyTemplate[];
 
   constructor(
     private auth: AuthService,
     public dialog: MatDialog,
+    private surveyService: SurveyService,
     private cd: ChangeDetectorRef,
   ) {
     this.doctor = this.auth.doctor;
   }
 
   ngOnInit(): void {
+    this.surveyService.getSurveyTemplatesByDepartmentId(this.doctor.department).subscribe(templates => {
+      this.availableSurveyTemplates = templates.filter(_ => [3, 4, 7].indexOf(_.type) > -1);
+      this.cd.markForCheck();
+    });
   }
 
   selectSendees() {
@@ -49,7 +56,21 @@ export class SurveyPushComponent implements OnInit {
     return this.sendees?.length > 0;
   }
 
-  selectSurvey() {
+  getSurveyTemplateByType(type: number) {
+    return this.availableSurveyTemplates.filter(_ => _.type === type);
+  }
+
+  checkTypeExisted(type: number) {
+    return this.getSurveyTemplateByType(type)?.length > 0;
+  }
+
+  getSurveyNameByType(type: number) {
+    return this.surveyService.getSurveyNameByType(type);
+  }
+
+  selectSurvey(event) {
+    // event.stopPropagation();
+    // return false;
     // this.dialog.open(SelectArticleTemplateComponent, {
     //   data: {
     //     departmentId: this.doctor.department
