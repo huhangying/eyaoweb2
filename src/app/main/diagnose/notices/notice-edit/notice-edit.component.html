@@ -37,12 +37,12 @@
     </div>
 
     <div class="field row">
-      <div class="col-md-4">
+      <div class="col-md-4" class="d-none">
         <label for="days_to_start" class="label required"> 提醒开始 </label>
         <input nbInput type="number" fullWidth id="days_to_start" formControlName="days_to_start">
       </div>
-      <div class="col-md-4">
-        <label for="noticeStartDate" class="label"> 提醒开始日期 </label>
+      <div class="col-md-6">
+        <label for="noticeStartDate" class="label required"> 提醒开始日期 </label>
         <div class="d-flex px-0">
           <input nbInput fullWidth id="noticeStartDate" #noticeStartDate [matDatepicker]="pickerNoticeStart"
             formControlName="noticeStartDate" [min]="startDateCtrl.value">
