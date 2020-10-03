@@ -72,7 +72,7 @@ export class PdfService {
         },
         {
           // layout: 'lightHorizontalLines', // optional
-          margin: [5, 10],
+          margin: [5, 15, 5, 5],
           table: {
             // headers are automatically repeated if the table spans over multiple pages
             // you can declare how many rows should be treated as headers
@@ -88,10 +88,9 @@ export class PdfService {
               ],
               [
                 '科室：' + departmentName,
-                { colSpan: 3, text: `药师：${doctor.name} ${doctor.title}` }],
-              // [{ text: 'Bold value', bold: true }, 'Val 2', 'Val 3', 'Val 4'],
+                { colSpan: 3, text: `药师：${doctor.name} ${doctor.title}` }
+              ],
               [{
-                // rowSpan: 3,
                 colSpan: 4,
                 style: 'block',
                 text: '处方：\n\n' + this.buildPrescription(diagnose.prescription, periods) + '\n'
@@ -99,7 +98,6 @@ export class PdfService {
               [{
                 colSpan: 4,
                 style: 'block',
-                // rowSpan: 3,
                 text: `门诊结论:\n
                 ${conclusionSurvey}\n`
               }],
@@ -147,9 +145,9 @@ export class PdfService {
           question.options.map(option => {
             if (option.selected) {
               isAnswered = true;
-              answerText += `•\t ${option.answer}\n`;
+              answerText += `●\t${option.answer}\n`;
             } else {
-              answerText += `-\t ${option.answer}\n`;
+              answerText += `.\t   ${option.answer}\n`;
             }
           });
         }
