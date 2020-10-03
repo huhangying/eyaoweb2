@@ -28,8 +28,10 @@
       </ng-container>
 
       <ng-container *ngIf="question.answer_type === 3">
-        <textarea nbInput fullWidth placeholder="请输入..." [(ngModel)]="question.options[0].answer" (change)="markSurveyDirty(survey)"
-          [disabled]="readonly"></textarea>
+        <div class="pl-3 pr-5">
+          <textarea nbInput fullWidth placeholder="请输入..." [(ngModel)]="question.options[0].answer" (change)="markSurveyDirty(survey)"
+            [disabled]="readonly"></textarea>
+        </div>
       </ng-container>
 
     </ng-container>
