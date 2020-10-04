@@ -107,12 +107,14 @@ export class SurveyPushComponent implements OnInit {
 
     // send wechat messsage
     const openid = sendee.link_id;
-    this.wxService.sendUserMsg(
+    this.wxService.sendWechatMsg(
       openid,
       surveyName,
       `${this.doctor.name + this.doctor.title}给您发送了问卷， 请配合填写, 谢谢！`,
       `${environment.wechatServer}survey-start?openid=${openid}&state=${this.doctor.hid}&doctorid=${this.doctor._id}&type=${surveyType}&date=${moment().toISOString()}`,
-      ''
+      '',
+      this.doctor._id,
+      sendee.name
     ).pipe(
       tap((rsp: WechatResponse) => {
         if (rsp?.errcode === 0) {

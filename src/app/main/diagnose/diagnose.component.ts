@@ -287,12 +287,14 @@ export class DiagnoseComponent implements OnInit, OnDestroy {
         }
         // 发送门诊结论
         // 发送消息给微信
-        this.wxService.sendUserMsg(
+        this.wxService.sendWechatMsg(
           this.selectedPatient.link_id,
           '门诊结论',
           `${this.doctor.name + ' ' + this.doctor.title} 给您发送了本次门诊结论`,
           `${this.doctor.wechatUrl}diagnose-history?openid=${this.selectedPatient.link_id}&state=${this.auth.hid}&id=${this.diagnose._id}`,
-          ''
+          '',
+          this.doctor._id,
+          this.selectPatient.name
         ).subscribe();
         // reset if success
         this.resetDiagnose();

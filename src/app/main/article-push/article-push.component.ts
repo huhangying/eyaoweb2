@@ -145,10 +145,12 @@ export class ArticlePushComponent implements OnInit {
         this.sendees.forEach(async (sendee) => {
           // setTimeout(() => {
           if (sendee.link_id) {
-            await this.wxService.sendUserMsg(sendee.link_id, this.articlePage.title,
+            await this.wxService.sendWechatMsg(sendee.link_id, this.articlePage.title,
               `${this.doctor.name + '' + this.doctor.title} 给您发送了一篇文章`,
               this.doctor.wechatUrl + 'article;id=' + result?._id,
-              this.imgPath.transform(this.articlePage.title_image)
+              this.imgPath.transform(this.articlePage.title_image),
+              this.doctor._id,
+              sendee.name
             ).toPromise();
           }
           // }, 300);

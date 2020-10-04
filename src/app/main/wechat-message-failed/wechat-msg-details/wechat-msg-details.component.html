@@ -8,7 +8,97 @@
 
   <mat-dialog-content class="px-3">
     <div class="field row">
-      {{data|json}}
+      <div class="col-2">
+        消息类型:
+      </div>
+      <div class="col-10">
+        {{data.type}}
+      </div>
+    </div>
+    <div class="field row">
+      <div class="col-2">
+        错误码:
+      </div>
+      <div class="col-10">
+        {{data.errcode}}
+      </div>
+    </div>
+
+    <div class="field row">
+      <div class="col-2">
+        病患:
+      </div>
+      <div class="col-10">
+        {{data.username}}({{data.openid}})
+      </div>
+    </div>
+    <div class="field row">
+      <div class="col-2">
+        药师:
+      </div>
+      <div class="col-10">
+        {{ data.doctorid }}
+      </div>
+    </div>
+
+    <div class="field row">
+      <div class="col-2">
+        标题:
+      </div>
+      <div class="col-10">
+        {{data.title}}
+      </div>
+    </div>
+    <div class="field row">
+      <div class="col-2">
+        副标题:
+      </div>
+      <div class="col-10">
+        {{data.description}}
+      </div>
+    </div>
+
+    <div class="field row">
+      <div class="col-2">
+        URL:
+      </div>
+      <div class="col-10">
+        {{data.url}}
+      </div>
+    </div>
+
+    <div class="field row" *ngIf="data.picurl">
+      <div class="col-2">
+        图片 URL:
+      </div>
+      <div class="col-10">
+        {{data.picurl}}
+      </div>
+    </div>
+
+    <div class="field row">
+      <div class="col-2">
+        时间:
+      </div>
+      <div class="col-10">
+        {{data.createdAt | localDate: 'full'}}
+      </div>
+    </div>
+    <div class="field row">
+      <div class="col-2">
+        状态:
+      </div>
+      <div class="col-10">
+        {{data.received ? '已接收': '未接收'}}
+      </div>
+    </div>
+    <div class="field row">
+      <div class="col-2">
+        发送次数:
+      </div>
+      <div class="col-10">
+        {{data.tryCount}}
+      </div>
     </div>
 
   </mat-dialog-content>

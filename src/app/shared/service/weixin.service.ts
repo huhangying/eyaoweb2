@@ -17,14 +17,17 @@ export class WeixinService {
     private localDate: LocalDatePipe,
   ) { }
 
-  sendUserMsg(openid: string, title: string, description: string, url: string, picUrl: string) {
+  sendWechatMsg(openid: string, title: string, description: string, url: string, picUrl: string,
+    doctorid: string, username: string) {
     return this.api.post<WechatResponse>('wechat/send-client-msg/' + openid, {
       article: {
         title: title,
         description: description,
         url: url,
         picurl: picUrl
-      }
+      },
+      doctorid, // 用于微信消息记录
+      username, // 同上
     });
   }
 
@@ -37,7 +40,7 @@ export class WeixinService {
     department: Department,
     periodName: string
   ) {
-    return this.api.post('wechat/send-wechat-msg',
+    return this.api.post('wechat/send-wechat-template-msg',
       this.buildBookingForwardMsg('booking_forward_template', openid,
         booking, forwardBookingId, forwardDoctor, department, periodName,
         `非常抱歉，${doctor.name}${doctor.title}在您预约的时间内不能坐诊, 特向您推荐替换药师，详情如下`,
@@ -52,7 +55,7 @@ export class WeixinService {
     department: Department,
     periodName: string
   ) {
-    return this.api.post('wechat/send-wechat-msg',
+    return this.api.post('wechat/send-wechat-template-msg',
       this.buildBookingCancelMsg('booking_cancel_template', openid,
         booking, doctor, department, periodName,
         `非常抱歉，${doctor.name}${doctor.title}在您预约的时间内不能坐诊, 特向您通知取消。详情如下`,

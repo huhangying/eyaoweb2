@@ -102,12 +102,14 @@ export class PatientHistoryComponent implements OnInit {
             });
 
             const openid = this.data.patient.link_id;
-            this.wxService.sendUserMsg(
+            this.wxService.sendWechatMsg(
               openid,
               surveyName,
               `${this.data.doctor.name + '' + this.data.doctor.title}向您发送了${surveyName}。请填写，谢谢配合！`,
               `${environment.wechatServer}survey-start?openid=${openid}&state=${this.appStore.hid}&doctorid=${this.data.doctor._id}&type=7&date=${moment().toISOString()}`,
-              ''
+              '',
+              this.data.doctor._id,
+              this.data.patient.name
             ).pipe(
               tap((rsp: WechatResponse) => {
                 if (rsp?.errcode === 0) {

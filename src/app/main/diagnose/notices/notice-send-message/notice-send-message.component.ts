@@ -46,12 +46,14 @@ export class NoticeSendMessageComponent implements OnInit {
 
     // 发送消息给微信
     const openid = this.data.user.link_id;
-    this.wxService.sendUserMsg(
+    this.wxService.sendWechatMsg(
       openid,
       `${this.doctor.name + ' ' + this.doctor.title} 给您发送了阶段性提醒:`,
       this.notice.notice,
       `${this.doctor.wechatUrl}diagnose-notice?openid=${openid}&state=${this.doctor.hid}&id=${this.data.diagnoseId}`,
-      environment.imageServer + this.doctor.icon
+      environment.imageServer + this.doctor.icon,
+      this.doctor._id,
+      this.data.user.name
     ).subscribe(
       (result: WechatResponse) => {
         if (result.errcode === 0) {
