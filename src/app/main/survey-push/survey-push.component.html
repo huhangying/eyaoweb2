@@ -9,9 +9,6 @@
       <button nbButton size="small" [status]="sendees?.length ? 'info' : 'basic'" (click)="selectSendees()">
         选择患者
       </button>&nbsp;&nbsp;
-      <button nbButton size="small" [status]="selectedSurveyTemplate ? 'info' : 'basic'" (click)="selectSurvey()">
-        选择问卷
-      </button>&nbsp;&nbsp;
     </div>
 
     <ng-container *ngIf="sendees">
@@ -21,6 +18,7 @@
           {{sendee.name}}
         </div>
       </div>
+      <hr>
     </ng-container>
 
     <ng-container *ngIf="availableSurveyTemplates?.length">

@@ -12,6 +12,7 @@ export interface Survey {
   questions?: Question[];
   order?: number;
   availableBy?: Date; // 有效期
+  createdAt?: Date;
   finished: boolean;
 
   dirty?: boolean; // helper flag to save
