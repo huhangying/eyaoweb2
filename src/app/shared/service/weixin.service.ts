@@ -5,6 +5,7 @@ import { Booking, BookingFlatten } from '../../models/reservation/booking.model'
 import { Doctor } from '../../models/crm/doctor.model';
 import { Department } from '../../models/hospital/department.model';
 import { WechatResponse } from '../../models/wechat-response.model';
+import { WechatFailedMessage } from '../../models/wechat-failed-message.model';
 
 @Injectable({
   providedIn: 'root'
@@ -149,6 +150,11 @@ export class WeixinService {
         }
       }
     };
+  }
+
+  // 微信错误处理列表
+  getWxMsgQueue() {
+    return this.api.get<WechatFailedMessage[]>('wechat/msg-queue/all');
   }
 
 }

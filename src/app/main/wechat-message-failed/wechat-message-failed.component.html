@@ -1,0 +1,63 @@
+<nb-card>
+  <nb-card-header>
+    微信失败消息查看
+  </nb-card-header>
+
+  <nb-card-body>
+    <div [class.d-none]="!dataSource?.data?.length">
+      <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8 table-striped table-hover">
+
+        <ng-container matColumnDef="type">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> 消息类型 </th>
+          <td mat-cell *matCellDef="let element">
+            {{ element.type }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="openid">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> 用户ID </th>
+          <td mat-cell *matCellDef="let element"> {{element.openid}} </td>
+        </ng-container>
+        <ng-container matColumnDef="title">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> 消息标题 </th>
+          <td mat-cell *matCellDef="let element"> {{element.title}} </td>
+        </ng-container>
+        <ng-container matColumnDef="description">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> 消息副标题 </th>
+          <td mat-cell *matCellDef="let element"> {{element.description}} </td>
+        </ng-container>
+        <ng-container matColumnDef="errcode">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> 错误码 </th>
+          <td mat-cell *matCellDef="let element"> {{element.errcode}} </td>a
+        </ng-container>
+        <ng-container matColumnDef="createdAt">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> 发送时间 </th>
+          <td mat-cell *matCellDef="let element"> {{element.createdAt | localDate}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="_id">
+          <th mat-header-cell *matHeaderCellDef class="text-center"> 操作 </th>
+          <td mat-cell *matCellDef="let element" class="actions">
+            <button nbButton hero shape="round" size="tiny" status="info" title="编辑" (click)="edit(element)">
+              <nb-icon icon="edit-2"></nb-icon>
+            </button>
+            &nbsp;
+            <button nbButton hero shape="round" size="tiny" status="danger" title="删除" (click)="delete(element._id)">
+              <nb-icon icon="trash-2-outline"></nb-icon>
+            </button>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+      <mat-paginator [pageSizeOptions]="[10, 25, 50]" [pageSize]="10" showFirstLastButtons></mat-paginator>
+    </div>
+    <ng-container *ngIf="!dataSource?.data?.length">
+      <div class="alert alert-warning" role="alert">
+        没有找到相关记录。
+      </div>
+    </ng-container>
+
+  </nb-card-body>
+</nb-card>

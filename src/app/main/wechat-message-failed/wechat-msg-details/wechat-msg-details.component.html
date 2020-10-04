@@ -1,0 +1,19 @@
+<nb-card status="info">
+  <nb-card-header>
+    微信失败消息详情
+    <button nbButton shape="round" size="tiny" class="float-right" mat-dialog-close>
+      <nb-icon icon="close"></nb-icon>
+    </button>
+  </nb-card-header>
+
+  <mat-dialog-content class="px-3">
+    <div class="field row">
+      {{data|json}}
+    </div>
+
+  </mat-dialog-content>
+
+  <nb-card-footer class="d-block">
+    <button nbButton hero outline status="primary" class="float-right" mat-dialog-close>关闭</button>
+  </nb-card-footer>
+</nb-card>

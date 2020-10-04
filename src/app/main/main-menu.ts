@@ -80,5 +80,10 @@ export function getMenuItems(role: number, queryParams: Params): NbMenuItem[] {
       icon: 'undo-outline',
       link: '/main/shortcuts',
     },
+    {
+      title: '微信失败消息查看',
+      icon: 'alert-triangle-outline',
+      link: '/main/msg-failed',
+    },
   ];
 }

@@ -34,6 +34,8 @@ import { TestItemEditComponent } from './diagnose/lab-results/test-edit/test-ite
 import { ConsultComponent } from './consult/consult.component';
 import { SurveyPushComponent } from './survey-push/survey-push.component';
 import { SurveyTemplateViewComponent } from './survey-push/survey-template-view/survey-template-view.component';
+import { WechatMessageFailedComponent } from './wechat-message-failed/wechat-message-failed.component';
+import { WechatMsgDetailsComponent } from './wechat-message-failed/wechat-msg-details/wechat-msg-details.component';
 
 @NgModule({
   declarations: [
@@ -69,6 +71,8 @@ import { SurveyTemplateViewComponent } from './survey-push/survey-template-view/
     ConsultComponent,
     SurveyPushComponent,
     SurveyTemplateViewComponent,
+    WechatMessageFailedComponent,
+    WechatMsgDetailsComponent,
   ],
   imports: [
     SharedModule,

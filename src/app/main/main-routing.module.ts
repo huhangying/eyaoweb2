@@ -14,6 +14,7 @@ import { MedicineReferencesResolver } from '../services/resolvers/medicine-refer
 import { PatientSearchComponent } from './patient-search/patient-search.component';
 import { ConsultComponent } from './consult/consult.component';
 import { SurveyPushComponent } from './survey-push/survey-push.component';
+import { WechatMessageFailedComponent } from './wechat-message-failed/wechat-message-failed.component';
 
 const routes: Routes = [{
   path: '',
@@ -62,6 +63,10 @@ const routes: Routes = [{
     {
       path: 'shortcuts',
       component: ShortcutsComponent,
+    },
+    {
+      path: 'msg-failed',
+      component: WechatMessageFailedComponent,
     },
     {
       path: 'reservation',
