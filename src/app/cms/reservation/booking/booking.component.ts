@@ -109,7 +109,8 @@ export class BookingComponent implements OnInit, OnDestroy {
           data.userLinkId,
           data, this.selectedDoctor,
           this.selectedDepartment,
-          data.periodName
+          data.periodName,
+          data.userName
         ).subscribe();
       }
     });

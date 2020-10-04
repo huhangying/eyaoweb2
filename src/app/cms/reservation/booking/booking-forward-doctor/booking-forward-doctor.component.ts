@@ -40,7 +40,7 @@ export class BookingForwardDoctorComponent implements OnInit {
         this.doctors = [];
         if (results?.length) {
           // 1. remove self by scheduleId, date and period
-          this.availableSchedules = results.filter(_ => _._id !==this.data.booking.scheduleId);
+          this.availableSchedules = results.filter(_ => _._id !== this.data.booking.scheduleId);
           // 2. grouped by doctor
           this.availableSchedules.map(schedule => {
             if (this.doctors.findIndex(_ => _._id === schedule.doctor._id) < 0) {
@@ -98,7 +98,9 @@ export class BookingForwardDoctorComponent implements OnInit {
                 this.data.doctor, // source
                 this.selectedSchedule.doctor, // target
                 this.selectedDepartment,
-                this.getPeriodLabel(this.selectedSchedule.period)).subscribe();
+                this.getPeriodLabel(this.selectedSchedule.period),
+                this.data.booking.userName
+              ).subscribe();
 
               // change origin doctor status
               this.reservationService.updateBookingById({

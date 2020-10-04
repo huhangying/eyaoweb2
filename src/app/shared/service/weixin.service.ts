@@ -38,13 +38,15 @@ export class WeixinService {
     doctor: Doctor,
     forwardDoctor: Doctor,
     department: Department,
-    periodName: string
+    periodName: string,
+    username: string
   ) {
     return this.api.post('wechat/send-wechat-template-msg',
       this.buildBookingForwardMsg('booking_forward_template', openid,
         booking, forwardBookingId, forwardDoctor, department, periodName,
         `非常抱歉，${doctor.name}${doctor.title}在您预约的时间内不能坐诊, 特向您推荐替换药师，详情如下`,
-        '您可以点击确认预约，或者取消预约。谢谢理解！')
+        '您可以点击确认预约，或者取消预约。谢谢理解！',
+        doctor._id, username)
     );
   }
 
@@ -53,13 +55,15 @@ export class WeixinService {
     booking: BookingFlatten,
     doctor: Doctor,
     department: Department,
-    periodName: string
+    periodName: string,
+    username: string
   ) {
     return this.api.post('wechat/send-wechat-template-msg',
       this.buildBookingCancelMsg('booking_cancel_template', openid,
         booking, doctor, department, periodName,
         `非常抱歉，${doctor.name}${doctor.title}在您预约的时间内不能坐诊, 特向您通知取消。详情如下`,
-        '谢谢理解！')
+        '谢谢理解！',
+        doctor._id, username)
     );
   }
 
@@ -72,8 +76,10 @@ export class WeixinService {
     department: Department,
     periodName: string,
     header: string,
-    footer: string) {
-
+    footer: string,
+    doctorid: string,
+    username: string
+  ) {
     return {
       templateid: templateId,
       openid: openid,
@@ -106,7 +112,9 @@ export class WeixinService {
         remark: {
           value: footer
         }
-      }
+      },
+      doctorid,
+      username
     };
   }
 
@@ -118,8 +126,10 @@ export class WeixinService {
     department: Department,
     periodName: string,
     header: string,
-    footer: string) {
-
+    footer: string,
+    doctorid: string,
+    username: string
+  ) {
     return {
       templateid: templateId,
       openid: openid,
@@ -151,7 +161,9 @@ export class WeixinService {
         remark: {
           value: footer
         }
-      }
+      },
+      doctorid,
+      username
     };
   }
 
