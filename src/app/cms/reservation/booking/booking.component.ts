@@ -12,7 +12,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { DialogService } from '../../../shared/service/dialog.service';
 import { MessageService } from '../../../shared/service/message.service';
 import { Period } from '../../../models/reservation/schedule.model';
-import { tap, catchError } from 'rxjs/operators';
+import { tap, catchError, takeUntil } from 'rxjs/operators';
 import { AppStoreService } from '../../../shared/store/app-store.service';
 import { BookingForwardDoctorComponent } from './booking-forward-doctor/booking-forward-doctor.component';
 import { WeixinService } from '../../../shared/service/weixin.service';
@@ -54,8 +54,18 @@ export class BookingComponent implements OnInit, OnDestroy {
     this.departments = this.route.snapshot.data.departments;
     this.periods = this.route.snapshot.data.periods;
     this.statusList = reservationService.getBookingStatusList();
-    this.pid = this.route.snapshot.queryParams?.pid || '';
     this.bookingData = [];
+    this.route.queryParams.pipe(
+      tap(queryParams => {
+        const { pid } = queryParams;
+        if (pid) {
+          this.pid = pid;
+          this.loadData();
+        }
+      }),
+      takeUntil(this.destroy$),
+    ).subscribe();
+
   }
 
   ngOnInit() {
@@ -81,7 +91,7 @@ export class BookingComponent implements OnInit, OnDestroy {
         data.map(_ => {
           if (_.user && _.schedule) {
             // flattenData.push({
-           this.bookingData.push({
+            this.bookingData.push({
               _id: _._id,
               doctor: _.doctor,
               created: new Date(_.created),
@@ -171,7 +181,7 @@ export class BookingComponent implements OnInit, OnDestroy {
   }
 
   loadData() {
-  // loadData(data: BookingFlatten[]) {
+    // loadData(data: BookingFlatten[]) {
     // if (this.pid) {
     //   data = data.filter(_ => _.userId === this.pid);
     // }

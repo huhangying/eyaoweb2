@@ -262,7 +262,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
         pid,
       }
     });
-    this.cd.markForCheck();
   }
 
   nav(target: string) {

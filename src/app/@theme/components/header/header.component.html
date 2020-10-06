@@ -68,7 +68,7 @@
       </mat-menu>
     </ng-container>
 
-    <ng-container *ngIf="true">
+    <ng-container *ngIf="bookingUnread">
       <button mat-icon-button class="mr-2 text-warning" [matMenuTriggerFor]="notiMenu" matTooltip="病患预约取消提醒">
         <mat-icon [matBadge]="bookingUnread" matBadgeColor="warn">sms_failed</mat-icon>
       </button>
