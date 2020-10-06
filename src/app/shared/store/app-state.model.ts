@@ -14,6 +14,7 @@ export class AppState {
         public readonly breakpoint?: NbMediaBreakpoint,
         public readonly chatNotifications?: Notification[],
         public readonly feedbackNotifications?: Notification[],
+        public readonly bookingNotifications?: Notification[],
         public readonly pending?: Pending,
     ) { }
 }

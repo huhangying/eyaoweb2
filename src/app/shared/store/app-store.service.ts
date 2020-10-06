@@ -54,6 +54,13 @@ export class AppStoreService extends Store<AppState> {
     });
   }
 
+  updateBookingNotifications(bookingNotifications: Notification[]) {
+    this.setState({
+      ...this.state,
+      bookingNotifications,
+    });
+  }
+
   updateCms(cms: boolean) {
     this.setState({
       ...this.state,

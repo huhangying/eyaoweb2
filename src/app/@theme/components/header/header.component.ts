@@ -11,6 +11,7 @@ import { Notification } from '../../../models/io/notification.model';
 import { LayoutService } from '../../utils/layout.service';
 import { UserFeedbackService } from '../../../services/user-feedback.service';
 import { SocketioService } from '../../../shared/service/socketio.service';
+import { ReservationService } from '../../../services/reservation.service';
 
 @Component({
   selector: 'ngx-header',
@@ -32,6 +33,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
   chatUnread = 0;
   feedbackNotifications: Notification[];
   feedbackUnread = 0;
+  bookingNotifications: Notification[];
+  bookingUnread = 0;
 
   userMenu = [
     { title: '个人资料', icon: 'person-outline', data: 'profile' },
@@ -51,6 +54,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private chat: ChatService,
     private feedback: UserFeedbackService,
+    private booking: ReservationService,
     private socketio: SocketioService,
     private cd: ChangeDetectorRef,
   ) {
@@ -76,7 +80,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.doctor = this.auth.doctor;
-    this.getUnreadList();
+    this.getUnreadList(this.doctor._id);
 
     const { xl } = this.breakpointService.getBreakpointsMap();
     this.themeService.onMediaQueryChange()
@@ -175,6 +179,25 @@ export class HeaderComponent implements OnInit, OnDestroy {
       }),
       takeUntil(this.destroy$),
     ).subscribe();
+
+    this.appStore.state$.pipe(
+      pluck('bookingNotifications'),
+      distinctUntilChanged(),
+      tap(notis => {
+        // init
+        this.bookingUnread = 0;
+        this.bookingNotifications = [];
+        if (notis?.length) {
+          this.bookingNotifications = notis;
+          this.bookingUnread = this.bookingNotifications.reduce((total, noti) => {
+            total += noti.count;
+            return total;
+          }, 0);
+        }
+        this.cd.markForCheck();
+      }),
+      takeUntil(this.destroy$),
+    ).subscribe();
   }
 
   ngOnDestroy() {
@@ -199,16 +222,24 @@ export class HeaderComponent implements OnInit, OnDestroy {
     return this.auth.getDoctorIcon();
   }
 
-  getUnreadList() {
-    this.chat.getUnreadListByDocter(this.doctor._id).pipe(
+  getUnreadList(doctorId: string) {
+    this.chat.getUnreadListByDocter(doctorId).pipe(
       tap(results => {
         this.chat.convertNotificationList(results);
       }),
       takeUntil(this.destroy$)
     ).subscribe();
-    this.feedback.getUnreadListByDocter(this.doctor._id).pipe(
+
+    this.feedback.getUnreadListByDocter(doctorId).pipe(
       tap(results => {
         this.feedback.convertNotificationList(results);
+      }),
+      takeUntil(this.destroy$)
+    ).subscribe();
+
+    this.booking.getUserCancelledBookings(doctorId).pipe(
+      tap(results => {
+        this.booking.convertNotificationList(results);
       }),
       takeUntil(this.destroy$)
     ).subscribe();
@@ -221,6 +252,17 @@ export class HeaderComponent implements OnInit, OnDestroy {
         type: noti.type
       }
     });
+  }
+
+  viewBookings(pid: string) {
+    this.router.navigate(['/main/reservation/booking'], {
+      queryParams: {
+        dep: this.doctor.department,
+        doc: this.doctor._id,
+        pid,
+      }
+    });
+    this.cd.markForCheck();
   }
 
   nav(target: string) {

@@ -1,6 +1,11 @@
 <nb-card>
   <nb-card-header>
-    我的病患预约
+    {{ !!this.pid ? pname + ' 病患预约' : '我的病患预约'}}
+    &nbsp;&nbsp;
+    <button nbButton hero shape="round" outline size="small" status="info" class="float-right" *ngIf="!!this.pid"
+      (click)="viewAll()">
+      查看所有病患预约
+    </button>
 
     <ngx-select-doctor [class.d-none]="!isCms" [departments]="departments" (doctorSelected)="doctorSelected($event)">
     </ngx-select-doctor>
@@ -52,8 +57,8 @@
               <nb-icon icon="close-outline"></nb-icon>
             </button>
             &nbsp;
-            <button nbButton hero shape="round" size="tiny" status="warning" title="通知病患接手药师或取消" *ngIf="isForwarAvailable(element)"
-              (click)="forwardAnotherDoctor(element)">
+            <button nbButton hero shape="round" size="tiny" status="warning" title="通知病患接手药师或取消"
+              *ngIf="isForwarAvailable(element)" (click)="forwardAnotherDoctor(element)">
               <nb-icon icon="share-outline"></nb-icon>
             </button>
           </td>

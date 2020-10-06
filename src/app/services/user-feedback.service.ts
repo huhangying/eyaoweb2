@@ -106,6 +106,7 @@ export class UserFeedbackService {
     this.appStore.updateFeedbackNotifications(notifications);
   }
 
+
   // after chatroom loaded (once a time)
   removeFromNotificationList(doctorId: string, patientId: string, type: number) {
     // get from store

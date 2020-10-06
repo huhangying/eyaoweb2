@@ -3,6 +3,8 @@ import { ApiService } from '../shared/service/api.service';
 import { Period, Schedule, SchedulePopulated } from '../models/reservation/schedule.model';
 import { ScheduleBatch } from '../models/reservation/schedule-batch.model';
 import { Booking, OriginBooking } from '../models/reservation/booking.model';
+import { AppStoreService } from '../shared/store/app-store.service';
+import * as moment from 'moment';
 
 @Injectable({
   providedIn: 'root'
@@ -11,6 +13,7 @@ export class ReservationService {
 
   constructor(
     private api: ApiService,
+    private appStore: AppStoreService,
   ) { }
 
   getBookingStatusList() {
@@ -61,7 +64,7 @@ export class ReservationService {
     return this.api.get<SchedulePopulated[]>('schedules/find/forward-available');
   }
 
-  reserveScheduleSpace(doctorId: string,date: Date, period: string) {
+  reserveScheduleSpace(doctorId: string, date: Date, period: string) {
     return this.api.get<Schedule>(`schedules/reserve-space/${doctorId}/${date}/${period}`);
   }
   // Booking
@@ -82,7 +85,11 @@ export class ReservationService {
   }
 
   getStatByDoctorId(doctorId: string) {
-    return this.api.get<{date: Date; status: number}[]>('bookings/counts/doctor/' + doctorId);
+    return this.api.get<{ date: Date; status: number }[]>('bookings/counts/doctor/' + doctorId);
+  }
+
+  getUserCancelledBookings(doctorId: string) {
+    return this.api.get<Booking[]>('bookings/cancelled/doctor/' + doctorId);
   }
 
   // Period
@@ -100,6 +107,41 @@ export class ReservationService {
 
   deletePeriodById(id: string) {
     return this.api.delete<Period>('period/' + id);
+  }
+
+  //---------------------------------------------------
+  // Notifications
+  //---------------------------------------------------
+
+  // after app started
+  convertNotificationList(bookings: Booking[]): Notification[] {
+    if (!bookings?.length) return [];
+    const keys: string[] = [];
+    const bookingNotifications = bookings.reduce((notis, booking) => {
+      const key = booking.user._id + 3;
+      if (keys.indexOf(key) === -1) {
+        keys.push(key);
+        notis.push({
+          patientId: booking.user._id,
+          type: 3,
+          name: `${booking.user.name} 取消了${moment(booking.date).format('LL')}预约`,
+          count: 1,
+          created: booking.created
+        });
+        return notis;
+      }
+      notis = notis.map(_ => {
+        if (_.patientId === booking.user && _.type === 3) {
+          _.count = _.count + 1;
+        }
+        return _;
+      });
+      return notis;
+    }, []);
+    // save to store
+    this.appStore.updateBookingNotifications(bookingNotifications);
+
+    return bookingNotifications;
   }
 
 }

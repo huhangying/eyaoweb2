@@ -44,7 +44,7 @@
     </ng-container>
 
     <ng-container *ngIf="feedbackUnread">
-      <button mat-icon-button class="mr-2 text-warning" [matMenuTriggerFor]="notiMenu" matTooltip="门诊反馈消息提醒">
+      <button mat-icon-button class="mr-2 text-success" [matMenuTriggerFor]="notiMenu" matTooltip="门诊反馈消息提醒">
         <mat-icon [matBadge]="feedbackUnread" matBadgeColor="warn">sms</mat-icon>
       </button>
       <mat-menu #notiMenu="matMenu" xPosition="before">
@@ -61,6 +61,31 @@
               </div>
               <div class="small text-right">
                 {{noti.name}} 发送于<i>{{ noti.created | localDate}}</i>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+      </mat-menu>
+    </ng-container>
+
+    <ng-container *ngIf="true">
+      <button mat-icon-button class="mr-2 text-warning" [matMenuTriggerFor]="notiMenu" matTooltip="病患预约取消提醒">
+        <mat-icon [matBadge]="bookingUnread" matBadgeColor="warn">sms_failed</mat-icon>
+      </button>
+      <mat-menu #notiMenu="matMenu" xPosition="before">
+        <ng-template matMenuContent>
+          <div class="px-3 py-2">病患预约取消</div>
+          <mat-divider></mat-divider>
+          <div mat-menu-item *ngFor="let noti of bookingNotifications"
+            class="d-flex align-items-center notification-item" (click)="viewBookings(noti.patientId)">
+            <mat-icon class="mr-1">cancel</mat-icon>
+            <div class="pl-2 flex-fill">
+              <div class="small">{{noti.name}}</div>
+              <div class="small text-right">
+                <i>{{ noti.created | localDate: 'full'}}</i>
+              </div>
+              <div class="small text-center" *ngIf="noti.count >= 1">
+                还有{{noti.count - 1}} 个取消的预约
               </div>
             </div>
           </div>

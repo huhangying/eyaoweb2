@@ -32,6 +32,9 @@ export class BookingComponent implements OnInit, OnDestroy {
   selectedDepartment: Department;
   statusList: string[];
   displayedColumns: string[] = ['scheduleDate', 'userName', 'status', 'created', '_id'];
+  bookingData: BookingFlatten[];
+  pid: string; // user id as filter
+  pname: string; //
   dataSource: MatTableDataSource<BookingFlatten>;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
@@ -51,6 +54,8 @@ export class BookingComponent implements OnInit, OnDestroy {
     this.departments = this.route.snapshot.data.departments;
     this.periods = this.route.snapshot.data.periods;
     this.statusList = reservationService.getBookingStatusList();
+    this.pid = this.route.snapshot.queryParams?.pid || '';
+    this.bookingData = [];
   }
 
   ngOnInit() {
@@ -63,7 +68,7 @@ export class BookingComponent implements OnInit, OnDestroy {
 
   doctorSelected(doctor: Doctor) {
     if (!doctor?._id) {
-      this.loadData([]);
+      this.loadData();
       return;
     }
     this.selectedDoctor = doctor;
@@ -71,10 +76,12 @@ export class BookingComponent implements OnInit, OnDestroy {
     this.reservationService.getAllBookingsByDoctorId(doctor._id).pipe(
       tap(data => {
         // massage data!
-        const flattenData: BookingFlatten[] = [];
+        this.bookingData = [];
+        // const flattenData: BookingFlatten[] = [];
         data.map(_ => {
           if (_.user && _.schedule) {
-            flattenData.push({
+            // flattenData.push({
+           this.bookingData.push({
               _id: _._id,
               doctor: _.doctor,
               created: new Date(_.created),
@@ -89,7 +96,8 @@ export class BookingComponent implements OnInit, OnDestroy {
             });
           }
         });
-        this.loadData(flattenData);
+        // this.loadData(flattenData);
+        this.loadData();
       })
     ).subscribe();
   }
@@ -132,7 +140,9 @@ export class BookingComponent implements OnInit, OnDestroy {
           this.dataSource.data = this.dataSource.data.map(item => {
             return item._id === result._id ? result : item;
           });
-          this.loadData(this.dataSource.data); // add to list
+          this.bookingData = this.dataSource.data;
+          // this.loadData(this.dataSource.data); // add to list
+          this.loadData(); // add to list
           this.message.updateSuccess();
         }
       }),
@@ -160,7 +170,13 @@ export class BookingComponent implements OnInit, OnDestroy {
     ).subscribe();
   }
 
-  loadData(data: BookingFlatten[]) {
+  loadData() {
+  // loadData(data: BookingFlatten[]) {
+    // if (this.pid) {
+    //   data = data.filter(_ => _.userId === this.pid);
+    // }
+    const data = !this.pid ? this.bookingData : this.bookingData.filter(_ => _.userId === this.pid);
+    this.pname = (this.pid && data.length) ? data[0].userName : '';
     this.dataSource = new MatTableDataSource<BookingFlatten>(data);
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
@@ -180,5 +196,10 @@ export class BookingComponent implements OnInit, OnDestroy {
 
   isForwarAvailable(booking: BookingFlatten) {
     return (booking.status === 1 || booking.status === 4) && booking.scheduleDate > new Date();
+  }
+
+  viewAll() {
+    this.pid = '';
+    this.loadData();
   }
 }
