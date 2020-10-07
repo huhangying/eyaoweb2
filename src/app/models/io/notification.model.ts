@@ -13,7 +13,8 @@ export interface Notification {
 
 export enum NotificationType {
   chat = 0,
-  adverseReaction = 1, // 不良反应
-  doseCombination = 2, // 联合用药
+  adverseReaction = 1,  // 不良反应
+  doseCombination = 2,  // 联合用药
+  booking = 3,          // 门诊预约
 
 }

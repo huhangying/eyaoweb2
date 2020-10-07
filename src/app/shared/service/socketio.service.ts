@@ -74,8 +74,14 @@ export class SocketioService {
       }
     }
     // save to store
-    noti.type === 0 ?
-      this.appStore.updateChatNotifications(notifications) :
-      this.appStore.updateFeedbackNotifications(notifications);
+    switch (noti.type) {
+      case 0:
+        return this.appStore.updateChatNotifications(notifications);
+      case 1:
+      case 2:
+        return this.appStore.updateFeedbackNotifications(notifications);
+      case 3:
+        return this.appStore.updateBookingNotifications(notifications);
+    }
   }
 }
