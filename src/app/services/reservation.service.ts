@@ -131,7 +131,7 @@ export class ReservationService {
         return notis;
       }
       notis = notis.map(_ => {
-        if (_.patientId === booking.user && _.type === 3) {
+        if (_.patientId === booking.user._id && _.type === 3) {
           _.count = _.count + 1;
         }
         return _;
