@@ -172,4 +172,8 @@ export class WeixinService {
     return this.api.get<WechatFailedMessage[]>('wechat/msg-queue/all');
   }
 
+  deleteWxMsgQueueById(id: string) {
+    return this.api.delete<WechatFailedMessage>('wechat/msg-queue/' + id);
+  }
+
 }

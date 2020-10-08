@@ -18,7 +18,7 @@ import { WechatMsgDetailsComponent } from './wechat-msg-details/wechat-msg-detai
 })
 export class WechatMessageFailedComponent implements OnInit, OnDestroy {
   destroy$ = new Subject<void>();
-  displayedColumns: string[] = ['type', 'openid', 'title', 'description', 'errcode', 'createdAt', '_id'];
+  displayedColumns: string[] = ['type', 'username', 'title', 'errcode', 'createdAt', '_id'];
   dataSource: MatTableDataSource<WechatFailedMessage>;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
@@ -60,18 +60,17 @@ export class WechatMessageFailedComponent implements OnInit, OnDestroy {
 
   delete(id: string) {
     this.dialogService?.deleteConfirm().pipe(
-      // tap(result => {
-      //   if (result) {
-      //     this.doctorService.deleteDoctorGroupById(id)
-      //       .subscribe(result => {
-      //         if (result?._id) {
-      //           this.loadData(this.dataSource.data.filter(item => item._id !== result._id)); // remove from list
-      //           this.message.deleteSuccess();
-      //         }
-      //       });
-      //   }
-      // }),
-      // catchError(rsp => this.message.deleteErrorHandle(rsp))
+      tap(result => {
+        if (result) {
+          this.wxService.deleteWxMsgQueueById(id)
+            .subscribe(result => {
+              if (result?._id) {
+                this.loadData(this.dataSource.data.filter(item => item._id !== result._id)); // remove from list
+                this.message.deleteSuccess();
+              }
+            });
+        }
+      }),
     ).subscribe();
   }
 

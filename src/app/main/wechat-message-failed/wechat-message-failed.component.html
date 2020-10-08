@@ -10,22 +10,22 @@
         <ng-container matColumnDef="type">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> 消息类型 </th>
           <td mat-cell *matCellDef="let element">
-            {{ element.type }}
+            {{ element.type === 1 ? '图文': '模板' }}
           </td>
         </ng-container>
 
-        <ng-container matColumnDef="openid">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> 用户ID </th>
-          <td mat-cell *matCellDef="let element"> {{element.openid}} </td>
+        <ng-container matColumnDef="username">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> 用户 </th>
+          <td mat-cell *matCellDef="let element"> {{element.username || element.openid}} </td>
         </ng-container>
         <ng-container matColumnDef="title">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> 消息标题 </th>
-          <td mat-cell *matCellDef="let element"> {{element.title}} </td>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> 消息标题/模板名 </th>
+          <td mat-cell *matCellDef="let element"> {{ element.type === 1 ? element.title: element.template_id}} </td>
         </ng-container>
-        <ng-container matColumnDef="description">
+        <!-- <ng-container matColumnDef="description">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> 消息副标题 </th>
           <td mat-cell *matCellDef="let element"> {{element.description}} </td>
-        </ng-container>
+        </ng-container> -->
         <ng-container matColumnDef="errcode">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> 错误码 </th>
           <td mat-cell *matCellDef="let element"> {{element.errcode}} </td>a

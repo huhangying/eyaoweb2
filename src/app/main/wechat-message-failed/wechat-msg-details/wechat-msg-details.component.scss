@@ -1,0 +1,6 @@
+:host {
+  div.field:not(:last-child) div {
+    padding-top: 0.25rem;
+    border-bottom: 1px solid #eee;
+  }
+}
