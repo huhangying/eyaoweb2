@@ -19,7 +19,6 @@ export class SocketioService {
   setupSocketConnection() {
     if (!this.socket) {
       this.socket = io(environment.socketUrl);
-      // this.socket.emit('chat', 'Hello there from Angular.'); // test
     }
   }
 
@@ -58,12 +57,27 @@ export class SocketioService {
   }
 
   addNotification(noti: Notification) {
-    let notifications = noti.type === 0 ?
-      this.appStore.state.chatNotifications :
-      this.appStore.state.feedbackNotifications;
-    if (!notifications?.length) {
+    let notifications = [];
+    // save to store
+    switch (noti.type) {
+      case 0:
+        notifications = this.addNotiToExisted(this.appStore.state.chatNotifications, noti);
+        return this.appStore.updateChatNotifications(notifications);
+      case 1:
+      case 2:
+        notifications = this.addNotiToExisted(this.appStore.state.feedbackNotifications, noti);
+        return this.appStore.updateFeedbackNotifications(notifications);
+      case 3:
+        notifications = this.addNotiToExisted(this.appStore.state.bookingNotifications, noti);
+        return this.appStore.updateBookingNotifications(notifications);
+    }
+  }
+  private addNotiToExisted(storeNotifications: any[], noti: Notification) {
+    let notifications = [];
+    if (!storeNotifications?.length) {
       notifications = [noti];
     } else {
+      notifications = [...storeNotifications];
       const index = notifications.findIndex(_ => _.patientId === noti.patientId);
       // if new
       if (index === -1) {
@@ -73,15 +87,6 @@ export class SocketioService {
         notifications[index].created = noti.created;
       }
     }
-    // save to store
-    switch (noti.type) {
-      case 0:
-        return this.appStore.updateChatNotifications(notifications);
-      case 1:
-      case 2:
-        return this.appStore.updateFeedbackNotifications(notifications);
-      case 3:
-        return this.appStore.updateBookingNotifications(notifications);
-    }
+    return notifications;
   }
 }

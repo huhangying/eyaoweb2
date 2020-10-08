@@ -129,16 +129,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.socketio.joinRoom(this.room);
 
     this.socketio.onNotification((noti: Notification) => {
-      if (noti.patientId === this.pid && noti.type === +this.notiType) return; // skip
+      // add the following line if 已经在chat/feedback 页面同病患交互不算新消息。
+      // if (noti.patientId === this.pid && noti.type === +this.notiType) return; // skip
       this.socketio.addNotification(noti);
       this.cd.markForCheck();
-      // if (noti.type === 0) {
-      //   this.chatNotifications.push(noti);
-      //   this.appStore.updateChatNotifications(this.chatNotifications);
-      // } else if (noti.type === 1 || noti.type === 2) {
-      //   this.feedbackNotifications.push(noti);
-      //   this.appStore.updateFeedbackNotifications(this.feedbackNotifications);
-      // }
     });
 
     // moniter notifications
