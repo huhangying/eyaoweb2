@@ -86,7 +86,7 @@ export class BookingForwardDoctorComponent implements OnInit {
             user: this.data.booking.userId,
             schedule: result._id,
             date: result.date,
-            status: 4, // pending，用户确认后有效
+            status: 7, // pending，用户确认后有效
             created: new Date()
           }).subscribe(
             (forwardedBooking: OriginBooking) => {

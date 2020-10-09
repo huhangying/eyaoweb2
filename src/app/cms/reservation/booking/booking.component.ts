@@ -200,12 +200,12 @@ export class BookingComponent implements OnInit, OnDestroy {
   }
 
   getStatusLabel(status: number) {
-    if (status < 1 || status > 6) return '';
+    if (status < 1 || status > 7) return '';
     return this.statusList[status];
   }
 
   isForwarAvailable(booking: BookingFlatten) {
-    return (booking.status === 1 || booking.status === 4) && booking.scheduleDate > new Date();
+    return (booking.status === 1) && booking.scheduleDate > new Date();
   }
 
   viewAll() {
