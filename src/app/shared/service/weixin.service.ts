@@ -168,8 +168,12 @@ export class WeixinService {
   }
 
   // 微信错误处理列表
-  getWxMsgQueue() {
+  getAllWxMsgQueue() {
     return this.api.get<WechatFailedMessage[]>('wechat/msg-queue/all');
+  }
+
+  getWxMsgQueueByDoctorId(doctorId: string) {
+    return this.api.get<WechatFailedMessage[]>('wechat/msg-queue/doctor/' +  doctorId);
   }
 
   deleteWxMsgQueueById(id: string) {

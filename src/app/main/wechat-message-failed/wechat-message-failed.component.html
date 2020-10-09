@@ -1,6 +1,9 @@
 <nb-card>
   <nb-card-header>
     微信失败消息查看
+
+    <ngx-select-doctor [class.d-none]="!isCms" [departments]="departments" (doctorSelected)="doctorSelected($event)">
+    </ngx-select-doctor>
   </nb-card-header>
 
   <nb-card-body>
@@ -55,7 +58,7 @@
     </div>
     <ng-container *ngIf="!dataSource?.data?.length">
       <div class="alert alert-warning" role="alert">
-        没有找到相关记录。
+        没有找到药师发送的相关记录。
       </div>
     </ng-container>
 

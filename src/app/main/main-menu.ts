@@ -84,6 +84,7 @@ export function getMenuItems(role: number, queryParams: Params): NbMenuItem[] {
       title: '微信失败消息查看',
       icon: 'alert-triangle-outline',
       link: '/main/msg-failed',
+      queryParams: queryParams,
     },
   ];
 }

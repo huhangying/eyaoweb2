@@ -67,6 +67,9 @@ const routes: Routes = [{
     {
       path: 'msg-failed',
       component: WechatMessageFailedComponent,
+      resolve: {
+        departments: DepartmentResolver,
+      }
     },
     {
       path: 'reservation',

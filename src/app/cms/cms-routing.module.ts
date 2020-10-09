@@ -5,6 +5,7 @@ import { NgModule } from '@angular/core';
 import { DepartmentResolver } from '../services/resolvers/department.resolver';
 import { AuthGuard } from '../shared/service/auth.guard';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { WechatMessageFailedComponent } from '../main/wechat-message-failed/wechat-message-failed.component';
 
 const routes: Routes = [{
   path: '',
@@ -44,6 +45,13 @@ const routes: Routes = [{
       path: 'article',
       loadChildren: () => import('./education/education.module')
         .then(m => m.EducationModule),
+    },
+    {
+      path: 'msg-failed',
+      component: WechatMessageFailedComponent,
+      resolve: {
+        departments: DepartmentResolver,
+      }
     },
     {
       path: '',

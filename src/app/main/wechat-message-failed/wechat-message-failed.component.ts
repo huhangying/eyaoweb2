@@ -3,12 +3,16 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import { ActivatedRoute } from '@angular/router';
 import { Subject } from 'rxjs';
 import { tap } from 'rxjs/operators';
+import { Doctor } from '../../models/crm/doctor.model';
+import { Department } from '../../models/hospital/department.model';
 import { WechatFailedMessage } from '../../models/wechat-failed-message.model';
 import { DialogService } from '../../shared/service/dialog.service';
 import { MessageService } from '../../shared/service/message.service';
 import { WeixinService } from '../../shared/service/weixin.service';
+import { AppStoreService } from '../../shared/store/app-store.service';
 import { WechatMsgDetailsComponent } from './wechat-msg-details/wechat-msg-details.component';
 
 @Component({
@@ -18,25 +22,33 @@ import { WechatMsgDetailsComponent } from './wechat-msg-details/wechat-msg-detai
 })
 export class WechatMessageFailedComponent implements OnInit, OnDestroy {
   destroy$ = new Subject<void>();
+  departments: Department[];
+  doctors: Doctor[];
+  selectedDoctor: Doctor;
+  selectedDepartment: Department;
+
   displayedColumns: string[] = ['type', 'username', 'title', 'errcode', 'createdAt', '_id'];
   dataSource: MatTableDataSource<WechatFailedMessage>;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
+  isCms: boolean;
 
   constructor(
-    // private route: ActivatedRoute,
+    private route: ActivatedRoute,
     // private router: Router,
     // private doctorService: DoctorService,
     public dialog: MatDialog,
     private dialogService: DialogService,
     private wxService: WeixinService,
     private message: MessageService,
+    private appStore: AppStoreService,
   ) {
-    // this.departments = this.route.snapshot.data.departments;
+    this.isCms = this.appStore.cms;
+    this.departments = this.route.snapshot.data.departments;
   }
 
   ngOnInit() {
-    this.wxService.getWxMsgQueue().pipe(
+    this.wxService.getAllWxMsgQueue().pipe(
       tap(results => {
         this.loadData(results);
       })
@@ -46,6 +58,20 @@ export class WechatMessageFailedComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.destroy$.next();
     this.destroy$.unsubscribe();
+  }
+
+  doctorSelected(doctor: Doctor) {
+    if (!doctor?._id) {
+      this.loadData([]);
+      return;
+    }
+    this.selectedDoctor = doctor;
+    this.selectedDepartment = this.departments.find(_ => _._id === this.selectedDoctor?.department);
+    this.wxService.getWxMsgQueueByDoctorId(doctor._id).pipe(
+      tap(data => {
+        this.loadData(data);
+      })
+    ).subscribe();
   }
 
   add() {

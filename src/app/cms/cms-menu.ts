@@ -120,6 +120,12 @@ export function getMenuItems(role: number, queryParams: Params): NbMenuItem[] {
       ],
     },
     {
+      title: '微信失败消息查看',
+      icon: 'alert-triangle-outline',
+      link: '/cms/msg-failed',
+      queryParams: queryParams,
+    },
+    {
       title: '统计报表',
       icon: 'pie-chart-2',
       children: [
