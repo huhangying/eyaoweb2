@@ -67,11 +67,13 @@ export class HeaderComponent implements OnInit, OnDestroy {
       this.notiType = queryParams?.type;
     });
 
-    this.socketio.setupSocketConnection();
+    if (!this.isCms) {
+      this.socketio.setupSocketConnection();
+    }
   }
 
   get title() {
-    const _title = (this.doctor.hospitalName || '') +  (this.isCms? '管理后台': '');
+    const _title = (this.doctor.hospitalName || '') + (this.isCms ? '管理后台' : '');
     if (_title !== document.title) {
       document.title = _title;
     }
@@ -81,6 +83,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.doctor = this.auth.doctor;
     this.getUnreadList(this.doctor._id);
+
+    if (!this.isCms) {
+      this.turnOnSocketListeners();
+    }
 
     const { xl } = this.breakpointService.getBreakpointsMap();
     this.themeService.onMediaQueryChange()
@@ -113,9 +119,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
         takeUntil(this.destroy$))
       .subscribe((menuBag) => {
         if (menuBag && menuBag.item.data === 'logout') {
-          // this.authService.logout();
           this.appStore.reset();
-          this.router.navigate(['auth/login']);
+          this.nav('auth/login', true);
         } else if (menuBag && menuBag.item.data === 'profile') {
           const targetProfile = this.isCms ? 'cms/profile' : 'main/profile';
           this.router.navigate([targetProfile]);
@@ -123,7 +128,19 @@ export class HeaderComponent implements OnInit, OnDestroy {
           this.router.navigate(['main/preferences']);
         }
       });
+  }
 
+  ngOnDestroy() {
+    if (!this.isCms) {
+      this.socketio.leaveRoom(this.room);
+      this.socketio.disconnect();
+    }
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
+  // Socket Functions!
+  turnOnSocketListeners() {
     // socket.io
     this.room = this.doctor._id;
     this.socketio.joinRoom(this.room);
@@ -194,12 +211,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
     ).subscribe();
   }
 
-  ngOnDestroy() {
-    this.destroy$.next();
-    this.destroy$.complete();
-    this.socketio.leaveRoom(this.room);
-  }
-
   toggleSidebar(): boolean {
     this.sidebarService.toggle(true, 'menu-sidebar');
     this.layoutService.changeLayoutSize();
@@ -258,8 +269,13 @@ export class HeaderComponent implements OnInit, OnDestroy {
     });
   }
 
-  nav(target: string) {
-    this.router.navigate([target]);
+  nav(target: string, forceReload = false) {
+    if (!forceReload) {
+      this.router.navigate([target]);
+    } else {
+      // 强制 reload page
+      this.router.navigate([target]).then(() => window.location.reload());
+    }
   }
 
 }

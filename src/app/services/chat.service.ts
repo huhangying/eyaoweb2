@@ -91,6 +91,7 @@ export class ChatService {
           created: chat.created
         });
       } else { // if existed
+        // 如果重复计数的bug还是发生的话，在这里增加 通过验证时间戳（created）来确保不重复加
         notifications[index].count += 1;
         notifications[index].created = chat.created;
       }

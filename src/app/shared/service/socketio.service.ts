@@ -22,12 +22,16 @@ export class SocketioService {
     }
   }
 
+  disconnect() {
+    this.socket?.emit('disconnect');
+  }
+
   joinRoom(room: string) {
-    this.socket.emit('joinRoom', room);
+    this.socket?.emit('joinRoom', room);
   }
 
   leaveRoom(room: string) {
-    this.socket.emit('leaveRoom', room);
+    this.socket?.emit('leaveRoom', room);
   }
 
   // Chat
