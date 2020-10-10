@@ -1,11 +1,14 @@
-<button type="button" class="close px-2 py-1" mat-dialog-close aria-label="Close">
+<div class="pl-3 py-2 position-fixed w-100" style="left: 0; background-color: aliceblue; opacity: 0.75" *ngIf="data.title">
+  {{data.title}}
+</div>
+<button type="button" class="close px-3 position-fixed" style="right: 0.25rem; top: 0.25rem" mat-dialog-close
+  aria-label="Close">
   <span aria-hidden="true">&times;</span>
 </button>
-<div class="pl-2 pt-2">
-  {{data.title || ''}}
-</div>
-<div class="">
-  <img [src]="data.imgPath | imgPath" onerror="this.src='assets/images/none.png';this.onerror='';"
-  alt="" class="img-fluid img-thumbnail">
+
+<div class="d-flex justify-content-center align-items-center" [style.height.px]="winHeight">
+  <img ngxMouseWheel [src]="data.imgPath | imgPath" onerror="this.src='assets/images/none.png';this.onerror='';"
+  [style.width.px]="imgWidth" (mouseWheelUp)="mouseWheelUpFunc()" (mouseWheelDown)="mouseWheelDownFunc()"
+  alt="" class="">
 </div>
 

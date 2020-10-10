@@ -7,6 +7,10 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
   styleUrls: ['./image.component.scss']
 })
 export class ImageComponent implements OnInit {
+  winHeight = window.innerHeight;
+  imgWidth = window.innerWidth;
+  maxWidth = window.innerWidth * 2;
+  minWidth = window.innerWidth / 2;
 
   constructor(
     public dialogRef: MatDialogRef<ImageComponent>,
@@ -17,6 +21,20 @@ export class ImageComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+  }
+
+  mouseWheelUpFunc() {
+    if (this.imgWidth < this.maxWidth) {
+      this.imgWidth = this.imgWidth + 10;
+    }
+    // console.log('mouse wheel up, image width', this.imgWidth);
+  }
+
+  mouseWheelDownFunc() {
+    if (this.imgWidth > this.minWidth) {
+      this.imgWidth = this.imgWidth - 10;
+    }
+    // console.log('mouse wheel down, image width', this.imgWidth);
   }
 
 }

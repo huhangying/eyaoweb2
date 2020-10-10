@@ -53,6 +53,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { InputChipsCardComponent } from './components/input-chips-card/input-chips-card.component';
 import { DoctorConsultPricesComponent } from './components/doctor-profile/doctor-consult-prices/doctor-consult-prices.component';
 import { TimeFormatPipe } from './pipe/time-format.pipe';
+import { MouseWheelDirective } from './directive/mouse-wheel.directive';
 
 @NgModule({
   imports: [
@@ -144,6 +145,7 @@ import { TimeFormatPipe } from './pipe/time-format.pipe';
     GenderPipe,
     ImgPathPipe,
     TimeFormatPipe,
+    MouseWheelDirective,
   ],
   declarations: [
     FooterComponent,
@@ -172,6 +174,7 @@ import { TimeFormatPipe } from './pipe/time-format.pipe';
     PromptComponent,
     InputChipsCardComponent,
     DoctorConsultPricesComponent,
+    MouseWheelDirective,
   ],
   providers: [
     MatDatepickerModule,
