@@ -66,6 +66,14 @@
         {{data.template_id}}
       </div>
     </div>
+    <div class="field row" *ngIf="data.type === 2">
+      <div class="col-2 label px-3 pt-1 pb-2">
+        模板数据:
+      </div>
+      <div class="col-10">
+        <pre>{{data.data | json}}</pre>
+      </div>
+    </div>
 
     <div class="field row">
       <div class="col-2 label px-3 pt-1 pb-2">

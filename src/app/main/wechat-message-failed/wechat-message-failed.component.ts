@@ -7,6 +7,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Subject } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { Doctor } from '../../models/crm/doctor.model';
+import { Const } from '../../models/hospital/const.model';
 import { Department } from '../../models/hospital/department.model';
 import { WechatFailedMessage } from '../../models/wechat-failed-message.model';
 import { DialogService } from '../../shared/service/dialog.service';
@@ -23,6 +24,7 @@ import { WechatMsgDetailsComponent } from './wechat-msg-details/wechat-msg-detai
 export class WechatMessageFailedComponent implements OnInit, OnDestroy {
   destroy$ = new Subject<void>();
   departments: Department[];
+  wechatTemplates: Const[];
   doctors: Doctor[];
   selectedDoctor: Doctor;
   selectedDepartment: Department;
@@ -45,6 +47,7 @@ export class WechatMessageFailedComponent implements OnInit, OnDestroy {
   ) {
     this.isCms = this.appStore.cms;
     this.departments = this.route.snapshot.data.departments;
+    this.wechatTemplates = this.route.snapshot.data.wechatTemplates;
   }
 
   ngOnInit() {
@@ -79,8 +82,13 @@ export class WechatMessageFailedComponent implements OnInit, OnDestroy {
   }
 
   edit(data?: WechatFailedMessage) {
+    const msg = {...data};
+    if (msg.type === 2) { // 模板消息
+      msg.template_id = this.getWechatTemplateLabelById(msg.template_id);
+    }
+
     this.dialog.open(WechatMsgDetailsComponent, {
-      data: data,
+      data: msg,
     });
   }
 
@@ -107,11 +115,9 @@ export class WechatMessageFailedComponent implements OnInit, OnDestroy {
     this.dataSource.paginator = this.paginator;
   }
 
-  // getDoctorLabel(id: string) {
-  //   return this.selectedDoctor?._id === id ?
-  //     this.selectedDoctor.name :
-  //     '';
-  // }
+  getWechatTemplateLabelById(id: string) {
+    return this.wechatTemplates.find(_ => _.value === id)?.desc;
+  }
 
 
 }

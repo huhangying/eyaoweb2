@@ -23,7 +23,9 @@
         </ng-container>
         <ng-container matColumnDef="title">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> 消息标题/模板名 </th>
-          <td mat-cell *matCellDef="let element"> {{ element.type === 1 ? element.title: element.template_id}} </td>
+          <td mat-cell *matCellDef="let element">
+            {{ element.type === 1 ? element.title: getWechatTemplateLabelById(element.template_id)}}
+          </td>
         </ng-container>
         <!-- <ng-container matColumnDef="description">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> 消息副标题 </th>
