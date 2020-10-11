@@ -6,11 +6,12 @@ import { DepartmentResolver } from '../services/resolvers/department.resolver';
 import { AuthGuard } from '../shared/service/auth.guard';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { WechatMessageFailedComponent } from '../main/wechat-message-failed/wechat-message-failed.component';
+import { WechatTemplatesResolver } from '../services/resolvers/wechat-templates.resolver';
 
 const routes: Routes = [{
   path: '',
   component: CmsComponent,
-  canActivateChild : [AuthGuard],
+  canActivateChild: [AuthGuard],
   children: [
     {
       path: 'dashboard',
@@ -51,6 +52,7 @@ const routes: Routes = [{
       component: WechatMessageFailedComponent,
       resolve: {
         departments: DepartmentResolver,
+        wechatTemplates: WechatTemplatesResolver,
       }
     },
     {
