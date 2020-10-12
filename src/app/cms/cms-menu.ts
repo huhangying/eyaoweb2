@@ -93,6 +93,17 @@ export function getMenuItems(role: number, queryParams: Params): NbMenuItem[] {
       ],
     },
     {
+      title: '咨询管理',
+      icon: 'smiling-face-outline',
+      children: [
+        {
+          title: '客服药师设定',
+          link: '/cms/consult/customer-service-setting',
+          queryParams: queryParams, // dep
+        },
+      ],
+    },
+    {
       title: '问卷管理',
       icon: 'clipboard-outline',
       children: [
