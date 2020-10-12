@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import pdfMake from 'pdfmake/build/pdfmake';
-import pdfFonts from 'pdfmake/build/vfs_fonts';
 import { environment } from '../../../environments/environment';
 import { LocalDatePipe } from '../pipe/local-date.pipe';
 import { Diagnose } from '../../models/diagnose/diagnose.model';
@@ -32,14 +31,13 @@ export class PdfService {
         bold: environment.fontUrl,
       }
     };
-    // pdfMake.vfs = pdfFonts.pdfMake.vfs;
   }
 
   async generatePdf(diagnose: Diagnose, doctor: any, patient: User, surveyType: number, periods: MedicinePeriod[]) {
     const surveyContent = await this.buildSurveyContent(diagnose.doctor, diagnose.user, surveyType, diagnose.surveys);
     const conclusionSurvey = await this.buildSurveyContent(diagnose.doctor, diagnose.user, 5, diagnose.surveys);
     const departmentName = (!doctor.department?.name) ?
-      (await this.departmentService.getDepartmentById(doctor.department).toPromise())?.name:
+      (await this.departmentService.getDepartmentById(doctor.department).toPromise())?.name :
       doctor.department?.name;
 
     const documentDefinition = {
@@ -62,6 +60,12 @@ export class PdfService {
         block: {
           height: 200,
           minHeight: 200
+        },
+        non_select_item: {
+          color: '#333333'
+        },
+        select_item: {
+          // bold: true
         }
       },
       content: [
@@ -93,13 +97,12 @@ export class PdfService {
               [{
                 colSpan: 4,
                 style: 'block',
-                text: '处方：\n\n' + this.buildPrescription(diagnose.prescription, periods) + '\n'
+                text: this.buildPrescription(diagnose.prescription, periods)
               }],
               [{
                 colSpan: 4,
                 style: 'block',
-                text: `门诊结论:\n
-                ${conclusionSurvey}\n`
+                text: conclusionSurvey
               }],
 
             ]
@@ -122,52 +125,61 @@ export class PdfService {
   }
 
   async buildSurveyContent(doctor: any, patientId: string, surveyType: number, surveyGroups: SurveyGroup[]) {
+    const content = [{ text: '门诊结论:\n\n' }];
+
     const surveyGroup = surveyGroups.find(sg => sg.type === surveyType);
     const list = surveyGroup?.list;
     if (!list?.length) return '';
     const doctorId = doctor?._id ? doctor._id : doctor;
     const surveys = await this.surveyService.GetSurveysByUserTypeAndList(doctorId, patientId, surveyType, list.join('|')).toPromise();
 
-    let text = '';
     surveys.map((survey: Survey) => {
       // survey name
       if (surveyType !== 5) { // 门诊小结不需要
-        text += `\n**** ${survey.name} ****\n`;
+        content.push({ text: `\n**** ${survey.name} ****\n` });
       }
       survey.questions.map((question, index) => {
         // 只显示病患已经回答的问题和答案
         let isAnswered = false;
-        let answerText = '';
+        const answers = [];
         if (question.answer_type === 3) {
           isAnswered = !!question.options[0].answer;
-          answerText = '       ' + question.options[0].answer + '\n';
+          answers.push({ text: '.\t   ' + question.options[0].answer + '\n' });
         } else {
           question.options.map(option => {
             if (option.selected) {
               isAnswered = true;
-              answerText += `●\t${option.answer}\n`;
+              answers.push({ text: `●\t${option.answer}\n`, style: 'select_item' });
             } else {
-              answerText += `.\t   ${option.answer}\n`;
+              answers.push({ text: `.\t   ${option.answer}\n`, style: 'non_select_item'});
             }
           });
         }
         if (isAnswered) {
           // index + question name
-          text += `${index + 1}. ${question.question}\n`;
-          text += answerText + '\n';
+          content.push({ text: `${index + 1}. ${question.question}\n` });
+          content.push(...answers);
+          content.push({ text: '\n' });
         }
       });
     });
-    return text;
+    return content;
   }
 
   buildPrescription(prescription: Medicine[], periods: MedicinePeriod[]) {
-    if (!prescription?.length) return '\n\n';
-    return prescription.map(medicine => {
-      return `药名: ${medicine.name} (共${medicine.capacity} ${medicine.unit} X ${medicine.quantity})
-        服用方法: ${medicine.usage}, ${this.medicineService.showDosageInstruction(medicine.dosage, medicine.unit, periods)}
-        ${medicine.notes ? '备注: ' + medicine.notes + '\n' : ''}\n`;
-    }).join('');
+    const content = [{ text: '处方：\n\n' }];
+    if (!prescription?.length) {
+      content.push({ text: '\n' });
+      return content;
+    }
+    prescription.map(medicine => {
+      content.push({ text: `药名: ${medicine.name} (共${medicine.capacity} ${medicine.unit} X ${medicine.quantity})\n` });
+      content.push({
+        text: `服用方法: ${medicine.usage}, ${this.medicineService.showDosageInstruction(medicine.dosage, medicine.unit, periods)}
+      ${medicine.notes ? '备注: ' + medicine.notes + '\n' : ''}\n`
+      });
+    });
+    return content;
   }
 
 }
