@@ -1,1 +1,36 @@
-<p>customer-service-setting works!</p>
+<nb-card>
+  <nb-card-header>
+    客服药师设定
+  </nb-card-header>
+
+  <nb-card-body>
+    <div>
+      <button nbButton hero shape="round" [status]="!customerServiceDoctor? 'success': 'info'"
+        (click)="setCustomerServiceDoctor()">
+        <nb-icon icon="person-add-outline" pack="eva"></nb-icon>
+        {{!customerServiceDoctor? '增加': '更改'}}客服药师
+      </button>
+      &nbsp;&nbsp;
+      <button nbButton hero shape="round" status="warning" (click)="removeCustomerServiceDoctor()"
+        *ngIf="hospitalId && !!customerServiceDoctor">
+        <nb-icon icon="person-remove-outline" pack="eva"></nb-icon> 删除客服药师
+      </button>
+    </div>
+
+    <div class="alert alert-secondary mt-4" *ngIf="customerServiceDoctor as doctor">
+      <h6>客服药师</h6>
+      <div class="px-3 py-2 row d-flex align-items-center">
+        <div class="col-4 text-right">
+          <img src="{{ doctor.icon | imgPath }}" onerror="this.src='/assets/images/icon/default.svg';this.onerror='';"
+            style="width: 100px; height: 100px;" class="avatar-image img-fluid img-thumbnail z-depth-1 rounded-circle"
+            alt="">
+        </div>
+        <div class="col-8">
+          <div>姓名：{{doctor.name}} {{doctor.title}}</div>
+          <div class="pt-2">科室：{{getDepartmentLabel(doctor.department)}}</div>
+          <div class="pt-2"> 用户ID： {{doctor.user_id}}</div>
+        </div>
+      </div>
+    </div>
+
+  </nb-card-body>

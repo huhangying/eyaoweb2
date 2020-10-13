@@ -32,4 +32,6 @@ export interface Doctor {
   wechatUrl?: string;     // for localstorage
 
   prices?: ConsultServicePrice[];
+
+  csdoctor?: string; // customer service doctor
 }

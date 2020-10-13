@@ -99,7 +99,6 @@ export function getMenuItems(role: number, queryParams: Params): NbMenuItem[] {
         {
           title: '客服药师设定',
           link: '/cms/consult/customer-service-setting',
-          queryParams: queryParams, // dep
         },
       ],
     },

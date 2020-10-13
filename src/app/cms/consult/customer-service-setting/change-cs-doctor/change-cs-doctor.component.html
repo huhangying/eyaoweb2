@@ -1,0 +1,26 @@
+<nb-card [status]="data?.csDoctor ? 'info' : 'success'">
+  <nb-card-header>
+    {{data?.csDoctor? '更换客服药师' : '新增客服药师'}}
+    <button nbButton shape="round" size="tiny" class="float-right" mat-dialog-close>
+      <nb-icon icon="close"></nb-icon>
+    </button>
+  </nb-card-header>
+
+  <mat-dialog-content class="px-3">
+    <div>
+      选择更换客服药师：
+    </div>
+
+    <div class="field row w-100">
+      <ngx-select-doctor [departments]="data.departments" (doctorSelected)="doctorSelected($event)">
+      </ngx-select-doctor>
+    </div>
+  </mat-dialog-content>
+
+  <nb-card-footer class="d-block">
+    <button nbButton mat-dialog-close> 取消 </button>
+    <button nbButton hero status="primary" class="float-right" (click)="update()">
+      <nb-icon icon="checkmark-circle"></nb-icon> 更新
+    </button>
+  </nb-card-footer>
+</nb-card>

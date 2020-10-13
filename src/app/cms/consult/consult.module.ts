@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { routedComponents, ConsultRoutingModule } from './consult-routing.module';
 import { SharedModule } from '../../shared/shared.module';
+import { ChangeCsDoctorComponent } from './customer-service-setting/change-cs-doctor/change-cs-doctor.component';
 
 
 
@@ -11,6 +12,7 @@ import { SharedModule } from '../../shared/shared.module';
   ],
   declarations: [
     ...routedComponents,
+    ChangeCsDoctorComponent,
   ],
 })
 export class ConsultModule { }

@@ -4,6 +4,7 @@ import { Disease } from '../models/hospital/disease.model';
 import { Faq } from '../models/hospital/faq.model';
 import { Const } from '../models/hospital/const.model';
 import { ApiService } from '../shared/service/api.service';
+import { Doctor } from '../models/crm/doctor.model';
 
 @Injectable({
   providedIn: 'root'
@@ -13,6 +14,15 @@ export class HospitalService {
   constructor(
     private api: ApiService,
   ) { }
+
+  // Hospital
+  getCustomerServiceInfo() {
+    return this.api.get<{_id: string; csdoctor: Doctor}>('hospital/customer-service');
+  }
+
+  updateCustomerServiceDoctor(hospitalId: string, customerServiceDoctorId: string) {
+    return this.api.patch<Doctor>('hospital/customer-service/'+ hospitalId, {csdoctor: customerServiceDoctorId});
+  }
 
   // Department
   getDepartments() {
