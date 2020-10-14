@@ -7,7 +7,7 @@ import { Subject } from 'rxjs';
 import { AuthService } from '../../../shared/service/auth.service';
 import { ChatService } from '../../../services/chat.service';
 import { Doctor } from '../../../models/crm/doctor.model';
-import { Notification } from '../../../models/io/notification.model';
+import { Notification, NotificationType } from '../../../models/io/notification.model';
 import { LayoutService } from '../../utils/layout.service';
 import { UserFeedbackService } from '../../../services/user-feedback.service';
 import { SocketioService } from '../../../shared/service/socketio.service';
@@ -21,6 +21,7 @@ import { ReservationService } from '../../../services/reservation.service';
 })
 export class HeaderComponent implements OnInit, OnDestroy {
   isCms: boolean;
+  isCs: boolean;
   isXl: boolean;
   private destroy$: Subject<void> = new Subject<void>();
   userPictureOnly = false;
@@ -35,6 +36,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
   feedbackUnread = 0;
   bookingNotifications: Notification[];
   bookingUnread = 0;
+  csNotifications: Notification[];
+  csUnread = 0;
+  consultNotifications: Notification[];
+  consultUnread = 0;
 
   userMenu = [
     { title: '个人资料', icon: 'person-outline', data: 'profile' },
@@ -82,6 +87,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.doctor = this.auth.doctor;
+    this.isCs = this.doctor.cs;
     this.getUnreadList(this.doctor._id);
 
     if (!this.isCms) {
@@ -209,6 +215,47 @@ export class HeaderComponent implements OnInit, OnDestroy {
       }),
       takeUntil(this.destroy$),
     ).subscribe();
+
+    if (this.isCs) {
+      this.appStore.state$.pipe(
+        pluck('csNotifications'),
+        distinctUntilChanged(),
+        tap(notis => {
+          // init
+          this.csUnread = 0;
+          this.csNotifications = [];
+          if (notis?.length) {
+            this.csNotifications = notis;
+            this.csUnread = this.csNotifications.reduce((total, noti) => {
+              total += noti.count;
+              return total;
+            }, 0);
+          }
+          this.cd.markForCheck();
+        }),
+        takeUntil(this.destroy$),
+      ).subscribe();
+    }
+
+    this.appStore.state$.pipe(
+      pluck('consultNotifications'),
+      distinctUntilChanged(),
+      tap(notis => {
+        // init
+        this.consultUnread = 10;
+        this.consultNotifications = [];
+        if (notis?.length) {
+          this.consultNotifications = notis;
+          this.consultUnread = this.consultNotifications.reduce((total, noti) => {
+            total += noti.count;
+            return total;
+          }, 0);
+        }
+        this.cd.markForCheck();
+      }),
+      takeUntil(this.destroy$),
+    ).subscribe();
+
   }
 
   toggleSidebar(): boolean {
@@ -230,7 +277,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   getUnreadList(doctorId: string) {
     this.chat.getUnreadListByDocter(doctorId).pipe(
       tap(results => {
-        this.chat.convertNotificationList(results);
+        this.chat.convertNotificationList(results, NotificationType.chat);
       }),
       takeUntil(this.destroy$)
     ).subscribe();
@@ -248,13 +295,25 @@ export class HeaderComponent implements OnInit, OnDestroy {
       }),
       takeUntil(this.destroy$)
     ).subscribe();
+
+    // 未读的客服消息
+    if (this.isCs) {
+      this.chat.getCsUnreadListByDocter(doctorId).pipe(
+        tap(results => {
+          this.chat.convertNotificationList(results, NotificationType.customerService);
+        }),
+        takeUntil(this.destroy$)
+      ).subscribe();
+    }
   }
 
   viewChat(noti: Notification) {
+    // cs chat: type=0, cs=true
     this.router.navigate(['/main/chat'], {
       queryParams: {
         pid: noti.patientId,
-        type: noti.type
+        type: noti.type,
+        cs: noti.type === NotificationType.customerService ? this.isCs : undefined
       }
     });
   }

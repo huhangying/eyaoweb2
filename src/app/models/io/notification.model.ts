@@ -16,5 +16,6 @@ export enum NotificationType {
   adverseReaction = 1,  // 不良反应
   doseCombination = 2,  // 联合用药
   booking = 3,          // 门诊预约
-
+  customerService = 4,  // 客服chat
+  consult = 5,          // 付费咨询
 }

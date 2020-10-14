@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from '../shared/service/api.service';
 import { Chat } from '../models/io/chat.model';
-import { Notification } from '../models/io/notification.model';
+import { Notification, NotificationType } from '../models/io/notification.model';
 import { AppStoreService } from '../shared/store/app-store.service';
 
 @Injectable({
@@ -19,11 +19,16 @@ export class ChatService {
     return this.api.get<Chat[]>(`chats/history/${sender}/${to}`);
   }
 
+  // 病患客服历史消息
+  getCsChatHistoryByPatient(patientId: string) {
+    return this.api.get<Chat[]>(`cs-chats/history/user/${patientId}`);
+  }
+
   sendChat(data: Chat) {
     return this.api.post<Chat>('chat/send', data);
   }
 
-  // unread list
+  // chat unread list
   getUnreadListByDocter(doctorId: string) {
     return this.api.get<Chat[]>(`chats/unread/doctor/${doctorId}`);
   }
@@ -32,21 +37,30 @@ export class ChatService {
     return this.api.get(`chats/read/doctor/${doctorId}/${patientId}`);
   }
 
+  // customer service chat unread list
+  getCsUnreadListByDocter(doctorId: string) {
+    return this.api.get<Chat[]>(`cs-chats/unread/doctor/${doctorId}`);
+  }
+
+  setCsReadByDocterAndPatient(doctorId: string, patientId: string) {
+    return this.api.get(`cs-chats/read/doctor/${doctorId}/${patientId}`);
+  }
+
   //---------------------------------------------------
   // Notifications
   //---------------------------------------------------
 
   // after app started
-  convertNotificationList(chats: Chat[]): Notification[] {
+  convertNotificationList(chats: Chat[], notiType: NotificationType): Notification[] {
     if (!chats?.length) return [];
     const keys: string[] = [];
     const chatNotifications = chats.reduce((notis, chat) => {
-      const key = chat.sender + 0;
+      const key = chat.sender + notiType;
       if (keys.indexOf(key) === -1) {
         keys.push(key);
         notis.push({
           patientId: chat.sender,
-          type: 0,
+          type: notiType,
           name: chat.senderName || '', // to remove
           count: 1,
           created: chat.created
@@ -55,14 +69,20 @@ export class ChatService {
       }
       notis = notis.map(_ => {
         if (_.patientId === chat.sender) {
+          // 如果重复计数的bug还是发生的话，在这里增加 通过验证时间戳（created）来确保不重复加
           _.count = _.count + 1;
         }
         return _;
       });
       return notis;
     }, []);
+
     // save to store
-    this.appStore.updateChatNotifications(chatNotifications);
+    if (notiType === NotificationType.chat) {
+      this.appStore.updateChatNotifications(chatNotifications);
+    } else if (notiType === NotificationType.customerService) {
+      this.appStore.updateCustomerServiceNotifications(chatNotifications);
+    }
     return chatNotifications;
   }
 
@@ -101,6 +121,7 @@ export class ChatService {
     this.appStore.updateChatNotifications(notifications);
   }
 
+  // todo:
   // after chatroom loaded (once a time), after doctor mark it read
   removeChatsFromNotificationList(doctorId: string, patientId: string) {
     // get from store

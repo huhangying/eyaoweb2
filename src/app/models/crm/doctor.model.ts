@@ -33,5 +33,5 @@ export interface Doctor {
 
   prices?: ConsultServicePrice[];
 
-  csdoctor?: string; // customer service doctor
+  cs?: boolean; // if customer service doctor // for localstorage
 }

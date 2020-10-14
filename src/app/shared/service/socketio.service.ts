@@ -5,7 +5,7 @@ import { ChatType, Chat } from '../../models/io/chat.model';
 import * as moment from 'moment';
 import { UserFeedback } from '../../models/io/user-feedback.model';
 import { AppStoreService } from '../store/app-store.service';
-import { Notification } from '../../models/io/notification.model';
+import { Notification, NotificationType } from '../../models/io/notification.model';
 @Injectable({
   providedIn: 'root'
 })
@@ -40,7 +40,8 @@ export class SocketioService {
   }
 
   sendChat(room: string, chat: Chat) {
-    this.socket.emit('chat', room, {
+    // 区分 chat 和 客服消息
+    this.socket.emit(!chat.cs ? 'chat' : 'customerService', room, {
       ...chat,
       created: moment()
     });
@@ -64,16 +65,26 @@ export class SocketioService {
     let notifications = [];
     // save to store
     switch (noti.type) {
-      case 0:
+      case NotificationType.chat:
         notifications = this.addNotiToExisted(this.appStore.state.chatNotifications, noti);
         return this.appStore.updateChatNotifications(notifications);
-      case 1:
-      case 2:
+
+      case NotificationType.adverseReaction:
+      case NotificationType.doseCombination:
         notifications = this.addNotiToExisted(this.appStore.state.feedbackNotifications, noti);
         return this.appStore.updateFeedbackNotifications(notifications);
-      case 3:
+
+      case NotificationType.booking:
         notifications = this.addNotiToExisted(this.appStore.state.bookingNotifications, noti);
         return this.appStore.updateBookingNotifications(notifications);
+
+      case NotificationType.customerService:
+        notifications = this.addNotiToExisted(this.appStore.state.csNotifications, noti);
+        return this.appStore.updateCustomerServiceNotifications(notifications);
+
+      case NotificationType.consult:
+        notifications = this.addNotiToExisted(this.appStore.state.consultNotifications, noti);
+        return this.appStore.updateConsultNotifications(notifications);
     }
   }
   private addNotiToExisted(storeNotifications: any[], noti: Notification) {

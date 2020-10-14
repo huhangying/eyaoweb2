@@ -15,6 +15,8 @@ export class AppState {
         public readonly chatNotifications?: Notification[],
         public readonly feedbackNotifications?: Notification[],
         public readonly bookingNotifications?: Notification[],
+        public readonly csNotifications?: Notification[],
+        public readonly consultNotifications?: Notification[],
         public readonly pending?: Pending,
     ) { }
 }

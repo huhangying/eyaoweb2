@@ -29,6 +29,7 @@ import { Subject } from 'rxjs';
 export class ChatComponent implements OnInit, OnDestroy {
   private destroy$: Subject<void> = new Subject<void>();
   type: number;
+  isCs: boolean;
 
   chatNotifications: Notification[];
   feedbackNotifications: Notification[];
@@ -87,7 +88,11 @@ export class ChatComponent implements OnInit, OnDestroy {
     this.route.queryParams.pipe(
       tap(queryParams => {
         this.type = +queryParams?.type || NotificationType.chat;
+        // 强行把cs类型转成 chat，区别是 cs chat：cs=true
+        this.type = (this.type === NotificationType.customerService) ? NotificationType.chat : this.type;
         const pid = queryParams?.pid;
+        this.isCs = queryParams?.cs;
+
         if (pid) {// && !this.selectedPatient) {
           let found = false;
           // search from doctor-group/relationships
@@ -234,7 +239,10 @@ export class ChatComponent implements OnInit, OnDestroy {
     this.showInSm = false;
 
     // get chat history
-    this.chatService.getChatHistory(this.doctor._id, patient._id).pipe(
+    const chatHistory$ = this.isCs ?
+      this.chatService.getCsChatHistoryByPatient(patient._id) :
+      this.chatService.getChatHistory(this.doctor._id, patient._id);
+    chatHistory$.pipe(
       tap(results => {
         if (results?.length) {
           this.chats = results.sort((a, b) => (+new Date(a.created) - +new Date(b.created)));
@@ -294,7 +302,8 @@ export class ChatComponent implements OnInit, OnDestroy {
         senderName: this.doctor.name,
         to: this.selectedPatient._id,
         type: ChatType.picture,
-        data: imgPath
+        data: imgPath,
+        cs: this.isCs
       };
     } else {
       // Text
@@ -305,7 +314,8 @@ export class ChatComponent implements OnInit, OnDestroy {
         senderName: this.doctor.name,
         to: this.selectedPatient._id,
         type: ChatType.text,
-        data: this.myInput
+        data: this.myInput,
+        cs: this.isCs
       };
     }
     this.chats.push(chat);

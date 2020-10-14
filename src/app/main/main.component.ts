@@ -40,7 +40,7 @@ export class MainComponent implements OnInit, OnDestroy {
     this.menu = getMenuItems(this.role, {
       dep: doc.department,
       doc: doc._id
-    });
+    }, appStore.doctor.cs);
 
     this.menuService.onItemClick().pipe(
       tap(item => {

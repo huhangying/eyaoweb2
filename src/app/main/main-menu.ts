@@ -1,7 +1,9 @@
 import { NbMenuItem } from '@nebular/theme';
 import { Params } from '@angular/router';
+import { threadId } from 'worker_threads';
+import { isScheduler } from 'rxjs/internal-compatibility';
 
-export function getMenuItems(role: number, queryParams: Params): NbMenuItem[] {
+export function getMenuItems(role: number, queryParams: Params, isCs = false): NbMenuItem[] {
   return [
     {
       title: '控制台',
@@ -22,6 +24,13 @@ export function getMenuItems(role: number, queryParams: Params): NbMenuItem[] {
       title: '在线咨询',
       icon: 'message-circle-outline',
       link: '/main/chat',
+    },
+    {
+      title: '客服和咨询监管',
+      icon: 'message-circle-outline',
+      link: '/main/chat',
+      hidden: !isCs,
+      queryParams: {...queryParams, type: 0, cs: true},
     },
     {
       title: '付费咨询设置',

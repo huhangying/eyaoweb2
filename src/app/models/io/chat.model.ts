@@ -1,5 +1,3 @@
-import { User } from '../crm/user.model';
-
 export interface Chat {
   _id?: string;
   hid?: string;
@@ -11,6 +9,8 @@ export interface Chat {
   data: string;
   created?: Date;
   read?: number;
+
+  cs?: boolean; // 客服咨询消息flag
 }
 
 // 消息類別： 0：Text；      1：圖片；      2：語音；       4：視頻；

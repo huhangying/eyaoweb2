@@ -19,6 +19,54 @@
       <mat-icon>admin_panel_settings</mat-icon>
     </button>
 
+    <ng-container *ngIf="csUnread">
+      <button mat-icon-button class="mr-2 text-info" [matMenuTriggerFor]="notiMenu" matTooltip="客服咨询提醒">
+        <mat-icon [matBadge]="csUnread" matBadgeColor="primary">support_agent</mat-icon>
+      </button>
+      <mat-menu #notiMenu="matMenu" xPosition="before">
+        <ng-template matMenuContent>
+          <div class="px-3 py-2">客服咨询消息</div>
+          <mat-divider></mat-divider>
+          <div mat-menu-item *ngFor="let noti of csNotifications" class="d-flex align-items-center notification-item"
+            (click)="viewChat(noti)">
+            <mat-icon class="mr-1">chat</mat-icon>
+            <div class="pl-2 flex-fill">
+              <div class="small">
+                {{noti.count}} 条新咨询
+              </div>
+              <div class="small text-right">
+                {{noti.name}} 发送于<i>{{ noti.created | localDate}}</i>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+      </mat-menu>
+    </ng-container>
+
+    <ng-container *ngIf="consultUnread">
+      <button mat-icon-button class="mr-2 text-info" [matMenuTriggerFor]="notiMenu" matTooltip="客服咨询提醒">
+        <mat-icon [matBadge]="consultUnread" matBadgeColor="accent">connect_without_contact</mat-icon>
+      </button>
+      <mat-menu #notiMenu="matMenu" xPosition="before">
+        <ng-template matMenuContent>
+          <div class="px-3 py-2">收费咨询通知</div>
+          <mat-divider></mat-divider>
+          <div mat-menu-item *ngFor="let noti of consultNotifications"
+            class="d-flex align-items-center notification-item" (click)="viewChat(noti)">
+            <mat-icon class="mr-1">campaign</mat-icon>
+            <div class="pl-2 flex-fill">
+              <div class="small">
+                {{noti.count}} 条新通知
+              </div>
+              <div class="small text-right">
+                {{noti.name}} 发送于<i>{{ noti.created | localDate}}</i>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+      </mat-menu>
+    </ng-container>
+
     <ng-container *ngIf="chatUnread">
       <button mat-icon-button class="mr-2 text-info" [matMenuTriggerFor]="notiMenu" matTooltip="在线咨询消息提醒">
         <mat-icon [matBadge]="chatUnread" matBadgeColor="warn">chat</mat-icon>
