@@ -121,7 +121,6 @@ export class ChatService {
     this.appStore.updateChatNotifications(notifications);
   }
 
-  // todo:
   // after chatroom loaded (once a time), after doctor mark it read
   removeChatsFromNotificationList(doctorId: string, patientId: string) {
     // get from store
@@ -134,6 +133,20 @@ export class ChatService {
 
     // mark read in db
     this.setReadByDocterAndPatient(doctorId, patientId).subscribe();
+  }
+
+  // 客服：标记已读，并从提醒列表里去除
+  removeCsChatsFromNotificationList(doctorId: string, patientId: string) {
+    // get from store
+    let notifications = this.appStore.state.csNotifications;
+    if (!notifications?.length) return;
+    notifications = notifications.filter(_ => _.patientId !== patientId);
+
+    // save back
+    this.appStore.updateCustomerServiceNotifications(notifications);
+
+    // mark read in db
+    this.setCsReadByDocterAndPatient(doctorId, patientId).subscribe();
   }
 
 }

@@ -33,6 +33,7 @@ export class ChatComponent implements OnInit, OnDestroy {
 
   chatNotifications: Notification[];
   feedbackNotifications: Notification[];
+  csNotifications: Notification[];
   chats: Chat[];
   feedbacks: UserFeedback[];
 
@@ -171,10 +172,6 @@ export class ChatComponent implements OnInit, OnDestroy {
         this.chatNotifications = [];
         if (notis?.length) {
           this.chatNotifications = notis;
-          // this.chatUnread = this.chatNotifications.reduce((total, noti) => {
-          //   total += noti.count;
-          //   return total;
-          // }, 0);
         }
         this.cd.markForCheck();
       }),
@@ -189,10 +186,20 @@ export class ChatComponent implements OnInit, OnDestroy {
         this.feedbackNotifications = [];
         if (notis?.length) {
           this.feedbackNotifications = notis;
-          // this.chatUnread = this.chatNotifications.reduce((total, noti) => {
-          //   total += noti.count;
-          //   return total;
-          // }, 0);
+        }
+        this.cd.markForCheck();
+      }),
+      takeUntil(this.destroy$),
+    ).subscribe();
+
+    this.appStore.state$.pipe(
+      pluck('csNotifications'),
+      distinctUntilChanged(),
+      tap(notis => {
+        // init
+        this.csNotifications = [];
+        if (notis?.length) {
+          this.csNotifications = notis;
         }
         this.cd.markForCheck();
       }),
@@ -213,13 +220,19 @@ export class ChatComponent implements OnInit, OnDestroy {
 
   showBadge(pid: string): boolean {
     if (!pid) return false;
-    if (this.type === NotificationType.chat) {
-      if (!this.chatNotifications?.length) return false;
-      return this.chatNotifications.findIndex(noti => noti.patientId === pid) > -1;
-    } else {
-      if (!this.feedbackNotifications?.length) return false;
-      return this.feedbackNotifications.findIndex(noti => noti.patientId === pid) > -1;
+    let notifications = [];
+    switch (this.type) {
+      case NotificationType.chat: // NotificationType.customerService
+        notifications = !this.isCs ? this.chatNotifications : this.csNotifications;
+        break;
+
+      case NotificationType.adverseReaction:
+      case NotificationType.doseCombination:
+        notifications = this.feedbackNotifications;
+        break;
     }
+    if (!notifications?.length) return false;
+    return notifications.findIndex(noti => noti.patientId === pid) > -1;
   }
 
   showBadgeCount(pid: string): number {
@@ -410,12 +423,23 @@ export class ChatComponent implements OnInit, OnDestroy {
 
   // 药师标识完成
   markRead() {
-    if (this.type === NotificationType.chat) {
-      this.chatService.removeChatsFromNotificationList(this.doctor._id, this.selectedPatient._id);
-      this.message.success('药师标记消息已读！');
-    } else if (this.type === NotificationType.adverseReaction || this.type === NotificationType.doseCombination) {
-      this.feedbackService.removeFromNotificationList(this.doctor._id, this.selectedPatient._id, this.type);
-      this.message.success('药师标记已读完成！');
+    switch (this.type) {
+      case NotificationType.chat: // NotificationType.customerService
+        if (!this.isCs) {
+          this.chatService.removeChatsFromNotificationList(this.doctor._id, this.selectedPatient._id);
+        } else {
+          this.chatService.removeCsChatsFromNotificationList(this.doctor._id, this.selectedPatient._id);
+        }
+        break;
+
+      case NotificationType.adverseReaction:
+      case NotificationType.doseCombination:
+        this.feedbackService.removeFromNotificationList(this.doctor._id, this.selectedPatient._id, this.type);
+        break;
+
+      default:
+        return;
     }
+    this.message.success('药师标记消息已读！');
   }
 }
