@@ -232,30 +232,38 @@
               <nb-icon icon="paper-plane-outline" class="mx-1"></nb-icon>
             </button>
           </div>
-          <div class="px-3">
-            <button mat-icon-button color="primary" class="mr-2" (click)="toggleEmoji()">
-              <mat-icon>insert_emoticon</mat-icon>
-            </button>
-            <input hidden="true" type="file" accept="image/*" (change)="imageUpload($event)" #fileInput>
-            <button mat-icon-button color="primary" class="mr-2" (click)="fileInput.click()">
-              <mat-icon>insert_photo</mat-icon>
-            </button>
-            <button mat-icon-button [matMenuTriggerFor]="shortcutList" color="primary" class="mr-2">
-              <mat-icon>reply</mat-icon>
-            </button>
-            <mat-menu #shortcutList="matMenu" yPosition="above">
-              <ng-container *ngIf="doctor.shortcuts">
-                <button mat-menu-item *ngFor="let shortcut of doctor.shortcuts.split('|')"
-                  (click)="inputFromShortcut(shortcut)">
-                  {{shortcut}}
-                </button>
-              </ng-container>
-              <ng-container *ngIf="!doctor.shortcuts">
-                <div class="alert alert-warning">
-                  您还没有设置，请先到“快捷回复管理”中添加。
-                </div>
-              </ng-container>
-            </mat-menu>
+
+          <div class="d-flex justify-content-between px-3">
+            <div>
+              <button mat-icon-button color="primary" class="mr-2" (click)="toggleEmoji()">
+                <mat-icon>insert_emoticon</mat-icon>
+              </button>
+              <input hidden="true" type="file" accept="image/*" (change)="imageUpload($event)" #fileInput>
+              <button mat-icon-button color="primary" class="mr-2" (click)="fileInput.click()">
+                <mat-icon>insert_photo</mat-icon>
+              </button>
+              <button mat-icon-button [matMenuTriggerFor]="shortcutList" color="primary" class="mr-2">
+                <mat-icon>reply</mat-icon>
+              </button>
+              <mat-menu #shortcutList="matMenu" yPosition="above">
+                <ng-container *ngIf="doctor.shortcuts">
+                  <button mat-menu-item *ngFor="let shortcut of doctor.shortcuts.split('|')"
+                    (click)="inputFromShortcut(shortcut)">
+                    {{shortcut}}
+                  </button>
+                </ng-container>
+                <ng-container *ngIf="!doctor.shortcuts">
+                  <div class="alert alert-warning">
+                    您还没有设置，请先到“快捷回复管理”中添加。
+                  </div>
+                </ng-container>
+              </mat-menu>
+            </div>
+            <div class="status-action align-self-center" *ngIf="!isCs && type === 0">
+              <mat-slide-toggle [checked]="setCharged" (toggleChange)="toggleSetCharge()">
+                <span class="small">设置收费</span>
+              </mat-slide-toggle>
+            </div>
           </div>
           <div *ngIf="showEmoji">
             <div class="qqface">

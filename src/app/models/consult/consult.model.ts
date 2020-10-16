@@ -1,15 +1,16 @@
 export interface Consult {
   _id?: string;
   user: string;   // id
-  userName: string;
+  userName?: string;
   doctor: string; // id
 
-  disease_types: string[];
-  content: string;
-  upload: string;
+  disease_types?: string[];
+  content?: string;
+  upload?: string;
 
-  type: number;   // 0: 图文咨询； 1：电话咨询
-  finished: boolean;
+  type?: number;   // 0: 图文咨询； 1：电话咨询
+  setCharged?: boolean;  // 药师设置，if true 将阻止病患免费咨询
 
-  updatedAt: Date;
+  finished?: boolean;
+  updatedAt?: Date;
 }

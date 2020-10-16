@@ -3,6 +3,8 @@ import { ApiService } from '../shared/service/api.service';
 import { DoctorConsult } from '../models/consult/doctor-consult.model';
 import { DoctorConsultComment } from '../models/consult/doctor-consult-comment.model';
 import { map } from 'rxjs/operators';
+import { Consult } from '../models/consult/consult.model';
+import { NbThemeService } from '@nebular/theme';
 
 @Injectable({
   providedIn: 'root'
@@ -22,6 +24,20 @@ export class ConsultService {
   get presetComments() {
     return this._presetComments;
   }
+
+  // 付费咨询 consult
+  getPendingConsultByDoctorIdAndUserId(doctorId: string, userId: string) {
+    return this.api.get<Consult>(`consult/get-pending/${doctorId}/${userId}`);
+  }
+
+  updateConsultById(id: string, data: Consult) {
+    return this.api.patch<Consult>('consult/' + id, data);
+  }
+
+  AddConsult(data: Consult) {
+    return this.api.post<Consult>('consult', data);
+  }
+
 
   // doctor consult
 

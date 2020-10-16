@@ -19,6 +19,8 @@ import { UserFeedbackService } from '../../services/user-feedback.service';
 import { UserFeedback } from '../../models/io/user-feedback.model';
 import { MessageService } from '../../shared/service/message.service';
 import { Subject } from 'rxjs';
+import { Consult } from '../../models/consult/consult.model';
+import { ConsultService } from '../../services/consult.service';
 
 @Component({
   selector: 'ngx-chat',
@@ -48,6 +50,8 @@ export class ChatComponent implements OnInit, OnDestroy {
   doctorGroups: DoctorGroup[];
   relationships: Relationship[];
   csList: User[]; // 客服病患列表
+  setCharged: boolean; // 药师设置收费flag
+  currentConsult: Consult;
 
   isMd: boolean; // greater than md
   showInSm: boolean; chatBodyHeight: string;
@@ -66,6 +70,7 @@ export class ChatComponent implements OnInit, OnDestroy {
     private feedbackService: UserFeedbackService,
     private doctorService: DoctorService,
     private uploadService: UploadService,
+    private consultService: ConsultService,
     private cd: ChangeDetectorRef,
     private route: ActivatedRoute,
     private appStore: AppStoreService,
@@ -279,6 +284,17 @@ export class ChatComponent implements OnInit, OnDestroy {
   selectPatient(patient: User) {
     if (this.type === NotificationType.chat) {
       this.selectChatPatient(patient);
+
+      if (!this.isCs) {
+        // get 付费咨询 flag
+        this.consultService.getPendingConsultByDoctorIdAndUserId(this.doctor._id, patient._id).pipe(
+          tap(result => {
+            this.currentConsult = result;
+            this.setCharged = result?.setCharged;
+          }),
+          takeUntil(this.destroy$),
+        ).subscribe();
+      }
     } else {
       this.selectFeedbackPatient(patient, this.type);
     }
@@ -455,6 +471,20 @@ export class ChatComponent implements OnInit, OnDestroy {
           })
         ).subscribe();
       };
+    }
+  }
+
+  toggleSetCharge() {
+    this.setCharged = !this.setCharged;
+    if (this.currentConsult?._id) {
+      this.consultService.updateConsultById(this.currentConsult._id, { ...this.currentConsult, setCharged: this.setCharged })
+        .subscribe();
+    } else {
+      this.consultService.AddConsult({
+        doctor: this.doctor._id,
+        user: this.selectedPatient._id,
+        setCharged: this.setCharged
+      }).subscribe();
     }
   }
 

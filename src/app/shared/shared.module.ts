@@ -54,6 +54,7 @@ import { InputChipsCardComponent } from './components/input-chips-card/input-chi
 import { DoctorConsultPricesComponent } from './components/doctor-profile/doctor-consult-prices/doctor-consult-prices.component';
 import { TimeFormatPipe } from './pipe/time-format.pipe';
 import { MouseWheelDirective } from './directive/mouse-wheel.directive';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 @NgModule({
   imports: [
@@ -82,6 +83,7 @@ import { MouseWheelDirective } from './directive/mouse-wheel.directive';
     MatInputModule,
     MatAutocompleteModule,
     MatSelectModule,
+    MatSlideToggleModule,
 
     ImageCropperModule,
 
@@ -122,6 +124,7 @@ import { MouseWheelDirective } from './directive/mouse-wheel.directive';
     MatInputModule,
     MatAutocompleteModule,
     MatSelectModule,
+    MatSlideToggleModule,
 
     FooterComponent,
     HeaderComponent,
