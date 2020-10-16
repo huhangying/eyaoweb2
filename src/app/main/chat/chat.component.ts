@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy, ChangeDetectionStrategy, ChangeDetectorRe
 import { SocketioService } from '../../shared/service/socketio.service';
 import { AuthService } from '../../shared/service/auth.service';
 import { Doctor } from '../../models/crm/doctor.model';
-import { ChatType, Chat } from '../../models/io/chat.model';
+import { ChatType, Chat, ChatCommandType, ChatCommandTypeMap } from '../../models/io/chat.model';
 import { ChatService } from '../../services/chat.service';
 import { tap, pluck, distinctUntilChanged, takeUntil } from 'rxjs/operators';
 import { DoctorGroup } from '../../models/crm/doctor-group.model';
@@ -423,6 +423,24 @@ export class ChatComponent implements OnInit, OnDestroy {
     this.feedbackService.sendFeedback(feedback).subscribe();
   }
 
+  setChatChargedStatus(charged: boolean) {
+    const cmd = charged ? ChatCommandType.setCharged : ChatCommandType.setFree;
+
+    // sendCommand(cmd: ChatCommandType)
+    const chat = {
+      room: this.room,
+      sender: this.doctor._id,
+      senderName: this.doctor.name,
+      to: this.selectedPatient._id,
+      type: ChatType.command,
+      data: cmd
+    };
+    this.chats.push(chat); // to own chat window
+    this.socketio.sendChat(this.room, chat);
+    this.chatService.sendChat(chat).subscribe();
+    this.scrollBottom();
+  }
+
   scrollBottom() {
     this.cd.markForCheck();
     setTimeout(() => {
@@ -453,6 +471,10 @@ export class ChatComponent implements OnInit, OnDestroy {
     });
   }
 
+  translateCommand(cmd: ChatCommandType) {
+    return ChatCommandTypeMap[cmd];
+  }
+
   imageUpload(event) {
     if (event.target.files?.length) {
       const [file] = event.target.files;
@@ -477,14 +499,22 @@ export class ChatComponent implements OnInit, OnDestroy {
   toggleSetCharge() {
     this.setCharged = !this.setCharged;
     if (this.currentConsult?._id) {
-      this.consultService.updateConsultById(this.currentConsult._id, { ...this.currentConsult, setCharged: this.setCharged })
-        .subscribe();
+      this.consultService.updateConsultById(this.currentConsult._id, { ...this.currentConsult, setCharged: this.setCharged }).pipe(
+        tap(result => {
+          this.setChatChargedStatus(result?.setCharged);
+        })
+      ).subscribe();
+
     } else {
       this.consultService.AddConsult({
         doctor: this.doctor._id,
         user: this.selectedPatient._id,
         setCharged: this.setCharged
-      }).subscribe();
+      }).pipe(
+        tap(result => {
+          this.setChatChargedStatus(result?.setCharged);
+        })
+      ).subscribe();
     }
   }
 

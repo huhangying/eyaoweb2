@@ -136,6 +136,9 @@
                           onerror="this.src='assets/images/no-image.png';this.onerror='';"
                           class="img-fluid img-thumbnail" ngxImgClickView>
                       </div>
+                      <div *ngSwitchCase="dataType.command">
+                        **** {{translateCommand(chat.data)}} ****
+                      </div>
                       <div *ngSwitchDefault class="text-break" [innerHTML]="translateEmoji(chat.data)">
                       </div>
                     </div>

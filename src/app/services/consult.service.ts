@@ -4,7 +4,7 @@ import { DoctorConsult } from '../models/consult/doctor-consult.model';
 import { DoctorConsultComment } from '../models/consult/doctor-consult-comment.model';
 import { map } from 'rxjs/operators';
 import { Consult } from '../models/consult/consult.model';
-import { NbThemeService } from '@nebular/theme';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -34,8 +34,8 @@ export class ConsultService {
     return this.api.patch<Consult>('consult/' + id, data);
   }
 
-  AddConsult(data: Consult) {
-    return this.api.post<Consult>('consult', data);
+  AddConsult(data: Consult): Observable<Consult> {
+    return this.api.post<Consult>('consult', data) as Observable<Consult>;
   }
 
 
