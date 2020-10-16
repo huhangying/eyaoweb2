@@ -3,6 +3,7 @@ import { ApiService } from '../shared/service/api.service';
 import { Chat } from '../models/io/chat.model';
 import { Notification, NotificationType } from '../models/io/notification.model';
 import { AppStoreService } from '../shared/store/app-store.service';
+import { User } from '../models/crm/user.model';
 
 @Injectable({
   providedIn: 'root'
@@ -22,6 +23,11 @@ export class ChatService {
   // 病患客服历史消息
   getCsChatHistoryByPatient(patientId: string) {
     return this.api.get<Chat[]>(`cs-chats/history/user/${patientId}`);
+  }
+
+  // 客服病患列表
+  getCsPatientList() {
+    return this.api.get<User[]>('cs-chats/patient-list');
   }
 
   sendChat(data: Chat) {

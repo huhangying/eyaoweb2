@@ -44,12 +44,13 @@ export class ChatComponent implements OnInit, OnDestroy {
   showEmoji = false;
   qqfaces: string[] = qqface.codeMap;
   dataType = ChatType;
-  isMd: boolean; // greater than md
-  showInSm: boolean;
 
   doctorGroups: DoctorGroup[];
   relationships: Relationship[];
-  chatBodyHeight: string;
+  csList: User[]; // 客服病患列表
+
+  isMd: boolean; // greater than md
+  showInSm: boolean; chatBodyHeight: string;
   groupBodyHeight: string;
   @HostListener('window:resize', ['$event'])
   setChatBodyHeight(event?) {
@@ -78,44 +79,75 @@ export class ChatComponent implements OnInit, OnDestroy {
   //------------------------------------------------------------
   // Select patients from relationships and doctorGroup
   //------------------------------------------------------------
-  async loadData(doctorId: string) {
+  loadData(doctorId: string) {
+
+    this.route.queryParams.pipe(
+      // distinctUntilChanged(),
+      tap(queryParams => {
+        this.type = +queryParams?.type || NotificationType.chat;
+        // !!! 强行把cs类型转成 chat，区别是 cs chat：cs=true
+        this.type = (this.type === NotificationType.customerService) ? NotificationType.chat : this.type;
+
+        const pid = queryParams?.pid;
+        this.isCs = queryParams?.cs;
+
+        if (!this.isCs) {
+          // prepare 病患组
+          this.preparePatientGroups(doctorId, pid);
+        } else {
+          // prepare 客服病患列表
+          this.prepareCsPatientList(pid);
+        }
+      }),
+      takeUntil(this.destroy$),
+    ).subscribe();
+  }
+
+  // prepare 病患组
+  async preparePatientGroups(doctorId: string, pid?: string) {
     this.relationships = await this.doctorService.getRelationshipsByDoctorId(doctorId).toPromise();
     this.doctorGroups = await this.doctorService.getDoctorGroupsByDoctorId(doctorId).toPromise();
     this.doctorGroups = [
       { _id: '', name: '未分组' },
       ...this.doctorGroups
     ];
-    this.cd.markForCheck();
-    this.route.queryParams.pipe(
-      tap(queryParams => {
-        this.type = +queryParams?.type || NotificationType.chat;
-        // 强行把cs类型转成 chat，区别是 cs chat：cs=true
-        this.type = (this.type === NotificationType.customerService) ? NotificationType.chat : this.type;
-        const pid = queryParams?.pid;
-        this.isCs = queryParams?.cs;
 
-        if (pid) {// && !this.selectedPatient) {
-          let found = false;
-          // search from doctor-group/relationships
-          this.doctorGroups.map(dg => {
-            this.getGroupMembers(dg._id)?.map(r => {
-              if (r.user?._id === pid) {
-                found = true;
-                this.selectPatient(r.user);
-                return;
-              }
-            });
-          });
-
-          if (!found) {
-            if (this.type === NotificationType.chat) {
-              this.chatService.removeChatsFromNotificationList(this.doctor._id, pid);
-              this.message.info('该病患不再是药师的用户，或者病患已经取消关注。', '操作取消！');
-            }
+    if (pid) {// && !this.selectedPatient) {
+      let found = false;
+      // search from doctor-group/relationships
+      this.doctorGroups.map(dg => {
+        this.getGroupMembers(dg._id)?.map(r => {
+          if (r.user?._id === pid) {
+            found = true;
+            this.selectPatient(r.user);
+            return;
           }
+        });
+      });
+
+      if (!found) {
+        if (this.type === NotificationType.chat) {
+          this.chatService.removeChatsFromNotificationList(this.doctor._id, pid);
+          this.message.info('该病患不再是药师的用户，或者病患已经取消关注。', '操作取消！');
         }
-      }),
-      takeUntil(this.destroy$),
+      }
+      this.cd.markForCheck();
+    }
+  }
+
+  prepareCsPatientList(pid?: string) {
+    this.chatService.getCsPatientList().pipe(
+      tap(rsp => {
+        this.csList = rsp;
+
+        if (pid && this.csList?.length) {// && !this.selectedPatient) {
+          // search from doctor-group/relationships
+          const foundUser = this.csList.find(user => user._id === pid);
+
+          foundUser && this.selectPatient(foundUser);
+        }
+        this.cd.markForCheck();
+      })
     ).subscribe();
   }
 
@@ -237,6 +269,11 @@ export class ChatComponent implements OnInit, OnDestroy {
 
   showBadgeCount(pid: string): number {
     return this.chatNotifications.find(noti => noti.patientId === pid)?.count;
+  }
+
+  // 客服病患消息个数提醒
+  showCsBadgeCount(pid: string): number {
+    return this.csNotifications.find(noti => noti.patientId === pid)?.count;
   }
 
   selectPatient(patient: User) {

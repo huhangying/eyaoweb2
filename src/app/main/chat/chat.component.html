@@ -1,6 +1,6 @@
 <nb-card class="h-100">
   <nb-card-header>
-    {{ type === 1 ? '不良反应反馈' : ((type === 2) ? '联合用药反馈' : '在线咨询') }}
+    {{ type === 1 ? '不良反应反馈' : ((type === 2) ? '联合用药反馈' : (!isCs ? '在线咨询': '客服咨询')) }}
     <ng-container *ngIf="!isMd">
       <button mat-icon-button color="accent" (click)="toggleShowInSm()">
         <mat-icon>menu</mat-icon>
@@ -11,43 +11,85 @@
   <nb-card-body class="container-fluid" id="wrapper">
     <div class="row">
       <div class="d-md-block col-md-4 col-xl-3" [class.d-none]="!isMd && !showInSm">
-        <div class="h6 pl-3 py-2">
-          <mat-icon color="primary" class="pr-3">people</mat-icon> 我的患者
-        </div>
+        <ng-container *ngIf="!isCs">
+          <div class="h6 pl-3 py-2">
+            <mat-icon color="primary" class="pr-3">people</mat-icon>
+            <span class="pl-3">我的患者</span>
+          </div>
 
-        <mat-accordion *ngIf="doctorGroups?.length" class="doctor-group">
-          <mat-expansion-panel *ngFor="let dg of doctorGroups" class="p-0">
-            <mat-expansion-panel-header>
-              <mat-panel-title>
-                {{dg.name}}
-              </mat-panel-title>
-            </mat-expansion-panel-header>
-            <div class="doctor-group-body" [style.maxHeight]="groupBodyHeight">
-              <mat-selection-list [multiple]="false">
-                <ng-container *ngFor="let member of getGroupMembers(dg._id)">
-                  <mat-list-option *ngIf="member.user" (click)="selectPatient(member.user)">
+          <mat-accordion *ngIf="doctorGroups?.length" class="doctor-group">
+            <mat-expansion-panel *ngFor="let dg of doctorGroups" class="p-0">
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  {{dg.name}}
+                </mat-panel-title>
+              </mat-expansion-panel-header>
+              <div class="doctor-group-body" [style.maxHeight]="groupBodyHeight">
+                <mat-selection-list [multiple]="false">
+                  <ng-container *ngFor="let member of getGroupMembers(dg._id)">
+                    <mat-list-option *ngIf="member.user" (click)="selectPatient(member.user)">
+                      <div class="d-flex align-items-center justify-content-between">
+                        <div class="d-flex align-items-center flex-row">
+                          <div mat-list-icon>
+                            <img [src]="member.user.icon" alt="头像" class="avatar"
+                              onerror="this.src='/assets/images/noimage.jpg';this.onerror='';">
+                          </div>
+                          <div class="pl-4">
+                            {{member.user.name}}
+                            <div class="text-hint"> {{member.user.gender | gender}} </div>
+                          </div>
+                        </div>
+                        <div class="pr-2" *ngIf="showBadge(member.user._id)">
+                          <span [matBadge]="showBadgeCount(member.user._id)" matBadgeOverlap="false"
+                            matBadgeColor="warn"></span>
+                        </div>
+                      </div>
+                    </mat-list-option>
+                  </ng-container>
+                </mat-selection-list>
+              </div>
+            </mat-expansion-panel>
+          </mat-accordion>
+        </ng-container>
+
+        <ng-container *ngIf="isCs">
+          <div class="h6 pl-3 py-2">
+            <mat-icon color="primary" class="pr-3">people</mat-icon>
+            <span class="pl-3">客服患者</span>
+          </div>
+          <div class="doctor-group-body" [style.maxHeight]="groupBodyHeight">
+            <ng-container *ngIf="csList?.length">
+              <mat-selection-list class="bottom-divider" [multiple]="false">
+                <ng-container *ngFor="let user of csList">
+                  <mat-list-option (click)="selectPatient(user)" [selected]="user._id === selectedPatient?._id">
                     <div class="d-flex align-items-center justify-content-between">
                       <div class="d-flex align-items-center flex-row">
                         <div mat-list-icon>
-                          <img [src]="member.user.icon" alt="头像" class="avatar"
+                          <img [src]="user.icon" alt="头像" class="avatar"
                             onerror="this.src='/assets/images/noimage.jpg';this.onerror='';">
                         </div>
                         <div class="pl-4">
-                          {{member.user.name}}
-                          <div class="text-hint"> {{member.user.gender | gender}} </div>
+                          {{user.name}}
+                          <div class="text-hint"> {{user.gender | gender}} </div>
                         </div>
                       </div>
-                      <div class="pr-2" *ngIf="showBadge(member.user._id)">
-                        <span [matBadge]="showBadgeCount(member.user._id)" matBadgeOverlap="false"
-                          matBadgeColor="warn"></span>
+                      <div class="pr-2" *ngIf="showBadge(user._id)">
+                        <span [matBadge]="showCsBadgeCount(user._id)" matBadgeOverlap="false" matBadgeColor="warn"></span>
                       </div>
                     </div>
                   </mat-list-option>
                 </ng-container>
               </mat-selection-list>
-            </div>
-          </mat-expansion-panel>
-        </mat-accordion>
+            </ng-container>
+
+            <ng-container *ngIf="!csList?.length">
+              <div class="alert alert-info" role="alert">
+                暂无客服咨询的病患。
+              </div>
+            </ng-container>
+          </div>
+
+        </ng-container>
       </div>
 
       <div class="col-12 col-md-8 col-xl-9">
