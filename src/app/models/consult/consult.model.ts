@@ -6,6 +6,8 @@ export interface Consult {
 
   disease_types?: string[];
   content?: string;
+  cell?: string; // 电话咨询时必选
+  address?: string;
   upload?: string;
 
   type?: number;   // 0: 图文咨询； 1：电话咨询
