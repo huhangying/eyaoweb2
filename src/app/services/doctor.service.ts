@@ -47,6 +47,12 @@ export class DoctorService {
     return this.api.patch<Doctor>('doctor/' + id, payload);
   }
 
+  // 获取客服药师的头像
+  getCsDoctorIcon(gender?: string) {
+    return 'assets/' + (gender === '男' ? 'male-cs.jpg' : (gender === '女' ? 'famale-cs.jpg' : 'cs.jpg'));
+  }
+
+
   // 药师组
   getDoctorGroups() {
     return this.api.get<DoctorGroup[]>('groups');

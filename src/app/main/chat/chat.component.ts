@@ -40,6 +40,7 @@ export class ChatComponent implements OnInit, OnDestroy {
   feedbacks: UserFeedback[];
 
   doctor: Doctor;
+  doctorIcon: string; // doctor origin icon
   selectedPatient: User;
   room: string;
   myInput = '';
@@ -78,6 +79,7 @@ export class ChatComponent implements OnInit, OnDestroy {
     private message: MessageService,
   ) {
     this.doctor = this.auth.doctor;
+    this.doctorIcon = this.doctor.icon;
     this.loadData(this.doctor._id);
   }
 
@@ -97,9 +99,11 @@ export class ChatComponent implements OnInit, OnDestroy {
         this.isCs = queryParams?.cs;
 
         if (!this.isCs) {
+          this.doctor.icon = this.doctorIcon;
           // prepare 病患组
           this.preparePatientGroups(doctorId, pid);
         } else {
+          this.doctor.icon = this.doctorService.getCsDoctorIcon(this.doctor.gender);
           // prepare 客服病患列表
           this.prepareCsPatientList(pid);
         }
