@@ -12,6 +12,7 @@ import { LayoutService } from '../../utils/layout.service';
 import { UserFeedbackService } from '../../../services/user-feedback.service';
 import { SocketioService } from '../../../shared/service/socketio.service';
 import { ReservationService } from '../../../services/reservation.service';
+import { ConsultService } from '../../../services/consult.service';
 
 @Component({
   selector: 'ngx-header',
@@ -60,6 +61,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     private chat: ChatService,
     private feedback: UserFeedbackService,
     private booking: ReservationService,
+    private consult: ConsultService,
     private socketio: SocketioService,
     private cd: ChangeDetectorRef,
   ) {
@@ -242,7 +244,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
       distinctUntilChanged(),
       tap(notis => {
         // init
-        this.consultUnread = 10;
+        this.consultUnread = 0;
         this.consultNotifications = [];
         if (notis?.length) {
           this.consultNotifications = notis;
@@ -305,6 +307,14 @@ export class HeaderComponent implements OnInit, OnDestroy {
         takeUntil(this.destroy$)
       ).subscribe();
     }
+
+    // 未处理的付费咨询
+    this.consult.getPendingConsultsByDoctorId(doctorId).pipe(
+      tap(results => {
+        this.consult.convertNotificationList(results);
+      }),
+      takeUntil(this.destroy$)
+    ).subscribe();
   }
 
   viewChat(noti: Notification) {
@@ -324,6 +334,16 @@ export class HeaderComponent implements OnInit, OnDestroy {
         dep: this.doctor.department,
         doc: this.doctor._id,
         pid,
+      }
+    });
+  }
+
+  viewConsult(noti: Notification) {
+    // todo:
+    this.router.navigate(['/main/chat'], {
+      queryParams: {
+        pid: noti.patientId,
+        type: noti.type === 6 ? 1 : 0, // change back from noti type => consult type
       }
     });
   }

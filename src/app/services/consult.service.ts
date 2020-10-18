@@ -5,6 +5,7 @@ import { DoctorConsultComment } from '../models/consult/doctor-consult-comment.m
 import { map } from 'rxjs/operators';
 import { Consult } from '../models/consult/consult.model';
 import { Observable } from 'rxjs';
+import { AppStoreService } from '../shared/store/app-store.service';
 
 @Injectable({
   providedIn: 'root'
@@ -19,6 +20,7 @@ export class ConsultService {
 
   constructor(
     private api: ApiService,
+    private appStore: AppStoreService,
   ) { }
 
   get presetComments() {
@@ -30,6 +32,10 @@ export class ConsultService {
     return this.api.get<Consult>(`consult/get-pending/${doctorId}/${userId}`);
   }
 
+  getPendingConsultsByDoctorId(doctorId: string) {
+    return this.api.get<Consult[]>(`consults/get-pending/${doctorId}`);
+  }
+
   updateConsultById(id: string, data: Consult) {
     return this.api.patch<Consult>('consult/' + id, data);
   }
@@ -38,6 +44,36 @@ export class ConsultService {
     return this.api.post<Consult>('consult', data) as Observable<Consult>;
   }
 
+  // after app started
+  convertNotificationList(consults: Consult[]): Notification[] {
+    if (!consults?.length) return [];
+    const keys: string[] = [];
+    const consultNotifications = consults.reduce((notis, consult) => {
+      const key = consult.user + consult.type;
+      if (keys.indexOf(key) === -1) {
+        keys.push(key);
+        notis.push({
+          patientId: consult.user,
+          type: consult.type,
+          name: consult.userName || '',
+          count: 1,
+          created: consult.updatedAt
+        });
+        return notis;
+      }
+      notis = notis.map(_ => {
+        if (_.patientId === consult.user && _.type === consult.type) {
+          _.count = _.count + 1;
+        }
+        return _;
+      });
+      return notis;
+    }, []);
+    // save to store
+    this.appStore.updateConsultNotifications(consultNotifications);
+
+    return consultNotifications;
+  }
 
   // doctor consult
 

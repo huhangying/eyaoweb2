@@ -17,5 +17,6 @@ export enum NotificationType {
   doseCombination = 2,  // 联合用药
   booking = 3,          // 门诊预约
   customerService = 4,  // 客服chat
-  consult = 5,          // 付费咨询
+  consultChat = 5,      // 付费图文咨询
+  consultPhone = 6,     // 付费电话咨询
 }

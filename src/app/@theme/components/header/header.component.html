@@ -44,7 +44,7 @@
     </ng-container>
 
     <ng-container *ngIf="consultUnread">
-      <button mat-icon-button class="mr-2 text-info" [matMenuTriggerFor]="notiMenu" matTooltip="客服咨询提醒">
+      <button mat-icon-button class="mr-2 text-info" [matMenuTriggerFor]="notiMenu" matTooltip="收费咨询提醒">
         <mat-icon [matBadge]="consultUnread" matBadgeColor="accent">connect_without_contact</mat-icon>
       </button>
       <mat-menu #notiMenu="matMenu" xPosition="before">
@@ -52,11 +52,12 @@
           <div class="px-3 py-2">收费咨询通知</div>
           <mat-divider></mat-divider>
           <div mat-menu-item *ngFor="let noti of consultNotifications"
-            class="d-flex align-items-center notification-item" (click)="viewChat(noti)">
-            <mat-icon class="mr-1">campaign</mat-icon>
+            class="d-flex align-items-center notification-item" (click)="viewConsult(noti)">
+            <mat-icon class="mr-1" *ngIf="noti.type === 5">keyboard</mat-icon>
+            <mat-icon class="mr-1" *ngIf="noti.type === 6">phone</mat-icon>
             <div class="pl-2 flex-fill">
               <div class="small">
-                {{noti.count}} 条新通知
+                {{noti.count}} 条收费{{noti.type === 6 ? '电话': '图文'}}咨询
               </div>
               <div class="small text-right">
                 {{noti.name}} 发送于<i>{{ noti.created | localDate}}</i>

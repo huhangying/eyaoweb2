@@ -82,7 +82,8 @@ export class SocketioService {
         notifications = this.addNotiToExisted(this.appStore.state.csNotifications, noti);
         return this.appStore.updateCustomerServiceNotifications(notifications);
 
-      case NotificationType.consult:
+      case NotificationType.consultChat:
+      case NotificationType.consultPhone:
         notifications = this.addNotiToExisted(this.appStore.state.consultNotifications, noti);
         return this.appStore.updateConsultNotifications(notifications);
     }
