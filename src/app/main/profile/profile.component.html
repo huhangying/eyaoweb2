@@ -3,7 +3,7 @@
 <ngx-doctor-profile [departments]="departments" [doctor]="originDoctor" [mode]="0" [operatingRole]="originDoctor?.role"
   (valueChange)="profileChanged($event)"></ngx-doctor-profile>
 
-<div class="pb-3 px-2">
+<div class="pb-3 px-2" *ngIf="false">
   <button nbButton status="primary" [disabled]="invalid" (click)="updateProfile()">
     <nb-icon icon="checkmark-circle"></nb-icon>更新个人信息
   </button>
