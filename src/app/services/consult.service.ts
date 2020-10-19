@@ -6,6 +6,7 @@ import { map } from 'rxjs/operators';
 import { Consult } from '../models/consult/consult.model';
 import { Observable } from 'rxjs';
 import { AppStoreService } from '../shared/store/app-store.service';
+import { NotificationType } from '../models/io/notification.model';
 
 @Injectable({
   providedIn: 'root'
@@ -53,12 +54,13 @@ export class ConsultService {
     if (!consults?.length) return [];
     const keys: string[] = [];
     const consultNotifications = consults.reduce((notis, consult) => {
-      const key = consult.user + consult.type;
+      const type = consult.type === 1 ? NotificationType.consultPhone : NotificationType.consultChat; // (0: 图文；1：电话) => notiType
+      const key = consult.user + type;
       if (keys.indexOf(key) === -1) {
         keys.push(key);
         notis.push({
           patientId: consult.user,
-          type: consult.type,
+          type: type,
           name: consult.userName || '',
           count: 1,
           created: consult.updatedAt
@@ -66,7 +68,7 @@ export class ConsultService {
         return notis;
       }
       notis = notis.map(_ => {
-        if (_.patientId === consult.user && _.type === consult.type) {
+        if (_.patientId === consult.user && _.type === type) {
           _.count = _.count + 1;
         }
         return _;

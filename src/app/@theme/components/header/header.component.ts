@@ -340,14 +340,14 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   viewConsult(noti: Notification) {
     // 付费图文咨询 （共用chat）
-    if (noti.type === 0) {
+    if (noti.type === NotificationType.consultChat) {
       this.router.navigate(['/main/chat'], {
         queryParams: {
           pid: noti.patientId,
           type: NotificationType.consultChat
         }
       });
-    } else if ( noti.type === 1) {
+    } else if ( noti.type === NotificationType.consultPhone) {
       // 付费电话咨询，到说明页面
       this.router.navigate(['/main/consult-phone'], {
         queryParams: {
