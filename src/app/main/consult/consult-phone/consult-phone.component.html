@@ -1,6 +1,28 @@
-<p>consult-phone works!</p>
+<nb-card>
+  <nb-card-header>
+    病患付费电话咨询
+  </nb-card-header>
 
+  <nb-card-body>
+    <ng-container *ngIf="!consult?._id">
+      <div class="alert alert-warning" role="alert">
+        没有找到该病患的付费咨询，或该咨询已经标识完成。
+      </div>
+    </ng-container>
+    <ng-container *ngIf="consult?._id">
+      <pre>
+{{consult | json}}
+  </pre>
 
-<div>
-  mark done.
-</div>
+      <div class="alert alert-primary" role="alert">
+        请拨打 <b>{{consult.userName}}</b> 的手机号码 <b>{{consult.cell}}</b> 进行咨询。
+      </div>
+    </ng-container>
+  </nb-card-body>
+
+  <nb-card-footer class="d-block" *ngIf="consult?._id">
+    <button nbButton hero outline status="info" class="float-right mr-3" (click)="markDone()">
+      <nb-icon icon="checkmark-circle"></nb-icon>标识完成
+    </button>
+  </nb-card-footer>
+</nb-card>

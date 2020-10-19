@@ -36,6 +36,10 @@ export class ConsultService {
     return this.api.get<Consult[]>(`consults/get-pending/${doctorId}`);
   }
 
+  getPendingConsultRequest(doctorId: string, userId: string, type: number) {
+    return this.api.get<Consult>(`consult/get-pending-request/${doctorId}/${userId}/${type}`);
+  }
+
   updateConsultById(id: string, data: Consult) {
     return this.api.patch<Consult>('consult/' + id, data);
   }

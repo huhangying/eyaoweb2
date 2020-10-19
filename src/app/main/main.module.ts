@@ -37,6 +37,7 @@ import { SurveyTemplateViewComponent } from './survey-push/survey-template-view/
 import { WechatMessageFailedComponent } from './wechat-message-failed/wechat-message-failed.component';
 import { WechatMsgDetailsComponent } from './wechat-message-failed/wechat-msg-details/wechat-msg-details.component';
 import { ConsultPhoneComponent } from './consult/consult-phone/consult-phone.component';
+import { ConsultRequestContentComponent } from './consult/consult-request-content/consult-request-content.component';
 
 @NgModule({
   declarations: [
@@ -75,6 +76,7 @@ import { ConsultPhoneComponent } from './consult/consult-phone/consult-phone.com
     WechatMessageFailedComponent,
     WechatMsgDetailsComponent,
     ConsultPhoneComponent,
+    ConsultRequestContentComponent,
   ],
   imports: [
     SharedModule,
