@@ -16,6 +16,7 @@ import { ConsultComponent } from './consult/consult.component';
 import { SurveyPushComponent } from './survey-push/survey-push.component';
 import { WechatMessageFailedComponent } from './wechat-message-failed/wechat-message-failed.component';
 import { WechatTemplatesResolver } from '../services/resolvers/wechat-templates.resolver';
+import { ConsultPhoneComponent } from './consult/consult-phone/consult-phone.component';
 
 const routes: Routes = [{
   path: '',
@@ -33,6 +34,10 @@ const routes: Routes = [{
     {
       path: 'consult',
       component: ConsultComponent,
+    },
+    {
+      path: 'consult-phone',
+      component: ConsultPhoneComponent,
     },
     {
       path: 'diagnose',

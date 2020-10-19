@@ -339,13 +339,22 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   viewConsult(noti: Notification) {
-    // todo:
-    this.router.navigate(['/main/chat'], {
-      queryParams: {
-        pid: noti.patientId,
-        type: noti.type === 6 ? 1 : 0, // change back from noti type => consult type
-      }
-    });
+    // 付费图文咨询 （共用chat）
+    if (noti.type === 0) {
+      this.router.navigate(['/main/chat'], {
+        queryParams: {
+          pid: noti.patientId,
+          type: NotificationType.consultChat
+        }
+      });
+    } else if ( noti.type === 1) {
+      // 付费电话咨询，到说明页面
+      this.router.navigate(['/main/consult-phone'], {
+        queryParams: {
+          pid: noti.patientId
+        }
+      });
+    }
   }
 
   nav(target: string, forceReload = false) {
