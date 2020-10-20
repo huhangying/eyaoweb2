@@ -14,5 +14,6 @@ export interface Consult {
   setCharged?: boolean;  // 药师设置，if true 将阻止病患免费咨询
 
   finished?: boolean;
-  updatedAt?: Date;
+  createdAt?: Date;
+  // updatedAt?: Date;
 }

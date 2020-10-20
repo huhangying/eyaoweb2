@@ -1,6 +1,6 @@
 <nb-card class="h-100">
   <nb-card-header>
-    {{ type === 1 ? '不良反应反馈' : ((type === 2) ? '联合用药反馈' : (!isCs ? '在线咨询': '客服咨询')) }}
+    {{ type === 1 ? '不良反应反馈' : ((type === 2) ? '联合用药反馈' : (type === 5) ? '付费图文咨询' : (!isCs ? '在线咨询': '客服咨询')) }}
     <ng-container *ngIf="!isMd">
       <button mat-icon-button color="accent" (click)="toggleShowInSm()">
         <mat-icon>menu</mat-icon>
@@ -74,7 +74,8 @@
                         </div>
                       </div>
                       <div class="pr-2" *ngIf="showBadge(user._id)">
-                        <span [matBadge]="showCsBadgeCount(user._id)" matBadgeOverlap="false" matBadgeColor="warn"></span>
+                        <span [matBadge]="showCsBadgeCount(user._id)" matBadgeOverlap="false"
+                          matBadgeColor="warn"></span>
                       </div>
                     </div>
                   </mat-list-option>
@@ -111,11 +112,11 @@
             </div>
             <div class="status-action d-flex flex-column justify-content-center pr-2">
               <div *ngIf="showBadge(selectedPatient?._id)">
-                <span>
+                <!-- <span>
                   新消息
-                </span>
-                <button mat-icon-button color="primary" matTooltip="标识完成" (click)="markRead()">
-                  <mat-icon>check_circle</mat-icon>
+                </span> -->
+                <button mat-flat-button class="text-success" matTooltip="药师手动标识完成" (click)="markRead()">
+                  <mat-icon>check_circle</mat-icon> 标识完成
                 </button>
               </div>
             </div>
@@ -207,8 +208,7 @@
                         <img [src]="doctor?.icon | imgPath" class="rounded-circle user_img_msg">
                       </div>
                       <div class="msg-data text-break">
-                        {{doctor.name + doctor.title}}回复：
-                        <div class="text-muted small">发送于
+                        <div class="text-muted small">回复于
                           {{ feedback.createdAt | localDate: 'full'}}
                         </div>
                         <hr class="my-2">
@@ -223,6 +223,39 @@
                     </div>
                   </div>
                 </ng-container>
+              </div>
+            </ng-container>
+
+            <ng-container *ngIf="type === 5">
+              <div *ngFor="let consult of consults" class="mx-2 my-3">
+                <ng-container *ngIf="consult.userName">
+                  <div class="to">
+                    <div class="d-flex align-items-start">
+                      <div class="img_cont_msg">
+                        <span class="triangle"></span>
+                        <img [src]="selectedPatient?.icon" class="rounded-circle user_img_msg">
+                      </div>
+                      <div class="msg-data text-break">
+                        <ngx-consult-request-content [consult]="consult" [showType]="true"></ngx-consult-request-content>
+                      </div>
+                    </div>
+                  </div>
+                </ng-container>
+
+                <ng-container *ngIf="!consult.userName">
+                  <div class="sender">
+                    <div class="d-flex align-items-end flex-row-reverse">
+                      <div class="img_cont_msg">
+                        <span class="triangle"></span>
+                        <img [src]="doctor?.icon | imgPath" class="rounded-circle user_img_msg">
+                      </div>
+                      <div class="msg-data text-break">
+                        <ngx-consult-request-content [consult]="consult"></ngx-consult-request-content>
+                      </div>
+                    </div>
+                  </div>
+                </ng-container>
+
               </div>
             </ng-container>
             <div id="chat-bottom" class="position-relative"></div>

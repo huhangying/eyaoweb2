@@ -36,8 +36,10 @@ export class ChatComponent implements OnInit, OnDestroy {
   chatNotifications: Notification[];
   feedbackNotifications: Notification[];
   csNotifications: Notification[];
+  consultNotifications: Notification[];
   chats: Chat[];
   feedbacks: UserFeedback[];
+  consults: Consult[];
 
   doctor: Doctor;
   doctorIcon: string; // doctor origin icon
@@ -189,6 +191,13 @@ export class ChatComponent implements OnInit, OnDestroy {
       }
     });
 
+    this.socketio.onConsult((msg: Consult) => {
+      if (msg.user === this.selectedPatient?._id) {
+        this.consults.push(msg);
+        this.scrollBottom();
+      }
+    });
+
 
     this.setChatBodyHeight();
     const { md } = this.breakpointService.getBreakpointsMap();
@@ -247,6 +256,20 @@ export class ChatComponent implements OnInit, OnDestroy {
       takeUntil(this.destroy$),
     ).subscribe();
 
+    this.appStore.state$.pipe(
+      pluck('consultNotifications'),
+      distinctUntilChanged(),
+      tap(notis => {
+        // init
+        this.consultNotifications = [];
+        if (notis?.length) {
+          this.consultNotifications = notis;
+        }
+        this.cd.markForCheck();
+      }),
+      takeUntil(this.destroy$),
+    ).subscribe();
+
   }
 
   ngOnDestroy() {
@@ -270,6 +293,10 @@ export class ChatComponent implements OnInit, OnDestroy {
       case NotificationType.adverseReaction:
       case NotificationType.doseCombination:
         notifications = this.feedbackNotifications;
+        break;
+
+      case NotificationType.consultChat:
+        notifications = this.consultNotifications;
         break;
     }
     if (!notifications?.length) return false;
@@ -299,7 +326,9 @@ export class ChatComponent implements OnInit, OnDestroy {
           takeUntil(this.destroy$),
         ).subscribe();
       }
-    } else {
+    } else if (NotificationType.consultChat === this.type) {
+      this.selectConsultPatient(patient);
+    } else if ([NotificationType.adverseReaction, NotificationType.doseCombination].indexOf(this.type) > -1) {
       this.selectFeedbackPatient(patient, this.type);
     }
   }
@@ -351,12 +380,43 @@ export class ChatComponent implements OnInit, OnDestroy {
     ).subscribe();
   }
 
+  selectConsultPatient(patient: User) {
+    this.selectedPatient = patient;
+    this.showInSm = false;
+
+    // get history
+    this.consultService.GetConsultsByDoctorIdAndUserId(this.doctor._id, patient._id).pipe(
+      tap(results => {
+        if (results?.length) {
+          this.consults = results;
+          this.scrollBottom();
+
+          // !! 取消自动去除“未读”。改成手动
+          // this.feedbackService.removeFromNotificationList(this.doctor._id, this.selectedPatient._id, this.type);
+        } else {
+          this.consults = [];
+        }
+        this.cd.markForCheck();
+      }),
+      takeUntil(this.destroy$),
+    ).subscribe();
+  }
+
   send(imgPath?: string) {
     this.showEmoji = false;
-    if (this.type === 0) {
-      this.sendChat(imgPath);
-    } else {
-      this.sendFeedback(imgPath);
+    switch (this.type) {
+      case NotificationType.chat: // NotificationType.customerService
+        this.sendChat(imgPath);
+        break;
+
+      case NotificationType.adverseReaction:
+      case NotificationType.doseCombination:
+        this.sendFeedback(imgPath);
+        break;
+
+      case NotificationType.consultChat:
+        this.sendConsult(imgPath);
+        break;
     }
     this.scrollBottom();
     this.myInput = '';
@@ -425,6 +485,40 @@ export class ChatComponent implements OnInit, OnDestroy {
 
     this.socketio.sendFeedback(this.room, feedback);
     this.feedbackService.sendFeedback(feedback).subscribe();
+  }
+
+  sendConsult(imgPath?: string) {
+    let consult: Consult;
+    if (imgPath) {
+      // Picture
+      consult = {
+        user: this.selectedPatient._id,
+        doctor: this.doctor._id,
+        // userName: this.selectedPatient.name,
+        type: this.type,
+        content: '请参阅图片',
+        upload: imgPath,
+        finished: true,
+        createdAt: new Date()
+      };
+    } else {
+      // Text
+      if (this.myInput.trim() === '') return; // avoid sending empty
+      consult = {
+        user: this.selectedPatient._id,
+        doctor: this.doctor._id,
+        // senderName: this.selectedPatient.name,
+        type: this.type,
+        content: this.myInput,
+        finished: true,
+        createdAt: new Date()
+      };
+    }
+    this.consults.push(consult);
+
+    this.socketio.sendConsult(this.room, consult);
+    this.consultService.sendConsult(consult).subscribe();
+    this.scrollBottom();
   }
 
   setChatChargedStatus(charged: boolean) {
@@ -500,6 +594,7 @@ export class ChatComponent implements OnInit, OnDestroy {
     }
   }
 
+  //
   toggleSetCharge() {
     this.setCharged = !this.setCharged;
     if (this.currentConsult?._id) {
@@ -510,7 +605,7 @@ export class ChatComponent implements OnInit, OnDestroy {
       ).subscribe();
 
     } else {
-      this.consultService.AddConsult({
+      this.consultService.sendConsult({
         doctor: this.doctor._id,
         user: this.selectedPatient._id,
         setCharged: this.setCharged
@@ -538,9 +633,15 @@ export class ChatComponent implements OnInit, OnDestroy {
         this.feedbackService.removeFromNotificationList(this.doctor._id, this.selectedPatient._id, this.type);
         break;
 
+      case NotificationType.consultChat:
+        this.consultService.removeConsultChatsFromNotificationList(this.doctor._id, this.selectedPatient._id);
+        // todo
+        this.message.success('药师标记图文咨询已经处理！');
+        return;
+
       default:
         return;
     }
-    this.message.success('药师标记消息已读！');
+    this.message.success('药师标记消息已处理！');
   }
 }

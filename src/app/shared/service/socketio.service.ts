@@ -6,6 +6,7 @@ import * as moment from 'moment';
 import { UserFeedback } from '../../models/io/user-feedback.model';
 import { AppStoreService } from '../store/app-store.service';
 import { Notification, NotificationType } from '../../models/io/notification.model';
+import { Consult } from '../../models/consult/consult.model';
 @Injectable({
   providedIn: 'root'
 })
@@ -54,6 +55,15 @@ export class SocketioService {
 
   sendFeedback(room: string, feedback: UserFeedback) {
     this.socket.emit('feedback', room, feedback);
+  }
+
+  // Consult Chat
+  onConsult(next) {
+    this.socket.on('consult', next);
+  }
+
+  sendConsult(room: string, consult: Consult) {
+    this.socket.emit('consult', room, consult);
   }
 
   // Notifications

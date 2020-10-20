@@ -41,12 +41,20 @@ export class ConsultService {
     return this.api.get<Consult>(`consult/get-pending-request/${doctorId}/${userId}/${type}`);
   }
 
+  GetConsultsByDoctorIdAndUserId(doctorId: string, userId: string) {
+    return this.api.get<Consult[]>(`consults/get/${doctorId}/${userId}`);
+  }
+
   updateConsultById(id: string, data: Consult) {
     return this.api.patch<Consult>('consult/' + id, data);
   }
 
-  AddConsult(data: Consult): Observable<Consult> {
+  sendConsult(data: Consult): Observable<Consult> {
     return this.api.post<Consult>('consult', data) as Observable<Consult>;
+  }
+
+  setConsultDoneByDocterUserAndType(doctorId: string, userId: string, type: number) {
+    return this.api.get(`consults/mark-done/${doctorId}/${userId}/${type}`);
   }
 
   // after app started
@@ -63,7 +71,7 @@ export class ConsultService {
           type: type,
           name: consult.userName || '',
           count: 1,
-          created: consult.updatedAt
+          created: consult.createdAt
         });
         return notis;
       }
@@ -81,17 +89,32 @@ export class ConsultService {
     return consultNotifications;
   }
 
+  // 付费图文咨询：标记已读，并从提醒列表里去除
+  removeConsultChatsFromNotificationList(doctorId: string, patientId: string) {
+    // get from store
+    let notifications = this.appStore.state.consultNotifications;
+    if (!notifications?.length) return;
+    notifications = notifications.filter(_ => _.patientId !== patientId || _.type !== 5); // type=5: 图文
+
+    // save back
+    this.appStore.updateConsultNotifications(notifications);
+
+    // mark done to db
+    this.setConsultDoneByDocterUserAndType(doctorId, patientId, 0).subscribe();  // type=0: 图文
+  }
+
+
   // doctor consult
 
   getDoctorConsultByDoctorId(doctorId: string) {
-    return this.api.get<DoctorConsult>('doctor-consult/' +  doctorId).pipe(
+    return this.api.get<DoctorConsult>('doctor-consult/' + doctorId).pipe(
       map(dc => {
         if (!dc?.presetComments?.length) {
           return dc;
         }
         dc.presetComments = dc.presetComments.map(pc => {
           const found = this._presetComments.find(_ => _.type === pc.type);
-          return found ? {...pc, label: found.label} : pc;
+          return found ? { ...pc, label: found.label } : pc;
         });
         return dc;
       })
@@ -105,7 +128,7 @@ export class ConsultService {
   // doctor consult comment
 
   getAllDoctorConsultComments(doctorId: string) {
-    return this.api.get<DoctorConsultComment[]>('doctor-consult-comment/' +  doctorId);
+    return this.api.get<DoctorConsultComment[]>('doctor-consult-comment/' + doctorId);
   }
 
   getDoctorConsultCommentsBy(doctorId: string, from: number, size: number) {
