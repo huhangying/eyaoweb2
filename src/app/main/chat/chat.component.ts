@@ -500,7 +500,7 @@ export class ChatComponent implements OnInit, OnDestroy {
         type: this.type,
         content: '请参阅图片',
         upload: imgPath,
-        finished: false,
+        finished: true,
         createdAt: new Date()
       };
     } else {
@@ -512,7 +512,7 @@ export class ChatComponent implements OnInit, OnDestroy {
         // senderName: this.selectedPatient.name,
         type: this.type,
         content: this.myInput,
-        finished: false,
+        finished: true,
         createdAt: new Date()
       };
     }
