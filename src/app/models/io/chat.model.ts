@@ -25,9 +25,11 @@ export enum ChatType {
 export enum ChatCommandType {
   setCharged =  'SET_CHARGED',
   setFree = 'SET_FREE',
+  setFinished = 'SET_FINISHED',
 }
 
 export const ChatCommandTypeMap = {
   SET_CHARGED: '已对病患设置成收费咨询',
-  SET_FREE: '已对病患设置成免费咨询'
+  SET_FREE: '已对病患设置成免费咨询',
+  SET_FINISHED: '付费咨询已经完成',
 };

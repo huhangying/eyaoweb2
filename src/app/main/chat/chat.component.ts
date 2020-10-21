@@ -21,6 +21,7 @@ import { MessageService } from '../../shared/service/message.service';
 import { Subject } from 'rxjs';
 import { Consult } from '../../models/consult/consult.model';
 import { ConsultService } from '../../services/consult.service';
+import { WeixinService } from '../../shared/service/weixin.service';
 
 @Component({
   selector: 'ngx-chat',
@@ -79,6 +80,7 @@ export class ChatComponent implements OnInit, OnDestroy {
     private appStore: AppStoreService,
     private breakpointService: NbMediaBreakpointsService,
     private message: MessageService,
+    private wxService: WeixinService,
   ) {
     this.doctor = this.auth.doctor;
     this.doctorIcon = this.doctor.icon;
@@ -517,7 +519,16 @@ export class ChatComponent implements OnInit, OnDestroy {
     this.consults.push(consult);
 
     this.socketio.sendConsult(this.room, consult);
-    this.consultService.sendConsult(consult).subscribe();
+    this.consultService.sendConsult(consult).subscribe(consult => {
+      this.wxService.sendWechatMsg(this.selectedPatient.link_id,
+        '药师咨询回复',
+        'content...',
+        `${this.doctor.wechatUrl}consult-reply?openid=${this.selectedPatient.link_id}&state=${this.auth.hid}&id=${consult._id}`,
+        '',
+        this.doctor._id,
+        this.selectPatient.name
+      ).subscribe();
+    });
     this.scrollBottom();
   }
 
