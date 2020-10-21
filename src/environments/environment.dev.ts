@@ -4,7 +4,7 @@
  * Licensed under the MIT License. See License.txt in the project root for license information.
  */
 export const environment = {
-  production: true,
+  production: false,
   fontUrl: 'http://timebox.i234.me/assets/FZYTK.TTF',
   apiUrl: 'api/',
   imageServer: 'http://timebox.i234.me/images/',
