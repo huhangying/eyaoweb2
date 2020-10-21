@@ -500,7 +500,7 @@ export class ChatComponent implements OnInit, OnDestroy {
         type: this.type,
         content: '请参阅图片',
         upload: imgPath,
-        finished: true,
+        finished: false,
         createdAt: new Date()
       };
     } else {
@@ -512,7 +512,7 @@ export class ChatComponent implements OnInit, OnDestroy {
         // senderName: this.selectedPatient.name,
         type: this.type,
         content: this.myInput,
-        finished: true,
+        finished: false,
         createdAt: new Date()
       };
     }
@@ -522,7 +522,7 @@ export class ChatComponent implements OnInit, OnDestroy {
     this.consultService.sendConsult(consult).subscribe(consult => {
       this.wxService.sendWechatMsg(this.selectedPatient.link_id,
         '药师咨询回复',
-        'content...',
+        !imgPath ? consult.content : '药师发送图片，请点击查看。',
         `${this.doctor.wechatUrl}consult-reply?openid=${this.selectedPatient.link_id}&state=${this.auth.hid}&id=${consult._id}`,
         '',
         this.doctor._id,
