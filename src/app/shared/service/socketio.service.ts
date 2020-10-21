@@ -104,7 +104,7 @@ export class SocketioService {
       notifications = [noti];
     } else {
       notifications = [...storeNotifications];
-      const index = notifications.findIndex(_ => _.patientId === noti.patientId);
+      const index = notifications.findIndex(_ => _.patientId === noti.patientId && _.type === noti.type);
       // if new
       if (index === -1) {
         notifications.push(noti);
