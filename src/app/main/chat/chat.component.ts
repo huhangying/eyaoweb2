@@ -305,13 +305,23 @@ export class ChatComponent implements OnInit, OnDestroy {
     return notifications.findIndex(noti => noti.patientId === pid) > -1;
   }
 
-  showBadgeCount(pid: string): number {
-    return this.chatNotifications.find(noti => noti.patientId === pid)?.count;
-  }
+  getBadgeCount(pid: string): number {
+    let notifications = [];
+    switch (this.type) {
+      case NotificationType.chat: // NotificationType.customerService 客服病患消息个数提醒
+        notifications = !this.isCs ? this.chatNotifications : this.csNotifications;
+        break;
 
-  // 客服病患消息个数提醒
-  showCsBadgeCount(pid: string): number {
-    return this.csNotifications.find(noti => noti.patientId === pid)?.count;
+      case NotificationType.adverseReaction:
+      case NotificationType.doseCombination:
+        notifications = this.feedbackNotifications;
+        break;
+
+      case NotificationType.consultChat:
+        notifications = this.consultNotifications;
+        break;
+    }
+    return notifications.find(noti => noti.patientId === pid)?.count || 0;
   }
 
   selectPatient(patient: User) {

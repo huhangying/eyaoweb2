@@ -39,8 +39,8 @@
                             <div class="text-hint"> {{member.user.gender | gender}} </div>
                           </div>
                         </div>
-                        <div class="pr-2" *ngIf="showBadge(member.user._id)">
-                          <span [matBadge]="showBadgeCount(member.user._id)" matBadgeOverlap="false"
+                        <div class="pr-2" *ngIf="getBadgeCount(member.user._id) as badgeCount">
+                          <span [matBadge]="badgeCount" matBadgeOverlap="false"
                             matBadgeColor="warn"></span>
                         </div>
                       </div>
@@ -73,8 +73,8 @@
                           <div class="text-hint"> {{user.gender | gender}} </div>
                         </div>
                       </div>
-                      <div class="pr-2" *ngIf="showBadge(user._id)">
-                        <span [matBadge]="showCsBadgeCount(user._id)" matBadgeOverlap="false"
+                      <div class="pr-2" *ngIf="getBadgeCount(user._id) as badgeCount">
+                        <span [matBadge]="badgeCount" matBadgeOverlap="false"
                           matBadgeColor="warn"></span>
                       </div>
                     </div>
