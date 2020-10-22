@@ -521,9 +521,9 @@ export class ChatComponent implements OnInit, OnDestroy {
     this.socketio.sendConsult(this.room, consult);
     this.consultService.sendConsult(consult).subscribe(consult => {
       this.wxService.sendWechatMsg(this.selectedPatient.link_id,
-        '药师咨询回复',
+        `${this.doctor.name}${this.doctor.title}咨询回复`,
         !imgPath ? consult.content : '药师发送图片，请点击查看。',
-        `${this.doctor.wechatUrl}consult-reply?openid=${this.selectedPatient.link_id}&state=${this.auth.hid}&id=${consult._id}`,
+        `${this.doctor.wechatUrl}consult-reply?doctorid=${this.doctor._id}&openid=${this.selectedPatient.link_id}&state=${this.auth.hid}&id=${consult._id}`,
         '',
         this.doctor._id,
         this.selectPatient.name
