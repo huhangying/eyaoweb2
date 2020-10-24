@@ -69,6 +69,7 @@ export class ChatService {
           type: notiType,
           name: chat.senderName || '', // to remove
           count: 1,
+          keyId: chat._id,
           created: chat.created
         });
         return notis;

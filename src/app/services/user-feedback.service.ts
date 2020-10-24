@@ -52,6 +52,7 @@ export class UserFeedbackService {
           type: feedback.type,
           name: feedback.senderName || '', // to remove
           count: 1,
+          keyId: feedback._id,
           created: feedback.createdAt
         });
         return notis;

@@ -41,6 +41,7 @@ export class ChatComponent implements OnInit, OnDestroy {
   chats: Chat[];
   feedbacks: UserFeedback[];
   consults: Consult[];
+  keyId: string;
 
   doctor: Doctor;
   doctorIcon: string; // doctor origin icon
@@ -100,6 +101,7 @@ export class ChatComponent implements OnInit, OnDestroy {
         this.type = (this.type === NotificationType.customerService) ? NotificationType.chat : this.type;
 
         const pid = queryParams?.pid;
+        this.keyId = queryParams?.id;
         this.isCs = queryParams?.cs;
 
         if (!this.isCs) {
@@ -536,7 +538,7 @@ export class ChatComponent implements OnInit, OnDestroy {
         `${this.doctor.wechatUrl}consult-reply?doctorid=${this.doctor._id}&openid=${this.selectedPatient.link_id}&state=${this.auth.hid}&id=${consult._id}`,
         '',
         this.doctor._id,
-        this.selectPatient.name
+        this.selectedPatient.name
       ).subscribe();
     });
     this.scrollBottom();
@@ -655,9 +657,18 @@ export class ChatComponent implements OnInit, OnDestroy {
         break;
 
       case NotificationType.consultChat:
-        this.consultService.removeConsultChatsFromNotificationList(this.doctor._id, this.selectedPatient._id);
-        // todo
-        this.message.success('药师标记图文咨询已经处理！');
+        // this.consultService.removeFromNotificationList(this.doctor._id, this.selectedPatient._id, this.type);
+
+        // 发送微信消息
+        this.wxService.sendWechatMsg(this.selectedPatient.link_id,
+          '药师咨询完成',
+          `${this.doctor.name}${this.doctor.title}已完成咨询。请点击查看，并建议和评价药师。`,
+          `${this.doctor.wechatUrl}consult-finish?doctorid=${this.doctor._id}&openid=${this.selectedPatient.link_id}&state=${this.auth.hid}&id=${this.keyId}&type=0`,
+          '',
+          this.doctor._id,
+          this.selectPatient.name
+        ).subscribe();
+        this.message.success('药师标记图文咨询已经完成！');
         return;
 
       default:

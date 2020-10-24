@@ -344,14 +344,16 @@ export class HeaderComponent implements OnInit, OnDestroy {
       this.router.navigate(['/main/chat'], {
         queryParams: {
           pid: noti.patientId,
-          type: NotificationType.consultChat
+          type: NotificationType.consultChat,
+          id: noti.keyId
         }
       });
     } else if ( noti.type === NotificationType.consultPhone) {
       // 付费电话咨询，到说明页面
       this.router.navigate(['/main/consult-phone'], {
         queryParams: {
-          pid: noti.patientId
+          pid: noti.patientId,
+          id: noti.keyId
         }
       });
     }

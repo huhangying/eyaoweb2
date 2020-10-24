@@ -37,8 +37,8 @@ export class ConsultService {
     return this.api.get<Consult[]>(`consults/get-pending/${doctorId}`);
   }
 
-  getPendingConsultRequest(doctorId: string, userId: string, type: number) {
-    return this.api.get<Consult>(`consult/get-pending-request/${doctorId}/${userId}/${type}`);
+  getConsultById(id: string) {
+    return this.api.get<Consult>('consult/' + id);
   }
 
   GetConsultsByDoctorIdAndUserId(doctorId: string, userId: string) {
@@ -71,6 +71,7 @@ export class ConsultService {
           type: type,
           name: consult.userName || '',
           count: 1,
+          keyId: consult._id,
           created: consult.createdAt
         });
         return notis;
@@ -89,18 +90,19 @@ export class ConsultService {
     return consultNotifications;
   }
 
-  // 付费图文咨询：标记已读，并从提醒列表里去除
-  removeConsultChatsFromNotificationList(doctorId: string, patientId: string) {
+  // 付费咨询：标记已读，并从提醒列表里去除
+  removeFromNotificationList(doctorId: string, patientId: string, type: NotificationType) {
     // get from store
     let notifications = this.appStore.state.consultNotifications;
     if (!notifications?.length) return;
-    notifications = notifications.filter(_ => _.patientId !== patientId || _.type !== 5); // type=5: 图文
+    notifications = notifications.filter(_ => _.patientId !== patientId || _.type !== type); // type=5 or 6
 
     // save back
     this.appStore.updateConsultNotifications(notifications);
 
     // mark done to db
-    this.setConsultDoneByDocterUserAndType(doctorId, patientId, 0).subscribe();  // type=0: 图文
+    this.setConsultDoneByDocterUserAndType(doctorId, patientId,
+      type === NotificationType.consultPhone ? 1 : 0).subscribe();  // type=0: 图文
   }
 
 
