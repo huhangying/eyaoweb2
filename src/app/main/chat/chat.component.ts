@@ -666,7 +666,7 @@ export class ChatComponent implements OnInit, OnDestroy {
           `${this.doctor.wechatUrl}consult-finish?doctorid=${this.doctor._id}&openid=${this.selectedPatient.link_id}&state=${this.auth.hid}&id=${this.keyId}&type=0`,
           '',
           this.doctor._id,
-          this.selectPatient.name
+          this.selectedPatient.name
         ).subscribe();
         this.message.success('药师标记图文咨询已经完成！');
         return;

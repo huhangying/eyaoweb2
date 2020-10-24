@@ -294,7 +294,7 @@ export class DiagnoseComponent implements OnInit, OnDestroy {
           `${this.doctor.wechatUrl}diagnose-history?openid=${this.selectedPatient.link_id}&state=${this.auth.hid}&id=${this.diagnose._id}`,
           '',
           this.doctor._id,
-          this.selectPatient.name
+          this.selectedPatient.name
         ).subscribe();
         // reset if success
         this.resetDiagnose();
