@@ -21,8 +21,13 @@
   </nb-card-body>
 
   <nb-card-footer class="d-block" *ngIf="consult?._id">
-    <button nbButton hero outline status="info" class="float-right mr-3" (click)="markDone()">
-      <nb-icon icon="checkmark-circle"></nb-icon>标识完成
-    </button>
+    <ng-container *ngIf="!done">
+      <button nbButton hero outline status="info" class="float-right mr-3" (click)="markDone()">
+        <nb-icon icon="checkmark-circle"></nb-icon>标识完成
+      </button>
+    </ng-container>
+    <ng-container *ngIf="done">
+      <div class="alert alert-warning">付费电话咨询已完成</div>
+    </ng-container>
   </nb-card-footer>
 </nb-card>

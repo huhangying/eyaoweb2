@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { tap } from 'rxjs/operators';
 import { Consult } from '../../../models/consult/consult.model';
 import { Doctor } from '../../../models/crm/doctor.model';
+import { NotificationType } from '../../../models/io/notification.model';
 import { ConsultService } from '../../../services/consult.service';
 import { UserService } from '../../../services/user.service';
 import { AuthService } from '../../../shared/service/auth.service';
@@ -20,6 +21,7 @@ export class ConsultPhoneComponent implements OnInit {
   doctor: Doctor;
   consultId: string;
   patientId: string;
+  done = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -39,6 +41,9 @@ export class ConsultPhoneComponent implements OnInit {
         this.consultService.getConsultById(this.consultId).pipe(
           tap(result => {
             this.consult = result;
+            if (result) {
+              this.done = result.finished;
+            }
           })
         ).subscribe();
       })
@@ -49,7 +54,7 @@ export class ConsultPhoneComponent implements OnInit {
   }
 
   markDone() {
-    // this.consultService.removeFromNotificationList(this.doctor._id, this.patientId, 1);
+    this.consultService.removeFromNotificationList(this.doctor._id, this.patientId, NotificationType.consultPhone);
 
     this.userService.getById(this.patientId).pipe(
       tap(user => {
@@ -64,6 +69,7 @@ export class ConsultPhoneComponent implements OnInit {
             user.name
           ).subscribe();
           this.message.success('药师标记电话咨询已经完成！');
+          this.done = true;
         }
       })
     ).subscribe();

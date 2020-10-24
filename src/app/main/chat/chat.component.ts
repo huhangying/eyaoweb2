@@ -657,7 +657,7 @@ export class ChatComponent implements OnInit, OnDestroy {
         break;
 
       case NotificationType.consultChat:
-        // this.consultService.removeFromNotificationList(this.doctor._id, this.selectedPatient._id, this.type);
+        this.consultService.removeFromNotificationList(this.doctor._id, this.selectedPatient._id, this.type);
 
         // 发送微信消息
         this.wxService.sendWechatMsg(this.selectedPatient.link_id,
