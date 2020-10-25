@@ -37,8 +37,6 @@ export class WechatMessageFailedComponent implements OnInit, OnDestroy {
 
   constructor(
     private route: ActivatedRoute,
-    // private router: Router,
-    // private doctorService: DoctorService,
     public dialog: MatDialog,
     private dialogService: DialogService,
     private wxService: WeixinService,
@@ -51,11 +49,11 @@ export class WechatMessageFailedComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.wxService.getAllWxMsgQueue().pipe(
-      tap(results => {
-        this.loadData(results);
-      })
-    ).subscribe();
+    // this.wxService.getAllWxMsgQueue().pipe(
+    //   tap(results => {
+    //     this.loadData(results);
+    //   })
+    // ).subscribe();
   }
 
   ngOnDestroy() {

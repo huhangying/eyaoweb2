@@ -4,7 +4,7 @@ export interface WechatFailedMessage {
   doctorid: string; // sender / doctor id
 
   type: number; // 1: wechat msg; 2: template message;
-  openid: number;     // to: 微信的ID
+  openid: string;     // to: 微信的ID
   url: string;
   // 图文消息
   title?: string;

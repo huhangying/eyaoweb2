@@ -121,6 +121,11 @@
   </mat-dialog-content>
 
   <nb-card-footer class="d-block">
+    &nbsp;&nbsp;
+    <button nbButton outline status="warning" (click)="resend(data.openid)" *ngIf="data.openid">
+      重新发送该病患的所有失败消息（测试）
+    </button>
+
     <button nbButton hero outline status="primary" class="float-right" mat-dialog-close>关闭</button>
   </nb-card-footer>
 </nb-card>

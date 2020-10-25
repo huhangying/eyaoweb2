@@ -180,4 +180,9 @@ export class WeixinService {
     return this.api.delete<WechatFailedMessage>('wechat/msg-queue/' + id);
   }
 
+  // ONLY for test
+  resendMsgInQueue(openid: string) {
+    return this.api.get<{msg: string}>('wechat/resend-msg/' + openid);
+  }
+
 }
