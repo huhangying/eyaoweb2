@@ -1,3 +1,48 @@
-<pre>
-  {{data | json}}
-</pre>
+<nb-card status="info">
+  <nb-card-header>
+    付费咨询评价
+    <button nbButton shape="round" size="tiny" class="float-right" mat-dialog-close>
+      <nb-icon icon="close"></nb-icon>
+    </button>
+  </nb-card-header>
+
+  <mat-dialog-content class="px-3">
+
+    <div class="card-title h6 pt-1">评分: </div>
+    <div class="d-flex align-items-center">
+      <div class="ml-5" id="rater"></div>
+      <div class="pl-4" *ngIf="data.score > 0">{{data.score}} / 5</div>
+    </div>
+
+    <div class="py-2">
+      <div class="card-title h6 py-3">
+        药师评价或建议:
+      </div>
+
+      预设评价
+      <mat-divider></mat-divider>
+      <div class="p-3" [formGroup]="form">
+        <div class="row">
+          <mat-checkbox class="col-6" formControlName="preset1">建议非常有用</mat-checkbox>
+          <mat-checkbox class="col-6" formControlName="preset2">普及相关知识</mat-checkbox>
+        </div>
+        <div class="row">
+          <mat-checkbox class="col-6" formControlName="preset3">消除了疑惑</mat-checkbox>
+          <mat-checkbox class="col-6" formControlName="preset4">解答不厌其烦</mat-checkbox>
+        </div>
+      </div>
+
+      文字评价
+      <mat-divider></mat-divider>
+      <div class="mx-2 my-3">
+        {{data?.comment || '无内容'}}
+      </div>
+    </div>
+  </mat-dialog-content>
+
+  <nb-card-footer class="d-block">
+    <button nbButton hero status="secondary" class="float-right" mat-dialog-close>
+      关闭
+    </button>
+  </nb-card-footer>
+</nb-card>

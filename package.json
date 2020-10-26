@@ -54,6 +54,7 @@
     "pace-js": "1.0.2",
     "pdfmake": "^0.1.68",
     "popper.js": "^1.16.1",
+    "rater-js": "^1.0.1",
     "rxjs": "^6.5.5",
     "rxjs-compat": "^6.5.5",
     "socket.io-client": "^2.3.0",
