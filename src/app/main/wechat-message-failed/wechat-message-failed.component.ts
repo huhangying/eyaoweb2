@@ -75,11 +75,7 @@ export class WechatMessageFailedComponent implements OnInit, OnDestroy {
     ).subscribe();
   }
 
-  add() {
-    return this.edit();
-  }
-
-  edit(data?: WechatFailedMessage) {
+  view(data?: WechatFailedMessage) {
     const msg = {...data};
     if (msg.type === 2) { // 模板消息
       msg.template_id = this.getWechatTemplateLabelById(msg.template_id);

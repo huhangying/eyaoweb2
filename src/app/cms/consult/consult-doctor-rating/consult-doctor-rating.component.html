@@ -1,0 +1,61 @@
+<nb-card>
+  <nb-card-header>
+    药师咨询服务评价
+    &nbsp;&nbsp;
+    <ngx-select-doctor [departments]="departments" (doctorSelected)="doctorSelected($event)">
+    </ngx-select-doctor>
+  </nb-card-header>
+
+  <nb-card-body>
+    <div [class.d-none]="!dataSource?.data?.length">
+      <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8 table-striped table-hover">
+
+        <ng-container matColumnDef="consultType">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> 服务类型 </th>
+          <td mat-cell *matCellDef="let element">
+            {{ element.consultType  === 1 ? '电话咨询': '图文咨询' }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="score">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> 评分 </th>
+          <td mat-cell *matCellDef="let element">
+            {{!element?.score ? '无' : (element.score + ' / 5')}}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="comment">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> 评价 </th>
+          <td mat-cell *matCellDef="let element">
+            {{ element.comment }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="createdAt">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> 评论日期 </th>
+          <td mat-cell *matCellDef="let element">
+            {{ element?.createdAt | localDate }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="_id">
+          <th mat-header-cell *matHeaderCellDef class="text-center"> 操作 </th>
+          <td mat-cell *matCellDef="let element" class="actions">
+            <button nbButton hero shape="round" size="tiny" status="info" title="查看" (click)="view(element)">
+              <nb-icon icon="list-outline"></nb-icon>
+            </button>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+      <mat-paginator [pageSizeOptions]="[10, 25, 50]" [pageSize]="10" showFirstLastButtons></mat-paginator>
+    </div>
+    <ng-container *ngIf="!dataSource?.data?.length">
+      <div class="alert alert-warning" role="alert">
+        没有找到相关记录。
+      </div>
+    </ng-container>
+
+  </nb-card-body>
+</nb-card>
