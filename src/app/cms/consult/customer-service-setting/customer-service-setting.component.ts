@@ -29,7 +29,7 @@ export class CustomerServiceSettingComponent implements OnInit {
     private message: MessageService,
   ) {
     this.departments = this.route.snapshot.data.departments;
-   }
+  }
 
   ngOnInit(): void {
     this.hospital.getCustomerServiceInfo().pipe(
@@ -71,13 +71,9 @@ export class CustomerServiceSettingComponent implements OnInit {
         if (result) {
           this.hospital.updateCustomerServiceDoctor(this.hospitalId, null).pipe(
             tap(rsp => {
-              if (rsp) {
-                this.customerServiceDoctor = null;
-                this.hospitalId = null;
-                this.cd.markForCheck();
-                // this.loadData(this.dataSource.data.filter(item => item._id !== result._id)); // remove from list
-                this.message.deleteSuccess();
-              }
+              this.customerServiceDoctor = null;
+              this.cd.markForCheck();
+              this.message.deleteSuccess();
             }),
           ).subscribe();
         }
