@@ -576,7 +576,7 @@ export class ChatComponent implements OnInit, OnDestroy {
     }).afterClosed().pipe(
       tap(result => {
         if (result) {
-          // this.consultService.removeFromNotificationList(this.doctor._id, this.selectedPatient._id, this.type);
+          this.consultService.removeFromNotificationList(this.doctor._id, this.selectedPatient._id, NotificationType.consultChat);
 
           const consult = {
             user: this.selectedPatient._id,
