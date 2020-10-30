@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { tap } from 'rxjs/operators';
 import { Consult } from '../../../models/consult/consult.model';
@@ -10,6 +11,7 @@ import { AuthService } from '../../../shared/service/auth.service';
 import { MessageService } from '../../../shared/service/message.service';
 import { WeixinService } from '../../../shared/service/weixin.service';
 import { AppStoreService } from '../../../shared/store/app-store.service';
+import { ConsultRejectComponent } from '../consult-reject/consult-reject.component';
 
 @Component({
   selector: 'ngx-consult-phone',
@@ -21,7 +23,7 @@ export class ConsultPhoneComponent implements OnInit {
   doctor: Doctor;
   consultId: string;
   patientId: string;
-  done = false;
+  done: number; // 1: finish; 2: reject
 
   constructor(
     private route: ActivatedRoute,
@@ -30,6 +32,7 @@ export class ConsultPhoneComponent implements OnInit {
     private consultService: ConsultService,
     private wxService: WeixinService,
     private userService: UserService,
+    public dialog: MatDialog,
   ) {
     this.doctor = this.auth.doctor;
 
@@ -42,7 +45,7 @@ export class ConsultPhoneComponent implements OnInit {
           tap(result => {
             this.consult = result;
             if (result) {
-              this.done = result.finished;
+              this.done = result.finished ? 1 : 0;
             }
           })
         ).subscribe();
@@ -54,8 +57,6 @@ export class ConsultPhoneComponent implements OnInit {
   }
 
   markDone() {
-    this.consultService.removeFromNotificationList(this.doctor._id, this.patientId, NotificationType.consultPhone);
-
     this.userService.getById(this.patientId).pipe(
       tap(user => {
         if (user?._id) {
@@ -68,8 +69,36 @@ export class ConsultPhoneComponent implements OnInit {
             this.doctor._id,
             user.name
           ).subscribe();
+
+          this.consultService.removeFromNotificationList(this.doctor._id, this.patientId, NotificationType.consultPhone);
           this.message.success('药师标记电话咨询已经完成！');
-          this.done = true;
+          this.done = 1;
+        }
+      })
+    ).subscribe();
+  }
+
+  consultReject() {
+    this.userService.getById(this.patientId).pipe(
+      tap(user => {
+        if (user?._id) {
+          this.dialog.open(ConsultRejectComponent, {
+            data: {
+              doctor: this.doctor,
+              user: user,
+              consultId: this.consultId,
+            },
+            width: '600px'
+          }).afterClosed().pipe(
+            tap(result => {
+              if (result) {
+                this.consultService.removeFromNotificationList(this.doctor._id, this.patientId, NotificationType.consultPhone);
+
+                this.message.success('药师已经拒绝本次服务并退款！');
+                this.done = 2;
+              }
+            })
+          ).subscribe();
         }
       })
     ).subscribe();

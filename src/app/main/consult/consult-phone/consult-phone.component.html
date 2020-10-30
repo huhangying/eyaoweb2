@@ -22,12 +22,16 @@
 
   <nb-card-footer class="d-block" *ngIf="consult?._id">
     <ng-container *ngIf="!done">
+      <button mat-stroked-button class="text-warning" matTooltip="药师拒绝本次服务" (click)="consultReject()">
+        <mat-icon>cancel</mat-icon> 咨询拒绝
+      </button>
+
       <button nbButton hero outline status="info" class="float-right mr-3" (click)="markDone()">
         <nb-icon icon="checkmark-circle"></nb-icon>标识完成
       </button>
     </ng-container>
     <ng-container *ngIf="done">
-      <div class="alert alert-warning">付费电话咨询已完成</div>
+      <div class="alert alert-warning">付费电话咨询{{done === 2 ? '已拒绝' : '已完成'}}</div>
     </ng-container>
   </nb-card-footer>
 </nb-card>

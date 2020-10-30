@@ -38,6 +38,7 @@ import { WechatMessageFailedComponent } from './wechat-message-failed/wechat-mes
 import { WechatMsgDetailsComponent } from './wechat-message-failed/wechat-msg-details/wechat-msg-details.component';
 import { ConsultPhoneComponent } from './consult/consult-phone/consult-phone.component';
 import { ConsultRequestContentComponent } from './consult/consult-request-content/consult-request-content.component';
+import { ConsultRejectComponent } from './consult/consult-reject/consult-reject.component';
 
 @NgModule({
   declarations: [
@@ -77,6 +78,7 @@ import { ConsultRequestContentComponent } from './consult/consult-request-conten
     WechatMsgDetailsComponent,
     ConsultPhoneComponent,
     ConsultRequestContentComponent,
+    ConsultRejectComponent,
   ],
   imports: [
     SharedModule,

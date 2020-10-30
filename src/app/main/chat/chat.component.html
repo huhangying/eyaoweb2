@@ -111,10 +111,7 @@
               </div>
             </div>
             <div class="status-action d-flex flex-column justify-content-center pr-2">
-              <div *ngIf="showBadge(selectedPatient?._id)">
-                <!-- <span>
-                  新消息
-                </span> -->
+              <div *ngIf="hasNewServices(selectedPatient?._id)">
                 <button mat-flat-button class="text-success" matTooltip="药师手动标识完成" (click)="markRead()">
                   <mat-icon>check_circle</mat-icon> 标识完成
                 </button>
@@ -295,10 +292,17 @@
                 </ng-container>
               </mat-menu>
             </div>
-            <div class="status-action align-self-center" *ngIf="!isCs && type === 0">
-              <mat-slide-toggle [checked]="setCharged" (toggleChange)="toggleSetCharge()">
-                <span class="small">设置收费</span>
-              </mat-slide-toggle>
+            <div class="status-action align-self-center">
+              <ng-container *ngIf="!isCs && type === 0">
+                <mat-slide-toggle [checked]="setCharged" (toggleChange)="toggleSetCharge()">
+                  <span class="small">设置收费</span>
+                </mat-slide-toggle>
+              </ng-container>
+              <ng-container *ngIf="type === 5 && hasNewServices(selectedPatient?._id)">
+                <button mat-flat-button class="text-warning" matTooltip="药师拒绝本次服务" (click)="consultReject()">
+                  <mat-icon>cancel</mat-icon> 咨询拒绝
+                </button>
+              </ng-container>
             </div>
           </div>
           <div *ngIf="showEmoji">

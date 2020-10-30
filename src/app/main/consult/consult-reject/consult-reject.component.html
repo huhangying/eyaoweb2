@@ -1,0 +1,32 @@
+<nb-card status="warning">
+  <nb-card-header>
+    药师拒绝付费咨询服务
+    <button nbButton shape="round" size="tiny" class="float-right" mat-dialog-close>
+      <nb-icon icon="close"></nb-icon>
+    </button>
+  </nb-card-header>
+
+  <mat-dialog-content class="px-3">
+      <label>请填写</label>
+
+      <mat-form-field class="w-100">
+        <mat-label>拒绝原因</mat-label>
+        <input matInput [formControl]="rejectReasonCtrl">
+        <mat-hint>拒绝原因必填!</mat-hint>
+        <mat-error *ngIf="rejectReasonCtrl.hasError('required')">
+          必填
+        </mat-error>
+      </mat-form-field>
+
+      <div class="text-hint pt-3 px-2">
+        * 系统将把病患预交的咨询费用退还，并把您填写的拒绝原因已微信消息的形式发送给病患。
+      </div>
+  </mat-dialog-content>
+
+  <nb-card-footer class="d-block">
+    <button nbButton mat-dialog-close>取消</button>
+    <button nbButton hero status="primary" class="float-right" [disabled]="!rejectReasonCtrl.value" (click)="reject()">
+      <nb-icon icon="checkmark-circle"></nb-icon>确认拒绝
+    </button>
+  </nb-card-footer>
+</nb-card>

@@ -1,11 +1,14 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from './api.service';
 import { LocalDatePipe } from '../pipe/local-date.pipe';
-import { Booking, BookingFlatten } from '../../models/reservation/booking.model';
+import { BookingFlatten } from '../../models/reservation/booking.model';
 import { Doctor } from '../../models/crm/doctor.model';
 import { Department } from '../../models/hospital/department.model';
 import { WechatResponse } from '../../models/wechat-response.model';
 import { WechatFailedMessage } from '../../models/wechat-failed-message.model';
+import { of } from 'rxjs';
+import { delay, tap } from 'rxjs/operators';
+import { User } from '../../models/crm/user.model';
 
 @Injectable({
   providedIn: 'root'
@@ -173,7 +176,7 @@ export class WeixinService {
   }
 
   getWxMsgQueueByDoctorId(doctorId: string) {
-    return this.api.get<WechatFailedMessage[]>('wechat/msg-queue/doctor/' +  doctorId);
+    return this.api.get<WechatFailedMessage[]>('wechat/msg-queue/doctor/' + doctorId);
   }
 
   deleteWxMsgQueueById(id: string) {
@@ -182,7 +185,30 @@ export class WeixinService {
 
   // ONLY for test
   resendMsgInQueue(openid: string) {
-    return this.api.get<{msg: string}>('wechat/resend-msg/' + openid);
+    return this.api.get<{ msg: string }>('wechat/resend-msg/' + openid);
+  }
+
+  //===============================
+  // 微信支付
+  //===============================
+  triggerWxPay() { }
+
+  refundWxPay(user: User, doctor: Doctor, consultId: string, reason: string) {
+    return of('mock').pipe(
+      delay(1000),
+      tap(() => {
+        // 发送药师拒绝消息
+        const openid = user.link_id;
+        this.sendWechatMsg(openid,
+          `${doctor.name}${doctor.title}不能完成本次咨询服务`,
+          `原因: ${reason}`,
+          `${doctor.wechatUrl}consult-reply?doctorid=${doctor._id}&openid=${openid}&state=${doctor.hid}&id=${consultId}&reject=true`,
+          '',
+          doctor._id,
+          user.name
+        ).subscribe();
+      })
+    );
   }
 
 }

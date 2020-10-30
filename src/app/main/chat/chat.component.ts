@@ -22,6 +22,8 @@ import { Subject } from 'rxjs';
 import { Consult } from '../../models/consult/consult.model';
 import { ConsultService } from '../../services/consult.service';
 import { WeixinService } from '../../shared/service/weixin.service';
+import { MatDialog } from '@angular/material/dialog';
+import { ConsultRejectComponent } from '../consult/consult-reject/consult-reject.component';
 
 @Component({
   selector: 'ngx-chat',
@@ -82,6 +84,7 @@ export class ChatComponent implements OnInit, OnDestroy {
     private breakpointService: NbMediaBreakpointsService,
     private message: MessageService,
     private wxService: WeixinService,
+    public dialog: MatDialog,
   ) {
     this.doctor = this.auth.doctor;
     this.doctorIcon = this.doctor.icon;
@@ -286,7 +289,7 @@ export class ChatComponent implements OnInit, OnDestroy {
     this.cd.markForCheck();
   }
 
-  showBadge(pid: string): boolean {
+  hasNewServices(pid: string): boolean {
     if (!pid) return false;
     let notifications = [];
     switch (this.type) {
@@ -560,6 +563,37 @@ export class ChatComponent implements OnInit, OnDestroy {
     this.socketio.sendChat(this.room, chat);
     this.chatService.sendChat(chat).subscribe();
     this.scrollBottom();
+  }
+
+  consultReject() {
+    this.dialog.open(ConsultRejectComponent, {
+      data: {
+        doctor: this.doctor,
+        user: this.selectedPatient,
+        consultId: this.keyId,
+      },
+      width: '600px'
+    }).afterClosed().pipe(
+      tap(result => {
+        if (result) {
+          // this.consultService.removeFromNotificationList(this.doctor._id, this.selectedPatient._id, this.type);
+
+          const consult = {
+            user: this.selectedPatient._id,
+            doctor: this.doctor._id,
+            type: this.type,
+            content: `*** 药师不能完成本次咨询服务 ***
+原因: ${result?.rejectReason}`,
+            finished: true,
+            createdAt: new Date()
+          };
+          this.consults.push(consult); // to own chat window
+          this.socketio.sendConsult(this.room, consult);
+          this.consultService.sendConsult(consult).subscribe();
+          this.scrollBottom();
+        }
+      })
+    ).subscribe();
   }
 
   scrollBottom() {
