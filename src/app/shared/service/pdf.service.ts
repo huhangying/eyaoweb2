@@ -111,15 +111,15 @@ export class PdfService {
       ]
     };
 
-    if (surveyContent?.length) {
-      let surveyText = surveyType === 1 ? '初诊问卷\n' : '复诊问卷\n';
-      surveyText += surveyContent + '\n';
-      documentDefinition.content[1].table.body.push([{
-        colSpan: 4,
-        style: 'block',
-        text: surveyText
-      }]);
-    }
+    // if (surveyContent?.length) {
+    //   let surveyText = surveyType === 1 ? '初诊问卷\n' : '复诊问卷\n';
+    //   surveyText += surveyContent + '\n';
+    //   documentDefinition.content[1].table.body.push([{
+    //     colSpan: 4,
+    //     style: 'block',
+    //     text: surveyText
+    //   }]);
+    // }
 
     pdfMake.createPdf(documentDefinition).open();
   }
