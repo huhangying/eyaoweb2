@@ -6,7 +6,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { BookingFlatten, Booking } from '../../../models/reservation/booking.model';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ReservationService } from '../../../services/reservation.service';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogService } from '../../../shared/service/dialog.service';
@@ -39,8 +39,11 @@ export class BookingComponent implements OnInit, OnDestroy {
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   isCms: boolean;
+  fromBookingCancelNoti: boolean;
+  queryParams: any;
 
   constructor(
+    private router: Router,
     private route: ActivatedRoute,
     private reservationService: ReservationService,
     public dialog: MatDialog,
@@ -57,11 +60,13 @@ export class BookingComponent implements OnInit, OnDestroy {
     this.bookingData = [];
     this.route.queryParams.pipe(
       tap(queryParams => {
-        const { pid } = queryParams;
+        this.queryParams = queryParams;
+        const { pid, from } = queryParams;
         if (pid) {
           this.pid = pid;
           this.loadData();
         }
+        this.fromBookingCancelNoti = from === 'noti';
       }),
       takeUntil(this.destroy$),
     ).subscribe();
@@ -211,5 +216,15 @@ export class BookingComponent implements OnInit, OnDestroy {
   viewAll() {
     this.pid = '';
     this.loadData();
+  }
+
+  // 药师标识完成
+  markRead(pid: string) {
+    this.reservationService.removeFromNotificationList(this.selectedDoctor._id, pid);
+    this.fromBookingCancelNoti = false;
+    // remove 'from' url withour refreshing
+    const queryParams = { ...this.queryParams, from: undefined };
+    this.router.navigate(['.'], {relativeTo: this.route, queryParams});
+    this.message.success('药师标识预约取消提醒完成');
   }
 }

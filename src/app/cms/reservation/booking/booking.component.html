@@ -2,10 +2,16 @@
   <nb-card-header>
     {{ !!this.pid ? pname + ' 病患预约' : '我的病患预约'}}
     &nbsp;&nbsp;
-    <button nbButton hero shape="round" outline size="small" status="info" class="float-right" *ngIf="!!this.pid"
+    <button nbButton hero shape="round" outline size="small" status="info" class="float-right" *ngIf="!!pid"
       (click)="viewAll()">
       查看所有病患预约
     </button>
+    <ng-container *ngIf="!isCms && fromBookingCancelNoti && selectedDoctor && pid">
+      <button nbButton hero shape="round" outline size="tiny" status="success" matTooltip="药师手动标识提醒完成"
+        class="float-right py-1 mr-3" (click)="markRead(pid)">
+        <mat-icon>check_circle</mat-icon>&nbsp;标识提醒完成
+      </button>
+    </ng-container>
 
     <ngx-select-doctor [class.d-none]="!isCms" [departments]="departments" (doctorSelected)="doctorSelected($event)">
     </ngx-select-doctor>

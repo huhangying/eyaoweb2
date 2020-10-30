@@ -334,6 +334,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
         dep: this.doctor.department,
         doc: this.doctor._id,
         pid,
+        from: 'noti',
       }
     });
   }

@@ -5,6 +5,7 @@ import { ScheduleBatch } from '../models/reservation/schedule-batch.model';
 import { Booking, OriginBooking } from '../models/reservation/booking.model';
 import { AppStoreService } from '../shared/store/app-store.service';
 import * as moment from 'moment';
+import { NotificationType } from '../models/io/notification.model';
 
 @Injectable({
   providedIn: 'root'
@@ -92,6 +93,9 @@ export class ReservationService {
   getUserCancelledBookings(doctorId: string) {
     return this.api.get<Booking[]>('bookings/cancelled/doctor/' + doctorId);
   }
+  setReadCancelledByDocterPatient(doctorId: string, patientId: string) {
+    return this.api.get(`bookings/read-cancelled/doctor/${doctorId}/${patientId}`);
+  }
 
   // Period
   getPeriods() {
@@ -109,6 +113,9 @@ export class ReservationService {
   deletePeriodById(id: string) {
     return this.api.delete<Period>('period/' + id);
   }
+
+
+
 
   //---------------------------------------------------
   // Notifications
@@ -144,6 +151,20 @@ export class ReservationService {
     this.appStore.updateBookingNotifications(bookingNotifications);
 
     return bookingNotifications;
+  }
+
+  // 病患预约取消提醒：标记已读，并从提醒列表里去除
+  removeFromNotificationList(doctorId: string, patientId: string) {
+    // get from store
+    let notifications = this.appStore.state.bookingNotifications;
+    if (!notifications?.length) return;
+    notifications = notifications.filter(_ => _.patientId !== patientId || _.type !== NotificationType.booking); // type=3
+
+    // save back
+    this.appStore.updateBookingNotifications(notifications);
+
+    // mark done to db
+    this.setReadCancelledByDocterPatient(doctorId, patientId).subscribe();
   }
 
 }
