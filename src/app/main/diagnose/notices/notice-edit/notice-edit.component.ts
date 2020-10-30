@@ -28,12 +28,12 @@ export class NoticeEditComponent implements OnInit, OnDestroy {
   ) {
     this.form = this.fb.group({
       notice: ['', Validators.required],
-      startDate: ['', Validators.required],
+      startDate: [moment(), Validators.required],
       endDate: [''],
       days_to_start: ['', Validators.required],
       noticeStartDate: '',
       during: [''],
-      require_confirm: [false],
+      // require_confirm: [false],
     });
   }
 

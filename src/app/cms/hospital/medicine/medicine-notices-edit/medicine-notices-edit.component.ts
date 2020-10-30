@@ -16,7 +16,7 @@ export class MedicineNoticesEditComponent implements OnInit {
   }
   @Output() valueChange = new EventEmitter<MedicineNotice[]>();
   form: FormGroup;
-  displayedColumns: string[] = ['notice', 'days_to_start', 'during', 'require_confirm', 'apply', 'actions'];
+  displayedColumns: string[] = ['notice', 'days_to_start', 'during', 'apply', 'actions'];
   dataSource: MatTableDataSource<MedicineNotice>;
   isEdit = false;
   expanded = false;
@@ -29,7 +29,7 @@ export class MedicineNoticesEditComponent implements OnInit {
       notice: ['', Validators.required],
       days_to_start: ['', Validators.required],
       during: ['', Validators.required],
-      require_confirm: [true],
+      // require_confirm: [true],
       apply: [true]
     });
   }

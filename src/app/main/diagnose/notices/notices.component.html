@@ -20,7 +20,7 @@
         <th scope="col">起止日期</th>
         <th scope="col">提醒开始</th>
         <th scope="col">提醒持续天数</th>
-        <th scope="col">需用户确认？</th>
+        <!-- <th scope="col">需用户确认？</th> -->
         <th scope="col" [class.d-none]="readonly"></th>
       </tr>
     </thead>
@@ -31,9 +31,9 @@
         <td>{{notice.startDate | localDate}} - {{notice.endDate | localDate}}</td>
         <td>{{notice.days_to_start}}</td>
         <td>{{notice.during}}</td>
-        <td>
+        <!-- <td>
           <mat-checkbox [(ngModel)]="notice.require_confirm" [disabled]="true"></mat-checkbox>
-        </td>
+        </td> -->
         <td [class.d-none]="readonly">
           <button nbButton hero shape="round" size="tiny" status="info" title="编辑" (click)="edit(i, notice)">
             <nb-icon icon="edit-2"></nb-icon>

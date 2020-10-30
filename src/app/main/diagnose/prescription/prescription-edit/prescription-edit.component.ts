@@ -146,8 +146,9 @@ export class PrescriptionEditComponent implements OnInit, OnDestroy {
       return;
     }
     this.selectedMedicine.startDate = new Date();
-    this.medicineFilterCtrl.patchValue(selectedTemplate.name);
+    // this.medicineFilterCtrl.patchValue(selectedTemplate.name);
     this.form.patchValue(selectedTemplate);
+    // this.selectedMedicine.notices = selectedTemplate.notices;
     if (!selectedTemplate.dosage.customized) {
       this.caculateEndDate();
     }

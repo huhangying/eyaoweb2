@@ -10,7 +10,8 @@
     <div class="field row">
       <mat-form-field class="px-3 w-100">
         <input type="text" placeholder="选择或搜索药品名..." matInput [formControl]="medicineFilterCtrl"
-        [(ngModel)]="selectedMedicine" (ngModelChange)="templateSelected($event)" [matAutocomplete]="auto">
+          [value]="selectedMedicine?.name" [(ngModel)]="selectedMedicine" (ngModelChange)="templateSelected($event)"
+          [matAutocomplete]="auto">
         <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
           <mat-option *ngFor="let m of this.filteredmedicines$ | async" [value]="m">
             {{m.name}}
