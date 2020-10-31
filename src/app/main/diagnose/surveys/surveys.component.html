@@ -5,7 +5,8 @@
     </mat-expansion-panel-header>
 
     <ng-template matExpansionPanelContent>
-      <ngx-survey-edit [type]="1" [data]="getDataByType(1)" (dataChange)="surveyGroupChanged($event)" [readonly]="readonly"></ngx-survey-edit>
+      <ngx-survey-edit [type]="1" [data]="getDataByType(1)" (dataChange)="surveyGroupChanged($event)"
+        [readonly]="readonly"></ngx-survey-edit>
     </ng-template>
   </mat-expansion-panel>
 
@@ -15,27 +16,63 @@
     </mat-expansion-panel-header>
 
     <ng-template matExpansionPanelContent>
-      <ngx-survey-edit [type]="2" [data]="getDataByType(2)" (dataChange)="surveyGroupChanged($event)" [readonly]="readonly"></ngx-survey-edit>
+      <ngx-survey-edit [type]="2" [data]="getDataByType(2)" (dataChange)="surveyGroupChanged($event)"
+        [readonly]="readonly"></ngx-survey-edit>
     </ng-template>
   </mat-expansion-panel>
 
   <mat-expansion-panel>
     <mat-expansion-panel-header>
-      随访问卷
+      <mat-panel-title>
+        随访问卷
+      </mat-panel-title>
+      <mat-panel-description class="flex-row-reverse" *ngIf="isSurveyAvailable(3)">
+        <button nbButton outline size="small" status="info" class="mr-5" (click)="sendSurvey(3)">
+          <nb-icon icon="clipboard-outline"></nb-icon>
+          发送问卷
+        </button>
+      </mat-panel-description>
     </mat-expansion-panel-header>
 
     <ng-template matExpansionPanelContent>
-      <ngx-survey-edit [type]="3" [data]="getDataByType(3)" (dataChange)="surveyGroupChanged($event)" [readonly]="readonly"></ngx-survey-edit>
+      <ngx-survey-edit [type]="3" [data]="getDataByType(3)" (dataChange)="surveyGroupChanged($event)"
+        [readonly]="readonly"></ngx-survey-edit>
     </ng-template>
   </mat-expansion-panel>
 
   <mat-expansion-panel>
     <mat-expansion-panel-header>
-      用药知识自测问卷
+      <mat-panel-title>
+        用药知识自测问卷
+      </mat-panel-title>
+      <mat-panel-description class="flex-row-reverse" *ngIf="isSurveyAvailable(4)">
+        <button nbButton outline size="small" status="info" class="mr-5" (click)="sendSurvey(4)">
+          <nb-icon icon="clipboard-outline"></nb-icon>
+          发送问卷
+        </button>
+      </mat-panel-description>
     </mat-expansion-panel-header>
-
     <ng-template matExpansionPanelContent>
-      <ngx-survey-edit [type]="4" [data]="getDataByType(4)" (dataChange)="surveyGroupChanged($event)" [readonly]="readonly"></ngx-survey-edit>
+      <ngx-survey-edit [type]="4" [data]="getDataByType(4)" (dataChange)="surveyGroupChanged($event)"
+        [readonly]="readonly"></ngx-survey-edit>
+    </ng-template>
+  </mat-expansion-panel>
+
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        临时问卷
+      </mat-panel-title>
+      <mat-panel-description class="flex-row-reverse" *ngIf="isSurveyAvailable(7)">
+        <button nbButton outline size="small" status="info" class="mr-5" (click)="sendSurvey(7)">
+          <nb-icon icon="clipboard-outline"></nb-icon>
+          发送问卷
+        </button>
+      </mat-panel-description>
+    </mat-expansion-panel-header>
+    <ng-template matExpansionPanelContent>
+      <ngx-survey-edit [type]="7" [data]="getDataByType(7)" (dataChange)="surveyGroupChanged($event)"
+        [readonly]="readonly"></ngx-survey-edit>
     </ng-template>
   </mat-expansion-panel>
 
