@@ -128,6 +128,8 @@ export class DoctorService {
         return '科室管理员';
       case 2:
         return '医院管理员';
+      case 3:
+        return '系统管理员';
       default:
         return '';
     }
