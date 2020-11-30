@@ -571,7 +571,7 @@ export class ChatComponent implements OnInit, OnDestroy {
         doctor: this.doctor,
         user: this.selectedPatient,
         consultId: this.keyId,
-        type: this.type,
+        type: 0,
       },
       width: '600px'
     }).afterClosed().pipe(
@@ -583,8 +583,9 @@ export class ChatComponent implements OnInit, OnDestroy {
             user: this.selectedPatient._id,
             doctor: this.doctor._id,
             type: this.type,
-            content: `*** 药师不能完成本次咨询服务 ***
-原因: ${result?.rejectReason}`,
+            content: `*** 药师未完成本次咨询服务 ***
+原因: ${result?.rejectReason}
+咨询服务费：已退款`,
             finished: true,
             createdAt: new Date()
           };

@@ -6,9 +6,7 @@ import { Doctor } from '../../models/crm/doctor.model';
 import { Department } from '../../models/hospital/department.model';
 import { WechatResponse } from '../../models/wechat-response.model';
 import { WechatFailedMessage } from '../../models/wechat-failed-message.model';
-import { of } from 'rxjs';
-import { delay, tap } from 'rxjs/operators';
-import { User } from '../../models/crm/user.model';
+import { WxRefundRequest, WxRefundResponse } from '../../models/consult/wx-payment.model';
 
 @Injectable({
   providedIn: 'root'
@@ -191,24 +189,8 @@ export class WeixinService {
   //===============================
   // 微信支付
   //===============================
-  triggerWxPay() { }
-
-  refundWxPay(user: User, doctor: Doctor, consultId: string, reason: string) {
-    return of('mock').pipe(
-      delay(1000),
-      tap(() => {
-        // 发送药师拒绝消息
-        const openid = user.link_id;
-        this.sendWechatMsg(openid,
-          `${doctor.name}${doctor.title}不能完成本次咨询服务`,
-          `原因: ${reason}`,
-          `${doctor.wechatUrl}consult-reply?doctorid=${doctor._id}&openid=${openid}&state=${doctor.hid}&id=${consultId}&reject=true`,
-          '',
-          doctor._id,
-          user.name
-        ).subscribe();
-      })
-    );
+  refundWxPay(data: WxRefundRequest) {
+    return this.api.post<WxRefundResponse>('wechat/pay-refund', data);
   }
 
 }

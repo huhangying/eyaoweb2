@@ -8,8 +8,9 @@
 
   <mat-dialog-content class="px-3">
 
-    <div class="alert alert-secondary" role="alert">
-      您将拒绝来自{{data.user.name}}的付费{{data.type === 1? '电话咨询': '图文咨询'}}
+    <div class="alert alert-secondary" role="alert" *ngIf="consult">
+      您将拒绝来自{{data.user.name}}的付费{{data.type === 1? '电话咨询': '图文咨询'}}。
+      退款{{(consult.total_fee/100) | currency: 'CNY':'symbol-narrow'}}元
     </div>
 
     <label>请填写</label>

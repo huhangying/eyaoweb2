@@ -87,6 +87,7 @@ export class ConsultPhoneComponent implements OnInit {
               doctor: this.doctor,
               user: user,
               consultId: this.consultId,
+              type: 1,
             },
             width: '600px'
           }).afterClosed().pipe(
