@@ -593,6 +593,9 @@ export class ChatComponent implements OnInit, OnDestroy {
           this.socketio.sendConsult(this.room, consult);
           this.consultService.sendConsult(consult).subscribe();
           this.scrollBottom();
+
+          // mark done
+          this.markRead(true);
         }
       })
     ).subscribe();
@@ -677,7 +680,7 @@ export class ChatComponent implements OnInit, OnDestroy {
   }
 
   // 药师标识完成
-  markRead() {
+  markRead(noMessage=false) {
     switch (this.type) {
       case NotificationType.chat: // NotificationType.customerService
         if (!this.isCs) {
@@ -696,15 +699,17 @@ export class ChatComponent implements OnInit, OnDestroy {
         this.consultService.removeFromNotificationList(this.doctor._id, this.selectedPatient._id, this.type);
 
         // 发送微信消息
-        this.wxService.sendWechatMsg(this.selectedPatient.link_id,
-          '药师咨询完成',
-          `${this.doctor.name}${this.doctor.title}已完成咨询。请点击查看，并建议和评价药师。`,
-          `${this.doctor.wechatUrl}consult-finish?doctorid=${this.doctor._id}&openid=${this.selectedPatient.link_id}&state=${this.auth.hid}&id=${this.keyId}&type=0`,
-          '',
-          this.doctor._id,
-          this.selectedPatient.name
-        ).subscribe();
-        this.message.success('药师标记图文咨询已经完成！');
+        if (!noMessage) {
+          this.wxService.sendWechatMsg(this.selectedPatient.link_id,
+            '药师咨询完成',
+            `${this.doctor.name}${this.doctor.title}已完成咨询。请点击查看，并建议和评价药师。`,
+            `${this.doctor.wechatUrl}consult-finish?doctorid=${this.doctor._id}&openid=${this.selectedPatient.link_id}&state=${this.auth.hid}&id=${this.keyId}&type=0`,
+            '',
+            this.doctor._id,
+            this.selectedPatient.name
+          ).subscribe();
+          this.message.success('药师标记图文咨询已经完成！');
+        }
         return;
 
       default:

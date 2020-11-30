@@ -50,7 +50,7 @@ export class ConsultRejectComponent implements OnInit {
   }
 
   reject() {
-    // todo: wx refund
+    // wx refund
     this.wxService.refundWxPay({
       out_trade_no: this.consult.out_trade_no,
       out_refund_no: this.refundId,
