@@ -571,6 +571,7 @@ export class ChatComponent implements OnInit, OnDestroy {
         doctor: this.doctor,
         user: this.selectedPatient,
         consultId: this.keyId,
+        type: this.type,
       },
       width: '600px'
     }).afterClosed().pipe(

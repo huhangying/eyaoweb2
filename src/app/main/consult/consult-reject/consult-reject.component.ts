@@ -20,6 +20,7 @@ export class ConsultRejectComponent implements OnInit {
       doctor: Doctor;
       user: User;
       consultId: string;
+      type: number; // 1: 电话咨询
     },
     private wxService: WeixinService,
   ) {

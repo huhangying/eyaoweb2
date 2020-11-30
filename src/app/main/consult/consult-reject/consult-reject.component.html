@@ -7,20 +7,24 @@
   </nb-card-header>
 
   <mat-dialog-content class="px-3">
-      <label>请填写</label>
 
-      <mat-form-field class="w-100">
-        <mat-label>拒绝原因</mat-label>
-        <input matInput [formControl]="rejectReasonCtrl">
-        <mat-hint>拒绝原因必填!</mat-hint>
-        <mat-error *ngIf="rejectReasonCtrl.hasError('required')">
-          必填
-        </mat-error>
-      </mat-form-field>
+    <div class="alert alert-secondary" role="alert">
+      您将拒绝来自{{data.user.name}}的付费{{data.type === 1? '电话咨询': '图文咨询'}}
+    </div>
 
-      <div class="text-hint pt-3 px-2">
-        * 系统将把病患预交的咨询费用退还，并把您填写的拒绝原因已微信消息的形式发送给病患。
-      </div>
+    <label>请填写</label>
+    <mat-form-field class="w-100">
+      <mat-label>拒绝原因</mat-label>
+      <input matInput [formControl]="rejectReasonCtrl">
+      <mat-hint>拒绝原因必填!</mat-hint>
+      <mat-error *ngIf="rejectReasonCtrl.hasError('required')">
+        必填
+      </mat-error>
+    </mat-form-field>
+
+    <div class="text-hint pt-3 px-2">
+      * 系统将把病患预交的咨询费用退还，并把您填写的拒绝原因已微信消息的形式发送给病患。
+    </div>
   </mat-dialog-content>
 
   <nb-card-footer class="d-block">
