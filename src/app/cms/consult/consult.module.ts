@@ -4,6 +4,7 @@ import { SharedModule } from '../../shared/shared.module';
 import { ChangeCsDoctorComponent } from './customer-service-setting/change-cs-doctor/change-cs-doctor.component';
 import { ConsultDoctorRatingComponent } from './consult-doctor-rating/consult-doctor-rating.component';
 import { DoctorCommentDetailsComponent } from './consult-doctor-rating/doctor-comment-details/doctor-comment-details.component';
+import { ConsultBillComponent } from './consult-bill/consult-bill.component';
 
 
 
@@ -17,6 +18,7 @@ import { DoctorCommentDetailsComponent } from './consult-doctor-rating/doctor-co
     ChangeCsDoctorComponent,
     ConsultDoctorRatingComponent,
     DoctorCommentDetailsComponent,
+    ConsultBillComponent,
   ],
 })
 export class ConsultModule { }

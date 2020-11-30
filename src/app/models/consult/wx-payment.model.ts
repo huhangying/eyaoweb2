@@ -11,3 +11,11 @@ export interface WxRefundResponse {
   return_msg?: string;
   // todo:
 }
+
+export interface WxDownloadBillResponse {
+  return_code: string;
+  return_msg?: string; // 错误码描述
+  error_code?: string; // 错误码
+  // success
+
+}

@@ -6,7 +6,7 @@ import { Doctor } from '../../models/crm/doctor.model';
 import { Department } from '../../models/hospital/department.model';
 import { WechatResponse } from '../../models/wechat-response.model';
 import { WechatFailedMessage } from '../../models/wechat-failed-message.model';
-import { WxRefundRequest, WxRefundResponse } from '../../models/consult/wx-payment.model';
+import { WxDownloadBillResponse, WxRefundRequest, WxRefundResponse } from '../../models/consult/wx-payment.model';
 
 @Injectable({
   providedIn: 'root'
@@ -191,6 +191,10 @@ export class WeixinService {
   //===============================
   refundWxPay(data: WxRefundRequest) {
     return this.api.post<WxRefundResponse>('wechat/pay-refund', data);
+  }
+
+  searchBill(bill_date: string) {
+    return this.api.post<WxDownloadBillResponse>('wechat/pay-download-bill', {bill_date});
   }
 
 }

@@ -145,8 +145,9 @@ export function getMenuItems(role: number, queryParams: Params): NbMenuItem[] {
       icon: 'pie-chart-2',
       children: [
         {
-          title: '药师评价',
-          link: '/cms/survey/template',
+          title: '付费咨询对帐单',
+          link: '/cms/consult/bill',
+          hidden: role < 2,
         },
       ],
     },

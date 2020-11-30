@@ -1,0 +1,61 @@
+<nb-card>
+  <nb-card-header>
+    药师付费咨询对账单
+
+    <div class="alert alert-info mt-3 mb-0" role="alert" [formGroup]="form">
+      <div class="pb-2">
+        请选择对账单日期
+      </div>
+      <div class="d-flex pt-2 row">
+        <div class="d-inline-flex pl-5 col-6">
+          <input nbInput fullWidth id="billDate" #billDate [matDatepicker]="pickerBillDate" formControlName="billDate">
+          <mat-datepicker-toggle nbSuffix [for]="pickerBillDate"></mat-datepicker-toggle>
+          <mat-datepicker #pickerBillDate></mat-datepicker>
+        </div>
+        <div class="col-6">
+          <button nbButton hero status="info" class="mr-3" [disabled]="form.invalid" (click)="search()">
+            <nb-icon icon="search-outline"></nb-icon> 搜索
+          </button>
+        </div>
+      </div>
+    </div>
+  </nb-card-header>
+
+  <nb-card-body>
+    <div [class.d-none]="!dataSource?.data?.length">
+      <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8 table-striped table-hover">
+
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> 名称 </th>
+          <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="from">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> 开始时间 </th>
+          <td mat-cell *matCellDef="let element"> {{element.from | timeFormat}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="to">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> 结束时间 </th>
+          <td mat-cell *matCellDef="let element"> {{element.to | timeFormat}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="order">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 5rem;"> 顺序 </th>
+          <td mat-cell *matCellDef="let element">
+            {{element.order}} </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+      <mat-paginator [pageSizeOptions]="[10, 25, 50]" [pageSize]="10" showFirstLastButtons></mat-paginator>
+    </div>
+    <ng-container *ngIf="!dataSource?.data?.length">
+      <div class="alert alert-warning" role="alert">
+        没有找到相关记录。
+      </div>
+    </ng-container>
+
+  </nb-card-body>
+</nb-card>
