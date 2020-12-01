@@ -27,14 +27,14 @@ export function getMenuItems(role: number, queryParams: Params, isCs = false): N
     },
     {
       title: '客服和咨询监管',
-      icon: 'message-circle-outline',
+      icon: 'smiling-face-outline',
       link: '/main/chat',
       hidden: !isCs,
       queryParams: {...queryParams, type: 0, cs: true},
     },
     {
       title: '付费咨询设置',
-      icon: 'smiling-face-outline',
+      icon: 'award-outline',
       link: '/main/consult',
     },
     {

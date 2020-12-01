@@ -99,7 +99,7 @@ export class RelationshipComponent implements OnInit, OnDestroy {
       if (userIdList.indexOf(userId) > -1) {
         // found, add into grouped
         return newGrouped.map(grouped => {
-          if (grouped.user._id === userId) {
+          if (grouped.user?._id === userId) {
             grouped.relationships.push(relationship);
           }
           return grouped;
@@ -152,9 +152,9 @@ export class RelationshipComponent implements OnInit, OnDestroy {
   updateToDataSource(result: GroupedRelationship) {
     if (result?.user?._id) {
       this.selectedGroupedRelationships = this.dataSource.data.map(item => {
-        return item.user._id === result.user._id ? { ...item, relationships: result.relationships } : item;
+        return item?.user?._id === result.user._id ? { ...item, relationships: result.relationships } : item;
       })
-        .filter(item => item.relationships.length); // remove if no relationships
+        .filter(item => item.relationships?.length); // remove if no relationships
 
       this.loadData(this.selectedFilter);
       this.message.updateSuccess();
