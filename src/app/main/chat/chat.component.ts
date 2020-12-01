@@ -9,7 +9,7 @@ import { DoctorGroup } from '../../models/crm/doctor-group.model';
 import { DoctorService } from '../../services/doctor.service';
 import { Relationship } from '../../models/crm/relationship.model';
 import { User } from '../../models/crm/user.model';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import *  as qqface from 'wx-qqface';
 import { UploadService } from '../../shared/service/upload.service';
 import { AppStoreService } from '../../shared/store/app-store.service';
@@ -59,6 +59,10 @@ export class ChatComponent implements OnInit, OnDestroy {
   csList: User[]; // 客服病患列表
   setCharged: boolean; // 药师设置收费flag
   currentConsult: Consult;
+  // for in free chat
+  existsConsult: boolean; // 存在付费咨询
+  existedConsultType: number;
+  existedConsultId: string;
 
   isMd: boolean; // greater than md
   showInSm: boolean; chatBodyHeight: string;
@@ -80,6 +84,7 @@ export class ChatComponent implements OnInit, OnDestroy {
     private consultService: ConsultService,
     private cd: ChangeDetectorRef,
     private route: ActivatedRoute,
+    private router: Router,
     private appStore: AppStoreService,
     private breakpointService: NbMediaBreakpointsService,
     private message: MessageService,
@@ -343,6 +348,19 @@ export class ChatComponent implements OnInit, OnDestroy {
           takeUntil(this.destroy$),
         ).subscribe();
       }
+      // 付费咨询正在进行中
+      this.consultService.checkConsultExistsByDoctorIdAndUserId(this.doctor._id, patient._id).pipe(
+        tap(rsp => {
+          if (rsp?.exists) {
+            this.existsConsult = true;
+            this.existedConsultType = rsp.type;
+            this.existedConsultId = rsp.consultId;
+          } else {
+            this.existsConsult = false;
+          }
+        }),
+        takeUntil(this.destroy$),
+      ).subscribe();
     } else if (NotificationType.consultChat === this.type) {
       this.selectConsultPatient(patient);
     } else if ([NotificationType.adverseReaction, NotificationType.doseCombination].indexOf(this.type) > -1) {
@@ -716,5 +734,28 @@ export class ChatComponent implements OnInit, OnDestroy {
         return;
     }
     this.message.success('药师标记消息已处理！');
+  }
+
+  // 回到付费咨询
+  goBackConsult() {
+    const type = this.existedConsultType;
+    // 付费图文咨询 （共用chat）
+    if (type === 0) {
+      this.router.navigate(['/main/chat'], {
+        queryParams: {
+          pid: this.selectedPatient?._id,
+          type: NotificationType.consultChat,
+          id: this.existedConsultId,
+        }
+      });
+    } else if ( type === 1) {
+      // 付费电话咨询，到说明页面
+      this.router.navigate(['/main/consult-phone'], {
+        queryParams: {
+          pid: this.selectedPatient?._id,
+          id: this.existedConsultId
+        }
+      });
+    }
   }
 }

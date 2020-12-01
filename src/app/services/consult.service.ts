@@ -37,6 +37,11 @@ export class ConsultService {
     return this.api.get<Consult[]>(`consults/get-pending/${doctorId}`);
   }
 
+  checkConsultExistsByDoctorIdAndUserId(doctorId: string, userId: string) {
+    return this.api.get<{exists: boolean; type?: number; consultId?: string}>(`consults/check-exists/${doctorId}/${userId}`);
+  }
+
+
   getConsultById(id: string) {
     return this.api.get<Consult>('consult/' + id);
   }

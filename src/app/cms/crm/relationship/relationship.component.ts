@@ -162,7 +162,7 @@ export class RelationshipComponent implements OnInit, OnDestroy {
   }
 
   loadData(groupFilter = '*') {
-    console.log(this.selectedGroupedRelationships);
+    // console.log(this.selectedGroupedRelationships);
 
     let data;
     if (groupFilter === '*') {

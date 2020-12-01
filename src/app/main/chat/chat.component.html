@@ -1,6 +1,7 @@
 <nb-card class="h-100">
   <nb-card-header>
     {{ type === 1 ? '不良反应反馈' : ((type === 2) ? '联合用药反馈' : (type === 5) ? '付费图文咨询' : (!isCs ? '在线咨询': '客服咨询')) }}
+    <span *ngIf=" type === 0 && existsConsult" class="text-success">[付费咨询中]</span>
     <ng-container *ngIf="!isMd">
       <button mat-icon-button color="accent" (click)="toggleShowInSm()">
         <mat-icon>menu</mat-icon>
@@ -293,10 +294,15 @@
               </mat-menu>
             </div>
             <div class="status-action align-self-center">
-              <ng-container *ngIf="!isCs && type === 0">
+              <ng-container *ngIf="!isCs && type === 0 && !existsConsult">
                 <mat-slide-toggle [checked]="setCharged" (toggleChange)="toggleSetCharge()">
                   <span class="small">设置收费</span>
                 </mat-slide-toggle>
+              </ng-container>
+              <ng-container *ngIf="type === 0 && existsConsult">
+                <button mat-flat-button class="text-success" matTooltip="回到病患付费咨询页面" (click)="goBackConsult()">
+                  <mat-icon>cancel</mat-icon> 返回付费咨询
+                </button>
               </ng-container>
               <ng-container *ngIf="type === 5 && hasNewServices(selectedPatient?._id)">
                 <button mat-flat-button class="text-warning" matTooltip="药师拒绝本次服务" (click)="consultReject()">
