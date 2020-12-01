@@ -50,7 +50,7 @@ export class PatientAuditComponent implements OnInit, OnDestroy {
     this.notAuditedCtrl.valueChanges.pipe(
       startWith(true),
       tap(notAudited => {
-        this.userService.getUsersByRole(notAudited ? 0 : 1 ).subscribe(
+        this.userService.getUsersByRole(notAudited ? 0 : 1).subscribe(
           data => {
             this.loadData(data);
           }
@@ -66,7 +66,21 @@ export class PatientAuditComponent implements OnInit, OnDestroy {
     this.destroy$.unsubscribe();
   }
 
-  audit(id: string, role=1) { // role value 0 or 1. 1 means pass
+  audit(id: string, role = 1) { // role value 0 or 1. 1 means pass
+    if (role === 0) {
+      this.dialogService?.deleteConfirm('取消审核通过。将禁止病患所有的咨询（免费和付费）服务！请确认您是否真的要这样做？').pipe(
+        tap(result => {
+          if (result) {
+            this.updateUserRole(id, 0);
+          }
+        })
+      ).subscribe();
+    } else {
+      this.updateUserRole(id, 1);
+    }
+  }
+
+  updateUserRole(id: string, role: number) {
     this.userService.updateRoleById(id, role).pipe(
       tap(result => {
         if (result?._id) {
