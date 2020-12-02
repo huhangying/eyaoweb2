@@ -41,7 +41,7 @@
     "@ckeditor/ckeditor5-angular": "^1.2.3",
     "@ckeditor/ckeditor5-build-classic": "^20.0.0",
     "@nebular/eva-icons": "^6.2.1",
-    "@nebular/theme": "^6.2.1",
+    "@nebular/theme": "^v7.0.0-beta.1",
     "bootstrap": "^4.5.3",
     "classlist.js": "1.1.20150312",
     "compressorjs": "^1.0.6",
@@ -91,7 +91,7 @@
     "rimraf": "3.0.2",
     "stylelint": "^13.3.3",
     "ts-node": "^8.7.0",
-    "typescript": "^4.0.5",
+    "typescript": "4.0.5",
     "webpack": "^4.43.0"
   }
 }
