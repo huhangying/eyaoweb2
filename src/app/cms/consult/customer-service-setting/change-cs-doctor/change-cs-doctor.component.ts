@@ -20,6 +20,7 @@ export class ChangeCsDoctorComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.dialogRef.updateSize('660px');
   }
 
   doctorSelected(doctor: Doctor) {
