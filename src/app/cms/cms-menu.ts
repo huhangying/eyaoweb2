@@ -149,6 +149,15 @@ export function getMenuItems(role: number, queryParams: Params): NbMenuItem[] {
           link: '/cms/consult/bill',
           hidden: role < 2,
         },
+        {
+          title: '门诊预约',
+          link: '/cms/consult/bill',
+          children: [
+            {
+              title: '在线预约'
+            }
+          ]
+        },
       ],
     },
   ];
