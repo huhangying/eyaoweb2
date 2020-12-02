@@ -23,9 +23,10 @@ const routes: Routes = [
 ];
 
 const config: ExtraOptions = {
-  useHash: false,
-  scrollPositionRestoration: 'enabled',
-  anchorScrolling: 'enabled',
+    useHash: false,
+    scrollPositionRestoration: 'enabled',
+    anchorScrolling: 'enabled',
+    relativeLinkResolution: 'legacy'
   // onSameUrlNavigation: 'reload',
   // enableTracing: true, // <-- debugging purposes only
 };
