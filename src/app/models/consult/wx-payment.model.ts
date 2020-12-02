@@ -13,9 +13,22 @@ export interface WxRefundResponse {
 }
 
 export interface WxDownloadBillResponse {
-  return_code: string;
-  return_msg?: string; // 错误码描述
-  error_code?: string; // 错误码
   // success
+  trade_time: string; // 0
+  out_trade_no: string; // 5
+  // transaction_id: string; // 6
+  user: string; // 7 用户标识
+  status: string; // 9
+  fee_type: string; // 11
+  total_fee: string; // 12
+  coupon_fee: string; // 13
+
+  // refund_id: string; // 14
+  out_refund_no: string; // 15
+  refund_fee: string; // 16
+  refund_coupon_fee: string; // 17
+  refund_status: string; // 19
+  body: string; // 20 商品名称
+
 
 }
