@@ -33,9 +33,9 @@ export class PdfService {
     };
   }
 
-  async generatePdf(diagnose: Diagnose, doctor: any, patient: User, surveyType: number, periods: MedicinePeriod[]) {
-    const surveyContent = await this.buildSurveyContent(diagnose.doctor, diagnose.user, surveyType, diagnose.surveys);
-    const conclusionSurvey = await this.buildSurveyContent(diagnose.doctor, diagnose.user, 5, diagnose.surveys);
+  async generatePdf(diagnose: Diagnose, doctor: any, patient: User, periods: MedicinePeriod[]) { // surveyType: number,
+    // const surveyContent = await this.buildSurveyContent(diagnose.doctor, diagnose.user, surveyType, diagnose.surveys);
+    const conclusion = await this.buildSurveyContent(diagnose.doctor, diagnose.user, 5, diagnose.surveys);
     const departmentName = (!doctor.department?.name) ?
       (await this.departmentService.getDepartmentById(doctor.department).toPromise())?.name :
       doctor.department?.name;
@@ -102,7 +102,7 @@ export class PdfService {
               [{
                 colSpan: 4,
                 style: 'block',
-                text: conclusionSurvey
+                text: conclusion
               }],
 
             ]
@@ -121,7 +121,7 @@ export class PdfService {
     //   }]);
     // }
 
-    pdfMake.createPdf(documentDefinition).open();
+    pdfMake.createPdf(documentDefinition, null, pdfMake.fonts).open();
   }
 
   async buildSurveyContent(doctor: any, patientId: string, surveyType: number, surveyGroups: SurveyGroup[]) {

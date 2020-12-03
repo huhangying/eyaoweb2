@@ -38,10 +38,6 @@
               {
                 "input":"node_modules/pdfmake/build/pdfmake.min.js",
                 "bundleName": "lazy-loaded-pdfmake"
-              },
-              {
-                "input":"node_modules/pdfmake/build/vfs_fonts.js",
-                "bundleName": "lazy-loaded-pdfmake"
               }
             ]
           },

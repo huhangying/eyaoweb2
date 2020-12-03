@@ -1,6 +1,6 @@
 {
   "name": "eyaoweb",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "eYao Web 2.0",
   "license": "MIT",
   "repository": {
@@ -59,10 +59,10 @@
     "rxjs-compat": "^6.5.5",
     "socket.io-client": "^2.3.0",
     "store2": "^2.11.1",
-    "tslib": "^1.11.1",
+    "tslib": "^2.0.3",
     "web-animations-js": "^2.3.2",
     "wx-qqface": "^0.2.0",
-    "zone.js": "^0.10.2"
+    "zone.js": "^0.11.3"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^0.1100.2",
@@ -75,9 +75,9 @@
     "@types/jasminewd2": "2.0.3",
     "@types/node": "^12.11.1",
     "@types/socket.io-client": "^1.4.33",
-    "@typescript-eslint/eslint-plugin": "^2.33.0",
-    "@typescript-eslint/parser": "^2.33.0",
-    "eslint": "^6.8.0",
+    "@typescript-eslint/eslint-plugin": "^4.9.0",
+    "@typescript-eslint/parser": "^4.9.0",
+    "eslint": "^7.14.0",
     "jasmine-core": "2.6.4",
     "jasmine-spec-reporter": "4.1.1",
     "karma": "^5.1.1",
