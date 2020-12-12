@@ -268,7 +268,7 @@ export class DiagnoseComponent implements OnInit, OnDestroy {
 
   printDiagnose() {
     this.checkAndSavePendings().subscribe(() => {
-      this.pdf.generatePdf(this.diagnose, this.doctor || this.diagnose.doctor, this.selectedPatient, this.medicineReferences.periods); //this.isFirstVisit ? 1 : 2,
+      this.pdf.generatePdf(this.diagnose, this.doctor, this.selectedPatient, this.medicineReferences.periods); //this.isFirstVisit ? 1 : 2,
     });
   }
 

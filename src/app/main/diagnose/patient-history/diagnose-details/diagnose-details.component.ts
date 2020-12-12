@@ -44,7 +44,7 @@ export class DiagnoseDetailsComponent implements OnInit {
   }
 
   printDiagnose() {
-    this.pdf.generatePdf(this.diagnose, this.data.doctor || this.data.diagnose.doctor, this.data.patient, this.data.medicineReferences.periods); // this.isFirstVisit ? 1 : 2,
+    this.pdf.generatePdf(this.diagnose, this.data.doctor, this.data.patient, this.data.medicineReferences.periods); // this.isFirstVisit ? 1 : 2,
   }
 
 }

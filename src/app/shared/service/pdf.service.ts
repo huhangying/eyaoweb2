@@ -70,7 +70,7 @@ export class PdfService {
       },
       content: [
         {
-          text: '新华医院药师门诊', //todo: not hardcoded
+          text: doctor.hospitalName + '药师门诊',
           style: 'header',
           alignment: 'center'
         },
