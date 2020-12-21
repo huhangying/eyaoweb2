@@ -144,7 +144,7 @@ export class DoctorProfileComponent implements OnInit, OnDestroy {
     const profile = { ...this.form.getRawValue() };
     delete profile.password;
     delete profile.passwordConfirm;
-    this.updateDoctor(profile, true);
+    this.updateDoctor(profile, this.mode === 0); // 只有在自己修改时才更新localstorage
   }
 
   onFileSelected(event) {
@@ -164,7 +164,7 @@ export class DoctorProfileComponent implements OnInit, OnDestroy {
               this.updateDoctor({
                 user_id: doctor.user_id,
                 icon: result.path
-              }, true);
+              }, this.mode === 0); // 只有在自己修改时才更新localstorage
 
               // this.avatar = result.path;
               this.avatar = reader.result;
@@ -193,10 +193,10 @@ export class DoctorProfileComponent implements OnInit, OnDestroy {
   generateQrcode() {
     // this.doctor._id;
     this.doctorService.getDoctorQrCode(this._id).pipe(
-      concatMap(result => {
+      tap(result => {
         this.qrcode = result;
         this.cd.markForCheck();
-        return this.doctorService.updateDoctor({ user_id: this.user_id, qrcode: this.qrcode });
+        return this.updateDoctor({ user_id: this.user_id, qrcode: this.qrcode }, this.mode === 0); // 只有在自己修改时才更新localstorage
       }),
     ).subscribe();
   }

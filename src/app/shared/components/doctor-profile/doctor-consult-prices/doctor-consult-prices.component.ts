@@ -5,6 +5,7 @@ import { MessageService } from '../../../service/message.service';
 import { distinctUntilChanged, takeUntil, tap } from 'rxjs/operators';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subject } from 'rxjs';
+import { AppStoreService } from '../../../store/app-store.service';
 
 @Component({
   selector: 'ngx-doctor-consult-prices',
@@ -21,12 +22,14 @@ export class DoctorConsultPricesComponent implements OnInit, OnDestroy {
       this.setConsultPrices(values);
     }
   }
+  @Input() mode: number; // 0: normal profile; 1: add doctor; 2: edit doctor
 
   constructor(
     private doctorService: DoctorService,
     private fb: FormBuilder,
     private message: MessageService,
     private cd: ChangeDetectorRef,
+    private appStore: AppStoreService,
   ) {
     this.form = this.fb.group({
       textServiceEnabled: [],
@@ -145,6 +148,10 @@ export class DoctorConsultPricesComponent implements OnInit, OnDestroy {
     this.doctorService.updateDoctor({ user_id: this.userId, prices: servicePrices }).pipe(
       tap(result => {
         if (result) {
+          // 只有在自己修改时才更新localstorage
+          if (this.mode === 0) {
+            this.appStore.updateDoctor(result);
+          }
           this.message.updateSuccess();
           this.cd.markForCheck();
         }
