@@ -294,12 +294,12 @@
               </mat-menu>
             </div>
             <div class="status-action align-self-center">
-              <ng-container *ngIf="!isCs && type === 0 && !existsConsult">
+              <ng-container *ngIf="!isCs && type === 0 && consultEnabled && !existsConsult">
                 <mat-slide-toggle [checked]="setCharged" (toggleChange)="toggleSetCharge()">
                   <span class="small">设置收费</span>
                 </mat-slide-toggle>
               </ng-container>
-              <ng-container *ngIf="type === 0 && existsConsult">
+              <ng-container *ngIf="type === 0 && consultEnabled && existsConsult">
                 <button mat-flat-button class="text-success" matTooltip="回到病患付费咨询页面" (click)="goBackConsult()">
                   <mat-icon>cancel</mat-icon> 返回付费咨询
                 </button>

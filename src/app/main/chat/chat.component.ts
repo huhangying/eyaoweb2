@@ -60,7 +60,7 @@ export class ChatComponent implements OnInit, OnDestroy {
   setCharged: boolean; // 药师设置收费flag
   currentConsult: Consult;
   // for in free chat
-  existsConsult: boolean; // 存在付费咨询
+  existsConsult = false; // 存在付费咨询
   existedConsultType: number;
   existedConsultId: string;
 
@@ -94,6 +94,10 @@ export class ChatComponent implements OnInit, OnDestroy {
     this.doctor = this.auth.doctor;
     this.doctorIcon = this.doctor.icon;
     this.loadData(this.doctor._id);
+  }
+
+  get consultEnabled() {
+    return this.doctor?.prices?.length > 0;
   }
 
   //------------------------------------------------------------
@@ -348,19 +352,22 @@ export class ChatComponent implements OnInit, OnDestroy {
           takeUntil(this.destroy$),
         ).subscribe();
       }
-      // 付费咨询正在进行中
-      this.consultService.checkConsultExistsByDoctorIdAndUserId(this.doctor._id, patient._id).pipe(
-        tap(rsp => {
-          if (rsp?.exists) {
-            this.existsConsult = true;
-            this.existedConsultType = rsp.type;
-            this.existedConsultId = rsp.consultId;
-          } else {
-            this.existsConsult = false;
-          }
-        }),
-        takeUntil(this.destroy$),
-      ).subscribe();
+
+      if (this.consultEnabled) {
+        // 付费咨询正在进行中
+        this.consultService.checkConsultExistsByDoctorIdAndUserId(this.doctor._id, patient._id).pipe(
+          tap(rsp => {
+            if (rsp?.exists) {
+              this.existsConsult = true;
+              this.existedConsultType = rsp.type;
+              this.existedConsultId = rsp.consultId;
+            } else {
+              this.existsConsult = false;
+            }
+          }),
+          takeUntil(this.destroy$),
+        ).subscribe();
+      }
     } else if (NotificationType.consultChat === this.type) {
       this.selectConsultPatient(patient);
     } else if ([NotificationType.adverseReaction, NotificationType.doseCombination].indexOf(this.type) > -1) {
