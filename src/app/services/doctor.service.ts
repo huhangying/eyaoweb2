@@ -70,10 +70,6 @@ export class DoctorService {
     return this.api.patch<DoctorGroup>('group/' + data._id, data);
   }
 
-  // getPopulatedRelationshipsByDoctorId(doctorId: string) {
-  //   return this.api.get<any[]>('relationships/doctor/' + doctorId + '/select');
-  // }
-
   // use for populating groups in relationships
   getDoctorGroupsByDoctorId(doctorId: string) {
     return this.api.get<DoctorGroup[]>('groups/doctor/' + doctorId);
@@ -82,7 +78,9 @@ export class DoctorService {
   // 医患关系
   // patient populated (name, gender, cell)
   getRelationshipsByDoctorId(doctorId: string) {
-    return this.api.get<Relationship[]>('relationships/doctor/' + doctorId);
+    return this.api.get<Relationship[]>('relationships/doctor/' + doctorId).pipe(
+      map(items => items.filter(_ => !!_.user?.link_id)) // filter null user
+    );
   }
 
   addRelationship(rel: RelationshipRequest) {

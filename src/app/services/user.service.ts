@@ -50,7 +50,9 @@ export class UserService {
 
   // get doctor patients
   getUsersByDoctorId(doctorId: string) {
-    return this.api.get<Relationship2[]>(`relationships/doctor/${doctorId}/select`);
+    return this.api.get<Relationship2[]>(`relationships/doctor/${doctorId}/select`).pipe(
+      map(items => items.filter(_ => !!_.user?.link_id)) // filter null user
+    );
   }
 
   getUserCountByDoctorId(doctorId: string) {
