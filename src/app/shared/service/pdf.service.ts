@@ -131,7 +131,7 @@ export class PdfService {
     const list = surveyGroup?.list;
     if (!list?.length) return '';
     const doctorId = doctor?._id ? doctor._id : doctor;
-    const surveys = await this.surveyService.GetSurveysByUserTypeAndList(doctorId, patientId, surveyType, list.join('|')).toPromise();
+    const surveys = await this.surveyService.GetAllSurveysByUserTypeAndList(doctorId, patientId, surveyType, list.join('|')).toPromise();
 
     surveys.map((survey: Survey) => {
       // survey name

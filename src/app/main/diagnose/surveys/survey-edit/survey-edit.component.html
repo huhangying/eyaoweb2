@@ -6,10 +6,10 @@
     <ng-container *ngFor="let question of survey.questions; let qIndex=index">
       <h6 class="text-info px-2 pt-3 pb-1" (click)="test(question)">{{qIndex + 1}}. {{question.question}}</h6>
       <ng-container *ngIf="question.answer_type === 0 || question.answer_type === 1">
-        <mat-radio-group name="{{survey?._id}}{{qIndex}}">
+        <mat-radio-group name="{{survey?._id}}{{qIndex}}" [disabled]="readonly">
           <ng-container *ngFor="let option of question.options; let oIndex=index">
-            <mat-radio-button name="{{survey?._id}}{{qIndex}}" (click)="changeRadioSelection(question, oIndex, survey)" [value]="oIndex" [checked]="option.selected"
-              class="question-option" [disabled]="readonly">
+            <mat-radio-button name="{{survey?._id}}{{qIndex}}" (click)="changeRadioSelection(question, oIndex, survey)"
+              [value]="oIndex" [checked]="option.selected" class="question-option" [disabled]="readonly">
               {{option.answer}}
             </mat-radio-button>
             <input type="text" nbInput [(ngModel)]="option.input" placeholder="请输入..." class="ml-5 w-75"
@@ -19,7 +19,8 @@
       </ng-container>
       <ng-container *ngIf="question.answer_type === 2">
         <ng-container *ngFor="let option of question.options">
-          <mat-checkbox [(ngModel)]="option.selected" class="question-option" [disabled]="readonly" (change)="markSurveyDirty(survey)">
+          <mat-checkbox [(ngModel)]="option.selected" class="question-option" [disabled]="readonly"
+            (change)="markSurveyDirty(survey)">
             {{option.answer}}
           </mat-checkbox>
           <input type="text" nbInput [(ngModel)]="option.input" placeholder="请输入..." class="ml-5 w-75"
@@ -29,8 +30,8 @@
 
       <ng-container *ngIf="question.answer_type === 3">
         <div class="pl-3 pr-5">
-          <textarea nbInput fullWidth placeholder="请输入..." [(ngModel)]="question.options[0].answer" (change)="markSurveyDirty(survey)"
-            [disabled]="readonly"></textarea>
+          <textarea nbInput fullWidth placeholder="请输入..." [(ngModel)]="question.options[0].answer"
+            (change)="markSurveyDirty(survey)" [disabled]="readonly"></textarea>
         </div>
       </ng-container>
 
@@ -40,7 +41,7 @@
 </ng-container>
 
 <ng-container *ngIf="!surveys?.length">
-  <blockquote>
-    <p>{{readonly? '病患没有填写该问卷' : '无可用的问卷。'}}</p>
-  </blockquote>
+  <div class="alert alert-warning" role="alert">
+    {{readonly? '病患没有填写该问卷' : '无可用的问卷。'}}
+  </div>
 </ng-container>

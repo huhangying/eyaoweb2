@@ -50,8 +50,8 @@
           问卷
         </ng-template>
         <ng-template matTabContent>
-          <ngx-surveys [isFirstVisit]="isFirstVisit" [surveyGroups]="diagnose.surveys" [doctor]="data.doctor"
-            [patient]="data.patient"  [readonly]="true"></ngx-surveys>
+          <ngx-surveys [surveyGroups]="diagnose.surveys" [doctor]="data.doctor"
+            [patient]="data.patient" [readonly]="true" [diagnose]="diagnose" ></ngx-surveys>
         </ng-template>
       </mat-tab>
 

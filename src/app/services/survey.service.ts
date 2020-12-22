@@ -62,8 +62,8 @@ export class SurveyService {
     return this.api.get<Survey[]>(`surveys/${doctorId}/${patientId}/${type}/${readonly}`);
   }
 
-  GetSurveysByUserTypeAndList(doctorId: string, patientId: string, type: number, list: string, readonly=0) {
-    return this.api.get<Survey[]>(`surveys/${doctorId}/${patientId}/${type}/${list}/${readonly}`);
+  GetAllSurveysByUserTypeAndList(doctorId: string, patientId: string, type: number, list: string) {
+    return this.api.get<Survey[]>(`surveys/all/${doctorId}/${patientId}/${type}/${list}`);
   }
 
   updateSurvey(data: Survey) {

@@ -11,6 +11,8 @@ import { environment } from '../../../../environments/environment';
 import { WechatResponse } from '../../../models/wechat-response.model';
 import { MessageService } from '../../../shared/service/message.service';
 import { tap } from 'rxjs/operators';
+import { Diagnose } from '../../../models/diagnose/diagnose.model';
+import { DiagnoseService } from '../../../services/diagnose.service';
 
 @Component({
   selector: 'ngx-surveys',
@@ -18,18 +20,21 @@ import { tap } from 'rxjs/operators';
   styleUrls: ['./surveys.component.scss']
 })
 export class SurveysComponent implements OnInit {
-  @Input() isFirstVisit?: boolean;
   @Input() surveyGroups: SurveyGroup[];
   @Input() doctor: Doctor;
   @Input() patient: User;
   @Output() dataChange = new EventEmitter<SurveyGroup[]>();
+  @Input() isFirstVisit?: boolean; // 药师门诊时有效，历史记录查看时无效
+
   @Input() readonly?: boolean;
+  @Input() diagnose?: Diagnose; // 历史记录查看时输入
   availableSurveyTemplates: SurveyTemplate[];
 
   constructor(
     private surveyService: SurveyService,
     private wxService: WeixinService,
     private message: MessageService,
+    private diagnoseService: DiagnoseService,
   ) { }
 
   ngOnInit(): void {
@@ -68,12 +73,20 @@ export class SurveysComponent implements OnInit {
     const survey_templates = this.availableSurveyTemplates.filter(_ => _.type === type);
     const surveyName = this.surveyService.getSurveyNameByType(type);
     if (survey_templates.length) {
-       this.sendOne(type, surveyName, survey_templates);
+      this.sendOne(type, surveyName, survey_templates);
     }
   }
 
   sendOne(surveyType: number, surveyName: string, surveyTemplates: SurveyTemplate[]) {
+    const sg: SurveyGroup = {
+      type: surveyType,
+      list: [],
+      // surveys: surveys,
+    };
+    // const surveys: Survey[] = [];
     // create surveys for the user
+    const totalSurveySize = surveyTemplates.length;
+    let currentIndex = 0;
     surveyTemplates.map(async _ => {
 
       const newSurvey: Survey = {
@@ -87,8 +100,40 @@ export class SurveysComponent implements OnInit {
       };
       delete newSurvey._id;
       // create survey
-      await this.surveyService.addSurvey(newSurvey);
+      const _survey = await this.surveyService.addSurvey(newSurvey);
+      currentIndex = currentIndex + 1;
+      if (_survey?._id) {
+        sg.list.push(_survey._id);
+        // surveys.push(_survey);
+      }
+
+      // 完成最后一个后保存到diagnose
+      if (sg.list?.length && currentIndex === totalSurveySize) {
+        // search from diagnose.survey
+        let surveyGroups = [...this.diagnose.surveys];
+        if (this.diagnose.surveys.findIndex(_ => _.type === surveyType) > -1) {
+          surveyGroups = surveyGroups.map(surveyGroup => {
+            if (surveyGroup.type === sg.type) {
+              surveyGroup.list = [...sg.list];
+            }
+            return surveyGroup;
+          });
+        } else {
+          surveyGroups.push(sg);
+        }
+
+        // 更新diagnose (特殊情况，当发送问卷时（增加）)
+        if (this.diagnose?._id) {
+          this.diagnoseService.updateDiagnose({
+            _id: this.diagnose._id,
+            doctor: this.diagnose.doctor,
+            user: this.diagnose.user,
+            surveys: surveyGroups
+          }).subscribe();
+        }
+      }
     });
+
 
     // send wechat messsage
     const openid = this.patient.link_id;

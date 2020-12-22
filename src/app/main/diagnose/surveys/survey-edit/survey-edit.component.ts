@@ -15,7 +15,7 @@ import { combineLatest, of, EMPTY } from 'rxjs';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SurveyEditComponent implements OnInit, OnDestroy {
-  @Input() type: number; // 0 - 6
+  @Input() type: number; // 0 - 7
   @Input() data: {
     list: string[];
     doctorId: string;
@@ -41,7 +41,7 @@ export class SurveyEditComponent implements OnInit, OnDestroy {
       return;
     }
     // 如果list没有survey，就到surveyTemplate去取；如果有survey list，直接加载
-    if (!this.data.list) {
+    if (!this.data.list?.length) {
       this.surveys = [];
       this.surveyService.getByDepartmentIdAndType(this.data.departmentId, this.type).pipe(
         map(results => {
@@ -67,7 +67,8 @@ export class SurveyEditComponent implements OnInit, OnDestroy {
         })
       ).subscribe();
     } else {
-      this.surveyService.GetSurveysByUserTypeAndList(this.data.doctorId, this.data.patientId, this.type, this.data.list.join('|')).pipe(
+      this.surveyService.GetAllSurveysByUserTypeAndList(this.data.doctorId, this.data.patientId,
+        this.type, this.data.list.join('|')).pipe(
         tap(results => {
           this.surveys = results;
           this.cd.markForCheck();
@@ -77,6 +78,7 @@ export class SurveyEditComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    if (this.readonly) return;
     // 自动保存问卷（支持多个）
     this.saveAllSurveys().subscribe(results => {
       if (results?.length) {

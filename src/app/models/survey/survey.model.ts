@@ -8,7 +8,7 @@ export interface Survey {
 
   name?: string; // Survey name
   department: string; // id
-  type: number; // { type: Number, required: true, min: 0, max: 6 },
+  type: number; // { type: Number, required: true, min: 0, max: 7 },
   questions?: Question[];
   order?: number;
   availableBy?: Date; // 有效期
@@ -27,7 +27,7 @@ export interface SurveyReqest {
 
   name?: string; // Survey name
   department: string; // id
-  type: number; // { type: Number, required: true, min: 0, max: 6 },
+  type: number; // { type: Number, required: true, min: 0, max: 7 },
   questions?: Question[];
   order?: number;
   availableBy?: Date; // 有效期

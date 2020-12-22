@@ -2,7 +2,7 @@ export interface SurveyTemplate {
   _id?: string;
   name?: string; // Survey section name
   department: string; // id
-  type: number; // { type: Number, required: true, min: 0, max: 6 },
+  type: number; // { type: Number, required: true, min: 0, max: 7 },
   questions?: Question[];
   order?: number;
   availableDays?: number; // 有效天数, 默认为30天
