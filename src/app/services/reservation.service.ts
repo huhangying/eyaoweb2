@@ -6,6 +6,8 @@ import { Booking, OriginBooking } from '../models/reservation/booking.model';
 import { AppStoreService } from '../shared/store/app-store.service';
 import * as moment from 'moment';
 import { NotificationType } from '../models/io/notification.model';
+import { Observable } from 'rxjs';
+import { ReportSearch } from '../report/models/report-search.model';
 
 @Injectable({
   providedIn: 'root'
@@ -165,6 +167,10 @@ export class ReservationService {
 
     // mark done to db
     this.setReadCancelledByDocterPatient(doctorId, patientId).subscribe();
+  }
+
+  bookingSearch(search: ReportSearch) {
+    return this.api.post<Booking[]>('bookings/search', search) as Observable<Booking[]>;
   }
 
 }

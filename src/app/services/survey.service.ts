@@ -3,6 +3,8 @@ import { ApiService } from '../shared/service/api.service';
 import { SurveyTemplate } from '../models/survey/survey-template.model';
 import { Survey } from '../models/survey/survey.model';
 import { MessageService } from '../shared/service/message.service';
+import { ReportSearch } from '../report/models/report-search.model';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -88,6 +90,10 @@ export class SurveyService {
 
   finishDiagnoseSurveys(userid: string, doctorid: string) {
     return this.api.patch(`surveys/close/${doctorid}/${userid}`, {});
+  }
+
+  surveySearch(search: ReportSearch) {
+    return this.api.post<Survey[]>('surveys/search', search) as Observable<Survey[]>;
   }
 
 }

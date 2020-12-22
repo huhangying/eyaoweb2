@@ -158,6 +158,29 @@ export function getMenuItems(role: number, queryParams: Params): NbMenuItem[] {
             }
           ]
         },
+        {
+          title: '问卷统计',
+          children: [
+            {
+              link: '/cms/report/survey',
+              title: '问卷类别统计'
+            },
+            {
+              link: '/cms/report/survey',
+              title: '问卷内容统计'
+            }
+          ]
+        },
+        {
+          title: '门诊统计',
+          children: [
+            {
+              link: '/cms/report/booking',
+              title: '门诊统计'
+            },
+
+          ]
+        },
       ],
     },
   ];
