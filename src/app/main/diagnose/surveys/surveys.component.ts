@@ -108,7 +108,7 @@ export class SurveysComponent implements OnInit {
       }
 
       // 完成最后一个后保存到diagnose
-      if (sg.list?.length && currentIndex === totalSurveySize) {
+      if (this.diagnose && sg.list?.length && currentIndex === totalSurveySize) {
         // search from diagnose.survey
         let surveyGroups = [...this.diagnose.surveys];
         if (this.diagnose.surveys.findIndex(_ => _.type === surveyType) > -1) {
