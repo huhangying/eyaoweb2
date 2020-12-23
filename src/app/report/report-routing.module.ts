@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { DepartmentResolver } from '../services/resolvers/department.resolver';
+import { PeriodsResolver } from '../services/resolvers/periods.resolver';
 import { BookingReportComponent } from './reservation/booking-report/booking-report.component';
 import { SurveyReportComponent } from './survey/survey-report/survey-report.component';
 
@@ -19,6 +20,7 @@ const routes: Routes = [{
       component: BookingReportComponent,
       resolve: {
         departments: DepartmentResolver,
+        periods: PeriodsResolver
       }
     },
   ]

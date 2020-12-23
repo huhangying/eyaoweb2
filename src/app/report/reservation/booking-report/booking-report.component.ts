@@ -7,6 +7,7 @@ import { Subject } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { Department } from '../../../models/hospital/department.model';
 import { Booking } from '../../../models/reservation/booking.model';
+import { Period } from '../../../models/reservation/schedule.model';
 import { ReservationService } from '../../../services/reservation.service';
 
 @Component({
@@ -20,11 +21,13 @@ export class BookingReportComponent implements OnInit, OnDestroy {
   departments: Department[];
 
   bookings: Booking[];
+  statusList: string[];
+  periods: Period[];
 
   dataSource: MatTableDataSource<Booking>;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
-  displayedColumns: string[] = ['doctor', 'user', 'schedule', 'status'];
+  displayedColumns: string[] = ['doctor.department', 'doctor.name', 'user.name', 'schedule.date', 'status', 'created'];
 
   constructor(
     private route: ActivatedRoute,
@@ -32,6 +35,8 @@ export class BookingReportComponent implements OnInit, OnDestroy {
     private cd: ChangeDetectorRef,
   ) {
     this.departments = this.route.snapshot.data.departments;
+    this.statusList = reservationService.getBookingStatusList();
+    this.periods = this.route.snapshot.data.periods;
   }
 
   ngOnInit(): void {
@@ -49,24 +54,45 @@ export class BookingReportComponent implements OnInit, OnDestroy {
         this.loadData();
       })
     ).subscribe();
-
-    console.log(s);
-
-
   }
 
 
   loadData() {
     const data = this.bookings || [];
     this.dataSource = new MatTableDataSource<Booking>(data);
+    this.dataSource.sortingDataAccessor = (item, property) => {
+      switch (property) {
+        case 'doctor.department':
+          return item.doctor?.department;
+        case 'doctor.name':
+          return item.doctor?.name;
+        case 'user.name':
+          return item.user?.name;
+        case 'schedule.date':
+          return item.schedule.date;
+        default:
+          return item[property];
+      }
+    };
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
     this.cd.markForCheck();
   }
 
   getDepartmentLabel(id: string) {
+    if (!id) return '';
     return this.departments.find(item => item._id === id)?.name;
   }
 
+  getPeriodLabel(id: string) {
+    return id ?
+      this.periods.find(_ => _._id === id)?.name :
+      '';
+  }
+
+  getStatusLabel(status: number) {
+    if (status < 1 || status > 7) return '';
+    return this.statusList[status];
+  }
 }
 
