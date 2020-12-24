@@ -145,17 +145,28 @@ export function getMenuItems(role: number, queryParams: Params): NbMenuItem[] {
       icon: 'pie-chart-2',
       children: [
         {
-          title: '付费咨询对帐单',
-          link: '/cms/consult/bill',
-          hidden: role < 2,
-        },
-        {
-          title: '门诊预约',
-          link: '/cms/consult/bill',
+          title: '咨询服务统计',
           children: [
             {
-              title: '在线预约'
-            }
+              title: '免费咨询统计',
+              link: '/cms/report/chat',
+              queryParams: queryParams,
+            },
+            {
+              title: '付费咨询统计',
+              link: '/cms/report/consult',
+              queryParams: queryParams,
+            },
+            {
+              title: '客服咨询统计',
+              link: '/cms/report/cs',
+              queryParams: queryParams,
+            },
+            {
+              title: '付费咨询对帐单',
+              link: '/cms/consult/bill',
+              hidden: role < 2,
+            },
           ]
         },
         {
@@ -175,8 +186,19 @@ export function getMenuItems(role: number, queryParams: Params): NbMenuItem[] {
           title: '门诊统计',
           children: [
             {
+              title: '在线预约统计',
               link: '/cms/report/booking',
-              title: '门诊统计'
+              queryParams: queryParams,
+            },
+            {
+              title: '不良反应反馈',
+              link: '/cms/report/feedback',
+              queryParams: {...queryParams, type: 1},
+            },
+            {
+              title: '联合用药反馈',
+              link: '/cms/report/feedback',
+              queryParams: {...queryParams, type: 2},
             },
 
           ]
