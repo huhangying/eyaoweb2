@@ -25,7 +25,7 @@ export class SurveyReportComponent implements OnInit , OnDestroy {
   dataSource: MatTableDataSource<Survey>;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
-  displayedColumns: string[] = ['department', 'doctor', 'user', 'name', 'type', 'finished'];
+  displayedColumns: string[] = ['department', 'doctor.name', 'user.name', 'name', 'type', 'finished', 'updatedAt'];
 
   constructor(
     private route: ActivatedRoute,
@@ -60,6 +60,16 @@ export class SurveyReportComponent implements OnInit , OnDestroy {
   loadData() {
     const data = this.surveys || [];
     this.dataSource = new MatTableDataSource<Survey>(data);
+    this.dataSource.sortingDataAccessor = (item, property) => {
+      switch (property) {
+        case 'doctor.name':
+          return item.doctor?.name;
+        case 'user.name':
+          return item.user?.name;
+        default:
+          return item[property];
+      }
+    };
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
     this.cd.markForCheck();
