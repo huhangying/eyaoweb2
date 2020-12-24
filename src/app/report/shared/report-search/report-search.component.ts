@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Subject } from 'rxjs';
@@ -11,20 +11,23 @@ import { ReportSearch } from '../../models/report-search.model';
 @Component({
   selector: 'ngx-report-search',
   templateUrl: './report-search.component.html',
-  styleUrls: ['./report-search.component.scss']
+  styleUrls: ['./report-search.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ReportSearchComponent implements OnInit, OnDestroy {
   @Input() departments: Department[]; // departmets have been pre-loaded!
   @Output() onSearch = new EventEmitter<ReportSearch>();
   form: FormGroup;
-  doctors: Doctor[];
+  doctors: Doctor[] = [];
   destroy$ = new Subject<void>();
-  doctorInitSet = false;
+  // doctorInitSet = false;
+  allDoctors = '';
 
   constructor(
     private fb: FormBuilder,
     private doctorService: DoctorService,
     private route: ActivatedRoute,
+    private cd: ChangeDetectorRef,
   ) {
     this.form = this.fb.group({
       department: [this.route.snapshot.queryParams?.dep || '', [Validators.required]],
@@ -44,17 +47,7 @@ export class ReportSearchComponent implements OnInit, OnDestroy {
       startWith(this.route.snapshot.queryParams?.dep || ''),
       tap(async dep => {
         // reset selected doctor
-        this.doctorCtrl.patchValue('');
-
-        if (!dep) {
-          this.doctors = [];
-          return;
-        }
-        this.doctors = await this.doctorService.getDoctorsByDepartment(dep).toPromise();
-        if (!this.doctorInitSet && this.route.snapshot.queryParams?.doc) {
-          this.doctorCtrl.patchValue(this.route.snapshot.queryParams.doc); // set ONLY one time
-          this.doctorInitSet = true;
-        }
+        this.selectDoctors(dep);
       }),
       takeUntil(this.destroy$),
     ).subscribe();
@@ -64,6 +57,32 @@ export class ReportSearchComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.destroy$.next();
     this.destroy$.unsubscribe();
+  }
+
+  async selectDoctors(departmentId: string) {
+    if (!departmentId) {
+      this.doctors = [];
+      this.doctorCtrl.patchValue('');
+      this.cd.markForCheck();
+      return;
+    }
+
+    if (this.doctors.length > 0 && this.doctors[0].department === departmentId) {
+      this.patchDoctors();
+      return;
+    }
+
+    this.doctors = await this.doctorService.getDoctorsByDepartment(departmentId).toPromise();
+    this.patchDoctors();
+  }
+
+  patchDoctors() {
+    this.allDoctors = this.doctors.map(_ => _._id).join('|');
+    this.cd.markForCheck();
+    setTimeout(() => {
+      this.doctorCtrl.patchValue(this.allDoctors);
+      this.cd.markForCheck();
+    });
   }
 
   search() {

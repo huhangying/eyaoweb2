@@ -76,7 +76,7 @@ export class DoctorProfileComponent implements OnInit, OnDestroy {
       password: [''],
       passwordConfirm: [''],
       order: '',
-      apply: '',
+      apply: true,
       role: ''
     }, {
       validators: [mustMatch('password', 'passwordConfirm')]

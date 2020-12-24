@@ -15,7 +15,7 @@
     <div class="col-6 col-lg-3 pt-3">
       <nb-form-field  appearance="fill">
         <nb-select hero fullWidth placeholder="选择药师" formControlName="doctor">
-          <nb-option value="">全部药师</nb-option>
+          <nb-option [value]="allDoctors || ''">全部药师</nb-option>
           <nb-option *ngFor="let doc of doctors" [value]="doc._id">{{ doc.name }}</nb-option>
         </nb-select>
       </nb-form-field>
