@@ -146,6 +146,7 @@ export function getMenuItems(role: number, queryParams: Params): NbMenuItem[] {
       children: [
         {
           title: '咨询服务统计',
+          icon: 'npm-outline',
           children: [
             {
               title: '免费咨询统计',
@@ -171,6 +172,7 @@ export function getMenuItems(role: number, queryParams: Params): NbMenuItem[] {
         },
         {
           title: '问卷统计',
+          icon: 'npm-outline',
           children: [
             {
               link: '/cms/report/survey',
@@ -184,6 +186,7 @@ export function getMenuItems(role: number, queryParams: Params): NbMenuItem[] {
         },
         {
           title: '门诊统计',
+          icon: 'npm-outline',
           children: [
             {
               title: '在线预约统计',
