@@ -1,1 +1,82 @@
-<p>feedback-report works!</p>
+<nb-card>
+  <nb-card-header>
+    门诊&预约统计 / {{getTitle()}}
+    <ngx-report-search [departments]="departments" (onSearch)="search($event)">
+    </ngx-report-search>
+  </nb-card-header>
+
+  <nb-card-body>
+    <div [class.d-none]="!dataSource?.data?.length">
+      <table mat-table [dataSource]="dataSource" matSort matTableExporter #exporter="matTableExporter"
+        class="mat-elevation-z8 table-striped table-hover">
+
+        <ng-container matColumnDef="doctor.department">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> 科室 </th>
+          <td mat-cell *matCellDef="let element">
+            {{ getDepartmentLabel(element.doctor.department) }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="doctor.name">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 5rem;"> 药师 </th>
+          <td mat-cell *matCellDef="let element"> {{element.doctor.name}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="status" style="max-width: 2rem;">
+          <th mat-header-cell *matHeaderCellDef> </th>
+          <td mat-cell *matCellDef="let element">
+            {{ element.status >= 2 ? '→': '←' }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="user.name">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 5rem;"> 病患 </th>
+          <td mat-cell *matCellDef="let element"> {{element.user.name}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> {{type === 1 ? '不良反应': '药物名称'}} </th>
+          <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="how" *ngIf="type !== 1">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> 用药方法 </th>
+          <td mat-cell *matCellDef="let element">
+            {{element.how}}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="startDate" style="width: 5rem;">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> 反馈起始日期 </th>
+          <td mat-cell *matCellDef="let element">
+            {{ element.startDate | localDate }} - {{element.endDate | localDate}}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="createdAt" style="width: 5rem;">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> 发送日期 </th>
+          <td mat-cell *matCellDef="let element">
+            {{ element.createdAt | localDate }}
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+      <mat-paginator [pageSizeOptions]="[10, 25, 50]" [pageSize]="10" showFirstLastButtons></mat-paginator>
+
+      <div class="px-3 pt-2 mt-n5">
+        <button nbButton hero status="info" size="small" class="mr-5" nbSuffix
+          (click)="exporter.exportTable('xlsx', {fileName: 'test', sheet: getTitle()})">
+          <nb-icon icon="download-outline" pack="eva"></nb-icon> excel 文件导出
+        </button>
+      </div>
+    </div>
+    <ng-container *ngIf="!dataSource?.data?.length">
+      <div class="alert alert-warning" role="alert">
+        没有找到相关记录。
+      </div>
+    </ng-container>
+
+  </nb-card-body>
+</nb-card>

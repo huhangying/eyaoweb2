@@ -1,7 +1,10 @@
+import { Doctor } from '../crm/doctor.model';
+import { User } from '../crm/user.model';
+
 export interface UserFeedback {
   _id: string;
-  doctor: string; //id
-  user: string; // id
+  doctor: string | Doctor; //id
+  user: string | User; // id
   senderName: string;
   type: number;  // 1: 不良反应反馈; 2: 联合用药
   name: string; // adverse reaction name if type==1; medicine name if type==2

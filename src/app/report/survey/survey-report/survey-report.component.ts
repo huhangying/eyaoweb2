@@ -17,7 +17,7 @@ import { User } from '../../../models/crm/user.model';
   styleUrls: ['./survey-report.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SurveyReportComponent implements OnInit , OnDestroy {
+export class SurveyReportComponent implements OnInit, OnDestroy {
   destroy$ = new Subject<void>();
   departments: Department[];
 

@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { ApiService } from '../shared/service/api.service';
 import { UserFeedback } from '../models/io/user-feedback.model';
 import { AppStoreService } from '../shared/store/app-store.service';
+import { ReportSearch } from '../report/models/report-search.model';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -44,7 +46,7 @@ export class UserFeedbackService {
     if (!feedbacks?.length) return [];
     const keys: string[] = [];
     const feedbackNotifications = feedbacks.reduce((notis, feedback) => {
-      const key = feedback.user + feedback.type;
+      const key = (feedback.user as string) + feedback.type;
       if (keys.indexOf(key) === -1) {
         keys.push(key);
         notis.push({
@@ -80,7 +82,7 @@ export class UserFeedbackService {
 
     if (!notifications?.length) {
       notifications = [{
-        patientId: feedback.user,
+        patientId: feedback.user as string,
         type: notiType,
         name: feedback.senderName || '', // to remove
         count: 1,
@@ -91,7 +93,7 @@ export class UserFeedbackService {
       // if new
       if (index === -1) {
         notifications.push({
-          patientId: feedback.user,
+          patientId: feedback.user as string,
           type: notiType,
           name: feedback.senderName || '', // to remove
           count: 1,
@@ -121,6 +123,10 @@ export class UserFeedbackService {
 
     // mark read in db
     this.setReadByDocterPatientAndType(doctorId, patientId, type).subscribe();
+  }
+
+  feedbackSearch(search: ReportSearch) {
+    return this.api.post<UserFeedback[]>('feedbacks/search', search) as Observable<UserFeedback[]>;
   }
 
 }

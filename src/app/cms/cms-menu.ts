@@ -185,7 +185,7 @@ export function getMenuItems(role: number, queryParams: Params): NbMenuItem[] {
           ]
         },
         {
-          title: '门诊统计',
+          title: '门诊&预约统计',
           icon: 'npm-outline',
           children: [
             {
