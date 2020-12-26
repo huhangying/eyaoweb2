@@ -98,7 +98,7 @@ export class BookingComponent implements OnInit, OnDestroy {
             // flattenData.push({
             this.bookingData.push({
               _id: _._id,
-              doctor: _.doctor,
+              doctor: _.doctor as string,
               created: new Date(_.created),
               status: _.status,
               scheduleId: _.schedule._id,

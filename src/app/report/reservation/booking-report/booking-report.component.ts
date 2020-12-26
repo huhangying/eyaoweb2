@@ -5,6 +5,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute } from '@angular/router';
 import { Subject } from 'rxjs';
 import { tap } from 'rxjs/operators';
+import { Doctor } from '../../../models/crm/doctor.model';
 import { Department } from '../../../models/hospital/department.model';
 import { Booking } from '../../../models/reservation/booking.model';
 import { Period } from '../../../models/reservation/schedule.model';
@@ -61,11 +62,12 @@ export class BookingReportComponent implements OnInit, OnDestroy {
     const data = this.bookings || [];
     this.dataSource = new MatTableDataSource<Booking>(data);
     this.dataSource.sortingDataAccessor = (item, property) => {
+      const doctor = item.doctor as Doctor;
       switch (property) {
         case 'doctor.department':
-          return item.doctor?.department;
+          return doctor?.department;
         case 'doctor.name':
-          return item.doctor?.name;
+          return doctor?.name;
         case 'user.name':
           return item.user?.name;
         case 'schedule.date':

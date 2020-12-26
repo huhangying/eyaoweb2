@@ -156,7 +156,7 @@ export class DiagnoseComponent implements OnInit, OnDestroy {
       }
     }
     // 如果存在, todo: switch
-    else if (this.diagnose.user !== patient._id) {
+    else if (this.diagnose?.user !== patient._id) {
       this.diagnose = {
         ...this.diagnose,
         user: patient._id,
@@ -237,7 +237,7 @@ export class DiagnoseComponent implements OnInit, OnDestroy {
           this.message.updateSuccess();
           // mark surveys finished
           if (status === DiagnoseStatus.archived) {
-            this.surveyService.finishDiagnoseSurveys(this.diagnose.user, this.doctor._id)
+            this.surveyService.finishDiagnoseSurveys(result.user, this.doctor._id)
               .subscribe();
           }
         }

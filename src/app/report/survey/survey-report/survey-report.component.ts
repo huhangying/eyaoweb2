@@ -9,6 +9,7 @@ import { Doctor } from '../../../models/crm/doctor.model';
 import { Department } from '../../../models/hospital/department.model';
 import { Survey } from '../../../models/survey/survey.model';
 import { SurveyService } from '../../../services/survey.service';
+import { User } from '../../../models/crm/user.model';
 
 @Component({
   selector: 'ngx-survey-report',
@@ -63,9 +64,9 @@ export class SurveyReportComponent implements OnInit , OnDestroy {
     this.dataSource.sortingDataAccessor = (item, property) => {
       switch (property) {
         case 'doctor.name':
-          return item.doctor?.name;
+          return (item.doctor as Doctor)?.name;
         case 'user.name':
-          return item.user?.name;
+          return (item.user as User)?.name;
         default:
           return item[property];
       }
