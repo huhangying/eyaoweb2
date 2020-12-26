@@ -22,6 +22,7 @@ export class SurveyReportComponent implements OnInit, OnDestroy {
   departments: Department[];
 
   surveys: Survey[];
+  outputTitle: string;
 
   dataSource: MatTableDataSource<Survey>;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
@@ -51,12 +52,11 @@ export class SurveyReportComponent implements OnInit, OnDestroy {
         this.loadData();
       })
     ).subscribe();
-
-    console.log(s);
-
-
   }
 
+  onOutputTitle(title: string) {
+    this.outputTitle = title;
+  }
 
   loadData() {
     const data = this.surveys || [];

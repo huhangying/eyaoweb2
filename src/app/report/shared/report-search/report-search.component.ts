@@ -2,10 +2,11 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, In
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Subject } from 'rxjs';
-import { startWith, tap, takeUntil, distinctUntilChanged, filter } from 'rxjs/operators';
+import { startWith, tap, takeUntil } from 'rxjs/operators';
 import { Doctor } from '../../../models/crm/doctor.model';
 import { Department } from '../../../models/hospital/department.model';
 import { DoctorService } from '../../../services/doctor.service';
+import { LocalDatePipe } from '../../../shared/pipe/local-date.pipe';
 import { ReportSearch } from '../../models/report-search.model';
 
 @Component({
@@ -17,10 +18,10 @@ import { ReportSearch } from '../../models/report-search.model';
 export class ReportSearchComponent implements OnInit, OnDestroy {
   @Input() departments: Department[]; // departmets have been pre-loaded!
   @Output() onSearch = new EventEmitter<ReportSearch>();
+  @Output() onOutputTitle = new EventEmitter<string>();
   form: FormGroup;
   doctors: Doctor[] = [];
   destroy$ = new Subject<void>();
-  // doctorInitSet = false;
   allDoctors = '';
 
   constructor(
@@ -28,6 +29,7 @@ export class ReportSearchComponent implements OnInit, OnDestroy {
     private doctorService: DoctorService,
     private route: ActivatedRoute,
     private cd: ChangeDetectorRef,
+    private localDate: LocalDatePipe,
   ) {
     this.form = this.fb.group({
       department: [this.route.snapshot.queryParams?.dep || '', [Validators.required]],
@@ -41,7 +43,6 @@ export class ReportSearchComponent implements OnInit, OnDestroy {
   get doctorCtrl() { return this.form.get('doctor'); }
 
   ngOnInit(): void {
-
     // department value changes
     this.departmentCtrl.valueChanges.pipe(
       startWith(this.route.snapshot.queryParams?.dep || ''),
@@ -51,7 +52,6 @@ export class ReportSearchComponent implements OnInit, OnDestroy {
       }),
       takeUntil(this.destroy$),
     ).subscribe();
-
   }
 
   ngOnDestroy() {
@@ -86,6 +86,15 @@ export class ReportSearchComponent implements OnInit, OnDestroy {
   }
 
   search() {
-    this.onSearch.emit(this.form.value);
+    const mySearch: ReportSearch = this.form.value;
+    this.onSearch.emit(mySearch);
+    const selectedDepartmentName = !mySearch.department ? '' :
+      (this.departments.find(_ => _._id === mySearch.department)?.name || '');
+    const selectedDoctorName = !mySearch.doctor ? '' :
+      (this.doctors.find(_ => _._id === mySearch.doctor)?.name || '');
+    const selectedDate = (!mySearch.start && !mySearch.end) ? '' :
+      (this.localDate.transform(mySearch.start) + '-' + this.localDate.transform(mySearch.end));
+
+    this.onOutputTitle.emit(`${selectedDepartmentName}${selectedDoctorName}${selectedDate}`);
   }
 }

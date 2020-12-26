@@ -1,7 +1,7 @@
 <nb-card>
   <nb-card-header>
     门诊&预约统计 / {{getTitle()}}
-    <ngx-report-search [departments]="departments" (onSearch)="search($event)">
+    <ngx-report-search [departments]="departments" (onSearch)="search($event)" (onOutputTitle)="onOutputTitle($event)">
     </ngx-report-search>
   </nb-card-header>
 
@@ -67,9 +67,10 @@
 
       <div class="px-3 pt-2 mt-n5">
         <button nbButton hero status="info" size="small" class="mr-5" nbSuffix
-          (click)="exporter.exportTable('xlsx', {fileName: 'test', sheet: getTitle()})">
+          (click)="exporter.exportTable('xlsx', {fileName: this.outputTitle || '导出文件', sheet: getTitle()})">
           <nb-icon icon="download-outline" pack="eva"></nb-icon> excel 文件导出
         </button>
+
       </div>
     </div>
     <ng-container *ngIf="!dataSource?.data?.length">

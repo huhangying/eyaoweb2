@@ -24,6 +24,7 @@ export class FeedbackReportComponent implements OnInit, OnDestroy {
 
   type: number;
   feedbacks: UserFeedback[];
+  outputTitle: string;
 
   dataSource: MatTableDataSource<UserFeedback>;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
@@ -68,6 +69,9 @@ export class FeedbackReportComponent implements OnInit, OnDestroy {
     ).subscribe();
   }
 
+  onOutputTitle(title: string) {
+    this.outputTitle = title;
+  }
 
   loadData() {
     const data = this.feedbacks || [];

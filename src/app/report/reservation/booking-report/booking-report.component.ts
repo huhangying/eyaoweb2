@@ -24,6 +24,7 @@ export class BookingReportComponent implements OnInit, OnDestroy {
   bookings: Booking[];
   statusList: string[];
   periods: Period[];
+  outputTitle: string;
 
   dataSource: MatTableDataSource<Booking>;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
@@ -57,6 +58,9 @@ export class BookingReportComponent implements OnInit, OnDestroy {
     ).subscribe();
   }
 
+  onOutputTitle(title: string) {
+    this.outputTitle = title;
+  }
 
   loadData() {
     const data = this.bookings || [];
