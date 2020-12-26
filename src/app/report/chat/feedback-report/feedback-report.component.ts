@@ -11,6 +11,7 @@ import { User } from '../../../models/crm/user.model';
 import { Department } from '../../../models/hospital/department.model';
 import { UserFeedback } from '../../../models/io/user-feedback.model';
 import { UserFeedbackService } from '../../../services/user-feedback.service';
+import { ReportSearchOutput } from '../../models/report-search.model';
 
 @Component({
   selector: 'ngx-feedback-report',
@@ -24,7 +25,7 @@ export class FeedbackReportComponent implements OnInit, OnDestroy {
 
   type: number;
   feedbacks: UserFeedback[];
-  outputTitle: string;
+  searchOutput: ReportSearchOutput;
 
   dataSource: MatTableDataSource<UserFeedback>;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
@@ -69,8 +70,8 @@ export class FeedbackReportComponent implements OnInit, OnDestroy {
     ).subscribe();
   }
 
-  onOutputTitle(title: string) {
-    this.outputTitle = title;
+  onOutput(output: ReportSearchOutput) {
+    this.searchOutput = output;
   }
 
   loadData() {

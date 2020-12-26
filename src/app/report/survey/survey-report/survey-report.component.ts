@@ -10,6 +10,7 @@ import { Department } from '../../../models/hospital/department.model';
 import { Survey } from '../../../models/survey/survey.model';
 import { SurveyService } from '../../../services/survey.service';
 import { User } from '../../../models/crm/user.model';
+import { ReportSearchOutput } from '../../models/report-search.model';
 
 @Component({
   selector: 'ngx-survey-report',
@@ -22,7 +23,7 @@ export class SurveyReportComponent implements OnInit, OnDestroy {
   departments: Department[];
 
   surveys: Survey[];
-  outputTitle: string;
+  searchOutput: ReportSearchOutput;
 
   dataSource: MatTableDataSource<Survey>;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
@@ -54,8 +55,8 @@ export class SurveyReportComponent implements OnInit, OnDestroy {
     ).subscribe();
   }
 
-  onOutputTitle(title: string) {
-    this.outputTitle = title;
+  onOutput(output: ReportSearchOutput) {
+    this.searchOutput = output;
   }
 
   loadData() {

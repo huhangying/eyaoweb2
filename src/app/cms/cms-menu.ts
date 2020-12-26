@@ -160,8 +160,8 @@ export function getMenuItems(role: number, queryParams: Params): NbMenuItem[] {
             },
             {
               title: '客服咨询统计',
-              link: '/cms/report/cs',
-              queryParams: queryParams,
+              link: '/cms/report/chat',
+              queryParams: { ...queryParams, cs: true },
             },
             {
               title: '付费咨询对帐单',
@@ -196,12 +196,12 @@ export function getMenuItems(role: number, queryParams: Params): NbMenuItem[] {
             {
               title: '不良反应反馈',
               link: '/cms/report/feedback',
-              queryParams: {...queryParams, type: 1},
+              queryParams: { ...queryParams, type: 1 },
             },
             {
               title: '联合用药反馈',
               link: '/cms/report/feedback',
-              queryParams: {...queryParams, type: 2},
+              queryParams: { ...queryParams, type: 2 },
             },
 
           ]

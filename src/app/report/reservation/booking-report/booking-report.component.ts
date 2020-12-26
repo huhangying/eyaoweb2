@@ -10,6 +10,7 @@ import { Department } from '../../../models/hospital/department.model';
 import { Booking } from '../../../models/reservation/booking.model';
 import { Period } from '../../../models/reservation/schedule.model';
 import { ReservationService } from '../../../services/reservation.service';
+import { ReportSearchOutput } from '../../models/report-search.model';
 
 @Component({
   selector: 'ngx-booking-report',
@@ -24,7 +25,7 @@ export class BookingReportComponent implements OnInit, OnDestroy {
   bookings: Booking[];
   statusList: string[];
   periods: Period[];
-  outputTitle: string;
+  searchOutput: ReportSearchOutput;
 
   dataSource: MatTableDataSource<Booking>;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
@@ -58,8 +59,8 @@ export class BookingReportComponent implements OnInit, OnDestroy {
     ).subscribe();
   }
 
-  onOutputTitle(title: string) {
-    this.outputTitle = title;
+  onOutput(output: ReportSearchOutput) {
+    this.searchOutput = output;
   }
 
   loadData() {

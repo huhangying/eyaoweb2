@@ -4,16 +4,28 @@ import { Chat } from '../models/io/chat.model';
 import { Notification, NotificationType } from '../models/io/notification.model';
 import { AppStoreService } from '../shared/store/app-store.service';
 import { User } from '../models/crm/user.model';
+import { ReportSearch } from '../report/models/report-search.model';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ChatService {
 
+  private chatType = [
+    { type: 0, label: '文字' },
+    { type: 1, label: '图片' },
+    { type: 8, label: '药师操作' },
+  ];
+
   constructor(
     private api: ApiService,
     private appStore: AppStoreService,
   ) { }
+
+  getChatTypeLabel(type: number) {
+    return this.chatType.find(_ => _.type === type)?.label;
+  }
 
   //
   getChatHistory(sender: string, to: string) {
@@ -156,4 +168,8 @@ export class ChatService {
     this.setCsReadByDocterAndPatient(doctorId, patientId).subscribe();
   }
 
+
+  chatSearch(search: ReportSearch) {
+    return this.api.post<Chat[]>('chats/search', search) as Observable<Chat[]>;
+  }
 }

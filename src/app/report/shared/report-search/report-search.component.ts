@@ -7,7 +7,7 @@ import { Doctor } from '../../../models/crm/doctor.model';
 import { Department } from '../../../models/hospital/department.model';
 import { DoctorService } from '../../../services/doctor.service';
 import { LocalDatePipe } from '../../../shared/pipe/local-date.pipe';
-import { ReportSearch } from '../../models/report-search.model';
+import { ReportSearch, ReportSearchOutput } from '../../models/report-search.model';
 
 @Component({
   selector: 'ngx-report-search',
@@ -17,8 +17,9 @@ import { ReportSearch } from '../../models/report-search.model';
 })
 export class ReportSearchComponent implements OnInit, OnDestroy {
   @Input() departments: Department[]; // departmets have been pre-loaded!
+  @Input() dateOnly?: boolean;
   @Output() onSearch = new EventEmitter<ReportSearch>();
-  @Output() onOutputTitle = new EventEmitter<string>();
+  @Output() onOutput = new EventEmitter<ReportSearchOutput>();
   form: FormGroup;
   doctors: Doctor[] = [];
   destroy$ = new Subject<void>();
@@ -87,7 +88,15 @@ export class ReportSearchComponent implements OnInit, OnDestroy {
 
   search() {
     const mySearch: ReportSearch = this.form.value;
-    this.onSearch.emit(mySearch);
+    if(!this.dateOnly) {
+      this.onSearch.emit(mySearch);
+    } else {
+      this.onSearch.emit({
+        start: mySearch.start,
+        end: mySearch.end
+      });
+    }
+
     const selectedDepartmentName = !mySearch.department ? '' :
       (this.departments.find(_ => _._id === mySearch.department)?.name || '');
     const selectedDoctorName = !mySearch.doctor ? '' :
@@ -95,6 +104,9 @@ export class ReportSearchComponent implements OnInit, OnDestroy {
     const selectedDate = (!mySearch.start && !mySearch.end) ? '' :
       (this.localDate.transform(mySearch.start) + '-' + this.localDate.transform(mySearch.end));
 
-    this.onOutputTitle.emit(`${selectedDepartmentName}${selectedDoctorName}${selectedDate}`);
+    this.onOutput.emit({
+      title: `${selectedDepartmentName}${selectedDoctorName}${selectedDate}`,
+      doctors: [...this.doctors]
+    });
   }
 }
