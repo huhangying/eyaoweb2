@@ -46,7 +46,7 @@ export class ReportSearchComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     // department value changes
     this.departmentCtrl.valueChanges.pipe(
-      startWith(this.route.snapshot.queryParams?.dep || ''),
+      startWith(!this.dateOnly ? this.route.snapshot.queryParams?.dep || '' : ''),
       tap(async dep => {
         // reset selected doctor
         this.selectDoctors(dep);

@@ -4,7 +4,6 @@ import { DepartmentResolver } from '../services/resolvers/department.resolver';
 import { PeriodsResolver } from '../services/resolvers/periods.resolver';
 import { ChatReportComponent } from './chat/chat-report/chat-report.component';
 import { ConsultReportComponent } from './chat/consult-report/consult-report.component';
-import { CustomerServiceReportComponent } from './chat/customer-service-report/customer-service-report.component';
 import { FeedbackReportComponent } from './chat/feedback-report/feedback-report.component';
 import { BookingReportComponent } from './reservation/booking-report/booking-report.component';
 import { SurveyReportComponent } from './survey/survey-report/survey-report.component';
@@ -48,10 +47,6 @@ const routes: Routes = [{
         departments: DepartmentResolver,
       }
     },
-    {
-      path: 'cs',
-      component: CustomerServiceReportComponent,
-    },
   ]
 }];
 
@@ -67,6 +62,5 @@ export const routedComponents = [
   ConsultReportComponent,
   ChatReportComponent,
   FeedbackReportComponent,
-  CustomerServiceReportComponent,
 ];
 
