@@ -536,11 +536,12 @@ export class ChatComponent implements OnInit, OnDestroy {
       consult = {
         user: this.selectedPatient._id,
         doctor: this.doctor._id,
-        // userName: this.selectedPatient.name,
-        type: this.type,
+        // userName: this.selectedPatient.name, // 当前用是否有userName作为消息方向，更好的办法是用status
+        type: 0, //this.type,
         content: '请参阅图片',
         upload: imgPath,
         finished: true,
+        status: 2,
         createdAt: new Date()
       };
     } else {
@@ -549,10 +550,11 @@ export class ChatComponent implements OnInit, OnDestroy {
       consult = {
         user: this.selectedPatient._id,
         doctor: this.doctor._id,
-        // senderName: this.selectedPatient.name,
-        type: this.type,
+        // userName: this.selectedPatient.name,
+        type: 0, //this.type,
         content: this.myInput,
         finished: true,
+        status: 2,
         createdAt: new Date()
       };
     }
@@ -607,11 +609,12 @@ export class ChatComponent implements OnInit, OnDestroy {
           const consult = {
             user: this.selectedPatient._id,
             doctor: this.doctor._id,
-            type: this.type,
+            type: 0, //this.type,
             content: `*** 药师未完成本次咨询服务 ***
 原因: ${result?.rejectReason}
 咨询服务费：已退款`,
             finished: true,
+            status: 4, // 4： 药师拒绝
             createdAt: new Date()
           };
           this.consults.push(consult); // to own chat window

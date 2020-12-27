@@ -56,14 +56,14 @@ export class ConsultPhoneComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  markDone(noMessage = false) {
+  markDone(isReject = false) {
     this.userService.getById(this.patientId).pipe(
       tap(user => {
         if (user?._id) {
           const openid = user.link_id;
           this.consultService.removeFromNotificationList(this.doctor._id, this.patientId, NotificationType.consultPhone);
 
-          if (!noMessage) {
+          if (!isReject) {
             this.wxService.sendWechatMsg(openid,
               '药师咨询完成',
               `${this.doctor.name}${this.doctor.title}已完成咨询。请点击查看，并建议和评价药师。`,
@@ -75,6 +75,9 @@ export class ConsultPhoneComponent implements OnInit {
 
             this.message.success('药师标记电话咨询已经完成！');
             this.done = 1;
+          } else {
+            this.message.success('药师已经拒绝本次服务并退款！');
+            this.done = 2;
           }
         }
       })
@@ -96,10 +99,6 @@ export class ConsultPhoneComponent implements OnInit {
           }).afterClosed().pipe(
             tap(result => {
               if (result) {
-                this.consultService.removeFromNotificationList(this.doctor._id, this.patientId, NotificationType.consultPhone);
-
-                this.message.success('药师已经拒绝本次服务并退款！');
-                this.done = 2;
                 this.markDone(true);
               }
             })

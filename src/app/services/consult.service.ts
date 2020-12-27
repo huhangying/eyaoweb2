@@ -7,6 +7,7 @@ import { Consult } from '../models/consult/consult.model';
 import { Observable } from 'rxjs';
 import { AppStoreService } from '../shared/store/app-store.service';
 import { NotificationType } from '../models/io/notification.model';
+import { ReportSearch } from '../report/models/report-search.model';
 
 @Injectable({
   providedIn: 'root'
@@ -148,6 +149,10 @@ export class ConsultService {
 
   deleteDoctorConsultCommentById(id: string) {
     return this.api.delete('doctor-consult-comment/' + id);
+  }
+
+  consultSearch(search: ReportSearch) {
+    return this.api.post<Consult[]>('consults/search', search) as Observable<Consult[]>;
   }
 
 }
