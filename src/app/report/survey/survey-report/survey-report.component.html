@@ -71,6 +71,10 @@
           (click)="displayChartDataByDoctor()">
           <nb-icon icon="pie-chart-outline" pack="eva"></nb-icon> 按药师统计
         </button>
+        <button nbButton hero status="info" size="small" class="mr-4" nbSuffix
+          (click)="displayPieChartDataByType()">
+          <nb-icon icon="pie-chart-outline" pack="eva"></nb-icon> 按问卷类别统计
+        </button>
       </div>
     </div>
     <ng-container *ngIf="!dataSource?.data?.length">

@@ -20,7 +20,8 @@ export interface ChartGroup {
   series: ChartItem[];
 }
 
-interface ChartItem {
+export interface ChartItem {
   name: string;
   value: number;
+  type?: number | string;
 }

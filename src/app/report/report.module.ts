@@ -7,12 +7,16 @@ import { ReportSearchComponent } from './shared/report-search/report-search.comp
 import { MatTableExporterModule } from 'mat-table-exporter';
 import { NgxChartsModule }from '@swimlane/ngx-charts';
 import { LineChartsComponent } from './shared/line-charts/line-charts.component';
+import { PieChartsComponent } from './shared/pie-charts/pie-charts.component';
+import { BarChartsComponent } from './shared/bar-charts/bar-charts.component';
 
 @NgModule({
   declarations: [
     ...routedComponents,
     ReportSearchComponent,
     LineChartsComponent,
+    PieChartsComponent,
+    BarChartsComponent,
 
   ],
   imports: [

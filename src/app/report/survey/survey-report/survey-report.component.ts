@@ -10,10 +10,11 @@ import { Department } from '../../../models/hospital/department.model';
 import { Survey } from '../../../models/survey/survey.model';
 import { SurveyService } from '../../../services/survey.service';
 import { User } from '../../../models/crm/user.model';
-import { ChartGroup, ReportSearchOutput } from '../../models/report-search.model';
+import { ChartGroup, ChartItem, ReportSearchOutput } from '../../models/report-search.model';
 import { LocalDatePipe } from '../../../shared/pipe/local-date.pipe';
 import { MatDialog } from '@angular/material/dialog';
 import { LineChartsComponent } from '../../shared/line-charts/line-charts.component';
+import { PieChartsComponent } from '../../shared/pie-charts/pie-charts.component';
 
 @Component({
   selector: 'ngx-survey-report',
@@ -135,6 +136,38 @@ export class SurveyReportComponent implements OnInit, OnDestroy {
     });
   }
 
+  displayPieChartDataByType() {
+    console.log(this.dataSource.data);
+    const keys: string[] = []; // key = type + 日期
+    const chartData = this.dataSource.data.reduce((chartItems: ChartItem[], item: Survey) => {
+      const key = item.type + '';
+      if (keys.indexOf(key) === -1) {
+        keys.push(key);
+        chartItems.push({
+          type: item.type,
+          name: this.getSurveyNameByType(item.type),
+          value: 1,
+        });
+        return chartItems;
+      }
+      chartItems = chartItems.map((group) => {
+        if (group.type === item.type) {
+          group.value += 1;
+        }
+        return group;
+      });
+      return chartItems;
+    }, []);
+
+    this.dialog.open(PieChartsComponent, {
+      data: {
+        title: '问卷类别',
+        chartData: chartData,
+        isPercentage: true,
+      }
+    });
+  }
+
   displayChartDataByDoctor() {
     console.log(this.dataSource.data);
     const keys: string[] = []; // key = doctor + 日期
@@ -175,7 +208,7 @@ export class SurveyReportComponent implements OnInit, OnDestroy {
         title: '药师',
         // xLabel: '问卷日期',
         yLabel: '问卷个数',
-        chartData: chartData
+        chartData: chartData,
       }
     });
   }
