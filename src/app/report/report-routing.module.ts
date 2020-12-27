@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { BriefDoctorsResolver } from '../services/resolvers/brief-doctors.resolver';
 import { DepartmentResolver } from '../services/resolvers/department.resolver';
+import { MedicineReferencesResolver } from '../services/resolvers/medicine-references.resolver';
 import { PeriodsResolver } from '../services/resolvers/periods.resolver';
 import { ChatReportComponent } from './chat/chat-report/chat-report.component';
 import { ConsultReportComponent } from './chat/consult-report/consult-report.component';
@@ -64,6 +65,8 @@ const routes: Routes = [{
       component: MedicineUsageReportComponent,
       resolve: {
         departments: DepartmentResolver,
+        briefDoctors: BriefDoctorsResolver,
+        medicineReferences: MedicineReferencesResolver,
       }
     },
     {

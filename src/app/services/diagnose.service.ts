@@ -2,6 +2,9 @@ import { Injectable } from '@angular/core';
 import { ApiService } from '../shared/service/api.service';
 import { Diagnose } from '../models/diagnose/diagnose.model';
 import { Observable } from 'rxjs';
+import { ReportSearch } from '../report/models/report-search.model';
+import { MedicineUsage, MedicineUsageFlat } from '../report/models/report-usage';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -47,6 +50,32 @@ export class DiagnoseService {
 
   getStatByDoctorId(doctorId: string) {
     return this.api.get<{createdAt: Date; status: number}[]>('diagnoses/counts/' + doctorId);
+  }
+
+  //
+
+  medicineUsageSearch(search: ReportSearch) {
+    return this.api.post<MedicineUsage[]>('diagnose/medicine-usage/search', search).pipe(
+      map((results: MedicineUsage[]) => {
+        return results.filter(_ => _.prescription?.length > 0);
+      }),
+      map(results => {
+        const flattens: MedicineUsageFlat[] = [];
+        results.map(result => {
+          result.prescription.map(med => {
+            if (med?._id) {
+              flattens.push({
+                doctor: result.doctor,
+                user: result.user,
+                updatedAt: result.updatedAt,
+                medicine: med
+              });
+            }
+          });
+        });
+        return flattens;
+      })
+    ) as Observable<MedicineUsageFlat[]>;
   }
 
 }
