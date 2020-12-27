@@ -58,6 +58,7 @@ const routes: Routes = [{
       component: ArticleUsageReportComponent,
       resolve: {
         departments: DepartmentResolver,
+        briefDoctors: BriefDoctorsResolver,
       }
     },
     {

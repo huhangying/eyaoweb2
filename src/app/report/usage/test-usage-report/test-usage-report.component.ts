@@ -81,10 +81,6 @@ export class TestUsageReportComponent implements OnInit, OnDestroy {
     this.cd.markForCheck();
   }
 
-  // getDepartmentLabel(id: string) {
-  //   return this.departments.find(item => item._id === id)?.name;
-  // }
-
   getDepartmentLabel(room: string) {
     if (!this.briefDoctors?.length) return '';
     const doctor = this.briefDoctors.find(item => item._id === room);

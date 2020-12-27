@@ -3,6 +3,9 @@ import { ApiService } from '../shared/service/api.service';
 import { ArticleCat } from '../models/education/article-cat.model';
 import { ArticleTemplate } from '../models/education/article-template.model';
 import { ArticlePage } from '../models/education/article-page.model';
+import { ReportSearch } from '../report/models/report-search.model';
+import { Observable } from 'rxjs';
+import { ArticlePageUsage } from '../report/models/report-usage';
 
 
 @Injectable({
@@ -71,4 +74,8 @@ export class ArticleService {
       this.api.patch<ArticlePage>('page/' + page._id, page);
   }
 
+
+  pageSearch(search: ReportSearch) {
+    return this.api.post<ArticlePageUsage[]>('pages/search', search) as Observable<ArticlePageUsage[]>;
+  }
 }

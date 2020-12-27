@@ -145,7 +145,7 @@ export function getMenuItems(role: number, queryParams: Params): NbMenuItem[] {
       icon: 'pie-chart-2',
       children: [
         {
-          title: '咨询服务统计',
+          title: '咨询服务',
           icon: 'npm-outline',
           children: [
             {
@@ -171,7 +171,7 @@ export function getMenuItems(role: number, queryParams: Params): NbMenuItem[] {
           ]
         },
         {
-          title: '问卷统计',
+          title: '问卷',
           icon: 'npm-outline',
           children: [
             {
@@ -185,7 +185,7 @@ export function getMenuItems(role: number, queryParams: Params): NbMenuItem[] {
           ]
         },
         {
-          title: '门诊&预约统计',
+          title: '门诊&预约',
           icon: 'npm-outline',
           children: [
             {
