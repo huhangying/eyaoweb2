@@ -74,6 +74,7 @@ const routes: Routes = [{
       component: TestUsageReportComponent,
       resolve: {
         departments: DepartmentResolver,
+        briefDoctors: BriefDoctorsResolver,
       }
     },
   ]

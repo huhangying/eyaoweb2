@@ -3,7 +3,7 @@ import { ApiService } from '../shared/service/api.service';
 import { Diagnose } from '../models/diagnose/diagnose.model';
 import { Observable } from 'rxjs';
 import { ReportSearch } from '../report/models/report-search.model';
-import { MedicineUsage, MedicineUsageFlat } from '../report/models/report-usage';
+import { MedicineUsage, MedicineUsageFlat, TestUsage, TestUsageFlat } from '../report/models/report-usage';
 import { map } from 'rxjs/operators';
 
 @Injectable({
@@ -76,6 +76,30 @@ export class DiagnoseService {
         return flattens;
       })
     ) as Observable<MedicineUsageFlat[]>;
+  }
+
+  TestUsageSearch(search: ReportSearch) {
+    return this.api.post<TestUsage[]>('diagnose/test-usage/search', search).pipe(
+      map((results: TestUsage[]) => {
+        return results.filter(_ => _.labResults?.length > 0);
+      }),
+      map(results => {
+        const flattens: TestUsageFlat[] = [];
+        results.map(result => {
+          result.labResults.map(test => {
+            if (test?._id) {
+              flattens.push({
+                doctor: result.doctor,
+                user: result.user,
+                updatedAt: result.updatedAt,
+                test: test
+              });
+            }
+          });
+        });
+        return flattens;
+      })
+    ) as Observable<TestUsageFlat[]>;
   }
 
 }
