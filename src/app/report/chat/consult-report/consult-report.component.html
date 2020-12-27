@@ -48,6 +48,8 @@
           <th mat-header-cell *matHeaderCellDef mat-sort-header> 咨询内容/回复内容 </th>
           <td mat-cell *matCellDef="let element">
             {{element.content}}
+            {{element.cell? ' (手机:' + element.cell + ') ': ''}}
+            {{element.upload? ' (图片:' + (element.upload | imgPath) + ') ': ''}}
           </td>
         </ng-container>
 
