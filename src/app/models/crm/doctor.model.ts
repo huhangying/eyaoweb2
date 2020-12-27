@@ -35,3 +35,10 @@ export interface Doctor {
 
   cs?: boolean; // if customer service doctor // for localstorage
 }
+
+export interface DoctorBrief {
+  _id: string;
+  name: string;
+  department: string; //id
+  title: string;
+}

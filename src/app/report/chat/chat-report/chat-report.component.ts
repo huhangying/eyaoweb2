@@ -5,7 +5,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute } from '@angular/router';
 import { Subject } from 'rxjs';
 import { tap, takeUntil } from 'rxjs/operators';
-import { Doctor } from '../../../models/crm/doctor.model';
+import { Doctor, DoctorBrief } from '../../../models/crm/doctor.model';
 import { User } from '../../../models/crm/user.model';
 import { Department } from '../../../models/hospital/department.model';
 import { Chat } from '../../../models/io/chat.model';
@@ -21,6 +21,7 @@ import { ReportSearch, ReportSearchOutput } from '../../models/report-search.mod
 export class ChatReportComponent implements OnInit, OnDestroy {
   destroy$ = new Subject<void>();
   departments: Department[];
+  briefDoctors: DoctorBrief[];
 
   type: number;
   cs: boolean;
@@ -38,6 +39,7 @@ export class ChatReportComponent implements OnInit, OnDestroy {
     private cd: ChangeDetectorRef,
   ) {
     this.departments = this.route.snapshot.data.departments;
+    this.briefDoctors = this.route.snapshot.data.briefDoctors;
 
     this.route.queryParams.pipe(
       tap(queryParams => {
@@ -82,14 +84,14 @@ export class ChatReportComponent implements OnInit, OnDestroy {
   }
 
   getDepartmentLabel(room: string) {
-    if (!this.searchOutput?.doctors?.length) return '';
-    const doctor = this.searchOutput.doctors.find(item => item._id === room);
+    if (!this.briefDoctors?.length) return '';
+    const doctor = this.briefDoctors.find(item => item._id === room);
     return doctor?._id ? this.departments.find(item => item._id === doctor.department)?.name : '';
   }
 
   getDoctorLabel(room: string) {
-    if (!this.searchOutput?.doctors?.length) return '';
-    return this.searchOutput.doctors.find(item => item._id === room)?.name;
+    if (!this.briefDoctors?.length) return '';
+    return this.briefDoctors.find(item => item._id === room)?.name;
   }
 
   getChatTypeLabel(type: number) {

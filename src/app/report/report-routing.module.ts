@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { BriefDoctorsResolver } from '../services/resolvers/brief-doctors.resolver';
 import { DepartmentResolver } from '../services/resolvers/department.resolver';
 import { PeriodsResolver } from '../services/resolvers/periods.resolver';
 import { ChatReportComponent } from './chat/chat-report/chat-report.component';
@@ -34,6 +35,7 @@ const routes: Routes = [{
       component: ChatReportComponent,
       resolve: {
         departments: DepartmentResolver,
+        briefDoctors: BriefDoctorsResolver,
       }
     },
     {
