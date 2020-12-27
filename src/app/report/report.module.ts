@@ -6,11 +6,13 @@ import { SharedModule } from '../shared/shared.module';
 import { ReportSearchComponent } from './shared/report-search/report-search.component';
 import { MatTableExporterModule } from 'mat-table-exporter';
 import { NgxChartsModule }from '@swimlane/ngx-charts';
+import { LineChartsComponent } from './shared/line-charts/line-charts.component';
 
 @NgModule({
   declarations: [
     ...routedComponents,
     ReportSearchComponent,
+    LineChartsComponent,
 
   ],
   imports: [

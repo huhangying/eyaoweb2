@@ -10,7 +10,10 @@ import { Department } from '../../../models/hospital/department.model';
 import { Survey } from '../../../models/survey/survey.model';
 import { SurveyService } from '../../../services/survey.service';
 import { User } from '../../../models/crm/user.model';
-import { ReportSearchOutput } from '../../models/report-search.model';
+import { ChartGroup, ReportSearchOutput } from '../../models/report-search.model';
+import { LocalDatePipe } from '../../../shared/pipe/local-date.pipe';
+import { MatDialog } from '@angular/material/dialog';
+import { LineChartsComponent } from '../../shared/line-charts/line-charts.component';
 
 @Component({
   selector: 'ngx-survey-report',
@@ -34,6 +37,8 @@ export class SurveyReportComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private surveyService: SurveyService,
     private cd: ChangeDetectorRef,
+    private localDate: LocalDatePipe,
+    public dialog: MatDialog,
   ) {
     this.departments = this.route.snapshot.data.departments;
   }
@@ -79,6 +84,100 @@ export class SurveyReportComponent implements OnInit, OnDestroy {
 
   getDepartmentLabel(id: string) {
     return this.departments.find(item => item._id === id)?.name;
+  }
+
+  getSurveyNameByType(type: number) {
+    return this.surveyService.getSurveyNameByType(type);
+  }
+
+  displayChartDataByType() {
+    console.log(this.dataSource.data);
+    const keys: string[] = []; // key = type + 日期
+    const chartData = this.dataSource.data.reduce((chartGroups: ChartGroup[], item: Survey) => {
+      const date = this.localDate.transform(item.createdAt, 'sort-date');
+      const key = item.type + ''; //date;
+      if (keys.indexOf(key) === -1) {
+        keys.push(key);
+        chartGroups.push({
+          type: item.type,
+          name: this.getSurveyNameByType(item.type),
+          series: [{
+            name: date,
+            value: 1,
+          }]
+        });
+        return chartGroups;
+      }
+      chartGroups = chartGroups.map((group) => {
+        if (group.type === item.type) {
+          const index = group.series.findIndex(_ => _.name === date);
+          if (index > -1) {
+            group.series[index].value += 1;
+          } else {
+            group.series.push({
+              name: date,
+              value: 1,
+            });
+          }
+        }
+        return group;
+      });
+      return chartGroups;
+    }, []);
+
+    this.dialog.open(LineChartsComponent, {
+      data: {
+        title: '问卷类别',
+        // xLabel: '问卷日期',
+        yLabel: '问卷个数',
+        chartData: chartData
+      }
+    });
+  }
+
+  displayChartDataByDoctor() {
+    console.log(this.dataSource.data);
+    const keys: string[] = []; // key = doctor + 日期
+    const chartData = this.dataSource.data.reduce((chartGroups: ChartGroup[], item: Survey) => {
+      const date = this.localDate.transform(item.createdAt, 'sort-date');
+      const key = (item.doctor as Doctor)._id;
+      if (keys.indexOf(key) === -1) {
+        keys.push(key);
+        chartGroups.push({
+          type: key,
+          name: (item.doctor as Doctor).name,
+          series: [{
+            name: date,
+            value: 1,
+          }]
+        });
+        return chartGroups;
+      }
+      chartGroups = chartGroups.map((group) => {
+        if (group.type === key) {
+          const index = group.series.findIndex(_ => _.name === date);
+          if (index > -1) {
+            group.series[index].value += 1;
+          } else {
+            group.series.push({
+              name: date,
+              value: 1,
+            });
+          }
+        }
+        return group;
+      });
+      return chartGroups;
+    }, []);
+
+    this.dialog.open(LineChartsComponent, {
+      data: {
+        title: '药师',
+        // xLabel: '问卷日期',
+        yLabel: '问卷个数',
+        chartData: chartData
+      }
+    });
   }
 
 }

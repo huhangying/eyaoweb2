@@ -13,3 +13,14 @@ export interface ReportSearchOutput {
   title: string;
   doctors: Doctor[]
 }
+
+export interface ChartGroup {
+  name?: string;
+  type?: number | string;
+  series: ChartItem[];
+}
+
+interface ChartItem {
+  name: string;
+  value: number;
+}

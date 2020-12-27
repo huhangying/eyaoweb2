@@ -32,6 +32,9 @@ export class LocalDatePipe implements PipeTransform {
     if (arg === 'age') {
       return date ? moment().diff(moment(date), 'years').toString(): '';
     }
+    if (arg === 'sort-date') {
+      return date ? moment(date).format('YYYY-MM-DD') : '';
+    }
   }
 
 }

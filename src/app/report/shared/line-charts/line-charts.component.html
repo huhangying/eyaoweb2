@@ -1,0 +1,33 @@
+<nb-card status="info">
+  <nb-card-header>
+    按{{data.title}}统计
+    <button nbButton shape="round" size="tiny" class="float-right" mat-dialog-close>
+      <nb-icon icon="close"></nb-icon>
+    </button>
+  </nb-card-header>
+
+  <mat-dialog-content>
+
+    <ngx-charts-line-chart
+    [scheme]="colorScheme"
+    [legend]="true"
+    [legendTitle]="data.title"
+    legendPosition="right"
+    [showXAxisLabel]="!!data.xLabel"
+    [showYAxisLabel]="!!data.yLabel"
+    [xAxis]="true"
+    [yAxis]="true"
+    [xAxisLabel]="data.xLabel"
+    [yAxisLabel]="data.yLabel"
+    [timeline]="false"
+    [results]="data.chartData"
+    >
+  </ngx-charts-line-chart>
+  </mat-dialog-content>
+
+  <nb-card-footer class="d-block">
+    <button nbButton hero status="primary" class="float-right"  (click)="close()">
+      <nb-icon icon="checkmark-circle"></nb-icon>关闭
+    </button>
+  </nb-card-footer>
+</nb-card>
