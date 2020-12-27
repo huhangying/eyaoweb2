@@ -206,6 +206,18 @@ export function getMenuItems(role: number, queryParams: Params): NbMenuItem[] {
 
           ]
         },
+        {
+          title: '药品使用统计',
+          link: '/cms/report/medicine-usage',
+        },
+        {
+          title: '化验单使用统计',
+          link: '/cms/report/test-usage',
+        },
+        {
+          title: '宣教材料使用统计',
+          link: '/cms/report/article-usage',
+        },
       ],
     },
   ];
