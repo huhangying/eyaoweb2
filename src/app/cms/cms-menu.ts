@@ -181,7 +181,8 @@ export function getMenuItems(role: number, queryParams: Params): NbMenuItem[] {
             },
             {
               link: '/cms/report/survey',
-              title: '问卷内容统计'
+              title: '问卷内容统计',
+              queryParams: queryParams,
             }
           ]
         },
@@ -215,14 +216,17 @@ export function getMenuItems(role: number, queryParams: Params): NbMenuItem[] {
         {
           title: '药品使用统计',
           link: '/cms/report/medicine-usage',
+          queryParams: queryParams,
         },
         {
           title: '化验单使用统计',
           link: '/cms/report/test-usage',
+          queryParams: queryParams,
         },
         {
           title: '宣教材料使用统计',
           link: '/cms/report/article-usage',
+          queryParams: queryParams,
         },
       ],
     },
