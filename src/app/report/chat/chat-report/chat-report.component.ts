@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -10,7 +11,10 @@ import { User } from '../../../models/crm/user.model';
 import { Department } from '../../../models/hospital/department.model';
 import { Chat } from '../../../models/io/chat.model';
 import { ChatService } from '../../../services/chat.service';
-import { ReportSearch, ReportSearchOutput } from '../../models/report-search.model';
+import { LocalDatePipe } from '../../../shared/pipe/local-date.pipe';
+import { ChartGroup, ChartItem, ReportSearch, ReportSearchOutput } from '../../models/report-search.model';
+import { LineChartsComponent } from '../../shared/line-charts/line-charts.component';
+import { PieChartsComponent } from '../../shared/pie-charts/pie-charts.component';
 
 @Component({
   selector: 'ngx-chat-report',
@@ -37,6 +41,8 @@ export class ChatReportComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private chatService: ChatService,
     private cd: ChangeDetectorRef,
+    private localDate: LocalDatePipe,
+    public dialog: MatDialog,
   ) {
     this.departments = this.route.snapshot.data.departments;
     this.briefDoctors = this.route.snapshot.data.briefDoctors;
@@ -100,6 +106,128 @@ export class ChatReportComponent implements OnInit, OnDestroy {
 
   getTitle() {
     return !this.cs ? '免费咨询' : '客服咨询';
+  }
+
+  //===================================================
+
+  displayChartDataByDirection() {
+    console.log(this.dataSource.data);
+    const keys: string[] = []; // key = type + 日期
+    const chartData = this.dataSource.data.reduce((chartGroups: ChartGroup[], item: Chat) => {
+      const date = this.localDate.transform(item.created, 'sort-date');
+      const key = item.room === item.sender ? '1' : '0'; // 1: 回复消息； 0：接收消息
+      if (keys.indexOf(key) === -1) {
+        keys.push(key);
+        chartGroups.push({
+          type: key,
+          name: key === '1' ? '回复消息' : '接收消息',
+          series: [{
+            name: date,
+            value: 1,
+          }]
+        });
+        return chartGroups;
+      }
+      chartGroups = chartGroups.map((group) => {
+        if (group.type === key) {
+          const index = group.series.findIndex(_ => _.name === date);
+          if (index > -1) {
+            group.series[index].value += 1;
+          } else {
+            group.series.push({
+              name: date,
+              value: 1,
+            });
+          }
+        }
+        return group;
+      });
+      return chartGroups;
+    }, []);
+
+    this.dialog.open(LineChartsComponent, {
+      data: {
+        title: '消息方向',
+        yLabel: '消息个数',
+        chartData: chartData
+      }
+    });
+  }
+
+  displayChartDataByDoctor() {
+    console.log(this.dataSource.data);
+    const keys: string[] = []; // key = doctor + 日期
+    const chartData = this.dataSource.data.reduce((chartGroups: ChartGroup[], item: Chat) => {
+      const date = this.localDate.transform(item.created, 'sort-date');
+      const key = item.room;
+      if (keys.indexOf(key) === -1) {
+        keys.push(key);
+        chartGroups.push({
+          type: key,
+          name: this.getDoctorLabel(key),
+          series: [{
+            name: date,
+            value: 1,
+          }]
+        });
+        return chartGroups;
+      }
+      chartGroups = chartGroups.map((group) => {
+        if (group.type === key) {
+          const index = group.series.findIndex(_ => _.name === date);
+          if (index > -1) {
+            group.series[index].value += 1;
+          } else {
+            group.series.push({
+              name: date,
+              value: 1,
+            });
+          }
+        }
+        return group;
+      });
+      return chartGroups;
+    }, []);
+
+    this.dialog.open(LineChartsComponent, {
+      data: {
+        title: '药师',
+        yLabel: '消息个数',
+        chartData: chartData,
+      }
+    });
+  }
+
+  displayPieChartDataByDoctor() {
+    console.log(this.dataSource.data);
+    const keys: string[] = []; // key = type + 日期
+    const chartData = this.dataSource.data.reduce((chartItems: ChartItem[], item: Chat) => {
+      const key = item.room;
+      if (keys.indexOf(key) === -1) {
+        keys.push(key);
+        chartItems.push({
+          type: key,
+          name: this.getDoctorLabel(key),
+          value: 1,
+        });
+        return chartItems;
+      }
+      chartItems = chartItems.map((group) => {
+        if (group.type === key) {
+          group.value += 1;
+        }
+        return group;
+      });
+      return chartItems;
+    }, []);
+
+    this.dialog.open(PieChartsComponent, {
+      data: {
+        title: '药师',
+        chartData: chartData,
+        isPercentage: true,
+      }
+    });
   }
 
 }
