@@ -10,9 +10,10 @@ import { DoctorBrief } from '../../../models/crm/doctor.model';
 import { Department } from '../../../models/hospital/department.model';
 import { ArticleService } from '../../../services/article.service';
 import { LocalDatePipe } from '../../../shared/pipe/local-date.pipe';
-import { ReportSearchOutput, ChartGroup } from '../../models/report-search.model';
+import { ReportSearchOutput, ChartGroup, ChartItem } from '../../models/report-search.model';
 import { ArticlePageUsage } from '../../models/report-usage';
 import { LineChartsComponent } from '../../shared/line-charts/line-charts.component';
+import { PieChartsComponent } from '../../shared/pie-charts/pie-charts.component';
 
 @Component({
   selector: 'ngx-article-usage-report',
@@ -139,7 +140,7 @@ export class ArticleUsageReportComponent implements OnInit, OnDestroy {
 
   displayChartDataByDoctor() {
     console.log(this.dataSource.data);
-    const keys: string[] = []; // key = doctor + 日期
+    const keys: string[] = [];
     const chartData = this.dataSource.data.reduce((chartGroups: ChartGroup[], item: ArticlePageUsage) => {
       const date = this.localDate.transform(item.createdAt, 'sort-date');
       const key = item.doctor;
@@ -181,5 +182,67 @@ export class ArticleUsageReportComponent implements OnInit, OnDestroy {
     });
   }
 
+
+  displayPieChartDataByCat() {
+    const keys: string[] = [];
+    const chartData = this.dataSource.data.reduce((chartItems: ChartItem[], item: ArticlePageUsage) => {
+      const key = item.cat._id;
+      if (keys.indexOf(key) === -1) {
+        keys.push(key);
+        chartItems.push({
+          type: key,
+          name: item.cat.name,
+          value: 1,
+        });
+        return chartItems;
+      }
+      chartItems = chartItems.map((group) => {
+        if (group.type === key) {
+          group.value += 1;
+        }
+        return group;
+      });
+      return chartItems;
+    }, []);
+
+    this.dialog.open(PieChartsComponent, {
+      data: {
+        title: '宣教材料类别',
+        chartData: chartData,
+        isPercentage: true,
+      }
+    });
+  }
+
+  displayPieChartDataByDoctor() {
+    const keys: string[] = [];
+    const chartData = this.dataSource.data.reduce((chartItems: ChartItem[], item: ArticlePageUsage) => {
+      const key = item.doctor;
+      if (keys.indexOf(key) === -1) {
+        keys.push(key);
+        chartItems.push({
+          type: key,
+          name: this.getDoctorLabel(item.doctor),
+          value: 1,
+        });
+        return chartItems;
+      }
+      chartItems = chartItems.map((group) => {
+        if (group.type === key) {
+            group.value += 1;
+        }
+        return group;
+      });
+      return chartItems;
+    }, []);
+
+    this.dialog.open(PieChartsComponent, {
+      data: {
+        title: '药师',
+        isPercentage: true,
+        chartData: chartData
+      }
+    });
+  }
 }
 

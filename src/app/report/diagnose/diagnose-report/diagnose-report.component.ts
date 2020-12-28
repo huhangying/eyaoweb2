@@ -145,8 +145,7 @@ export class DiagnoseReportComponent implements OnInit, OnDestroy {
 
   // pie
   displayPieChartDataByUserType() {
-    console.log(this.dataSource.data);
-    const keys: string[] = []; // key = type + 日期
+    const keys: string[] = [];
     const chartData = this.dataSource.data.reduce((chartItems: ChartItem[], item: DiagnoseUsage) => {
 
       const key = this.isVisitedUser(item.doctor, item.user.visitedDepartments) ? '1' : '0'; // 0: new user; 1: old user
@@ -178,8 +177,7 @@ export class DiagnoseReportComponent implements OnInit, OnDestroy {
   }
 
   displayPieChartDataByBooking() {
-    console.log(this.dataSource.data);
-    const keys: string[] = []; // key = type + 日期
+    const keys: string[] = [];
     const chartData = this.dataSource.data.reduce((chartItems: ChartItem[], item: DiagnoseUsage) => {
 
       const key = !item.booking ? '0' : '1'; // 0: no booking
@@ -211,8 +209,7 @@ export class DiagnoseReportComponent implements OnInit, OnDestroy {
   }
 
   displayPieChartDataByStatus() {
-    console.log(this.dataSource.data);
-    const keys: string[] = []; // key = type + 日期
+    const keys: string[] = [];
     const chartData = this.dataSource.data.reduce((chartItems: ChartItem[], item: DiagnoseUsage) => {
       const key = item.status + '';
       if (keys.indexOf(key) === -1) {
@@ -236,6 +233,38 @@ export class DiagnoseReportComponent implements OnInit, OnDestroy {
     this.dialog.open(PieChartsComponent, {
       data: {
         title: '门诊状态',
+        chartData: chartData,
+        isPercentage: true,
+      }
+    });
+  }
+
+  displayPieChartDataByDoctor() {
+    const keys: string[] = [];
+    const chartData = this.dataSource.data.reduce((chartItems: ChartItem[], item: DiagnoseUsage) => {
+
+      const key = item.doctor;
+      if (keys.indexOf(key) === -1) {
+        keys.push(key);
+        chartItems.push({
+          type: key,
+          name: this.getDoctorLabel(key),
+          value: 1,
+        });
+        return chartItems;
+      }
+      chartItems = chartItems.map((group) => {
+        if (group.type === key) {
+          group.value += 1;
+        }
+        return group;
+      });
+      return chartItems;
+    }, []);
+
+    this.dialog.open(PieChartsComponent, {
+      data: {
+        title: '药师',
         chartData: chartData,
         isPercentage: true,
       }

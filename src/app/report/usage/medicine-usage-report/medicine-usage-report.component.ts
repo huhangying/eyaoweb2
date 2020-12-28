@@ -202,8 +202,7 @@ export class MedicineUsageReportComponent implements OnInit, OnDestroy {
 
 
   displayPieChartDataByMedicine() {
-    console.log(this.dataSource.data);
-    const keys: string[] = []; // key = type + 日期
+    const keys: string[] = [];
     const chartData = this.dataSource.data.reduce((chartItems: ChartItem[], item: MedicineUsageFlat) => {
       const key = item.medicine.name;
       if (keys.indexOf(key) === -1) {
@@ -226,7 +225,7 @@ export class MedicineUsageReportComponent implements OnInit, OnDestroy {
 
     this.dialog.open(PieChartsComponent, {
       data: {
-        title: '问卷类别',
+        title: '药品',
         chartData: chartData,
         isPercentage: true,
       }
@@ -234,10 +233,8 @@ export class MedicineUsageReportComponent implements OnInit, OnDestroy {
   }
 
   displayPieChartDataByDoctor() {
-    console.log(this.dataSource.data);
     const keys: string[] = []; // key = doctor + 日期
     const chartData = this.dataSource.data.reduce((chartItems: ChartItem[], item: MedicineUsageFlat) => {
-      const date = this.localDate.transform(item.updatedAt, 'sort-date');
       const key = item.doctor;
       if (keys.indexOf(key) === -1) {
         keys.push(key);

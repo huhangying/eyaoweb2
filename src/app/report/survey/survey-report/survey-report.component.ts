@@ -92,7 +92,6 @@ export class SurveyReportComponent implements OnInit, OnDestroy {
   }
 
   displayChartDataByType() {
-    console.log(this.dataSource.data);
     const keys: string[] = []; // key = type + 日期
     const chartData = this.dataSource.data.reduce((chartGroups: ChartGroup[], item: Survey) => {
       const date = this.localDate.transform(item.createdAt, 'sort-date');
@@ -129,7 +128,6 @@ export class SurveyReportComponent implements OnInit, OnDestroy {
     this.dialog.open(LineChartsComponent, {
       data: {
         title: '问卷类别',
-        // xLabel: '问卷日期',
         yLabel: '问卷个数',
         chartData: chartData
       }
@@ -137,8 +135,7 @@ export class SurveyReportComponent implements OnInit, OnDestroy {
   }
 
   displayPieChartDataByType() {
-    console.log(this.dataSource.data);
-    const keys: string[] = []; // key = type + 日期
+    const keys: string[] = [];
     const chartData = this.dataSource.data.reduce((chartItems: ChartItem[], item: Survey) => {
       const key = item.type + '';
       if (keys.indexOf(key) === -1) {
@@ -169,8 +166,7 @@ export class SurveyReportComponent implements OnInit, OnDestroy {
   }
 
   displayChartDataByDoctor() {
-    console.log(this.dataSource.data);
-    const keys: string[] = []; // key = doctor + 日期
+    const keys: string[] = [];
     const chartData = this.dataSource.data.reduce((chartGroups: ChartGroup[], item: Survey) => {
       const date = this.localDate.transform(item.createdAt, 'sort-date');
       const key = (item.doctor as Doctor)._id;
@@ -206,7 +202,6 @@ export class SurveyReportComponent implements OnInit, OnDestroy {
     this.dialog.open(LineChartsComponent, {
       data: {
         title: '药师',
-        // xLabel: '问卷日期',
         yLabel: '问卷个数',
         chartData: chartData,
       }

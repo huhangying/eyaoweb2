@@ -14,13 +14,17 @@
           <nb-icon icon="download-outline" pack="eva"></nb-icon> excel 文件导出
         </button>
         <button nbButton hero status="info" outline size="small" class="mr-4" nbSuffix (click)="displayChartDataByStatus()">
-          <span class="material-icons"> timeline </span>&nbsp; 按问卷类别统计
+          <span class="material-icons"> timeline </span>&nbsp; 按预约状态统计
         </button>
         <button nbButton hero status="info" outline size="small" class="mr-4" nbSuffix (click)="displayChartDataByDoctor()">
           <span class="material-icons"> timeline </span>&nbsp; 按药师统计
         </button>
+
         <button nbButton hero status="primary" outline size="small" class="mr-4" nbSuffix (click)="displayPieChartDataByStatus()">
-          <nb-icon icon="pie-chart-outline" pack="eva"></nb-icon> 按问卷类别统计
+          <nb-icon icon="pie-chart-outline" pack="eva"></nb-icon> 按预约状态统计
+        </button>
+        <button nbButton hero status="primary" outline size="small" class="mr-4" nbSuffix (click)="displayPieChartDataByDoctor()">
+          <nb-icon icon="pie-chart-outline" pack="eva"></nb-icon> 按药师统计
         </button>
       </div>
 

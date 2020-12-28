@@ -13,10 +13,17 @@
           (click)="exporter.exportTable('xlsx', {fileName: this.searchOutput?.title || '导出文件', sheet: '化验单使用统计'})">
           <nb-icon icon="download-outline" pack="eva"></nb-icon> excel 文件导出
         </button>
-        <button nbButton hero status="info" size="small" class="mr-4" nbSuffix (click)="displayChartDataByTest()">
+        <button nbButton hero status="info" outline size="small" class="mr-4" nbSuffix (click)="displayChartDataByTest()">
+          <span class="material-icons"> timeline </span>&nbsp; 按化验单统计
+        </button>
+        <button nbButton hero status="info" outline size="small" class="mr-4" nbSuffix (click)="displayChartDataByDoctor()">
+          <span class="material-icons"> timeline </span>&nbsp; 按药师统计
+        </button>
+
+        <button nbButton hero status="primary" outline size="small" class="mr-4" nbSuffix (click)="displayPieChartDataByTest()">
           <nb-icon icon="pie-chart-outline" pack="eva"></nb-icon> 按化验单统计
         </button>
-        <button nbButton hero status="info" size="small" class="mr-4" nbSuffix (click)="displayChartDataByDoctor()">
+        <button nbButton hero status="primary" outline size="small" class="mr-4" nbSuffix (click)="displayPieChartDataByDoctor()">
           <nb-icon icon="pie-chart-outline" pack="eva"></nb-icon> 按药师统计
         </button>
       </div>

@@ -10,9 +10,10 @@ import { DoctorBrief } from '../../../models/crm/doctor.model';
 import { Department } from '../../../models/hospital/department.model';
 import { DiagnoseService } from '../../../services/diagnose.service';
 import { LocalDatePipe } from '../../../shared/pipe/local-date.pipe';
-import { ChartGroup, ReportSearchOutput } from '../../models/report-search.model';
+import { ChartGroup, ChartItem, ReportSearchOutput } from '../../models/report-search.model';
 import { TestUsageFlat } from '../../models/report-usage';
 import { LineChartsComponent } from '../../shared/line-charts/line-charts.component';
+import { PieChartsComponent } from '../../shared/pie-charts/pie-charts.component';
 
 @Component({
   selector: 'ngx-test-usage-report',
@@ -174,6 +175,69 @@ export class TestUsageReportComponent implements OnInit, OnDestroy {
       data: {
         title: '药师',
         yLabel: '化验单数量',
+        chartData: chartData
+      }
+    });
+  }
+
+
+  displayPieChartDataByTest() {
+    const keys: string[] = [];
+    const chartData = this.dataSource.data.reduce((chartItems: ChartItem[], item: TestUsageFlat) => {
+      const key = item.test.name;
+      if (keys.indexOf(key) === -1) {
+        keys.push(key);
+        chartItems.push({
+          type: key,
+          name: item.test.name,
+          value: 1,
+        });
+        return chartItems;
+      }
+      chartItems = chartItems.map((group) => {
+        if (group.type === key) {
+          group.value += 1;
+        }
+        return group;
+      });
+      return chartItems;
+    }, []);
+
+    this.dialog.open(PieChartsComponent, {
+      data: {
+        title: '化验单',
+        chartData: chartData,
+        isPercentage: true,
+      }
+    });
+  }
+
+  displayPieChartDataByDoctor() {
+    const keys: string[] = []; // key = doctor + 日期
+    const chartData = this.dataSource.data.reduce((chartItems: ChartItem[], item: TestUsageFlat) => {
+      const key = item.doctor;
+      if (keys.indexOf(key) === -1) {
+        keys.push(key);
+        chartItems.push({
+          type: key,
+          name: this.getDoctorLabel(item.doctor),
+          value: 1,
+        });
+        return chartItems;
+      }
+      chartItems = chartItems.map((group) => {
+        if (group.type === key) {
+            group.value += 1;
+        }
+        return group;
+      });
+      return chartItems;
+    }, []);
+
+    this.dialog.open(PieChartsComponent, {
+      data: {
+        title: '药师',
+        isPercentage: true,
         chartData: chartData
       }
     });

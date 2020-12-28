@@ -113,7 +113,6 @@ export class BookingReportComponent implements OnInit, OnDestroy {
   //===================================================
 
   displayChartDataByStatus() {
-    console.log(this.dataSource.data);
     const keys: string[] = []; // key = type + 日期
     const chartData = this.dataSource.data.reduce((chartGroups: ChartGroup[], item: Booking) => {
       const date = this.localDate.transform(item.created, 'sort-date');
@@ -149,48 +148,14 @@ export class BookingReportComponent implements OnInit, OnDestroy {
 
     this.dialog.open(LineChartsComponent, {
       data: {
-        title: '问卷类别',
-        // xLabel: '问卷日期',
-        yLabel: '问卷个数',
+        title: '预约状态',
+        yLabel: '预约个数',
         chartData: chartData
       }
     });
   }
 
-  displayPieChartDataByStatus() {
-    console.log(this.dataSource.data);
-    const keys: string[] = []; // key = type + 日期
-    const chartData = this.dataSource.data.reduce((chartItems: ChartItem[], item: Booking) => {
-      const key = item.status + '';
-      if (keys.indexOf(key) === -1) {
-        keys.push(key);
-        chartItems.push({
-          type: item.status,
-          name: this.getStatusLabel(item.status),
-          value: 1,
-        });
-        return chartItems;
-      }
-      chartItems = chartItems.map((group) => {
-        if (group.type === item.status) {
-          group.value += 1;
-        }
-        return group;
-      });
-      return chartItems;
-    }, []);
-
-    this.dialog.open(PieChartsComponent, {
-      data: {
-        title: '问卷类别',
-        chartData: chartData,
-        isPercentage: true,
-      }
-    });
-  }
-
   displayChartDataByDoctor() {
-    console.log(this.dataSource.data);
     const keys: string[] = []; // key = doctor + 日期
     const chartData = this.dataSource.data.reduce((chartGroups: ChartGroup[], item: Booking) => {
       const date = this.localDate.transform(item.created, 'sort-date');
@@ -227,9 +192,72 @@ export class BookingReportComponent implements OnInit, OnDestroy {
     this.dialog.open(LineChartsComponent, {
       data: {
         title: '药师',
-        // xLabel: '问卷日期',
-        yLabel: '问卷个数',
+        yLabel: '预约个数',
         chartData: chartData,
+      }
+    });
+  }
+
+
+  displayPieChartDataByStatus() {
+    const keys: string[] = [];
+    const chartData = this.dataSource.data.reduce((chartItems: ChartItem[], item: Booking) => {
+      const key = item.status + '';
+      if (keys.indexOf(key) === -1) {
+        keys.push(key);
+        chartItems.push({
+          type: item.status,
+          name: this.getStatusLabel(item.status),
+          value: 1,
+        });
+        return chartItems;
+      }
+      chartItems = chartItems.map((group) => {
+        if (group.type === item.status) {
+          group.value += 1;
+        }
+        return group;
+      });
+      return chartItems;
+    }, []);
+
+    this.dialog.open(PieChartsComponent, {
+      data: {
+        title: '预约状态',
+        chartData: chartData,
+        isPercentage: true,
+      }
+    });
+  }
+
+
+  displayPieChartDataByDoctor() {
+    const keys: string[] = [];
+    const chartData = this.dataSource.data.reduce((chartItems: ChartItem[], item: Booking) => {
+      const key = item.doctor;
+      if (keys.indexOf(key) === -1) {
+        keys.push(key);
+        chartItems.push({
+          type: key,
+          name: this.getDoctorLabel(key),
+          value: 1,
+        });
+        return chartItems;
+      }
+      chartItems = chartItems.map((group) => {
+        if (group.type === key) {
+          group.value += 1;
+        }
+        return group;
+      });
+      return chartItems;
+    }, []);
+
+    this.dialog.open(PieChartsComponent, {
+      data: {
+        title: '预约状态',
+        chartData: chartData,
+        isPercentage: true,
       }
     });
   }
