@@ -9,7 +9,7 @@
     <div [class.d-none]="!dataSource?.data?.length">
       <div class="px-3 pb-2 mt-n2">
         <button nbButton hero status="info" size="small" class="mr-5" nbSuffix
-          (click)="exporter.exportTable('xlsx', {fileName: this.searchOutput?.title || '导出文件', sheet: getTitle()})">
+          (click)="exporter.exportTable('xlsx', {fileName: getTitle() + this.searchOutput?.title || '', sheet: getTitle()})">
           <nb-icon icon="download-outline" pack="eva"></nb-icon> excel 文件导出
         </button>
         <button nbButton hero status="info" outline size="small" class="mr-4" nbSuffix (click)="displayChartDataByDoctor()">

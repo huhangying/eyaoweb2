@@ -4,6 +4,7 @@ import { User } from '../models/crm/user.model';
 import { Relationship2 } from '../models/crm/relationship.model';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { ReportSearch } from '../report/models/report-search.model';
 
 @Injectable({
   providedIn: 'root'
@@ -73,4 +74,9 @@ export class UserService {
   addRelationship(did: string, uid: string) {
     return this.api.post('relationship', {doctor: did, user: uid});
   }
+
+  userSearch(search: ReportSearch) {
+    return this.api.post<User[]>('users/search', search) as Observable<User[]>;
+  }
+
 }

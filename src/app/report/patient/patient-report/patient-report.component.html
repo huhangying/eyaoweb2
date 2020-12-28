@@ -1,0 +1,89 @@
+<nb-card>
+  <nb-card-header>
+    病患统计
+    <ngx-report-search [dateOnly]="true" (onSearch)="search($event)" (onOutput)="onOutput($event)">
+    </ngx-report-search>
+  </nb-card-header>
+
+  <nb-card-body>
+    <div [class.d-none]="!dataSource?.data?.length">
+      <div class="px-3 pb-2 mt-n2">
+        <button nbButton hero status="info" size="small" class="mr-5" nbSuffix
+          (click)="exporter.exportTable('xlsx', {fileName: '病患统计' + this.searchOutput?.title || '', sheet: '病患统计'})">
+          <nb-icon icon="download-outline" pack="eva"></nb-icon> excel 文件导出
+        </button>
+
+        <button nbButton hero status="primary" outline size="small" class="mr-4" nbSuffix (click)="displayPieChartDataByGender()">
+          <nb-icon icon="pie-chart-outline" pack="eva"></nb-icon> 按性别统计
+        </button>
+        <button nbButton hero status="primary" outline size="small" class="mr-4" nbSuffix (click)="displayPieChartDataByUserType()">
+          <nb-icon icon="pie-chart-outline" pack="eva"></nb-icon> 按是否门诊用户统计
+        </button>
+        <button nbButton hero status="primary" outline size="small" class="mr-4" nbSuffix (click)="displayPieChartDataByRole()">
+          <nb-icon icon="pie-chart-outline" pack="eva"></nb-icon> 按审核状态统计
+        </button>
+      </div>
+
+      <table mat-table [dataSource]="dataSource" matSort matTableExporter #exporter="matTableExporter"
+        class="mat-elevation-z8 table-striped table-hover">
+
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef style="width: 5rem;"> 姓名 </th>
+          <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+        </ng-container>
+        <ng-container matColumnDef="gender">
+          <th mat-header-cell *matHeaderCellDef style="width: 2rem;"> 性别 </th>
+          <td mat-cell *matCellDef="let element" class="text-center"> {{element.gender | gender}} </td>
+        </ng-container>
+        <ng-container matColumnDef="birthdate">
+          <th mat-header-cell *matHeaderCellDef style="width: 8rem;"> 生日 </th>
+          <td mat-cell *matCellDef="let element"> {{element.birthdate|localDate}} </td>
+        </ng-container>
+        <ng-container matColumnDef="cell">
+          <th mat-header-cell *matHeaderCellDef style="width: 5rem;"> 手机 </th>
+          <td mat-cell *matCellDef="let element"> {{element.cell}} </td>
+        </ng-container>
+        <ng-container matColumnDef="diagnoses">
+          <th mat-header-cell *matHeaderCellDef> 疾病诊断 </th>
+          <td mat-cell *matCellDef="let element"> {{element.diagnoses}} </td>
+        </ng-container>
+        <ng-container matColumnDef="prompt">
+          <th mat-header-cell *matHeaderCellDef> 诊断提醒 </th>
+          <td mat-cell *matCellDef="let element"> {{element.prompt}} </td>
+        </ng-container>
+        <ng-container matColumnDef="notes">
+          <th mat-header-cell *matHeaderCellDef> 病患备注 </th>
+          <td mat-cell *matCellDef="let element"> {{element.notes}} </td>
+        </ng-container>
+        <ng-container matColumnDef="role">
+          <th mat-header-cell *matHeaderCellDef style="width: 3rem;"> 审核? </th>
+          <td mat-cell *matCellDef="let element"> {{element.role>0 ? '已审核': '未审核'}} </td>
+        </ng-container>
+        <ng-container matColumnDef="visitedDepartments">
+          <th mat-header-cell *matHeaderCellDef style="width: 5rem;"> 门诊用户? </th>
+          <td mat-cell *matCellDef="let element" class="text-center">
+            {{!element.visitedDepartments?.length ? '': '是'}}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="created">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 8rem;"> 创建日期 </th>
+          <td mat-cell *matCellDef="let element">
+            {{ element.created | localDate }}
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+      <mat-paginator [pageSizeOptions]="[10, 25, 50]" [pageSize]="10" showFirstLastButtons></mat-paginator>
+
+    </div>
+    <ng-container *ngIf="!dataSource?.data?.length">
+      <div class="alert alert-warning" role="alert">
+        没有找到相关记录。
+      </div>
+    </ng-container>
+
+  </nb-card-body>
+</nb-card>
