@@ -3,7 +3,7 @@ import { ApiService } from '../shared/service/api.service';
 import { Diagnose } from '../models/diagnose/diagnose.model';
 import { Observable } from 'rxjs';
 import { ReportSearch } from '../report/models/report-search.model';
-import { MedicineUsage, MedicineUsageFlat, TestUsage, TestUsageFlat } from '../report/models/report-usage';
+import { DiagnoseUsage, MedicineUsage, MedicineUsageFlat, TestUsage, TestUsageFlat } from '../report/models/report-usage';
 import { map } from 'rxjs/operators';
 
 @Injectable({
@@ -53,6 +53,10 @@ export class DiagnoseService {
   }
 
   //
+
+  diagnoseSearch(search: ReportSearch) {
+    return this.api.post<DiagnoseUsage[]>('diagnose/search', search) as Observable<DiagnoseUsage[]>;
+  }
 
   medicineUsageSearch(search: ReportSearch) {
     return this.api.post<MedicineUsage[]>('diagnose/medicine-usage/search', search).pipe(

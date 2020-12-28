@@ -1,3 +1,4 @@
+import { DiagnoseStatus } from '../../models/diagnose/diagnose.model';
 import { Medicine } from '../../models/hospital/medicine.model';
 import { Test } from '../../models/hospital/test.model';
 
@@ -55,4 +56,21 @@ interface ArticleCat {
 }
 
 
+export interface DiagnoseUsage {
+  doctor: string; // id
+  user: UserBrief;
+  booking?: string;
 
+//  surveys?: SurveyGroup[];
+//  prescription?: Medicine[];
+//  notices?: MedicineNotice[];
+//  labResults?: string[]; // ids
+
+  status?: DiagnoseStatus; // 0: assigned to user;  1: user finished; 2: doctor saved; 3: archived
+  updatedAt?: Date;
+}
+
+interface UserBrief {
+  name: string;
+  visitedDepartments: string[];
+}

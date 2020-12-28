@@ -7,6 +7,7 @@ import { PeriodsResolver } from '../services/resolvers/periods.resolver';
 import { ChatReportComponent } from './chat/chat-report/chat-report.component';
 import { ConsultReportComponent } from './chat/consult-report/consult-report.component';
 import { FeedbackReportComponent } from './chat/feedback-report/feedback-report.component';
+import { DiagnoseReportComponent } from './diagnose/diagnose-report/diagnose-report.component';
 import { BookingReportComponent } from './reservation/booking-report/booking-report.component';
 import { SurveyReportComponent } from './survey/survey-report/survey-report.component';
 import { ArticleUsageReportComponent } from './usage/article-usage-report/article-usage-report.component';
@@ -78,6 +79,14 @@ const routes: Routes = [{
         briefDoctors: BriefDoctorsResolver,
       }
     },
+    {
+      path: 'diagnose',
+      component: DiagnoseReportComponent,
+      resolve: {
+        departments: DepartmentResolver,
+        briefDoctors: BriefDoctorsResolver,
+      }
+    },
   ]
 }];
 
@@ -96,5 +105,6 @@ export const routedComponents = [
   TestUsageReportComponent,
   MedicineUsageReportComponent,
   ArticleUsageReportComponent,
+  DiagnoseReportComponent,
 ];
 

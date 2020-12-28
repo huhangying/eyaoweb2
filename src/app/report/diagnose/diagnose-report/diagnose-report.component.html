@@ -1,0 +1,91 @@
+<nb-card>
+  <nb-card-header>
+    门诊&预约 / 门诊就诊统计
+    <ngx-report-search [departments]="departments" (onSearch)="search($event)" (onOutput)="onOutput($event)">
+    </ngx-report-search>
+  </nb-card-header>
+
+  <nb-card-body>
+    <div [class.d-none]="!dataSource?.data?.length">
+
+      <div class="px-3 pb-2 mt-n2">
+        <button nbButton hero status="info" size="small" class="mr-5" nbSuffix
+          (click)="exporter.exportTable('xlsx', {fileName: this.searchOutput?.title || '导出文件', sheet: '门诊就诊统计'})">
+          <nb-icon icon="download-outline" pack="eva"></nb-icon> excel 文件导出
+        </button>
+        <button nbButton hero status="info" outline size="small" class="mr-4" nbSuffix (click)="displayChartDataByDoctor()">
+          <span class="material-icons"> timeline </span>&nbsp; 按药师统计
+        </button>
+        <button nbButton hero status="primary" outline size="small" class="mr-4" nbSuffix (click)="displayPieChartDataByUserType()">
+          <nb-icon icon="pie-chart-outline" pack="eva"></nb-icon> 按新老用户统计
+        </button>
+        <button nbButton hero status="primary" outline size="small" class="mr-4" nbSuffix (click)="displayPieChartDataByBooking()">
+          <nb-icon icon="pie-chart-outline" pack="eva"></nb-icon> 按有无预约统计
+        </button>
+        <button nbButton hero status="primary" outline size="small" class="mr-4" nbSuffix (click)="displayPieChartDataByStatus()">
+          <nb-icon icon="pie-chart-outline" pack="eva"></nb-icon> 按门诊状态统计
+        </button>
+      </div>
+
+      <table mat-table [dataSource]="dataSource" matSort matTableExporter #exporter="matTableExporter"
+        class="mat-elevation-z8 table-striped table-hover">
+
+        <ng-container matColumnDef="department">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> 科室 </th>
+          <td mat-cell *matCellDef="let element">
+            {{ getDepartmentLabel(element.department) }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="doctor">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 10rem;"> 药师 </th>
+          <td mat-cell *matCellDef="let element"> {{getDoctorLabel(element.doctor)}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="user.name">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 10rem;"> 病患 </th>
+          <td mat-cell *matCellDef="let element"> {{element.user.name}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="user.visitedDepartments">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> 用户 </th>
+          <td mat-cell *matCellDef="let element">
+            {{isVisitedUser(element.doctor, element.user.visitedDepartments) ? '老用户': '新用户'}}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="booking">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 6rem;"> 有无预约 </th>
+          <td mat-cell *matCellDef="let element">
+            {{ !element.booking ? '无': '有' }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="status">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 6rem;"> 状态 </th>
+          <td mat-cell *matCellDef="let element">
+            {{(element.status >= 3) ? '已完成':  '未完成'}}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="updatedAt">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 9rem;"> 日期 </th>
+          <td mat-cell *matCellDef="let element">
+            {{ element.updatedAt | localDate }}
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+      <mat-paginator [pageSizeOptions]="[10, 25, 50]" [pageSize]="10" showFirstLastButtons></mat-paginator>
+
+    </div>
+    <ng-container *ngIf="!dataSource?.data?.length">
+      <div class="alert alert-warning" role="alert">
+        没有找到相关记录。
+      </div>
+    </ng-container>
+
+  </nb-card-body>
+</nb-card>

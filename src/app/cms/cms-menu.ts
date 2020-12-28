@@ -176,7 +176,8 @@ export function getMenuItems(role: number, queryParams: Params): NbMenuItem[] {
           children: [
             {
               link: '/cms/report/survey',
-              title: '问卷类别统计'
+              title: '问卷类别统计',
+              queryParams: queryParams,
             },
             {
               link: '/cms/report/survey',
@@ -191,6 +192,11 @@ export function getMenuItems(role: number, queryParams: Params): NbMenuItem[] {
             {
               title: '在线预约统计',
               link: '/cms/report/booking',
+              queryParams: queryParams,
+            },
+            {
+              title: '门诊就诊统计',
+              link: '/cms/report/diagnose',
               queryParams: queryParams,
             },
             {

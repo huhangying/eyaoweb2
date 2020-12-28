@@ -17,7 +17,6 @@ import { BarChartsComponent } from './shared/bar-charts/bar-charts.component';
     LineChartsComponent,
     PieChartsComponent,
     BarChartsComponent,
-
   ],
   imports: [
     CommonModule,
