@@ -64,8 +64,12 @@ body {
 .mat-table {
   width: 100%;
   thead {
-    background-color: rgba(45,172,209,.85);
-    color: #fff;
+    background-color: #0095ee;
+    // background-color: rgba(45,172,209,.85);
+    .mat-header-cell {
+      color: #eee;
+      font-size: 13px;
+    }
   }
   th.mat-header-cell {
     font-weight: bolder;

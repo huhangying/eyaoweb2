@@ -7,6 +7,23 @@
 
   <nb-card-body>
     <div [class.d-none]="!dataSource?.data?.length">
+
+      <div class="px-3 pb-2 mt-n2">
+        <button nbButton hero status="info" size="small" class="mr-5" nbSuffix
+          (click)="exporter.exportTable('xlsx', {fileName: this.searchOutput?.title || '导出文件', sheet: '问卷类别统计'})">
+          <nb-icon icon="download-outline" pack="eva"></nb-icon> excel 文件导出
+        </button>
+        <button nbButton hero status="info" outline size="small" class="mr-4" nbSuffix (click)="displayChartDataByType()">
+          <span class="material-icons"> timeline </span>&nbsp; 按问卷类别统计
+        </button>
+        <button nbButton hero status="info" outline size="small" class="mr-4" nbSuffix (click)="displayChartDataByDoctor()">
+          <span class="material-icons"> timeline </span>&nbsp; 按药师统计
+        </button>
+        <button nbButton hero status="primary" outline size="small" class="mr-4" nbSuffix (click)="displayPieChartDataByType()">
+          <nb-icon icon="pie-chart-outline" pack="eva"></nb-icon> 按问卷类别统计
+        </button>
+      </div>
+
       <table mat-table [dataSource]="dataSource" matSort matTableExporter #exporter="matTableExporter"
         class="mat-elevation-z8 table-striped table-hover">
 
@@ -58,24 +75,6 @@
       </table>
       <mat-paginator [pageSizeOptions]="[10, 25, 50]" [pageSize]="10" showFirstLastButtons></mat-paginator>
 
-      <div class="px-3 pt-2 mt-n5">
-        <button nbButton hero status="info" size="small" class="mr-5" nbSuffix
-          (click)="exporter.exportTable('xlsx', {fileName: this.searchOutput?.title || '导出文件', sheet: '问卷类别统计'})">
-          <nb-icon icon="download-outline" pack="eva"></nb-icon> excel 文件导出
-        </button>
-        <button nbButton hero status="info" size="small" class="mr-4" nbSuffix
-          (click)="displayChartDataByType()">
-          <nb-icon icon="pie-chart-outline" pack="eva"></nb-icon> 按问卷类别统计
-        </button>
-        <button nbButton hero status="info" size="small" class="mr-4" nbSuffix
-          (click)="displayChartDataByDoctor()">
-          <nb-icon icon="pie-chart-outline" pack="eva"></nb-icon> 按药师统计
-        </button>
-        <button nbButton hero status="info" size="small" class="mr-4" nbSuffix
-          (click)="displayPieChartDataByType()">
-          <nb-icon icon="pie-chart-outline" pack="eva"></nb-icon> 按问卷类别统计
-        </button>
-      </div>
     </div>
     <ng-container *ngIf="!dataSource?.data?.length">
       <div class="alert alert-warning" role="alert">
