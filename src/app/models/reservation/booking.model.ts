@@ -1,6 +1,5 @@
 import { Schedule } from './schedule.model';
 import { User } from '../crm/user.model';
-import { Doctor } from '../crm/doctor.model';
 
 // Booking Status:
 // 1: 预约完成,可用状态 2: user cancel; 3: doctor cancel;
@@ -10,7 +9,7 @@ import { Doctor } from '../crm/doctor.model';
 // flatten booking
 export interface Booking {
   _id: string;
-  doctor?: string | Doctor; // id
+  doctor?: string; // id
   schedule?: Schedule; // id
   date?: Date; // same as in schedule
   user?: User; // id

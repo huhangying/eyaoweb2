@@ -13,20 +13,31 @@
           (click)="exporter.exportTable('xlsx', {fileName: this.searchOutput?.title || '导出文件', sheet: '在线预约统计'})">
           <nb-icon icon="download-outline" pack="eva"></nb-icon> excel 文件导出
         </button>
+        <button nbButton hero status="info" outline size="small" class="mr-4" nbSuffix (click)="displayChartDataByStatus()">
+          <span class="material-icons"> timeline </span>&nbsp; 按问卷类别统计
+        </button>
+        <button nbButton hero status="info" outline size="small" class="mr-4" nbSuffix (click)="displayChartDataByDoctor()">
+          <span class="material-icons"> timeline </span>&nbsp; 按药师统计
+        </button>
+        <button nbButton hero status="primary" outline size="small" class="mr-4" nbSuffix (click)="displayPieChartDataByStatus()">
+          <nb-icon icon="pie-chart-outline" pack="eva"></nb-icon> 按问卷类别统计
+        </button>
       </div>
 
       <table mat-table [dataSource]="dataSource" matSort matTableExporter #exporter="matTableExporter"
         class="mat-elevation-z8 table-striped table-hover">
-        <ng-container matColumnDef="doctor.department">
+        <!-- <ng-container matColumnDef="doctor">
           <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 10rem;"> 科室 </th>
           <td mat-cell *matCellDef="let element">
             {{getDepartmentLabel(element.doctor?.department)}}
           </td>
-        </ng-container>
+        </ng-container> -->
 
-        <ng-container matColumnDef="doctor.name">
+        <ng-container matColumnDef="doctor">
           <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 10rem;"> 药师 </th>
-          <td mat-cell *matCellDef="let element"> {{element.doctor?.name}} </td>
+          <td mat-cell *matCellDef="let element">
+            {{getDoctorLabel(element.doctor)}}
+          </td>
         </ng-container>
 
         <ng-container matColumnDef="user.name">

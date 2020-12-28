@@ -29,7 +29,8 @@ const routes: Routes = [{
       component: BookingReportComponent,
       resolve: {
         departments: DepartmentResolver,
-        periods: PeriodsResolver
+        periods: PeriodsResolver,
+        briefDoctors: BriefDoctorsResolver,
       }
     },
     {

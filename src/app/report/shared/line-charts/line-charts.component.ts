@@ -30,7 +30,7 @@ export class LineChartsComponent implements OnInit {
       });
       return group;
     });
-    console.log(data.chartData);
+    // console.log(data.chartData);
   }
 
   ngOnInit(): void {
