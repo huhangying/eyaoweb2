@@ -111,7 +111,6 @@ export class ChatReportComponent implements OnInit, OnDestroy {
   //===================================================
 
   displayChartDataByDirection() {
-    console.log(this.dataSource.data);
     const keys: string[] = []; // key = type + 日期
     const chartData = this.dataSource.data.reduce((chartGroups: ChartGroup[], item: Chat) => {
       const date = this.localDate.transform(item.created, 'sort-date');
@@ -155,8 +154,7 @@ export class ChatReportComponent implements OnInit, OnDestroy {
   }
 
   displayChartDataByDoctor() {
-    console.log(this.dataSource.data);
-    const keys: string[] = []; // key = doctor + 日期
+    const keys: string[] = [];
     const chartData = this.dataSource.data.reduce((chartGroups: ChartGroup[], item: Chat) => {
       const date = this.localDate.transform(item.created, 'sort-date');
       const key = item.room;
@@ -199,8 +197,7 @@ export class ChatReportComponent implements OnInit, OnDestroy {
   }
 
   displayPieChartDataByDoctor() {
-    console.log(this.dataSource.data);
-    const keys: string[] = []; // key = type + 日期
+    const keys: string[] = [];
     const chartData = this.dataSource.data.reduce((chartItems: ChartItem[], item: Chat) => {
       const key = item.room;
       if (keys.indexOf(key) === -1) {

@@ -46,6 +46,7 @@ const routes: Routes = [{
       component: ConsultReportComponent,
       resolve: {
         departments: DepartmentResolver,
+        // briefDoctors: BriefDoctorsResolver,
       }
     },
     {
@@ -53,6 +54,7 @@ const routes: Routes = [{
       component: FeedbackReportComponent,
       resolve: {
         departments: DepartmentResolver,
+        briefDoctors: BriefDoctorsResolver,
       }
     },
     {
