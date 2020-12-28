@@ -13,9 +13,10 @@ import { Dosage } from '../../../models/hospital/medicine.model';
 import { DiagnoseService } from '../../../services/diagnose.service';
 import { MedicineService } from '../../../services/medicine.service';
 import { LocalDatePipe } from '../../../shared/pipe/local-date.pipe';
-import { ChartGroup, ReportSearchOutput } from '../../models/report-search.model';
+import { ChartGroup, ChartItem, ReportSearchOutput } from '../../models/report-search.model';
 import { MedicineUsageFlat } from '../../models/report-usage';
 import { LineChartsComponent } from '../../shared/line-charts/line-charts.component';
+import { PieChartsComponent } from '../../shared/pie-charts/pie-charts.component';
 
 @Component({
   selector: 'ngx-medicine-usage-report',
@@ -194,6 +195,72 @@ export class MedicineUsageReportComponent implements OnInit, OnDestroy {
         title: '药师',
         // xLabel: '问卷日期',
         yLabel: '药品数量',
+        chartData: chartData
+      }
+    });
+  }
+
+
+  displayPieChartDataByMedicine() {
+    console.log(this.dataSource.data);
+    const keys: string[] = []; // key = type + 日期
+    const chartData = this.dataSource.data.reduce((chartItems: ChartItem[], item: MedicineUsageFlat) => {
+      const key = item.medicine.name;
+      if (keys.indexOf(key) === -1) {
+        keys.push(key);
+        chartItems.push({
+          type: key,
+          name: item.medicine.name,
+          value: item.medicine.quantity,
+        });
+        return chartItems;
+      }
+      chartItems = chartItems.map((group) => {
+        if (group.type === key) {
+          group.value += item.medicine.quantity;
+        }
+        return group;
+      });
+      return chartItems;
+    }, []);
+
+    this.dialog.open(PieChartsComponent, {
+      data: {
+        title: '问卷类别',
+        chartData: chartData,
+        isPercentage: true,
+      }
+    });
+  }
+
+  displayPieChartDataByDoctor() {
+    console.log(this.dataSource.data);
+    const keys: string[] = []; // key = doctor + 日期
+    const chartData = this.dataSource.data.reduce((chartItems: ChartItem[], item: MedicineUsageFlat) => {
+      const date = this.localDate.transform(item.updatedAt, 'sort-date');
+      const key = item.doctor;
+      if (keys.indexOf(key) === -1) {
+        keys.push(key);
+        chartItems.push({
+          type: key,
+          name: this.getDoctorLabel(item.doctor),
+          value: item.medicine.quantity,
+        });
+        return chartItems;
+      }
+      chartItems = chartItems.map((group) => {
+        if (group.type === key) {
+            group.value += item.medicine.quantity;
+        }
+        return group;
+      });
+      return chartItems;
+    }, []);
+
+    this.dialog.open(PieChartsComponent, {
+      data: {
+        title: '药师',
+        isPercentage: true,
         chartData: chartData
       }
     });
