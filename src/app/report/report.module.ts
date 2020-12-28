@@ -9,11 +9,13 @@ import { NgxChartsModule }from '@swimlane/ngx-charts';
 import { LineChartsComponent } from './shared/line-charts/line-charts.component';
 import { PieChartsComponent } from './shared/pie-charts/pie-charts.component';
 import { BarChartsComponent } from './shared/bar-charts/bar-charts.component';
+import { ReportSurveySearchComponent } from './shared/report-survey-search/report-survey-search.component';
 
 @NgModule({
   declarations: [
     ...routedComponents,
     ReportSearchComponent,
+    ReportSurveySearchComponent,
     LineChartsComponent,
     PieChartsComponent,
     BarChartsComponent,

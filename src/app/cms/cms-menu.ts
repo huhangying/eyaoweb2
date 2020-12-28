@@ -180,7 +180,7 @@ export function getMenuItems(role: number, queryParams: Params): NbMenuItem[] {
               queryParams: queryParams,
             },
             {
-              link: '/cms/report/survey',
+              link: '/cms/report/survey-content',
               title: '问卷内容统计',
               queryParams: queryParams,
             }

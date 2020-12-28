@@ -10,6 +10,7 @@ import { FeedbackReportComponent } from './chat/feedback-report/feedback-report.
 import { DiagnoseReportComponent } from './diagnose/diagnose-report/diagnose-report.component';
 import { PatientReportComponent } from './patient/patient-report/patient-report.component';
 import { BookingReportComponent } from './reservation/booking-report/booking-report.component';
+import { SurveyContentReportComponent } from './survey/survey-content-report/survey-content-report.component';
 import { SurveyReportComponent } from './survey/survey-report/survey-report.component';
 import { ArticleUsageReportComponent } from './usage/article-usage-report/article-usage-report.component';
 import { MedicineUsageReportComponent } from './usage/medicine-usage-report/medicine-usage-report.component';
@@ -21,6 +22,13 @@ const routes: Routes = [{
     {
       path: 'survey',
       component: SurveyReportComponent,
+      resolve: {
+        departments: DepartmentResolver,
+      }
+    },
+    {
+      path: 'survey-content',
+      component: SurveyContentReportComponent,
       resolve: {
         departments: DepartmentResolver,
       }
@@ -47,7 +55,6 @@ const routes: Routes = [{
       component: ConsultReportComponent,
       resolve: {
         departments: DepartmentResolver,
-        // briefDoctors: BriefDoctorsResolver,
       }
     },
     {
@@ -115,5 +122,6 @@ export const routedComponents = [
   ArticleUsageReportComponent,
   DiagnoseReportComponent,
   PatientReportComponent,
+  SurveyContentReportComponent,
 ];
 

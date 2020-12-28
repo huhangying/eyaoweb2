@@ -20,6 +20,14 @@ export class SurveyService {
     { type: 7, name: '临时问卷' },
   ];
 
+  surveyReportTypes = [
+    { type: 1, name: '初诊问卷' },
+    { type: 2, name: '复诊问卷' },
+    { type: 3, name: '随访问卷' },
+    { type: 4, name: '药物知识自测' },
+    { type: 7, name: '临时问卷' },
+  ];
+
   constructor(
     private api: ApiService,
     private message: MessageService,
