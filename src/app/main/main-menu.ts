@@ -1,7 +1,5 @@
 import { NbMenuItem } from '@nebular/theme';
 import { Params } from '@angular/router';
-import { threadId } from 'worker_threads';
-import { isScheduler } from 'rxjs/internal-compatibility';
 
 export function getMenuItems(role: number, queryParams: Params, isCs = false): NbMenuItem[] {
   return [
@@ -30,7 +28,7 @@ export function getMenuItems(role: number, queryParams: Params, isCs = false): N
       icon: 'smiling-face-outline',
       link: '/main/chat',
       hidden: !isCs,
-      queryParams: {...queryParams, type: 0, cs: true},
+      queryParams: { ...queryParams, type: 0, cs: true },
     },
     {
       title: '付费咨询设置',
@@ -80,9 +78,19 @@ export function getMenuItems(role: number, queryParams: Params, isCs = false): N
       link: '/main/article-push',
     },
     {
-      title: '问卷发送',
+      title: '问卷',
       icon: 'clipboard-outline',
-      link: '/main/survey-push',
+      children: [
+        {
+          title: '问卷发送',
+          link: '/main/survey-push',
+        },
+        {
+          title: '问卷查询',
+          link: '/main/survey-query',
+          queryParams: queryParams,
+        },
+      ]
     },
     {
       title: '快捷回复管理',

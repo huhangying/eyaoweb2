@@ -17,6 +17,7 @@ import { SurveyPushComponent } from './survey-push/survey-push.component';
 import { WechatMessageFailedComponent } from './wechat-message-failed/wechat-message-failed.component';
 import { WechatTemplatesResolver } from '../services/resolvers/wechat-templates.resolver';
 import { ConsultPhoneComponent } from './consult/consult-phone/consult-phone.component';
+import { SurveyQueryComponent } from './survey-query/survey-query.component';
 
 const routes: Routes = [{
   path: '',
@@ -56,6 +57,10 @@ const routes: Routes = [{
     {
       path: 'survey-push',
       component: SurveyPushComponent,
+    },
+    {
+      path: 'survey-query',
+      component: SurveyQueryComponent,
     },
     {
       path: 'profile',

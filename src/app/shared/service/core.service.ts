@@ -37,4 +37,9 @@ export class CoreService {
   getMinutes(date: Date): number {
     return moment(date).minute();
   }
+
+  getDate(offset = 0, isDayEnd = false) {
+    return !isDayEnd ? moment().add(offset, 'd').startOf('day') :
+      moment().add(offset, 'd').endOf('day');
+  }
 }

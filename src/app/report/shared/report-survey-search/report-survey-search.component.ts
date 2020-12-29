@@ -49,7 +49,6 @@ export class ReportSurveySearchComponent implements OnInit {
     const selectedSurveyTypeName = this.surveyTypes.find(_ => _.type === mySearch.type)?.name || '';
     const selectedDate = (!mySearch.start && !mySearch.end) ? '' :
       (this.localDate.transform(mySearch.start) + '-' + this.localDate.transform(mySearch.end));
-console.log(selectedSurveyTypeName);
 
     this.onOutput.emit({
       title: `${selectedDepartmentName}${selectedSurveyTypeName}${selectedDate}`,
