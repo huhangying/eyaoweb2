@@ -134,7 +134,7 @@ export class ReservationService {
         notis.push({
           patientId: booking.user._id,
           type: 3,
-          name: `${booking.user.name} 取消了${moment(booking.date).format('LL')}预约`,
+          name: `${booking.user?.name} 取消了${moment(booking.date).format('LL')}预约`,
           count: 1,
           keyId: booking._id,
           created: booking.created
