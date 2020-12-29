@@ -91,7 +91,7 @@ export class SurveyContentReportComponent implements OnInit, OnDestroy {
 
   getDoctorLabel(id: string) {
     if (!this.briefDoctors?.length) return '';
-    return this.briefDoctors.find(item => item._id === id)?.name;
+    return this.briefDoctors.find(item => item._id === id)?.name || '未知';
   }
 
   getSurveyNameByType(type: number) {
@@ -160,6 +160,50 @@ export class SurveyContentReportComponent implements OnInit, OnDestroy {
     });
   }
 
+  displayChartDataByDoctor() {
+    const keys: string[] = [];
+    const chartData = this.dataSource.data.reduce((chartGroups: ChartGroup[], item: Survey) => {
+      const date = this.localDate.transform(item.createdAt, 'sort-date');
+      const key = item.doctor as string;
+      if (keys.indexOf(key) === -1) {
+        keys.push(key);
+        chartGroups.push({
+          type: key,
+          name: this.getDoctorLabel(key),
+          series: [{
+            name: date,
+            value: 1,
+          }]
+        });
+        return chartGroups;
+      }
+      chartGroups = chartGroups.map((group) => {
+        if (group.type === key) {
+          const index = group.series.findIndex(_ => _.name === date);
+          if (index > -1) {
+            group.series[index].value += 1;
+          } else {
+            group.series.push({
+              name: date,
+              value: 1,
+            });
+          }
+        }
+        return group;
+      });
+      return chartGroups;
+    }, []);
+
+    this.dialog.open(LineChartsComponent, {
+      data: {
+        title: '药师',
+        yLabel: '问卷个数',
+        chartData: chartData,
+      }
+    });
+  }
+
+
   displayPieChartDataByType() {
     const keys: string[] = [];
     const chartData = this.dataSource.data.reduce((chartItems: ChartItem[], item: Survey) => {
@@ -191,45 +235,34 @@ export class SurveyContentReportComponent implements OnInit, OnDestroy {
     });
   }
 
-  displayChartDataByDoctor() {
+
+  displayPieChartDataByName() {
     const keys: string[] = [];
-    const chartData = this.dataSource.data.reduce((chartGroups: ChartGroup[], item: Survey) => {
-      const date = this.localDate.transform(item.createdAt, 'sort-date');
-      const key = (item.doctor as Doctor)._id;
+    const chartData = this.dataSource.data.reduce((chartItems: ChartItem[], item: Survey) => {
+      const key = item.name || '未设置';
       if (keys.indexOf(key) === -1) {
         keys.push(key);
-        chartGroups.push({
+        chartItems.push({
           type: key,
-          name: (item.doctor as Doctor).name,
-          series: [{
-            name: date,
-            value: 1,
-          }]
+          name: `${this.getSurveyNameByType(item.type)}/${key}`,
+          value: 1,
         });
-        return chartGroups;
+        return chartItems;
       }
-      chartGroups = chartGroups.map((group) => {
+      chartItems = chartItems.map((group) => {
         if (group.type === key) {
-          const index = group.series.findIndex(_ => _.name === date);
-          if (index > -1) {
-            group.series[index].value += 1;
-          } else {
-            group.series.push({
-              name: date,
-              value: 1,
-            });
-          }
+          group.value += 1;
         }
         return group;
       });
-      return chartGroups;
+      return chartItems;
     }, []);
 
-    this.dialog.open(LineChartsComponent, {
+    this.dialog.open(PieChartsComponent, {
       data: {
-        title: '药师',
-        yLabel: '问卷个数',
+        title: '问卷块名',
         chartData: chartData,
+        isPercentage: true,
       }
     });
   }

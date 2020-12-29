@@ -23,8 +23,7 @@
       </ng-container>
       <ng-container *ngIf="question.answer_type === 2">
         <ng-container *ngFor="let option of question.options">
-          <mat-checkbox [(ngModel)]="option.selected" class="question-option" [disabled]="readonly"
-            (>
+          <mat-checkbox [(ngModel)]="option.selected" class="question-option" [disabled]="readonly">
             {{option.answer}}
           </mat-checkbox>
           <input type="text" nbInput [(ngModel)]="option.input" placeholder="请输入..." class="ml-5 w-75"

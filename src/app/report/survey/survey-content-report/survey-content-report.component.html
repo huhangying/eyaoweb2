@@ -10,7 +10,7 @@
 
       <div class="px-3 pb-2 mt-n2">
         <button nbButton hero status="info" size="small" class="mr-5" nbSuffix
-          (click)="exporter.exportTable('xlsx', {fileName: this.searchOutput?.title || '导出文件', sheet: '问卷类别统计'})">
+          (click)="exporter.exportTable('xlsx', {fileName: '问卷内容统计' + this.searchOutput?.title || '', sheet: '问卷内容统计'})">
           <nb-icon icon="download-outline" pack="eva"></nb-icon> excel 文件导出
         </button>
         <button nbButton hero status="info" outline size="small" class="mr-4" nbSuffix
@@ -21,9 +21,14 @@
           (click)="displayChartDataByDoctor()">
           <span class="material-icons"> timeline </span>&nbsp; 按药师统计
         </button>
+
         <button nbButton hero status="primary" outline size="small" class="mr-4" nbSuffix
           (click)="displayPieChartDataByType()">
           <nb-icon icon="pie-chart-outline" pack="eva"></nb-icon> 按问卷类别统计
+        </button>
+        <button nbButton hero status="primary" outline size="small" class="mr-4" nbSuffix
+          (click)="displayPieChartDataByName()">
+          <nb-icon icon="pie-chart-outline" pack="eva"></nb-icon> 按问卷块名统计
         </button>
       </div>
 
