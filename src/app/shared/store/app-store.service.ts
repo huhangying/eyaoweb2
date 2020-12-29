@@ -21,6 +21,7 @@ export class AppStoreService extends Store<AppState> {
   get doctor() { return this.state?.doctor || store2.get('doctor'); }
   get pending() { return this.state?.pending || store2.get('pending'); }
   get cms() { return this.state?.cms || false; }
+  get loading() { return this.state?.loading || false; }
 
   updateDoctor(doctor: Doctor) {
     this.setState({

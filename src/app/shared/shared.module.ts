@@ -20,7 +20,7 @@ import { MAT_MOMENT_DATE_FORMATS, MomentDateAdapter } from '@angular/material-mo
 import { SelectArticleCatComponent } from '../cms/shared/select-article-cat/select-article-cat.component';
 import { PaginatorProvider } from './helper/paginator.provider';
 import { DialogService } from './service/dialog.service';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+// import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { LocalDatePipe } from './pipe/local-date.pipe';
 import { ConfirmComponent } from './modal/confirm/confirm.component';
 import { ImageUploaderComponent } from './components/image-uploader/image-uploader.component';
@@ -67,7 +67,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
     MatButtonModule,
     MatDialogModule,
     MatDatepickerModule,
-    MatProgressSpinnerModule,
+    // MatProgressSpinnerModule,
     MatTooltipModule,
     MatTabsModule,
     MatBadgeModule,
@@ -108,7 +108,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
     MatButtonModule,
     MatDialogModule,
     MatDatepickerModule,
-    MatProgressSpinnerModule,
+    // MatProgressSpinnerModule,
     MatTooltipModule,
     MatTabsModule,
     MatBadgeModule,

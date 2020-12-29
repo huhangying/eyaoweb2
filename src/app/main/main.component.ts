@@ -70,8 +70,8 @@ export class MainComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.appStore.state$.pipe(
-      pluck('loading'),
       distinctUntilChanged(),
+      pluck('loading'),
       tap(_ => {
         this.loading = _;
         this.cd.detectChanges();

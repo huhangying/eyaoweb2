@@ -28,6 +28,7 @@ export class ApiInterceptor implements HttpInterceptor {
         // handle error
         // 403 => redirect to login
         if (error.status === 403 || error.status === 401) {
+          this.appStore.updateLoading(false);
           this.router.navigate(['auth/login']);
         }
         return throwError(error);
