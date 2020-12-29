@@ -73,7 +73,7 @@ export class SurveyReportComponent implements OnInit, OnDestroy {
         case 'doctor.name':
           return (item.doctor as Doctor)?.name;
         case 'user.name':
-          return (item.user as User)?.name;
+          return (item.user as User)?.name || '不存在';
         default:
           return item[property];
       }

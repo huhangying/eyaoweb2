@@ -77,7 +77,7 @@ export class BookingReportComponent implements OnInit, OnDestroy {
     this.dataSource.sortingDataAccessor = (item, property) => {
       switch (property) {
         case 'user.name':
-          return item.user?.name;
+          return item.user?.name || '不存在';
         case 'schedule.date':
           return item.schedule.date;
         default:

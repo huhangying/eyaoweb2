@@ -75,7 +75,7 @@ export class SurveyContentReportComponent implements OnInit, OnDestroy {
     this.dataSource.sortingDataAccessor = (item, property) => {
       switch (property) {
         case 'user.name':
-          return (item.user as User)?.name;
+          return (item.user as User)?.name || '不存在';
         default:
           return item[property];
       }

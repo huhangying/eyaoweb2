@@ -72,7 +72,7 @@ export class DiagnoseReportComponent implements OnInit, OnDestroy {
     this.dataSource.sortingDataAccessor = (item, property) => {
       switch (property) {
         case 'user.name':
-          return item.user.name;
+          return item.user?.name || '不存在';
         case 'user.visitedDepartments':
           return item.user.visitedDepartments;
         default:

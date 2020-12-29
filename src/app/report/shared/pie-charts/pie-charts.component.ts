@@ -20,7 +20,7 @@ export class PieChartsComponent implements OnInit {
       isPercentage: boolean;
     },
   ) {
-    console.log(data.chartData);
+    // console.log(data.chartData);
   }
 
   ngOnInit(): void {
