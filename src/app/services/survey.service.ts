@@ -104,4 +104,8 @@ export class SurveyService {
     return this.api.post<Survey[]>('surveys/search', search) as Observable<Survey[]>;
   }
 
+  surveyContentSearch(search: ReportSearch) {
+    return this.api.post<Survey[]>('surveys/content-search', search) as Observable<Survey[]>;
+  }
+
 }

@@ -13,13 +13,16 @@
           (click)="exporter.exportTable('xlsx', {fileName: this.searchOutput?.title || '导出文件', sheet: '问卷类别统计'})">
           <nb-icon icon="download-outline" pack="eva"></nb-icon> excel 文件导出
         </button>
-        <button nbButton hero status="info" outline size="small" class="mr-4" nbSuffix (click)="displayChartDataByType()">
+        <button nbButton hero status="info" outline size="small" class="mr-4" nbSuffix
+          (click)="displayChartDataByType()">
           <span class="material-icons"> timeline </span>&nbsp; 按问卷类别统计
         </button>
-        <button nbButton hero status="info" outline size="small" class="mr-4" nbSuffix (click)="displayChartDataByDoctor()">
+        <button nbButton hero status="info" outline size="small" class="mr-4" nbSuffix
+          (click)="displayChartDataByDoctor()">
           <span class="material-icons"> timeline </span>&nbsp; 按药师统计
         </button>
-        <button nbButton hero status="primary" outline size="small" class="mr-4" nbSuffix (click)="displayPieChartDataByType()">
+        <button nbButton hero status="primary" outline size="small" class="mr-4" nbSuffix
+          (click)="displayPieChartDataByType()">
           <nb-icon icon="pie-chart-outline" pack="eva"></nb-icon> 按问卷类别统计
         </button>
       </div>
@@ -28,25 +31,20 @@
         class="mat-elevation-z8 table-striped table-hover">
 
         <ng-container matColumnDef="department">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> 科室 </th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 6rem;"> 科室 </th>
           <td mat-cell *matCellDef="let element">
             {{ getDepartmentLabel(element.department) }}
           </td>
         </ng-container>
 
         <ng-container matColumnDef="doctor.name">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 10rem;"> 药师 </th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 6rem;"> 药师 </th>
           <td mat-cell *matCellDef="let element"> {{element.doctor.name}} </td>
         </ng-container>
 
         <ng-container matColumnDef="user.name">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 10rem;"> 病患 </th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 6rem;"> 病患 </th>
           <td mat-cell *matCellDef="let element"> {{element.user.name}} </td>
-        </ng-container>
-
-        <ng-container matColumnDef="name">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> 问卷名称 </th>
-          <td mat-cell *matCellDef="let element"> {{element.name}} </td>
         </ng-container>
 
         <ng-container matColumnDef="type">
@@ -54,6 +52,11 @@
           <td mat-cell *matCellDef="let element">
             {{getSurveyNameByType(element.type)}}
           </td>
+        </ng-container>
+
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef> 问卷块名 </th>
+          <td mat-cell *matCellDef="let element"> {{element.name}} </td>
         </ng-container>
 
         <ng-container matColumnDef="finished">

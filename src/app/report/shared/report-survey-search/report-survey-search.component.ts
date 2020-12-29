@@ -1,10 +1,6 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
-import { tap } from 'rxjs/operators';
-import { startWith } from 'rxjs/operators';
 import { Department } from '../../../models/hospital/department.model';
 import { SurveyService } from '../../../services/survey.service';
 import { LocalDatePipe } from '../../../shared/pipe/local-date.pipe';
@@ -15,12 +11,11 @@ import { ReportSearch, ReportSearchOutput, SurveyType } from '../../models/repor
   templateUrl: './report-survey-search.component.html',
   styleUrls: ['./report-survey-search.component.scss'],
 })
-export class ReportSurveySearchComponent implements OnInit, OnDestroy {
+export class ReportSurveySearchComponent implements OnInit {
   @Input() departments: Department[]; // departmets have been pre-loaded!
   @Output() onSearch = new EventEmitter<ReportSearch>();
   @Output() onOutput = new EventEmitter<ReportSearchOutput>();
   form: FormGroup;
-  destroy$ = new Subject<void>();
   surveyTypes: SurveyType[];
 
   constructor(
@@ -30,25 +25,19 @@ export class ReportSurveySearchComponent implements OnInit, OnDestroy {
     private localDate: LocalDatePipe,
   ) {
     this.surveyTypes = [...this.surveyService.surveyReportTypes];
-    this.surveyTypes.unshift({type: 0, name: '全部问卷类型'} as SurveyType);
 
     this.form = this.fb.group({
       department: [this.route.snapshot.queryParams?.dep || '', [Validators.required]],
-      type: [0],
+      type: [''],
       start: [''],
       end: ['']
     });
   }
 
-  // get departmentCtrl() { return this.form.get('department'); }
-  // get typeCtrl() { return this.form.get('type'); }
+  get typeCtrl() { return this.form.get('type'); }
 
   ngOnInit(): void {
-  }
-
-  ngOnDestroy() {
-    this.destroy$.next();
-    this.destroy$.unsubscribe();
+    this.typeCtrl.patchValue(0);
   }
 
   search() {
@@ -60,6 +49,7 @@ export class ReportSurveySearchComponent implements OnInit, OnDestroy {
     const selectedSurveyTypeName = this.surveyTypes.find(_ => _.type === mySearch.type)?.name || '';
     const selectedDate = (!mySearch.start && !mySearch.end) ? '' :
       (this.localDate.transform(mySearch.start) + '-' + this.localDate.transform(mySearch.end));
+console.log(selectedSurveyTypeName);
 
     this.onOutput.emit({
       title: `${selectedDepartmentName}${selectedSurveyTypeName}${selectedDate}`,

@@ -31,6 +31,7 @@ const routes: Routes = [{
       component: SurveyContentReportComponent,
       resolve: {
         departments: DepartmentResolver,
+        briefDoctors: BriefDoctorsResolver,
       }
     },
     {

@@ -1,0 +1,45 @@
+<nb-card status="info">
+  <nb-card-header>
+    问卷内容 - {{data.surveyType}} / {{data.survey?.name}}
+    <button nbButton shape="round" size="tiny" class="float-right" mat-dialog-close>
+      <nb-icon icon="close"></nb-icon>
+    </button>
+  </nb-card-header>
+
+  <mat-dialog-content class="px-4">
+    <ng-container *ngFor="let question of data.survey.questions; let qIndex=index">
+      <h6 class="text-info px-2 pt-3 pb-1">{{qIndex + 1}}. {{question.question}}</h6>
+      <ng-container *ngIf="question.answer_type === 0 || question.answer_type === 1">
+        <mat-radio-group name="{{data.survey?._id}}{{qIndex}}" [disabled]="readonly">
+          <ng-container *ngFor="let option of question.options; let oIndex=index">
+            <mat-radio-button name="{{data.survey?._id}}{{qIndex}}"
+              [value]="oIndex" [checked]="option.selected" class="question-option" [disabled]="readonly">
+              {{option.answer}}
+            </mat-radio-button>
+            <input type="text" nbInput [(ngModel)]="option.input" placeholder="请输入..." class="ml-5 w-75"
+              [readonly]="readonly" *ngIf="option.input_required && option.selected">
+          </ng-container>
+        </mat-radio-group>
+      </ng-container>
+      <ng-container *ngIf="question.answer_type === 2">
+        <ng-container *ngFor="let option of question.options">
+          <mat-checkbox [(ngModel)]="option.selected" class="question-option" [disabled]="readonly"
+            (>
+            {{option.answer}}
+          </mat-checkbox>
+          <input type="text" nbInput [(ngModel)]="option.input" placeholder="请输入..." class="ml-5 w-75"
+            [readonly]="readonly" *ngIf="option.input_required && option.selected">
+        </ng-container>
+      </ng-container>
+
+      <ng-container *ngIf="question.answer_type === 3">
+        <div class="pl-3 pr-5">
+          <textarea nbInput fullWidth placeholder="请输入..." [(ngModel)]="question.options[0].answer"
+             [disabled]="readonly"></textarea>
+        </div>
+      </ng-container>
+
+    </ng-container>
+
+  </mat-dialog-content>
+</nb-card>

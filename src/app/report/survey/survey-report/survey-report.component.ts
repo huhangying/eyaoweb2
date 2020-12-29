@@ -32,7 +32,7 @@ export class SurveyReportComponent implements OnInit, OnDestroy {
   dataSource: MatTableDataSource<Survey>;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
-  displayedColumns: string[] = ['department', 'doctor.name', 'user.name', 'name', 'type', 'finished', 'updatedAt'];
+  displayedColumns: string[] = ['department', 'doctor.name', 'user.name', 'type', 'name', 'finished', 'updatedAt'];
 
   constructor(
     private route: ActivatedRoute,

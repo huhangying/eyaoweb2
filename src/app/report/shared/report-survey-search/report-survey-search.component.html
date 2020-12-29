@@ -16,8 +16,8 @@
 
     <div class="col-6 col-lg-3 pt-3">
       <nb-form-field appearance="fill">
-        <nb-select hero fullWidth placeholder="选择问卷类型" formControlName="surveyType">
-          <nb-option value="">全部问卷类型</nb-option>
+        <nb-select hero fullWidth placeholder="选择问卷类型" formControlName="type">
+          <nb-option [value]="0">全部问卷类型</nb-option>
           <nb-option *ngFor="let type of surveyTypes" [value]="type.type">{{ type.name }}</nb-option>
         </nb-select>
       </nb-form-field>
