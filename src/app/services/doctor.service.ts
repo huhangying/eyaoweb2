@@ -1,7 +1,6 @@
 import { DoctorGroup } from '../models/crm/doctor-group.model';
 import { Doctor, DoctorBrief } from '../models/crm/doctor.model';
 import { Injectable } from '@angular/core';
-import { AppStoreService } from '../shared/store/app-store.service';
 import { ApiService } from '../shared/service/api.service';
 import { Relationship, RelationshipRequest } from '../models/crm/relationship.model';
 import { Observable } from 'rxjs';
