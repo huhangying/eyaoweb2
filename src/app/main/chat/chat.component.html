@@ -41,8 +41,7 @@
                           </div>
                         </div>
                         <div class="pr-2" *ngIf="getBadgeCount(member.user._id) as badgeCount">
-                          <span [matBadge]="badgeCount" matBadgeOverlap="false"
-                            matBadgeColor="warn"></span>
+                          <span [matBadge]="badgeCount" matBadgeOverlap="false" matBadgeColor="warn"></span>
                         </div>
                       </div>
                     </mat-list-option>
@@ -75,8 +74,7 @@
                         </div>
                       </div>
                       <div class="pr-2" *ngIf="getBadgeCount(user._id) as badgeCount">
-                        <span [matBadge]="badgeCount" matBadgeOverlap="false"
-                          matBadgeColor="warn"></span>
+                        <span [matBadge]="badgeCount" matBadgeOverlap="false" matBadgeColor="warn"></span>
                       </div>
                     </div>
                   </mat-list-option>
@@ -234,7 +232,8 @@
                         <img [src]="selectedPatient?.icon" class="rounded-circle user_img_msg">
                       </div>
                       <div class="msg-data text-break">
-                        <ngx-consult-request-content [consult]="consult" [showType]="true"></ngx-consult-request-content>
+                        <ngx-consult-request-content [consult]="consult" [showType]="true">
+                        </ngx-consult-request-content>
                       </div>
                     </div>
                   </div>
@@ -313,10 +312,12 @@
           </div>
           <div *ngIf="showEmoji">
             <div class="qqface">
-              <ng-container *ngFor="let code of qqfaces">
-                <button mat-icon-button (click)="addEmoji(code)">
-                  <img [src]="'assets/qqface/' + code + '.gif'" />
-                </button>
+              <ng-container *ngFor="let code of qqfaces; let i=index">
+                <ng-container *ngIf="i<90">
+                  <button mat-icon-button (click)="addEmoji(code)">
+                    <img [src]="'assets/qqface/' + code + '.gif'" />
+                  </button>
+                </ng-container>
               </ng-container>
             </div>
           </div>
