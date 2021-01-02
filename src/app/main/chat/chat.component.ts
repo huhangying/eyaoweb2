@@ -194,21 +194,24 @@ export class ChatComponent implements OnInit, OnDestroy {
     this.room = this.doctor._id;
 
     this.socketio.onChat((msg: Chat) => {
-      if (msg.sender === this.selectedPatient?._id && msg.to === this.doctor._id) {
+      if (msg.sender === this.selectedPatient?._id && msg.to === this.doctor._id &&
+        this.type === NotificationType.chat) { // include cs
         this.chats.push(msg);
         this.scrollBottom();
       }
     });
 
     this.socketio.onFeedback((msg: UserFeedback) => {
-      if (msg.user === this.selectedPatient?._id && msg.doctor === this.doctor._id) {
+      if (msg.user === this.selectedPatient?._id && msg.doctor === this.doctor._id &&
+        (this.type === NotificationType.adverseReaction || this.type === NotificationType.doseCombination)) {
         this.feedbacks.push(msg);
         this.scrollBottom();
       }
     });
 
     this.socketio.onConsult((msg: Consult) => {
-      if (msg.user === this.selectedPatient?._id && msg.doctor === this.doctor._id) {
+      if (msg.user === this.selectedPatient?._id && msg.doctor === this.doctor._id &&
+        (this.type === NotificationType.consultChat || this.type === NotificationType.consultPhone)) {
         this.consults.push(msg);
         this.scrollBottom();
       }
