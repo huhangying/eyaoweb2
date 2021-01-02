@@ -8,29 +8,30 @@
     ** 付费电话咨询 {{!consult.finished ? '' : '(已完成)'}} ***
   </span>
 </div>
-<div *ngIf="consult.userName">
-  <span class="item-lable">咨询人：</span>
-  {{consult.userName}}
-</div>
-<div *ngIf="consult.cell">
-  <span class="item-lable">手机：</span>
-  {{consult.cell}}
-</div>
-<div *ngIf="consult.disease_types?.length">
-  <span class="item-lable">疾病类型：</span>
-  {{consult.disease_types.join(', ')}}
-</div>
-<div *ngIf="consult.address">
-  <span class="item-lable">所在地：</span>
-  {{consult.address}}
-</div>
+<ng-container *ngIf="isConsultRequest">
+  <div *ngIf="consult.userName">
+    <span class="item-lable">咨询人：</span>
+    {{consult.userName}}
+  </div>
+  <div *ngIf="consult.cell">
+    <span class="item-lable">手机：</span>
+    {{consult.cell}}
+  </div>
+  <div>
+    <span class="item-lable">疾病类型：</span>
+    {{consult.disease_types.join(', ')}}
+  </div>
+  <div *ngIf="consult.address">
+    <span class="item-lable">所在地：</span>
+    {{consult.address}}
+  </div>
 
-<div *ngIf="consult.userName">
   <div class="item-lable">问题描述：</div>
-  {{consult.content}}
-</div>
+  <div class="mb-1 text-break" [innerHTML]="translateEmoji(consult.content)">
+  </div>
+</ng-container>
 
-<div *ngIf="!consult.userName" class="mb-1 text-break" [innerHTML]="translateEmoji(consult.content)">
+<div *ngIf="!isConsultRequest" class="mb-1 text-break" [innerHTML]="translateEmoji(consult.content)">
 </div>
 <div *ngIf="consult.upload">
   <img [src]="consult.upload | imgPath" ngxImgClickView onerror="this.src='assets/images/no-image.png';this.onerror='';"
