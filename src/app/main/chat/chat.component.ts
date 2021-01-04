@@ -303,7 +303,7 @@ export class ChatComponent implements OnInit, OnDestroy {
 
   hasNewServices(pid: string): boolean {
     if (!pid) return false;
-    let notifications = [];
+    let notifications: Notification[] = [];
     switch (this.type) {
       case NotificationType.chat: // NotificationType.customerService
         notifications = !this.isCs ? this.chatNotifications : this.csNotifications;
@@ -311,7 +311,7 @@ export class ChatComponent implements OnInit, OnDestroy {
 
       case NotificationType.adverseReaction:
       case NotificationType.doseCombination:
-        notifications = this.feedbackNotifications;
+        notifications = this.feedbackNotifications?.filter(_ => _.type === this.type);
         break;
 
       case NotificationType.consultChat:
