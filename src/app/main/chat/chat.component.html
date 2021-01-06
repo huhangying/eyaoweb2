@@ -300,7 +300,7 @@
               </ng-container>
               <ng-container *ngIf="type === 0 && consultEnabled && existsConsult">
                 <button mat-flat-button class="text-success" matTooltip="回到病患付费咨询页面" (click)="goBackConsult()">
-                  <mat-icon>cancel</mat-icon> 返回付费咨询
+                  <mat-icon>arrow_back</mat-icon> 返回付费咨询
                 </button>
               </ng-container>
               <ng-container *ngIf="type === 5 && hasNewServices(selectedPatient?._id)">
