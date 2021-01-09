@@ -82,7 +82,7 @@ export class MedicineUsageReportComponent implements OnInit, OnDestroy {
         case 'medicine.usage':
           return item.medicine.usage;
         case 'medicine.quantity':
-          return item.medicine.quantity;
+          return (item.medicine.quantity || 0);
         default:
           return item[property];
       }
@@ -108,7 +108,7 @@ export class MedicineUsageReportComponent implements OnInit, OnDestroy {
 
   getDoctorLabel(id: string) {
     if (!this.briefDoctors?.length) return '';
-    return this.briefDoctors.find(item => item._id === id)?.name;
+    return this.briefDoctors.find(item => item._id === id)?.name || '';
   }
 
   displayChartDataByMedicine() {
@@ -123,7 +123,7 @@ export class MedicineUsageReportComponent implements OnInit, OnDestroy {
           name: item.medicine.name,
           series: [{
             name: date,
-            value: item.medicine.quantity,
+            value: item.medicine.quantity || 0,
           }]
         });
         return chartGroups;
@@ -132,11 +132,11 @@ export class MedicineUsageReportComponent implements OnInit, OnDestroy {
         if (group.type === key) {
           const index = group.series.findIndex(_ => _.name === date);
           if (index > -1) {
-            group.series[index].value += item.medicine.quantity;
+            group.series[index].value += (item.medicine.quantity || 0);
           } else {
             group.series.push({
               name: date,
-              value: item.medicine.quantity,
+              value: item.medicine.quantity || 0,
             });
           }
         }
@@ -168,7 +168,7 @@ export class MedicineUsageReportComponent implements OnInit, OnDestroy {
           name: this.getDoctorLabel(item.doctor),
           series: [{
             name: date,
-            value: item.medicine.quantity,
+            value: item.medicine.quantity || 0,
           }]
         });
         return chartGroups;
@@ -177,11 +177,11 @@ export class MedicineUsageReportComponent implements OnInit, OnDestroy {
         if (group.type === key) {
           const index = group.series.findIndex(_ => _.name === date);
           if (index > -1) {
-            group.series[index].value += item.medicine.quantity;
+            group.series[index].value += (item.medicine.quantity || 0);
           } else {
             group.series.push({
               name: date,
-              value: item.medicine.quantity,
+              value: item.medicine.quantity || 0,
             });
           }
         }
@@ -210,13 +210,13 @@ export class MedicineUsageReportComponent implements OnInit, OnDestroy {
         chartItems.push({
           type: key,
           name: item.medicine.name,
-          value: item.medicine.quantity,
+          value: item.medicine.quantity || 0,
         });
         return chartItems;
       }
       chartItems = chartItems.map((group) => {
         if (group.type === key) {
-          group.value += item.medicine.quantity;
+          group.value += (item.medicine.quantity || 0);
         }
         return group;
       });
@@ -227,7 +227,7 @@ export class MedicineUsageReportComponent implements OnInit, OnDestroy {
       data: {
         title: '药品',
         chartData: chartData,
-        isPercentage: true,
+        isPercentage: false,
       }
     });
   }
@@ -241,13 +241,13 @@ export class MedicineUsageReportComponent implements OnInit, OnDestroy {
         chartItems.push({
           type: key,
           name: this.getDoctorLabel(item.doctor),
-          value: item.medicine.quantity,
+          value: item.medicine.quantity || 0,
         });
         return chartItems;
       }
       chartItems = chartItems.map((group) => {
         if (group.type === key) {
-            group.value += item.medicine.quantity;
+            group.value += (item.medicine.quantity || 0);
         }
         return group;
       });
