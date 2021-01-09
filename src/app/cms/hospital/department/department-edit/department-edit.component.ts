@@ -33,7 +33,7 @@ export class DepartmentEditComponent implements OnInit, OnDestroy {
       name: ['', Validators.required],
       desc: [''],
       address: [''],
-      assetFolder: [''],
+      // assetFolder: [''],
       order: [''],
       apply: false,
     });

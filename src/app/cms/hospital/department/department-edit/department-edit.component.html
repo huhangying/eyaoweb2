@@ -15,36 +15,39 @@
         <label for="desc" class="label"> 描述 </label>
         <textarea nbInput fullWidth id="desc" formControlName="desc" rows="2"></textarea>
 
-        <label for="assetFolder" class="label"> 专属目录名 </label>
-        <input nbInput fullWidth id="assetFolder" formControlName="assetFolder" placeholder="暂不支持">
-
+        <!-- <label for="assetFolder" class="label"> 专属目录名 </label>
+        <input nbInput fullWidth id="assetFolder" formControlName="assetFolder" placeholder="暂不支持"> -->
+        <label for="order" class="label"> 顺序 </label>
+        <input nbInput type="number" fullWidth id="order" formControlName="order">
       </div>
+
       <div class="col-md-6">
         <label for="address" class="label"> 地址 </label>
         <input nbInput fullWidth id="address" formControlName="address">
         <label for="direction" class="label"> 地址指示图 </label>
-        <div>
-          <img src="{{ depMap | imgPath }}" ngxImgClickView onerror="this.src='/assets/images/icon/default.svg';this.onerror='';"
-            class="img-fluid img-thumbnail z-depth-1" alt="">
-          <div>
+
+        <div class="d-flex align-items-center">
+          <div class="mr-auto">
+            <img src="{{ depMap | imgPath }}" ngxImgClickView
+              onerror="this.src='/assets/images/icon/default.svg';this.onerror='';"
+              class="img-fluid img-thumbnail z-depth-1" alt="">
             <input hidden="true" type="file" accept="image/*" (change)="onFileSelected($event)" #fileInput>
-            <button mat-flat-button color="primary" class="w-75" (click)="fileInput.click()" class="UppyModalOpenerBtn">
+          </div>
+          <div>
+            <button mat-flat-button color="primary" class="" (click)="fileInput.click()" class="UppyModalOpenerBtn">
               更改地图
             </button>
           </div>
+        </div>
+        <div class="pt-2">
+          <nb-checkbox formControlName="apply"> 开关 </nb-checkbox>
         </div>
       </div>
     </div>
 
     <div class="field row">
+
       <div class="col-md-6">
-        <label for="order" class="label"> 顺序 </label>
-        <input nbInput type="number" fullWidth id="order" formControlName="order">
-      </div>
-      <div class="col-md-6">
-        <div class="pt-2">
-          <nb-checkbox formControlName="apply"> 开关 </nb-checkbox>
-        </div>
       </div>
     </div>
 
