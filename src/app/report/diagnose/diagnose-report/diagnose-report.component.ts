@@ -74,7 +74,7 @@ export class DiagnoseReportComponent implements OnInit, OnDestroy {
         case 'user.name':
           return item.user?.name || '不存在';
         case 'user.visitedDepartments':
-          return item.user.visitedDepartments;
+          return item.user?.visitedDepartments;
         default:
           return item[property];
       }
@@ -148,7 +148,7 @@ export class DiagnoseReportComponent implements OnInit, OnDestroy {
     const keys: string[] = [];
     const chartData = this.dataSource.data.reduce((chartItems: ChartItem[], item: DiagnoseUsage) => {
 
-      const key = this.isVisitedUser(item.doctor, item.user.visitedDepartments) ? '1' : '0'; // 0: new user; 1: old user
+      const key = this.isVisitedUser(item.doctor, item.user?.visitedDepartments) ? '1' : '0'; // 0: new user; 1: old user
       if (keys.indexOf(key) === -1) {
         keys.push(key);
         chartItems.push({
