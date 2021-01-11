@@ -63,7 +63,7 @@ export class DoctorComponent implements OnInit, OnDestroy {
       this.loadData([]);
       return;
     }
-    this.doctorService.getDoctorsByDepartment(department._id).subscribe(
+    this.doctorService.getCmsDoctorsByDepartment(department._id).subscribe(
       data => {
         this.loadData(data);
       }

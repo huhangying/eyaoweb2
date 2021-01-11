@@ -29,6 +29,10 @@ export class DoctorService {
     return this.api.get<Doctor[]>('doctors/department/' + departmentId);
   }
 
+  getCmsDoctorsByDepartment(departmentId: string) {
+    return this.api.get<Doctor[]>('doctors/department/cms/' + departmentId);
+  }
+
   getDoctorById(id: string) {
     return this.api.get<Doctor>('doctor/' + id);
   }
