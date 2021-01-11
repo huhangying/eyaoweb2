@@ -9,6 +9,7 @@ import { FaqComponent } from './faq/faq.component';
 import { MedicineReferencesResolver } from '../../services/resolvers/medicine-references.resolver';
 import { TestFormComponent } from './test-form/test-form.component';
 import { DepartmentResolver } from '../../services/resolvers/department.resolver';
+import { WxMaterialKeywordsComponent } from './wx-material-keywords/wx-material-keywords.component';
 
 const routes: Routes = [{
   path: '',
@@ -41,7 +42,10 @@ const routes: Routes = [{
       path: 'faq',
       component: FaqComponent,
     },
-
+    {
+      path: 'wx-keywords',
+      component: WxMaterialKeywordsComponent,
+    },
   ],
 }];
 

@@ -135,10 +135,20 @@ export function getMenuItems(role: number, queryParams: Params): NbMenuItem[] {
       ],
     },
     {
-      title: '微信失败消息查看',
+      title: '微信相关管理',
       icon: 'alert-triangle-outline',
-      link: '/cms/msg-failed',
-      queryParams: queryParams,
+      children: [
+        {
+          title: '微信失败消息查看',
+          link: '/cms/msg-failed',
+          queryParams: queryParams,
+        },
+        // {
+        //   title: '微信关键字搜索',
+        //   link: '/cms/hospital/wx-keywords',
+        //   queryParams: queryParams,
+        // },
+      ],
     },
     {
       title: '统计报表',
@@ -210,7 +220,6 @@ export function getMenuItems(role: number, queryParams: Params): NbMenuItem[] {
               link: '/cms/report/feedback',
               queryParams: { ...queryParams, type: 2 },
             },
-
           ]
         },
         {

@@ -11,6 +11,7 @@ import { TestFormComponent } from './test-form/test-form.component';
 import { TestFormEditComponent } from './test-form/test-form-edit/test-form-edit.component';
 import { TestFormItemEditComponent } from './test-form/test-form-edit/test-form-item-edit/test-form-item-edit.component';
 import { DiseaseEditComponent } from './disease/disease-edit/disease-edit.component';
+import { WxMaterialKeywordsComponent } from './wx-material-keywords/wx-material-keywords.component';
 
 @NgModule({
   imports: [
@@ -29,6 +30,7 @@ import { DiseaseEditComponent } from './disease/disease-edit/disease-edit.compon
     TestFormEditComponent,
     TestFormItemEditComponent,
     DiseaseEditComponent,
+    WxMaterialKeywordsComponent,
   ]
 })
 export class HospitalModule { }
