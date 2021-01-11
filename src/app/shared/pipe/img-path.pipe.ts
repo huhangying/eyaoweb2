@@ -7,8 +7,8 @@ import { environment } from '../../../environments/environment';
 })
 export class ImgPathPipe implements PipeTransform {
 
-  transform(value: string): string {
-    if (!value) return '/assets/images/no-image.png';
+  transform(value: string, arg?: string): string {
+    if (!value) return arg === 'person' ? '/assets/images/person.png' : '/assets/images/no-image.png';
     if (value.indexOf('data:') === 0 || value.match('^http(s)?://')?.length) return value;
     return environment.imageServer + value;
   }

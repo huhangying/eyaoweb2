@@ -65,7 +65,7 @@
                     <div class="d-flex align-items-center justify-content-between">
                       <div class="d-flex align-items-center flex-row">
                         <div mat-list-icon>
-                          <img [src]="user.icon" alt="头像" class="avatar"
+                          <img [src]="user.icon | imgPath:'person'" alt="头像" class="avatar"
                             onerror="this.src='/assets/images/noimage.jpg';this.onerror='';">
                         </div>
                         <div class="pl-4">
@@ -97,7 +97,7 @@
           <div class="chat-header d-flex justify-content-between">
             <div class="d-flex bd-highlight">
               <div class="img_cont">
-                <img [src]="selectedPatient?.icon" class="rounded-circle user_img">
+                <img [src]="selectedPatient?.icon | imgPath:'person'" class="rounded-circle user_img">
                 <span class="online_icon"></span>
               </div>
               <div class="user_info">
@@ -125,7 +125,7 @@
                   <div class="d-flex align-items-end flex-row-reverse">
                     <div class="img_cont_msg">
                       <span class="triangle"></span>
-                      <img [src]="doctor?.icon | imgPath" class="rounded-circle user_img_msg">
+                      <img [src]="doctor?.icon | imgPath:'person'" class="rounded-circle user_img_msg">
                     </div>
                     <div class="msg-data" [ngSwitch]="chat.type">
                       <div *ngSwitchCase="dataType.picture">
@@ -146,7 +146,7 @@
                   <div class="d-flex align-items-start flex-row">
                     <div class="img_cont_msg">
                       <span class="triangle"></span>
-                      <img [src]="selectedPatient?.icon" class="rounded-circle user_img_msg">
+                      <img [src]="selectedPatient?.icon | imgPath:'person'" class="rounded-circle user_img_msg">
                     </div>
                     <div class="msg-data" [ngSwitch]="chat.type">
                       <div *ngSwitchCase="dataType.picture">
@@ -171,7 +171,7 @@
                     <div class="d-flex align-items-start">
                       <div class="img_cont_msg">
                         <span class="triangle"></span>
-                        <img [src]="selectedPatient?.icon" class="rounded-circle user_img_msg">
+                        <img [src]="selectedPatient?.icon | imgPath:'person'" class="rounded-circle user_img_msg">
                       </div>
                       <div class="msg-data text-break">
                         <span class="text-muted small">发送于 {{ feedback.createdAt | localDate: 'full'}}</span>
@@ -201,7 +201,7 @@
                     <div class="d-flex align-items-end flex-row-reverse">
                       <div class="img_cont_msg">
                         <span class="triangle"></span>
-                        <img [src]="doctor?.icon | imgPath" class="rounded-circle user_img_msg">
+                        <img [src]="doctor?.icon | imgPath:'person'" class="rounded-circle user_img_msg">
                       </div>
                       <div class="msg-data text-break">
                         <div class="text-muted small">回复于
@@ -229,7 +229,7 @@
                     <div class="d-flex align-items-start">
                       <div class="img_cont_msg">
                         <span class="triangle"></span>
-                        <img [src]="selectedPatient?.icon" class="rounded-circle user_img_msg">
+                        <img [src]="selectedPatient?.icon | imgPath:'person'" class="rounded-circle user_img_msg">
                       </div>
                       <div class="msg-data text-break">
                         <ngx-consult-request-content [consult]="consult" [showType]="true">
@@ -244,7 +244,7 @@
                     <div class="d-flex align-items-end flex-row-reverse">
                       <div class="img_cont_msg">
                         <span class="triangle"></span>
-                        <img [src]="doctor?.icon | imgPath" class="rounded-circle user_img_msg">
+                        <img [src]="doctor?.icon | imgPath:'person'" class="rounded-circle user_img_msg">
                       </div>
                       <div class="msg-data text-break">
                         <ngx-consult-request-content [consult]="consult"></ngx-consult-request-content>
