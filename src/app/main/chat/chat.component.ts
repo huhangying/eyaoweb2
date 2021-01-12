@@ -753,7 +753,7 @@ export class ChatComponent implements OnInit, OnDestroy {
   goBackConsult() {
     const type = this.existedConsultType;
     // 付费图文咨询 （共用chat）
-    if (type === 0) {
+    if (type === 0 || type === 5) {
       this.router.navigate(['/main/chat'], {
         queryParams: {
           pid: this.selectedPatient?._id,
@@ -761,7 +761,7 @@ export class ChatComponent implements OnInit, OnDestroy {
           id: this.existedConsultId,
         }
       });
-    } else if ( type === 1) {
+    } else if ( type === 1 || type === 6) {
       // 付费电话咨询，到说明页面
       this.router.navigate(['/main/consult-phone'], {
         queryParams: {
