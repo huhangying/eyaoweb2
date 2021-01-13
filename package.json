@@ -13,6 +13,7 @@
     "build": "ng build",
     "build:prod": "ng build --prod --aot",
     "build:dev": "ng build --configuration dev --aot",
+    "build:stage": "ng build --configuration stage --aot",
     "lint": "ng lint",
     "lint:fix": "ng lint eyaoweb --fix",
     "lint:styles": "stylelint ./src/**/*.scss",
