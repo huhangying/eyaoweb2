@@ -4,6 +4,7 @@ import { NotFoundComponent } from './not-found/not-found.component';
 import { LoginComponent } from './login/login.component';
 import { RouterModule, Routes } from '@angular/router';
 import { SharedModule } from '../shared/shared.module';
+import { PrivacyComponent } from './privacy/privacy.component';
 
 const routes: Routes = [
   {
@@ -18,6 +19,10 @@ const routes: Routes = [
       {
         path: 'login',
         component: LoginComponent,
+      },
+      {
+        path: 'privacy',
+        component: PrivacyComponent,
       },
       {
         path: '404',
@@ -41,6 +46,7 @@ const routes: Routes = [
     AuthComponent,
     NotFoundComponent,
     LoginComponent,
+    PrivacyComponent,
   ],
   exports: [
     RouterModule,
