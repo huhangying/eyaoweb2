@@ -9,5 +9,6 @@ export const environment = {
   apiUrl: 'api/',
   imageServer: 'http://www.zhaoyaoshi885.com/images/',
   socketUrl: 'http://www.zhaoyaoshi885.com:3000',
-  wechatServer: 'http://www.zhaoyaoshi885.com/wechat/'
+  wechatServer: 'http://www.zhaoyaoshi885.com/wechat/',
+  appVersion: '1.0.2'
 };

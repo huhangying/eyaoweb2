@@ -84,4 +84,8 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   }
 
+  appDownload() {
+    this.router.navigate(['/auth/app-download']);
+  }
+
 }

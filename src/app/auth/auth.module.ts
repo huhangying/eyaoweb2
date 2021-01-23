@@ -5,6 +5,7 @@ import { LoginComponent } from './login/login.component';
 import { RouterModule, Routes } from '@angular/router';
 import { SharedModule } from '../shared/shared.module';
 import { PrivacyComponent } from './privacy/privacy.component';
+import { AppDownloadComponent } from './app-download/app-download.component';
 
 const routes: Routes = [
   {
@@ -23,6 +24,10 @@ const routes: Routes = [
       {
         path: 'privacy',
         component: PrivacyComponent,
+      },
+      {
+        path: 'app-download',
+        component: AppDownloadComponent,
       },
       {
         path: '404',
@@ -47,6 +52,7 @@ const routes: Routes = [
     NotFoundComponent,
     LoginComponent,
     PrivacyComponent,
+    AppDownloadComponent,
   ],
   exports: [
     RouterModule,

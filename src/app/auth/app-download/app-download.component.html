@@ -1,0 +1,35 @@
+<div class="container">
+  <div class="row">
+    <div class="col-sm text-center px-3 d-none d-sm-block">
+      <img [src]="appImage" class="rounded img-fluid img-thumbnail" alt="...">
+    </div>
+    <div class="col-sm text-center px-0 pt-3 d-block d-sm-none">
+      <img [src]="appLogo" width="120" class="rounded img-fluid img-thumbnail" alt="...">
+    </div>
+
+    <div class="col-sm text-center p-3 text-white">
+      <div class="display-3 py-4" style="color: brown">找药师</div>
+      <div class="h5 text-info font-italic pb-3">找药师平台药师专用工具</div>
+      <div class="lead p-4" style="line-height: 2rem;">
+        找药师APP是找药师平台的药师专用工具，是平台药师web端的补充。它方便药师更快捷便利地回复病患的各类咨询和反馈，设置付费咨询，并实时查看当前的病患资料和预约门诊等。
+      </div>
+
+      <div class="py-4" style="opacity: 0.75;">
+        <ng-container *ngIf="device === 'Android'">
+          <button mat-button (click)="downloadAndroid()">
+            <img [src]="androidDownload" width="200" class="rounded img-fluid img-thumbnail" alt="...">
+          </button>
+        </ng-container>
+        <ng-container *ngIf="device === 'iOS'">
+          <button mat-button (click)="redirectAppStore()">
+            <img [src]="iosDownload" width="200" class="rounded img-fluid img-thumbnail" alt="...">
+          </button>
+        </ng-container>
+      </div>
+      <div *ngIf="!device" class="alert alert-warning fixed-bottom" role="alert">
+        没有支持的app可供下载。请使用手机访问本页面。
+      </div>
+    </div>
+
+  </div>
+</div>

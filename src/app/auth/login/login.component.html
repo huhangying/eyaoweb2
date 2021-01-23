@@ -9,7 +9,11 @@
           <form class="form-horizontal pt-3" novalidate [formGroup]="loginForm">
             <div class="form-group">
               <div class="row">
-                <label for="userId" class="col-3 col-form-label text-right">用户名</label>
+                <label for="userId" class="col-3 col-form-label text-right">
+                  <span class="material-icons text-info">
+                    person
+                    </span>
+                </label>
                 <div class="col-8">
                   <input type="text" formControlName="userId" required id="userId" class="form-control" placeholder="用户名">
                   <div *ngIf="validate('userId')" class="text-danger pl-0 py-3">
@@ -23,7 +27,11 @@
                 </div>
               </div>
               <div class="row pt-2">
-                <label for="password" class="col-3 col-form-label text-right">密码</label>
+                <label for="password" class="col-3 col-form-label text-right">
+                  <span class="material-icons text-info">
+                    lock
+                    </span>
+                </label>
                 <div class="col-8">
                   <input type="password" formControlName="password" required id="password" class="form-control"
                     placeholder="密码">
@@ -50,6 +58,9 @@
           </form>
         </nb-card-body>
       </nb-card>
+      <div class="text-right mt-n4" style="color: cadetblue">
+        <button mat-button (click)="appDownload()">找药师app下载</button>
+      </div>
       <nb-alert *ngIf="errorResult" outline="danger" role="alert" class="text-danger">
         <b>不正确的用户名或密码, 请确认后重试!</b>
       </nb-alert>
