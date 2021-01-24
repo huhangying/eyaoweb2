@@ -14,6 +14,7 @@ export class AppDownloadComponent implements OnInit {
   androidDownload: string;
   iosDownload: string;
   device: string;
+  version: string;
 
   constructor(
     private titleService: Title,
@@ -21,9 +22,9 @@ export class AppDownloadComponent implements OnInit {
 
   ngOnInit(): void {
     this.titleService.setTitle('找药师 APP 下载');
-
+    this.version = environment.appVersion;
     this.appPath = 'http://www.zhaoyaoshi885.com/images/app-downloads/';
-    this.appImage = `${this.appPath}zhaoyaoshi-v${environment.appVersion}.png`;
+    this.appImage = `${this.appPath}zhaoyaoshi-v${this.version}.png`;
     this.appLogo = `${this.appPath}logo.png`;
     this.androidDownload = `${this.appPath}tysj-download-and2x.png`;
     this.iosDownload = `${this.appPath}tysj-download-ios2x.png`;
@@ -53,7 +54,7 @@ export class AppDownloadComponent implements OnInit {
   downloadAndroid() {
     const link = document.createElement('a');
     link.download = 'filename';
-    link.href = `${this.appPath}zhaoyaoshi-v1.0.2.apk`;
+    link.href = `${this.appPath}zhaoyaoshi-v${this.version}.apk`;
     link.click();
   }
   redirectAppStore() {
