@@ -58,7 +58,8 @@ export class AppDownloadComponent implements OnInit {
     link.click();
   }
   redirectAppStore() {
-
+    // https://apps.apple.com/ca/app/%E6%89%BE%E8%8D%AF%E5%B8%88/id1549549570
+    window.location.href = 'https://apps.apple.com/ca/app/%E6%89%BE%E8%8D%AF%E5%B8%88/id1549549570';
   }
 
 }
