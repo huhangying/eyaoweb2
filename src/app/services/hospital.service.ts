@@ -5,6 +5,7 @@ import { Faq } from '../models/hospital/faq.model';
 import { Const } from '../models/hospital/const.model';
 import { ApiService } from '../shared/service/api.service';
 import { Doctor } from '../models/crm/doctor.model';
+import { ArticleSearch } from '../models/article-search.model';
 
 @Injectable({
   providedIn: 'root'
@@ -98,6 +99,23 @@ export class HospitalService {
 
   updateFaq(data: Faq) {
     return this.api.patch<Faq>('faq/' + data._id, data);
+  }
+
+  // 文章关键字搜索
+  getAllArticleSearch() {
+    return this.api.get<ArticleSearch[]>('keywordsearchs');
+  }
+
+  deleteArticleById(id: string) {
+    return this.api.delete<any>('keywordsearch/' + id);
+  }
+
+  createArticleSearch(data: ArticleSearch) {
+    return this.api.post<ArticleSearch>('keywordsearch', data);
+  }
+
+  updateArticleSearch(data: Faq) {
+    return this.api.patch<Faq>('keywordsearch/' + data._id, data);
   }
 
 }

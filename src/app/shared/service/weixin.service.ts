@@ -7,6 +7,7 @@ import { Department } from '../../models/hospital/department.model';
 import { WechatResponse } from '../../models/wechat-response.model';
 import { WechatFailedMessage } from '../../models/wechat-failed-message.model';
 import { WxDownloadBillResponse, WxRefundRequest, WxRefundResponse } from '../../models/consult/wx-payment.model';
+import { WxMaterial } from '../../models/article-search.model';
 
 @Injectable({
   providedIn: 'root'
@@ -197,4 +198,14 @@ export class WeixinService {
     return this.api.post<WxDownloadBillResponse>('wechat/pay-download-bill', {bill_date});
   }
 
+
+  //===============================
+  // 微信素材列表
+  //===============================
+  getWxMaterialList(hid: number, page = 0) {
+    return this.api.get<WxMaterial>(`wechat/material-list/auth/${hid}/${page}`);
+  }
+  getMaterialCount(hid: number) {
+    return this.api.get<{ news_count: number }>('wechat/material-count/auth/' + hid);
+  }
 }

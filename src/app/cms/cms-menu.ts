@@ -21,11 +21,11 @@ export function getMenuItems(role: number, queryParams: Params): NbMenuItem[] {
           title: '医院科室',
           link: '/cms/hospital/department',
         },
-        {
-          title: '疾病类型',
-          link: '/cms/hospital/disease',
-          hidden: false
-        },
+        // {
+        //   title: '疾病类型',
+        //   link: '/cms/hospital/disease',
+        //   hidden: false
+        // },
         {
           title: '药品管理',
           link: '/cms/hospital/medicine',
@@ -143,11 +143,11 @@ export function getMenuItems(role: number, queryParams: Params): NbMenuItem[] {
           link: '/cms/msg-failed',
           queryParams: queryParams,
         },
-        // {
-        //   title: '微信关键字搜索',
-        //   link: '/cms/hospital/wx-keywords',
-        //   queryParams: queryParams,
-        // },
+        {
+          title: '微信关键字搜索',
+          link: '/cms/hospital/wx-keywords',
+          // queryParams: queryParams,
+        },
       ],
     },
     {
