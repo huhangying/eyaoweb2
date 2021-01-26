@@ -114,8 +114,8 @@ export class HospitalService {
     return this.api.post<ArticleSearch>('keywordsearch', data);
   }
 
-  updateArticleSearch(data: Faq) {
-    return this.api.patch<Faq>('keywordsearch/' + data._id, data);
+  updateArticleSearch(data: ArticleSearch) {
+    return this.api.patch<ArticleSearch>('keywordsearch/' + data._id, data);
   }
 
 }

@@ -11,6 +11,7 @@ import { ArticleSearch } from '../../../models/article-search.model';
 import { HospitalService } from '../../../services/hospital.service';
 import { DialogService } from '../../../shared/service/dialog.service';
 import { MessageService } from '../../../shared/service/message.service';
+import { WxMaterialKeywordsEditComponent } from './wx-material-keywords-edit/wx-material-keywords-edit.component';
 
 @Component({
   selector: 'ngx-wx-material-keywords',
@@ -21,7 +22,7 @@ export class WxMaterialKeywordsComponent implements OnInit, OnDestroy {
   searchForm: FormGroup;
   destroy$ = new Subject<void>();
 
-  displayedColumns: string[] = ['keywords', 'name', 'title', 'updatedAt', '_id'];
+  displayedColumns: string[] = ['name', 'title', 'updatedAt', 'keywords', '_id'];
   dataSource: MatTableDataSource<ArticleSearch>;
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
@@ -61,30 +62,27 @@ export class WxMaterialKeywordsComponent implements OnInit, OnDestroy {
 
   edit(data?: ArticleSearch) {
     const isEdit = !!data;
-    // this.dialog.open(DiseaseEditComponent, {
-    //   data: {
-    //     disease: data,
-    //     departments: this.departments
-    //   }
-    // }).afterClosed().pipe(
-    //   tap(result => {
-    //     if (result?._id) {
-    //       if (isEdit) {
-    //         // update
-    //         this.dataSource.data = this.dataSource.data.map(item => {
-    //           return item._id === result._id ? result : item;
-    //         });
-    //       } else {
-    //         // create
-    //         this.dataSource.data.unshift(result);
-    //       }
-    //       this.loadData(this.dataSource.data); // add to list
-    //       isEdit && this.dataSource.paginator.firstPage(); // created goes first
-    //       this.message.updateSuccess();
-    //     }
-    //   }),
-    //   catchError(this.message.updateErrorHandle)
-    // ).subscribe();
+    this.dialog.open(WxMaterialKeywordsEditComponent, {
+      data: data,
+    }).afterClosed().pipe(
+      tap(result => {
+        if (result?._id) {
+          if (isEdit) {
+            // update
+            this.dataSource.data = this.dataSource.data.map(item => {
+              return item._id === result._id ? result : item;
+            });
+          } else {
+            // create
+            this.dataSource.data.unshift(result);
+          }
+          this.loadData(this.dataSource.data); // add to list
+          isEdit && this.dataSource.paginator.firstPage(); // created goes first
+          this.message.updateSuccess();
+        }
+      }),
+      catchError(this.message.updateErrorHandle)
+    ).subscribe();
   }
 
   delete(id: string) {

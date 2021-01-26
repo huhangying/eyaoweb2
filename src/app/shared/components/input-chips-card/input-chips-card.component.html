@@ -1,10 +1,16 @@
-<nb-card>
-  <nb-card-header> {{title}} </nb-card-header>
+<nb-card [status]="isPopup ? 'info': ''">
+  <nb-card-header>
+    {{title}}
+    <ng-container *ngIf="isPopup">
+      <button nbButton shape="round" size="tiny" class="float-right" mat-dialog-close>
+        <nb-icon icon="close"></nb-icon>
+      </button>
+    </ng-container>
+  </nb-card-header>
   <nb-card-body>
     <mat-form-field class="w-100">
       <mat-chip-list #chipList cdkDropList (cdkDropListDropped)="drop($event)">
-        <mat-chip *ngFor="let chip of chips" cdkDrag [selectable]="true" [removable]="true"
-          (removed)="remove(chip)">
+        <mat-chip *ngFor="let chip of chips" cdkDrag [selectable]="true" [removable]="true" (removed)="remove(chip)">
           {{chip}}
           <mat-icon matChipRemove>cancel</mat-icon>
         </mat-chip>

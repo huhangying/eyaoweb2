@@ -12,6 +12,7 @@ import { TestFormEditComponent } from './test-form/test-form-edit/test-form-edit
 import { TestFormItemEditComponent } from './test-form/test-form-edit/test-form-item-edit/test-form-item-edit.component';
 import { DiseaseEditComponent } from './disease/disease-edit/disease-edit.component';
 import { WxMaterialKeywordsComponent } from './wx-material-keywords/wx-material-keywords.component';
+import { WxMaterialKeywordsEditComponent } from './wx-material-keywords/wx-material-keywords-edit/wx-material-keywords-edit.component';
 
 @NgModule({
   imports: [
@@ -31,6 +32,7 @@ import { WxMaterialKeywordsComponent } from './wx-material-keywords/wx-material-
     TestFormItemEditComponent,
     DiseaseEditComponent,
     WxMaterialKeywordsComponent,
+    WxMaterialKeywordsEditComponent,
   ]
 })
 export class HospitalModule { }

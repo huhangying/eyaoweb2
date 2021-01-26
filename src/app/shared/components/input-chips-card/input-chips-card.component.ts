@@ -13,6 +13,7 @@ export class InputChipsCardComponent implements OnInit {
   @Input() title: string;
   @Input() chips: string[];
   @Output() save = new EventEmitter<string[]>();
+  @Input() isPopup?: boolean;
 
   readonly separatorKeysCodes: number[] = [ENTER, BACKSLASH];
   @ViewChild('tagInput', { read: ElementRef }) public tagInput: ElementRef;

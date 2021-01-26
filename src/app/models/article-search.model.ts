@@ -1,15 +1,16 @@
 export interface ArticleSearch {
-  hid: number;
-  name: string; // page section name
+  _id?: string;
+  hid?: number;
+  name?: string; // page section name
   cat?: string; // 类别
-  title: string;
-  title_image: string; // wx: http://mmbiz.qpic.cn/mmbiz_jpg/JM5hl86vEIzzfVY8gpLBvKQiaYAAazCO9Gbl0maVG2KpqnqQeia7o2qzQFU6tHUat71WNgRc5YZzxyNKHH8kgo2Q/0?wx_fmt=jpeg
-  targetUrl: string; // wx: http://mp.weixin.qq.com/s?__biz=MzIxNTMzNTM0MA==&mid=100000079&idx=1&sn=c5bef41ef4665408aaee381238df549f#rd
-  keywords: string; // separated by |
-  author: string; // wx
-  digest: string; // wx
-  update_time: number; // wx
-  updatedAt: Date;
+  title?: string;
+  title_image?: string; // wx: http://mmbiz.qpic.cn/mmbiz_jpg/JM5hl86vEIzzfVY8gpLBvKQiaYAAazCO9Gbl0maVG2KpqnqQeia7o2qzQFU6tHUat71WNgRc5YZzxyNKHH8kgo2Q/0?wx_fmt=jpeg
+  targetUrl?: string; // wx: http://mp.weixin.qq.com/s?__biz=MzIxNTMzNTM0MA==&mid=100000079&idx=1&sn=c5bef41ef4665408aaee381238df549f#rd
+  keywords?: string; // separated by |
+  author?: string; // wx
+  digest?: string; // wx
+  update_time?: number; // wx
+  updatedAt?: Date;
 }
 
 
