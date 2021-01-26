@@ -24,7 +24,7 @@ export class WxMaterialKeywordsComponent implements OnInit, OnDestroy {
 
   displayedColumns: string[] = ['name', 'title', 'updatedAt', 'keywords', '_id'];
   dataSource: MatTableDataSource<ArticleSearch>;
-  @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
+  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
 
   constructor(
@@ -39,13 +39,16 @@ export class WxMaterialKeywordsComponent implements OnInit, OnDestroy {
     this.hospitalService.getAllArticleSearch().subscribe(
       data => {
         this.dataSource = new MatTableDataSource<ArticleSearch>(data);
+        this.sort.active = 'updatedAt';
+        this.sort.direction = 'desc';
+        this.dataSource.sort = this.sort;
         this.dataSource.paginator = this.paginator;
       }
     );
     this.searchForm = this.fb.group({
       name: [''],
     });
-   }
+  }
 
   ngOnInit() {
     this.searchForm.get('name').valueChanges.pipe(
