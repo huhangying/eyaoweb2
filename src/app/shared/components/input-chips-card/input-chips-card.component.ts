@@ -14,6 +14,7 @@ export class InputChipsCardComponent implements OnInit {
   @Input() chips: string[];
   @Output() save = new EventEmitter<string[]>();
   @Input() isPopup?: boolean;
+  @Input() presetContent?: string;
 
   readonly separatorKeysCodes: number[] = [ENTER, BACKSLASH];
   @ViewChild('tagInput', { read: ElementRef }) public tagInput: ElementRef;

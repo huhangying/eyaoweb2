@@ -136,17 +136,19 @@ export function getMenuItems(role: number, queryParams: Params): NbMenuItem[] {
     },
     {
       title: '微信相关管理',
-      icon: 'alert-triangle-outline',
+      icon: 'message-circle-outline',
       children: [
         {
           title: '微信失败消息查看',
+          icon: 'alert-triangle-outline',
           link: '/cms/msg-failed',
           queryParams: queryParams,
         },
         {
           title: '微信关键字搜索',
+          icon: 'search-outline',
           link: '/cms/hospital/wx-keywords',
-          // queryParams: queryParams,
+          hidden: role < 2,
         },
       ],
     },

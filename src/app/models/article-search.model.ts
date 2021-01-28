@@ -25,7 +25,7 @@ export interface WxMaterialItem {
   content: {
     news_item: WxMaterialNewsItem[];
   };
-  update_time: Date;
+  update_time: number;
 }
 
 export interface WxMaterialNewsItem {

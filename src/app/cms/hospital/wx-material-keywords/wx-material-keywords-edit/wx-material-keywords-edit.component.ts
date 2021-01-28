@@ -13,6 +13,7 @@ import { MessageService } from '../../../../shared/service/message.service';
 })
 export class WxMaterialKeywordsEditComponent implements OnInit, OnDestroy {
   destroy$ = new Subject<void>();
+  presetContent: string;
   keywords: string[];
 
   constructor(
@@ -21,7 +22,9 @@ export class WxMaterialKeywordsEditComponent implements OnInit, OnDestroy {
     private hospitalService: HospitalService,
     private message: MessageService,
   ) {
-    this.keywords = data.keywords.split('|');
+    this.keywords = data.keywords?.split('|') || [];
+    this.presetContent = `<p class="text-muted">文章标题: ${data.name}</p>
+    <p class="text-muted">简介: ${data.title}</p><hr>`;
   }
 
   ngOnInit() {

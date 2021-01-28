@@ -8,6 +8,11 @@
     </ng-container>
   </nb-card-header>
   <nb-card-body>
+    <ng-container *ngIf="presetContent">
+      <div class="w-100">
+        <div [innerHTML]="presetContent"></div>
+      </div>
+    </ng-container>
     <mat-form-field class="w-100">
       <mat-chip-list #chipList cdkDropList (cdkDropListDropped)="drop($event)">
         <mat-chip *ngFor="let chip of chips" cdkDrag [selectable]="true" [removable]="true" (removed)="remove(chip)">

@@ -12,6 +12,11 @@
   </nb-card-header>
 
   <nb-card-body>
+    <div class="mb-2">
+      <button mat-stroked-button class="text-success" (click)="fetchWxMaterial()">更新微信文章</button>
+      <span class="ml-3 text-muted" *ngIf="currentUpdatedAt">(最近更新时间是{{currentUpdatedAt|localDate}}。)</span>
+    </div>
+
     <div [class.d-none]="!dataSource?.data?.length">
       <table mat-table matSort [dataSource]="dataSource" class="mat-elevation-z8">
 
@@ -44,9 +49,9 @@
               <nb-icon icon="edit-2"></nb-icon>
             </button>
             &nbsp;
-            <!-- <button nbButton hero shape="round" size="tiny" status="danger" title="删除" (click)="delete(element._id)">
+            <button nbButton hero shape="round" size="tiny" status="danger" title="删除文章" (click)="delete(element._id)">
               <nb-icon icon="trash-2-outline"></nb-icon>
-            </button> -->
+            </button>
           </td>
         </ng-container>
 
