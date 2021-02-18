@@ -18,7 +18,7 @@ export class DoctorService {
 
   // 药师
   getDoctors() {
-    return this.api.get<Doctor[]>('doctors/1000/all');
+    return this.api.get<Doctor[]>('doctors/1000');
   }
 
   getDoctorBriefList() {

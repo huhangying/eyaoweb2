@@ -1,0 +1,95 @@
+<nb-card>
+  <nb-card-header>
+    药师统计
+    <div class="alert alert-info mt-3 mb-0" role="alert" [formGroup]="form">
+      <div>
+        请选择搜索项
+      </div>
+      <div class="d-flex row">
+        <div class="col-6 col-lg-3 pt-3">
+          <nb-form-field>
+            <nb-select hero fullWidth placeholder="选择医院科室 *" formControlName="department">
+              <nb-option value="">全部科室</nb-option>
+              <nb-option *ngFor="let dep of departments" [value]="dep._id" ngxDisableByRole [requireRole]="2">
+                {{ dep.name }}
+              </nb-option>
+            </nb-select>
+          </nb-form-field>
+        </div>
+      </div>
+    </div>
+  </nb-card-header>
+
+  <nb-card-body>
+    <div [class.d-none]="!dataSource?.data?.length">
+      <div class="px-3 pb-2 mt-n2">
+        <button nbButton hero status="info" size="small" class="mr-5" nbSuffix
+          (click)="exporter.exportTable('xlsx', {fileName: '药师统计' + getDepartmentLabel(this.selectedDepartmentId), sheet: '药师统计'})">
+          <nb-icon icon="download-outline" pack="eva"></nb-icon> excel 文件导出
+        </button>
+      </div>
+
+      <table mat-table [dataSource]="dataSource" matSort matTableExporter #exporter="matTableExporter"
+        class="mat-elevation-z8 table-striped table-hover">
+
+        <ng-container matColumnDef="department">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> 专科 </th>
+          <td mat-cell *matCellDef="let element">
+            {{ getDepartmentLabel(element.department) }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> 名字 </th>
+          <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="gender">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> 性别 </th>
+          <td mat-cell *matCellDef="let element"> {{element.gender}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="user_id">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 10rem;"> 药师ID </th>
+          <td mat-cell *matCellDef="let element"> {{element.user_id}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="role">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> 权限</th>
+          <td mat-cell *matCellDef="let element">
+            {{getRoleLabel(element.role)}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="title">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> 职称</th>
+          <td mat-cell *matCellDef="let element">
+            {{element.title}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="order">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> 顺序 </th>
+          <td mat-cell *matCellDef="let element">
+            {{element.order}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="cell">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> 手机 </th>
+          <td mat-cell *matCellDef="let element">
+            {{element.cell}}
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+      <mat-paginator [pageSizeOptions]="[10, 25, 50]" [pageSize]="10" showFirstLastButtons></mat-paginator>
+    </div>
+
+    <ng-container *ngIf="!dataSource?.data?.length">
+      <div class="alert alert-warning" role="alert">
+        没有找到相关记录。
+      </div>
+    </ng-container>
+
+  </nb-card-body>
+</nb-card>

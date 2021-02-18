@@ -8,6 +8,7 @@ import { ChatReportComponent } from './chat/chat-report/chat-report.component';
 import { ConsultReportComponent } from './chat/consult-report/consult-report.component';
 import { FeedbackReportComponent } from './chat/feedback-report/feedback-report.component';
 import { DiagnoseReportComponent } from './diagnose/diagnose-report/diagnose-report.component';
+import { DoctorReportComponent } from './doctor/doctor-report/doctor-report.component';
 import { PatientReportComponent } from './patient/patient-report/patient-report.component';
 import { BookingReportComponent } from './reservation/booking-report/booking-report.component';
 import { SurveyContentReportComponent } from './survey/survey-content-report/survey-content-report.component';
@@ -103,6 +104,13 @@ const routes: Routes = [{
       path: 'patient',
       component: PatientReportComponent,
     },
+    {
+      path: 'doctor',
+      component: DoctorReportComponent,
+      resolve: {
+        departments: DepartmentResolver,
+      }
+    },
   ]
 }];
 
@@ -123,6 +131,7 @@ export const routedComponents = [
   ArticleUsageReportComponent,
   DiagnoseReportComponent,
   PatientReportComponent,
+  DoctorReportComponent,
   SurveyContentReportComponent,
 ];
 

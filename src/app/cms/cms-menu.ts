@@ -243,6 +243,10 @@ export function getMenuItems(role: number, queryParams: Params): NbMenuItem[] {
           title: '病患统计',
           link: '/cms/report/patient',
         },
+        {
+          title: '药师统计',
+          link: '/cms/report/doctor',
+        },
       ],
     },
   ];
