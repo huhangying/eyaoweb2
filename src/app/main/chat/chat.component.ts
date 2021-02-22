@@ -33,6 +33,7 @@ import { ConsultRejectComponent } from '../consult/consult-reject/consult-reject
 })
 export class ChatComponent implements OnInit, OnDestroy {
   private destroy$: Subject<void> = new Subject<void>();
+  NotificationType = NotificationType;
   type: number;
   isCs: boolean;
 
@@ -467,7 +468,28 @@ export class ChatComponent implements OnInit, OnDestroy {
     this.myInput = '';
   }
 
-  sendChat(imgPath?: string) {
+  sendWithMessage(imgPath?: string) {
+    this.showEmoji = false;
+    // switch (this.type) {
+    //   case NotificationType.chat: // NotificationType.customerService
+    //     this.sendChat(imgPath);
+    //     break;
+
+    //   case NotificationType.adverseReaction:
+    //   case NotificationType.doseCombination:
+    //     this.sendFeedback(imgPath);
+    //     break;
+
+    //   case NotificationType.consultChat:
+    //     this.sendConsult(imgPath);
+    //     break;
+    // }
+    this.sendChat(imgPath, true);
+    this.scrollBottom();
+    this.myInput = '';
+  }
+
+  sendChat(imgPath?: string, isMessage = false) {
     let chat;
     if (imgPath) {
       // Picture
@@ -497,6 +519,19 @@ export class ChatComponent implements OnInit, OnDestroy {
 
     this.socketio.sendChat(this.room, chat);
     this.chatService.sendChat(chat).subscribe();
+
+    if (isMessage) {
+      // send as wechat message
+      this.wxService.sendWechatMsg(this.selectedPatient.link_id,
+        `${this.doctor.name}${this.doctor.title}咨询回复`,
+        // !imgPath ? consult.content : '药师发送图片，请点击查看。',
+        chat.data,
+        `${this.doctor.wechatUrl}chat?doctorid=${this.doctor._id}&openid=${this.selectedPatient.link_id}&state=${this.auth.hid}`,
+        '',
+        this.doctor._id,
+        this.selectedPatient.name
+      ).subscribe();
+    }
   }
 
   sendFeedback(imgPath?: string) {

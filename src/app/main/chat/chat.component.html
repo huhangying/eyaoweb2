@@ -261,9 +261,16 @@
           <div class="align-bottom d-flex text-right w-100">
             <textarea type="text" nbInput fullWidth autocomplete="off" fieldSize="small" placeholder="请输入..."
               cdkFocusInitial (keyup.enter)="send()" [(ngModel)]="myInput"></textarea>
-            <button nbButton hero status="info" nbSuffix (click)="send()">
-              <nb-icon icon="paper-plane-outline" class="mx-1"></nb-icon>
-            </button>
+              <nb-button-group status="basic" nbSuffix>
+                <button nbButton hero status="info" matTooltip="发送" (click)="send()">
+                  <nb-icon icon="paper-plane-outline" class="mx-1"></nb-icon>
+                </button>
+                <ng-container *ngIf="type === NotificationType.chat">
+                  <button nbButton hero status="info" matTooltip="发送（微信消息）" (click)="sendWithMessage()">
+                    <nb-icon icon="message-square-outline" class="mx-1"></nb-icon>
+                  </button>
+                </ng-container>
+              </nb-button-group>
           </div>
 
           <div class="d-flex justify-content-between px-3">
