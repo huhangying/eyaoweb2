@@ -108,13 +108,19 @@ export function getMenuItems(role: number, queryParams: Params): NbMenuItem[] {
       ],
     },
     {
-      title: '问卷管理',
+      title: '问卷&线下咨询管理',
       icon: 'clipboard-outline',
       children: [
         {
           title: '问卷模版',
           link: '/cms/survey/template',
           queryParams: queryParams, // dep
+        },
+        {
+          title: '线下咨询模板',
+          link: '/cms/survey/advise-template',
+          queryParams: queryParams, // dep
+          hidden: role < 1,
         },
       ],
     },

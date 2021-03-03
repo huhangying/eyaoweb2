@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { SurveyTemplateComponent } from './survey-template/survey-template.component';
 import { DepartmentResolver } from '../../services/resolvers/department.resolver';
 import { SurveyTypesResolver } from '../../services/resolvers/survey-types.resolver';
+import { AdviseTemplateComponent } from './advise-template/advise-template.component';
 
 const routes: Routes = [{
   path: '',
@@ -13,6 +14,13 @@ const routes: Routes = [{
       resolve: {
         departments: DepartmentResolver,
         surveyTypes: SurveyTypesResolver,
+      }
+    },
+    {
+      path: 'advise-template',
+      component: AdviseTemplateComponent,
+      resolve: {
+        departments: DepartmentResolver,
       }
     },
 
@@ -26,5 +34,6 @@ const routes: Routes = [{
 export class SurveyRoutingModule { }
 
 export const routedComponents = [
-  SurveyTemplateComponent
+  SurveyTemplateComponent,
+  AdviseTemplateComponent
 ];
