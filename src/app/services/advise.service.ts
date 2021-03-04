@@ -18,7 +18,11 @@ export class AdviseService {
 
   // Advise Template
   getAdviseTemplatesByDepartmentId(department: string) {
-    return this.api.get<AdviseTemplate[]>(`advisetemplates/department/${department}`);
+    return this.api.get<AdviseTemplate[]>(`advisetemplates/department/${department}`); // department 'none' is for hospital-level
+  }
+
+  getCmsAdviseTemplatesByDepartmentId(department: string) {
+    return this.api.get<AdviseTemplate[]>(`advisetemplates/cms/department/${department}`); // department 'none' is for hospital-level
   }
 
   updateAdviseTemplate(data: AdviseTemplate) {
@@ -35,7 +39,7 @@ export class AdviseService {
 
   // Advises
   getPendingSurveysByUserAndType(doctorId: string, patientId: string, surveyType: number) {
-    return this.api.get<Survey[]>(`surveys/${doctorId}/${patientId}/${surveyType}/0`); // 0 means unfinished(pending)
+    return this.api.get<Survey[]>(`advises/${doctorId}/${patientId}/${surveyType}/0`); // 0 means unfinished(pending)
   }
 
   getMySurveys(patientId: string) {

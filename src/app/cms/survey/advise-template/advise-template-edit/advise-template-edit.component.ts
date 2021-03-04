@@ -108,7 +108,7 @@ export class AdviseTemplateEditComponent implements OnInit, OnDestroy {
       // create
       this.adviseService.create({
         ...this.form.value,
-        department: this.data.adviseTemplate.department,
+        department: this.data.adviseTemplate.department || undefined,
         questions: this.questions
       });
     response.pipe(

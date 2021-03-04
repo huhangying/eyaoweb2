@@ -2,10 +2,6 @@
   <nb-card-header [formGroup]="searchForm">
     线下咨询模版
     &nbsp;&nbsp;
-    <button nbButton hero shape="round" size="tiny" status="success" title="新增线下咨询模版" (click)="add()">
-      <nb-icon icon="plus" pack="eva" [options]="{ animation: { type: 'shake' } }"></nb-icon>
-    </button>
-
     <div class="float-right d-flex">
       <nb-form-field>
         <nb-icon nbSuffix icon="search-outline" pack="eva"></nb-icon>
@@ -20,13 +16,16 @@
       </div>
       <div class="d-flex pt-2 row">
         <label class="col-3 text-right">科室:</label>
-        <nb-form-field class="col-9">
+        <nb-form-field class="col-7">
           <nb-select hero fullWidth placeholder="选择医院科室" formControlName="department">
-            <nb-option value="">无 (医院级别线下咨询模版)</nb-option>
+            <nb-option value="none">无 (医院级别线下咨询模版)</nb-option>
             <nb-option *ngFor="let dep of departments" [value]="dep._id" ngxDisableByRole [requireRole]="2">
               {{ dep.name }}</nb-option>
           </nb-select>
         </nb-form-field>
+        <button nbButton hero class="col-2" shape="round" size="tiny" status="success" title="新增线下咨询模版" (click)="add()">
+          <nb-icon icon="plus" pack="eva" [options]="{ animation: { type: 'shake' } }"></nb-icon> 新建
+        </button>
       </div>
     </div>
   </nb-card-header>

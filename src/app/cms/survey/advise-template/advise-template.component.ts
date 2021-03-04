@@ -41,7 +41,7 @@ export class AdviseTemplateComponent implements OnInit, OnDestroy {
   ) {
     this.departments = this.route.snapshot.data.departments;
 
-    this.selectedDepartment = this.route.snapshot.queryParams?.dep || '';
+    this.selectedDepartment = this.route.snapshot.queryParams?.dep || 'none';
     this.searchForm = this.fb.group({
       name: [''],
       department: [''],
@@ -61,10 +61,10 @@ export class AdviseTemplateComponent implements OnInit, OnDestroy {
 
     // get data from
     this.departmentCtl.valueChanges.pipe(
-      startWith(this.route.snapshot.queryParams?.dep || ''),
+      startWith(this.route.snapshot.queryParams?.dep || 'none'),
       tap(department => {
         this.selectedDepartment = department;
-        this.adviseService.getAdviseTemplatesByDepartmentId(department).pipe(
+        this.adviseService.getCmsAdviseTemplatesByDepartmentId(department).pipe(
           tap(rsp => {
             this.loadData(rsp);
           })
