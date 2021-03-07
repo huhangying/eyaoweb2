@@ -54,4 +54,8 @@ export class AdviseService {
     return this.api.post<Advise>('advise', data);
   }
 
+  deleteAdviseById(id: string) {
+    return this.api.delete<Advise>('advise/' + id);
+  }
+
 }

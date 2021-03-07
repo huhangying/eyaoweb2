@@ -18,6 +18,7 @@ import { PatientHistoryComponent } from '../diagnose/patient-history/patient-his
 import * as moment from 'moment';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CoreService } from '../../shared/service/core.service';
+import { AdviseSelectPendingsComponent } from './advise-select-pendings/advise-select-pendings.component';
 
 @Component({
   selector: 'ngx-advise',
@@ -29,6 +30,7 @@ export class AdviseComponent implements OnInit {
   form: FormGroup;
   medicineReferences: MedicineReferences;
   doctor: Doctor;
+  pendingAdvises: Advise[];
   selectedPatient: User;
   tempPatient: User;
   advise: Advise;
@@ -64,14 +66,14 @@ export class AdviseComponent implements OnInit {
     this.adviseService.geDoctorPendingAdvises(this.doctor._id).pipe(
         tap(pendings => {
           if (pendings?.length) {
+            this.pendingAdvises = pendings;
             if (pendings.length === 1) {
               // pre-select and exit
-              this.advise = pendings[0];
+              this.loadAdvise(pendings[0]);
               return;
             }
             // pop-up to select pending advises
-            console.log(pendings);
-
+            this.swapPendingAdvises();
           }
       })
     ).subscribe();
@@ -103,8 +105,38 @@ export class AdviseComponent implements OnInit {
         }
       })
     ).subscribe();
+  }
 
+  swapPendingAdvises() {
+    this.dialog.open(AdviseSelectPendingsComponent, {
+      data: this.pendingAdvises
+    }).afterClosed().pipe(
+      tap((pending: Advise) => {
+        if (pending?._id) {
+          if (pending.user) {
+            this.userService.getById(pending.user).pipe(
+              tap(user => {
+                this.selectedPatient = user;
+                this.cd.markForCheck();
+              })
+            ).subscribe();
+          }
+          this.loadAdvise(pending);
+        }
+      })
+    ).subscribe();
+  }
 
+  loadAdvise(advise: Advise) {
+    this.advise = this.coreService.deepClone(advise);
+    this.form.patchValue(advise);
+    this.cd.markForCheck();
+    if (advise.questions?.length) {
+      setTimeout(() => {
+        this.advise.questions = advise.questions;
+        this.cd.markForCheck();
+      });
+    }
   }
 
   selectPatient() {
@@ -117,7 +149,7 @@ export class AdviseComponent implements OnInit {
         if (result) {
 
           this.selectedPatient = result;
-          this.advise = {
+          const advise: Advise = {
             doctor: this.doctor._id,
             user: this.selectedPatient._id,
             name: this.selectedPatient.name,
@@ -129,8 +161,7 @@ export class AdviseComponent implements OnInit {
             isPerformance: false,
             sendWxMessage: false,
           };
-          this.form.patchValue(this.advise);
-          this.cd.markForCheck();
+          this.loadAdvise(advise);
         }
       }),
     ).subscribe();
@@ -139,7 +170,7 @@ export class AdviseComponent implements OnInit {
   selectTempPatient() {
     this.selectedPatient = undefined;
 
-    this.advise = {
+    const advise: Advise = {
       doctor: this.doctor._id,
       name: '',
       gender: '',
@@ -149,11 +180,11 @@ export class AdviseComponent implements OnInit {
       isPerformance: false,
       sendWxMessage: false,
     };
-    if (this.advise) {
-      this.advise.user = undefined;
+    if (advise) {
+      advise.user = undefined;
     }
-    this.form.patchValue(this.advise);
-    this.cd.markForCheck();
+
+    this.loadAdvise(advise);
   }
 
   saveAdvise(finished = false) {
@@ -178,7 +209,7 @@ export class AdviseComponent implements OnInit {
 
           if (finished) {
             //close advise
-            this.resetAdvise();
+            this.resetAdvise(result._id);
           }
         }
       }),
@@ -186,13 +217,19 @@ export class AdviseComponent implements OnInit {
     ).subscribe();
   }
 
-  resetAdvise() {
+  resetAdvise(adviseId?: string, toDelete=false) {
     this.selectedAdviseTemplate = undefined;
     this.selectedPatient = undefined;
     this.advise = undefined;
-    // this.form.patchValue({ name: '', gender: '', age: '', cell: '', adviseTemplate: '' });
     this.form.reset();
     this.adviseTemplate.patchValue('');
+    if (adviseId) {
+      if (toDelete) {
+        this.removeAdvise(adviseId);
+      } else {
+        this.removeFromPendingAdvises(adviseId);
+      }
+    }
     this.cd.markForCheck();
   }
 
@@ -200,6 +237,24 @@ export class AdviseComponent implements OnInit {
     console.log(dirty);
     this.advise.dirty = dirty;
   }
+
+  removeAdvise(adviseId: string) {
+    this.adviseService.deleteAdviseById(adviseId).pipe(
+      tap(rsp => {
+        this.message.deleteSuccess();
+        // remove from pendings
+        this.removeFromPendingAdvises(adviseId);
+      })
+    ).subscribe();
+  }
+
+  removeFromPendingAdvises(adviseId: string) {
+    if (this.pendingAdvises?.length) {
+      this.pendingAdvises = this.pendingAdvises.filter(_ => _._id !== adviseId);
+      this.cd.markForCheck();
+    }
+  }
+
 
   //
   viewPatientHistory() {

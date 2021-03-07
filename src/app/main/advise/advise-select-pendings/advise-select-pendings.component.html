@@ -1,0 +1,34 @@
+<nb-card [status]="data ? 'info' : 'success'">
+  <nb-card-header>
+    未完成的线下咨询
+    <button nbButton shape="round" size="tiny" class="float-right" mat-dialog-close>
+      <nb-icon icon="close"></nb-icon>
+    </button>
+  </nb-card-header>
+
+  <nb-card-body>
+    <div class="pb-2 text-muted">
+      请选择一个未完成的线下咨询
+    </div>
+    <mat-selection-list class="bottom-divider" [multiple]="false">
+      <ng-container *ngFor="let advise of data">
+        <mat-list-option class="w-100 top-divider" (click)="selectPendingAdvise(advise)">
+          <div class="d-flex align-items-center justify-content-between">
+            <div class="d-flex align-items-center flex-row">
+              <div class="py-2">
+                {{advise.name}} <span *ngIf="advise.gender"> ( {{advise.gender | gender}} ) </span>
+                <div class="text-hint">
+                  <span *ngIf="advise.age > 0"> 年龄：{{advise.age}} </span>
+                  <span *ngIf="advise.cell"> 手机：{{advise.cell}} </span>
+                </div>
+              </div>
+            </div>
+            <div class="pr-2" *ngIf="getBadgeCount(advise) as badgeCount">
+              <span [matBadge]="badgeCount" matBadgeOverlap="false" matBadgeColor=""></span>
+            </div>
+          </div>
+        </mat-list-option>
+      </ng-container>
+    </mat-selection-list>
+  </nb-card-body>
+</nb-card>

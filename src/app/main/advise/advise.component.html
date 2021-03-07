@@ -2,9 +2,11 @@
   <nb-card-header>
     线下咨询
     &nbsp;&nbsp;
-    <button mat-icon-button matTooltip="清除当前线下咨询" (click)="deleteDiagnose()" *ngIf="this.advise?._id">
-      <mat-icon>settings_backup_restore</mat-icon>
-    </button>
+    <ng-container *ngIf="this.pendingAdvises?.length">
+      <button nbButton ghost status="warning" matTooltip="切换选择未完成的线下咨询" size="small" (click)="swapPendingAdvises()">
+        <nb-icon icon="swap-outline"></nb-icon>
+      </button>
+    </ng-container>
 
     <ng-container *ngIf="selectedPatient">
       <button nbButton size="small" class="float-right" [status]="isFirstVisit ? 'success' : 'warning'"
@@ -41,12 +43,10 @@
       </button>
       <ng-container *ngIf="form.valid">
         <span class="float-right">
-          <ng-container *ngIf="advise?.dirty">
-            <button nbButton size="small" outline status="basic" class="mr-2" (click)="saveAdvise()">
-              暂时保存
-            </button>
-          </ng-container>
-          <button nbButton hero size="small" outline status="basic" (click)="resetAdvise()">
+          <button nbButton size="small" status="basic" class="mr-2" (click)="saveAdvise()">
+            暂时保存
+          </button>
+          <button nbButton size="small" status="basic" matTooltip="清除/删除当前线下咨询" (click)="resetAdvise(advise?._id, true)">
             <nb-icon icon="trash-outline"></nb-icon> 清空咨询
           </button>
         </span>
@@ -55,7 +55,7 @@
 
     <div [formGroup]="form">
       <div [class.d-none]="!advise">
-        <div class="pt-3 px-3 d-flex flex-row flex-wrap">
+        <div class="pt-4 px-3 d-flex flex-row flex-wrap">
           <mat-form-field class="mr-3">
             <mat-label>姓名</mat-label>
             <input matInput formControlName="name" required>
@@ -85,7 +85,7 @@
           </mat-select>
         </mat-form-field>
 
-        <ng-container *ngIf="advise?.questions?.length">
+        <ng-container *ngIf="adviseTemplate.value && advise?.questions?.length">
           <div class="mb-3">
             <ngx-advise-questions-edit [questions]="advise.questions" (dirty)="markDirty($event)">
             </ngx-advise-questions-edit>
@@ -111,11 +111,6 @@
         </div>
       </div>
     </div>
-
-
-    <pre>
-{{advise | json}}
-    </pre>
 
   </nb-card-body>
 </nb-card>
