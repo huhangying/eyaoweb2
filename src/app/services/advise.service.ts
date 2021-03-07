@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from '../shared/service/api.service';
-import { Survey } from '../models/survey/survey.model';
 import { MessageService } from '../shared/service/message.service';
 import { ReportSearch } from '../report/models/report-search.model';
 import { Observable } from 'rxjs';
 import { AdviseTemplate } from '../models/survey/advise-template.model';
+import { Advise } from '../models/survey/advise.model';
 
 @Injectable({
   providedIn: 'root'
@@ -38,52 +38,20 @@ export class AdviseService {
   }
 
   // Advises
-  getPendingSurveysByUserAndType(doctorId: string, patientId: string, surveyType: number) {
-    return this.api.get<Survey[]>(`advises/${doctorId}/${patientId}/${surveyType}/0`); // 0 means unfinished(pending)
+  geDoctorPendingAdvises(doctorId: string) {
+    return this.api.get<Advise[]>(`advises/doctor-pending/${doctorId}`);
   }
 
-  getMySurveys(patientId: string) {
-    return this.api.get<Survey[]>(`mysurveys/${patientId}`);
+  // getMyAdviseHistory(patientId: string) {
+  //   return this.api.get<Advise[]>(`myadvises/${patientId}`);
+  // }
+
+  updateAdvise(data: Advise) {
+    return this.api.patch<Advise>('advise/' + data._id, data);
   }
 
-  GetSurveysByUserAndType(doctorId: string, patientId: string, type: number, readonly=0) {
-    return this.api.get<Survey[]>(`surveys/${doctorId}/${patientId}/${type}/${readonly}`);
-  }
-
-  GetAllSurveysByUserTypeAndList(doctorId: string, patientId: string, type: number, list: string) {
-    return this.api.get<Survey[]>(`surveys/all/${doctorId}/${patientId}/${type}/${list}`);
-  }
-
-  updateSurvey(data: Survey) {
-    return this.api.patch<Survey>('survey/' + data._id, data);
-  }
-
-  addSurvey(data: Survey) {
-    return new Promise<Survey>((resolve, reject) => {
-      this.api.post<Survey>('Survey', data).toPromise()
-        .then((result: Survey) => {
-          // Success
-          resolve(result);
-        },
-          err => {
-            // Error
-            this.message.deleteErrorHandle(err);
-            reject(err);
-          }
-        );
-    });
-  }
-
-  finishDiagnoseSurveys(userid: string, doctorid: string) {
-    return this.api.patch(`surveys/close/${doctorid}/${userid}`, {});
-  }
-
-  surveySearch(search: ReportSearch) {
-    return this.api.post<Survey[]>('surveys/search', search) as Observable<Survey[]>;
-  }
-
-  surveyContentSearch(search: ReportSearch) {
-    return this.api.post<Survey[]>('surveys/content-search', search) as Observable<Survey[]>;
+  createAdvise(data: Advise) {
+    return this.api.post<Advise>('advise', data);
   }
 
 }

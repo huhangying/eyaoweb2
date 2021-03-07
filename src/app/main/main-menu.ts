@@ -14,6 +14,11 @@ export function getMenuItems(role: number, queryParams: Params, isCs = false): N
       link: '/main/diagnose',
     },
     {
+      title: '线下咨询',
+      icon: 'person-done-outline',
+      link: '/main/advise',
+    },
+    {
       title: '病患档案',
       icon: 'search',
       link: '/main/patient-search',

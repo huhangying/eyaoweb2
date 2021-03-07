@@ -41,6 +41,7 @@
     "@swimlane/ngx-charts": "^17.0.0",
     "bootstrap": "^4.5.3",
     "classlist.js": "1.1.20150312",
+    "clone": "^2.1.2",
     "compressorjs": "^1.0.6",
     "core-js": "2.5.1",
     "eva-icons": "^1.1.3",

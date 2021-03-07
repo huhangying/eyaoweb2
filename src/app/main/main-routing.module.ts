@@ -18,6 +18,7 @@ import { WechatMessageFailedComponent } from './wechat-message-failed/wechat-mes
 import { WechatTemplatesResolver } from '../services/resolvers/wechat-templates.resolver';
 import { ConsultPhoneComponent } from './consult/consult-phone/consult-phone.component';
 import { SurveyQueryComponent } from './survey-query/survey-query.component';
+import { AdviseComponent } from './advise/advise.component';
 
 const routes: Routes = [{
   path: '',
@@ -27,6 +28,11 @@ const routes: Routes = [{
     {
       path: 'dashboard',
       component: DashboardComponent,
+    },
+    {
+      path: 'advise',
+      component: AdviseComponent,
+      resolve: { medicineReferences: MedicineReferencesResolver }
     },
     {
       path: 'chat',

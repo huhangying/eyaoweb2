@@ -2,7 +2,7 @@ import { Question } from './survey-template.model';
 
 export interface Advise {
   _id?: string;
-  adviseTemplate: string; // advise template id; +
+  adviseTemplate?: string; // advise template id; +
   doctor: string; // id
 
   user?: string; //id
@@ -16,8 +16,11 @@ export interface Advise {
   order?: number;
   isPerformance?: boolean;
   isOpen?: boolean;
-  finished: boolean;
+  finished?: boolean;
 
   createdAt?: Date;
+
+  dirty?: boolean; // helper flag to save
+  sendWxMessage?: boolean; // helper
 }
 

@@ -40,6 +40,8 @@ import { ConsultPhoneComponent } from './consult/consult-phone/consult-phone.com
 import { ConsultRequestContentComponent } from './consult/consult-request-content/consult-request-content.component';
 import { ConsultRejectComponent } from './consult/consult-reject/consult-reject.component';
 import { SurveyQueryComponent } from './survey-query/survey-query.component';
+import { AdviseComponent } from './advise/advise.component';
+import { AdviseQuestionsEditComponent } from './advise/advise-questions-edit/advise-questions-edit.component';
 
 @NgModule({
   declarations: [
@@ -81,6 +83,8 @@ import { SurveyQueryComponent } from './survey-query/survey-query.component';
     ConsultRequestContentComponent,
     ConsultRejectComponent,
     SurveyQueryComponent,
+    AdviseComponent,
+    AdviseQuestionsEditComponent,
   ],
   imports: [
     SharedModule,

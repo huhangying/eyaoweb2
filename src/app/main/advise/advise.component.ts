@@ -1,0 +1,287 @@
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { ActivatedRoute } from '@angular/router';
+import { catchError, filter, tap } from 'rxjs/operators';
+import { Doctor } from '../../models/crm/doctor.model';
+import { User } from '../../models/crm/user.model';
+import { MedicineReferences } from '../../models/hospital/medicine-references.model';
+import { AdviseTemplate } from '../../models/survey/advise-template.model';
+import { Advise } from '../../models/survey/advise.model';
+import { AdviseService } from '../../services/advise.service';
+import { UserService } from '../../services/user.service';
+import { SelectPatientDialogComponent } from '../../shared/components/select-patient/select-patient-dialog/select-patient-dialog.component';
+import { AuthService } from '../../shared/service/auth.service';
+import { DialogService } from '../../shared/service/dialog.service';
+import { MessageService } from '../../shared/service/message.service';
+import { AppStoreService } from '../../shared/store/app-store.service';
+import { PatientHistoryComponent } from '../diagnose/patient-history/patient-history.component';
+import * as moment from 'moment';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { CoreService } from '../../shared/service/core.service';
+
+@Component({
+  selector: 'ngx-advise',
+  templateUrl: './advise.component.html',
+  styleUrls: ['./advise.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+})
+export class AdviseComponent implements OnInit {
+  form: FormGroup;
+  medicineReferences: MedicineReferences;
+  doctor: Doctor;
+  selectedPatient: User;
+  tempPatient: User;
+  advise: Advise;
+  adviseTemplates: AdviseTemplate[];
+  selectedAdviseTemplate: AdviseTemplate;
+  sendWxMessage = false;
+
+  constructor(
+    private route: ActivatedRoute,
+    private auth: AuthService,
+    private fb: FormBuilder,
+    public dialog: MatDialog,
+    private dialogService: DialogService,
+    private adviseService: AdviseService,
+    private message: MessageService,
+    private cd: ChangeDetectorRef,
+    private userService: UserService,
+    private coreService: CoreService,
+    private appStore: AppStoreService,
+  ) {
+    this.doctor = this.auth.doctor;
+    this.medicineReferences = { ...this.route.snapshot.data.medicineReferences };
+
+    this.adviseService.getAdviseTemplatesByDepartmentId(this.doctor.department).pipe(
+      tap(results => {
+        if (results?.length) {
+          this.adviseTemplates = results;
+        }
+      })
+    ).subscribe();
+
+    // load today's doctor pending
+    this.adviseService.geDoctorPendingAdvises(this.doctor._id).pipe(
+        tap(pendings => {
+          if (pendings?.length) {
+            if (pendings.length === 1) {
+              // pre-select and exit
+              this.advise = pendings[0];
+              return;
+            }
+            // pop-up to select pending advises
+            console.log(pendings);
+
+          }
+      })
+    ).subscribe();
+  }
+
+  get adviseTemplate() { return this.form.get('adviseTemplate'); }
+
+  ngOnInit(): void {
+    this.form = this.fb.group({
+      name: ['', Validators.required],
+      gender: [''],
+      age: [''],
+      cell: [''],
+      adviseTemplate: ['', Validators.required],
+      isOpen: [true],
+      isPerformance: [false],
+      sendWxMessage: [false],
+    });
+
+    this.adviseTemplate.valueChanges.pipe(
+      tap(adviseTemplateId => {
+        const template = !adviseTemplateId ? undefined : this.adviseTemplates?.find(at => at._id === adviseTemplateId);
+        if (template) {
+          this.selectedAdviseTemplate = this.coreService.deepClone(template);
+          this.advise.questions = template.questions?.length ? this.selectedAdviseTemplate.questions : [];
+        }
+        if (this.advise && !template) {
+          this.advise.questions = [];
+        }
+      })
+    ).subscribe();
+
+
+  }
+
+  selectPatient() {
+    this.dialog.open(SelectPatientDialogComponent, {
+      data: {
+        doctorId: this.doctor._id
+      }
+    }).afterClosed().pipe(
+      tap(result => {
+        if (result) {
+
+          this.selectedPatient = result;
+          this.advise = {
+            doctor: this.doctor._id,
+            user: this.selectedPatient._id,
+            name: this.selectedPatient.name,
+            gender: this.selectedPatient.gender,
+            age: this.selectedPatient.birthdate ? moment().diff(this.selectedPatient.birthdate, 'years') : undefined,
+            cell: this.selectedPatient.cell,
+            adviseTemplate: '',
+            isOpen: true,
+            isPerformance: false,
+            sendWxMessage: false,
+          };
+          this.form.patchValue(this.advise);
+          this.cd.markForCheck();
+        }
+      }),
+    ).subscribe();
+  }
+
+  selectTempPatient() {
+    this.selectedPatient = undefined;
+
+    this.advise = {
+      doctor: this.doctor._id,
+      name: '',
+      gender: '',
+      cell: '',
+      adviseTemplate: '',
+      isOpen: false,
+      isPerformance: false,
+      sendWxMessage: false,
+    };
+    if (this.advise) {
+      this.advise.user = undefined;
+    }
+    this.form.patchValue(this.advise);
+    this.cd.markForCheck();
+  }
+
+  saveAdvise(finished = false) {
+    if (!this.advise) return;
+
+    this.advise = {
+      ...this.advise,
+      ...this.form.value,
+      finished
+    };
+
+    const $advise = !this.advise._id ?
+      this.adviseService.createAdvise(this.advise) :
+      this.adviseService.updateAdvise(this.advise);
+    $advise.pipe(
+      tap((result: Advise) => {
+        if (result) {
+          this.advise = result;
+          this.advise.dirty = false;
+          this.message.updateSuccess();
+          this.cd.markForCheck();
+
+          if (finished) {
+            //close advise
+            this.resetAdvise();
+          }
+        }
+      }),
+      catchError(rsp => this.message.updateErrorHandle(rsp))
+    ).subscribe();
+  }
+
+  resetAdvise() {
+    this.selectedAdviseTemplate = undefined;
+    this.selectedPatient = undefined;
+    this.advise = undefined;
+    // this.form.patchValue({ name: '', gender: '', age: '', cell: '', adviseTemplate: '' });
+    this.form.reset();
+    this.adviseTemplate.patchValue('');
+    this.cd.markForCheck();
+  }
+
+  markDirty(dirty: boolean) {
+    console.log(dirty);
+    this.advise.dirty = dirty;
+  }
+
+  //
+  viewPatientHistory() {
+    this.dialog.open(PatientHistoryComponent, {
+      data: {
+        patient: this.selectedPatient,
+        doctor: this.doctor,
+        medicineReferences: this.medicineReferences
+      }
+    });
+  }
+
+  get isFirstVisit() {
+    if (!this.selectedPatient?.visitedDepartments?.length) return true;
+    return !this.selectedPatient.visitedDepartments.find(_ => _ === this.doctor.department);
+  }
+
+  editPatientDiagnoses() {
+    this.dialogService.editChips(this.selectedPatient.diagnoses, '编辑疾病诊断', 1).pipe(
+      tap(result => {
+        if (result?.save) {
+          this.userService.updateUserById({
+            _id: this.selectedPatient._id,
+            diagnoses: result.content,
+          }).subscribe(_ => {
+            if (_) {
+              this.selectedPatient.diagnoses = _.diagnoses;
+              // this.appStore.updatePending({
+              //   advise: this.advise._id,
+              //   user: this.selectedPatient,
+              // });
+            }
+          });
+        }
+      })
+    ).subscribe();
+  }
+
+  editPatientPrompt() {
+    this.dialogService.editChips(this.selectedPatient.prompt, '编辑诊断提醒').pipe(
+      tap(result => {
+        if (result?.save) {
+          this.userService.updateUserById({
+            _id: this.selectedPatient._id,
+            prompt: result.content
+          }).subscribe(_ => {
+            if (_) {
+              this.selectedPatient.prompt = _.prompt;
+              // this.appStore.updatePending({
+              //   diagnose: this.diagnose._id,
+              //   user: this.selectedPatient,
+              //   booking: this.selectedBooking
+              // });
+            }
+          });
+        }
+
+      })
+    ).subscribe();
+  }
+
+  editPatientNotes() {
+    this.dialogService.editChips(this.selectedPatient.notes, '编辑病患备注').pipe(
+      tap(result => {
+        if (result?.save) {
+          this.userService.updateUserById({
+            _id: this.selectedPatient._id,
+            notes: result.content
+          }).subscribe(_ => {
+            if (_) {
+              this.selectedPatient.notes = _.notes;
+              // this.appStore.updatePending({
+              //   diagnose: this.diagnose._id,
+              //   user: this.selectedPatient,
+              //   booking: this.selectedBooking
+              // });
+            }
+          });
+        }
+
+      })
+    ).subscribe();
+  }
+
+}

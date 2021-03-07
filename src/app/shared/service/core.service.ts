@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import * as moment from 'moment';
+import * as clone from 'clone';
 
 @Injectable({
   providedIn: 'root'
@@ -41,5 +42,9 @@ export class CoreService {
   getDate(offset = 0, isDayEnd = false) {
     return !isDayEnd ? moment().add(offset, 'd').startOf('day') :
       moment().add(offset, 'd').endOf('day');
+  }
+
+  deepClone<T>(value): T {
+    return clone<T>(value);
   }
 }

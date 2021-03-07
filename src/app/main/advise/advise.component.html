@@ -1,0 +1,121 @@
+<nb-card>
+  <nb-card-header>
+    线下咨询
+    &nbsp;&nbsp;
+    <button mat-icon-button matTooltip="清除当前线下咨询" (click)="deleteDiagnose()" *ngIf="this.advise?._id">
+      <mat-icon>settings_backup_restore</mat-icon>
+    </button>
+
+    <ng-container *ngIf="selectedPatient">
+      <button nbButton size="small" class="float-right" [status]="isFirstVisit ? 'success' : 'warning'"
+        matTooltip="查看病患历史记录" (click)="viewPatientHistory()">
+        <nb-icon icon="person-outline"></nb-icon>
+        {{ selectedPatient.name }}
+      </button>
+      <button nbButton outline size="small" class="float-right mr-2" status="info" (click)="editPatientNotes()"
+        [matTooltip]="selectedPatient.notes ? '备注： ' + selectedPatient.notes?.split('|').join(', ') : '点击编辑'">
+        <nb-icon icon="clipboard-outline"></nb-icon>
+        病患备注
+      </button>
+      <button nbButton outline size="small" class="float-right mr-2" status="info" (click)="editPatientPrompt()"
+        [matTooltip]="selectedPatient.prompt ? '提醒： ' + selectedPatient.prompt?.split('|').join(', ') : '点击编辑'">
+        <nb-icon icon="bell-outline"></nb-icon>
+        诊断提醒
+      </button>
+      <button nbButton outline size="small" class="float-right mr-2" status="info" (click)="editPatientDiagnoses()"
+        [matTooltip]="selectedPatient.diagnoses ? '诊断： ' + selectedPatient.diagnoses?.split('|').join(', ') :  '点击编辑'">
+        <nb-icon icon="headphones-outline"></nb-icon>
+        疾病诊断
+      </button>
+    </ng-container>
+  </nb-card-header>
+
+  <nb-card-body>
+    <div class="border-bottom pb-2">
+      <button nbButton size="small" [status]="(advise && !selectedPatient) ? 'info' : 'basic'"
+        (click)="selectTempPatient()">
+        <nb-icon icon="checkmark-circle-2-outline" *ngIf="(advise && !selectedPatient)"></nb-icon> 新建临时病患
+      </button>&nbsp;&nbsp;
+      <button nbButton size="small" [status]="selectedPatient ? 'info' : 'basic'" (click)="selectPatient()">
+        <nb-icon icon="checkmark-circle-2-outline" *ngIf="selectedPatient"></nb-icon> 选择注册病患
+      </button>
+      <ng-container *ngIf="form.valid">
+        <span class="float-right">
+          <ng-container *ngIf="advise?.dirty">
+            <button nbButton size="small" outline status="basic" class="mr-2" (click)="saveAdvise()">
+              暂时保存
+            </button>
+          </ng-container>
+          <button nbButton hero size="small" outline status="basic" (click)="resetAdvise()">
+            <nb-icon icon="trash-outline"></nb-icon> 清空咨询
+          </button>
+        </span>
+      </ng-container>
+    </div>
+
+    <div [formGroup]="form">
+      <div [class.d-none]="!advise">
+        <div class="pt-3 px-3 d-flex flex-row flex-wrap">
+          <mat-form-field class="mr-3">
+            <mat-label>姓名</mat-label>
+            <input matInput formControlName="name" required>
+          </mat-form-field>
+          <div class="d-flex flex-column mr-3" style="min-width: 140px; margin-top: -6px;">
+            <label class="text-muted field-label">性别</label>
+            <mat-radio-group formControlName="gender" style="font-size: 14px;">
+              <mat-radio-button value="M" class="px-2">男</mat-radio-button>
+              <mat-radio-button value="F" class="px-2">女</mat-radio-button>
+            </mat-radio-group>
+          </div>
+          <mat-form-field class="mr-3">
+            <mat-label>年龄</mat-label>
+            <input matInput type="number" min="1" max="120" formControlName="age">
+          </mat-form-field>
+          <mat-form-field class="mr-3">
+            <mat-label>手机</mat-label>
+            <input matInput type="tel" formControlName="cell">
+          </mat-form-field>
+        </div>
+
+        <mat-form-field appearance="fill" class="mx-3">
+          <mat-label>线下咨询模板</mat-label>
+          <mat-select formControlName="adviseTemplate" required>
+            <mat-option value="">- 请选择线下咨询模板 -</mat-option>
+            <mat-option *ngFor="let at of adviseTemplates" [value]="at._id">{{ at.name }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <ng-container *ngIf="advise?.questions?.length">
+          <div class="mb-3">
+            <ngx-advise-questions-edit [questions]="advise.questions" (dirty)="markDirty($event)">
+            </ngx-advise-questions-edit>
+          </div>
+        </ng-container>
+
+        <ng-container *ngIf="!advise">
+          <div class="alert alert-warning mt-4" role="alert">
+            请点击"新建临时病患"或"选择病患"按键开始一个线下咨询。
+          </div>
+        </ng-container>
+      </div>
+
+      <div class="fixed-bottom px-5 py-3 bg-light my-center" [class.d-none]="!form?.valid">
+        <div class="float-right">
+          <mat-checkbox class="mr-3" [class.d-none]="!selectedPatient" formControlName="sendWxMessage">发送微信消息
+          </mat-checkbox>
+          <mat-checkbox class="mr-3" [class.d-none]="!selectedPatient" formControlName="isOpen">其他药师可见</mat-checkbox>
+          <mat-checkbox class="mr-3" formControlName="isPerformance">申报绩效</mat-checkbox>
+          <button nbButton hero size="small" status="primary" (click)="saveAdvise(true)">
+            <nb-icon icon="archive-outline"></nb-icon> 结束归档
+          </button>
+        </div>
+      </div>
+    </div>
+
+
+    <pre>
+{{advise | json}}
+    </pre>
+
+  </nb-card-body>
+</nb-card>

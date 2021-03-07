@@ -13,7 +13,7 @@ import { Subject } from 'rxjs';
   template: `
   <div [nbSpinner]="!!loading" nbSpinnerSize="giant" nbSpinnerStatus="info">
     <ngx-one-column-layout>
-      <nb-menu [items]="menu" tag="menu" autoCollapse="true"></nb-menu>
+      <nb-menu [items]="menu" tag="menu" autoCollapse="true" class="mb-4"></nb-menu>
       <router-outlet></router-outlet>
     </ngx-one-column-layout>
   </div>
