@@ -19,7 +19,7 @@ export class AdviseSelectPendingsComponent implements OnInit {
   }
 
   selectPendingAdvise(advise: Advise) {
-    console.log(advise);
+    // console.log(advise);
     this.dialogRef.close(advise);
   }
 
@@ -27,4 +27,7 @@ export class AdviseSelectPendingsComponent implements OnInit {
     return advise.questions?.length;
   }
 
+  selectEmpty() {
+    this.dialogRef.close({});
+  }
 }

@@ -31,4 +31,11 @@
       </ng-container>
     </mat-selection-list>
   </nb-card-body>
+
+  <nb-card-footer class="d-block">
+    <button nbButton mat-dialog-close>取消</button>
+    <button nbButton hero status="primary" class="float-right" (click)="selectEmpty()">
+      <nb-icon icon="checkmark-circle"></nb-icon>选择空白的新咨询
+    </button>
+  </nb-card-footer>
 </nb-card>

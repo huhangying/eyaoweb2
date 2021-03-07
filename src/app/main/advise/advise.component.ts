@@ -112,7 +112,8 @@ export class AdviseComponent implements OnInit {
       data: this.pendingAdvises
     }).afterClosed().pipe(
       tap((pending: Advise) => {
-        if (pending?._id) {
+        if (!pending) return; // cancel or close
+        if (pending._id) {
           if (pending.user) {
             this.userService.getById(pending.user).pipe(
               tap(user => {
@@ -122,6 +123,9 @@ export class AdviseComponent implements OnInit {
             ).subscribe();
           }
           this.loadAdvise(pending);
+        } else {
+          // new
+          this.resetAdvise();
         }
       })
     ).subscribe();
