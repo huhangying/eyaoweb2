@@ -101,7 +101,7 @@
 
       <div class="fixed-bottom px-5 py-3 bg-light my-center" [class.d-none]="!form?.valid">
         <div class="float-right">
-          <mat-checkbox class="mr-3" [class.d-none]="!selectedPatient" formControlName="sendWxMessage">发送微信消息
+          <mat-checkbox class="mr-3" [class.d-none]="true || !selectedPatient" formControlName="sendWxMessage">发送微信消息
           </mat-checkbox>
           <mat-checkbox class="mr-3" [class.d-none]="!selectedPatient" formControlName="isOpen">其他药师可见</mat-checkbox>
           <mat-checkbox class="mr-3" formControlName="isPerformance">申报绩效</mat-checkbox>

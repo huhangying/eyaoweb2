@@ -210,6 +210,9 @@ export class AdviseComponent implements OnInit {
           if (finished) {
             //close advise
             this.resetAdvise(result._id);
+          } else {
+            // 暂时保存，需要更新pendings
+            this.updatePendingAdvises(result);
           }
         }
       }),
@@ -251,6 +254,15 @@ export class AdviseComponent implements OnInit {
   removeFromPendingAdvises(adviseId: string) {
     if (this.pendingAdvises?.length) {
       this.pendingAdvises = this.pendingAdvises.filter(_ => _._id !== adviseId);
+      this.cd.markForCheck();
+    }
+  }
+
+  updatePendingAdvises(advise: Advise) {
+    if (this.pendingAdvises?.length && advise?._id) {
+      this.pendingAdvises = this.pendingAdvises.map(_ => {
+        return advise._id === _._id ? advise : _;
+      });
       this.cd.markForCheck();
     }
   }
