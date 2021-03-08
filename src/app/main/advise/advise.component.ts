@@ -19,6 +19,7 @@ import * as moment from 'moment';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CoreService } from '../../shared/service/core.service';
 import { AdviseSelectPendingsComponent } from './advise-select-pendings/advise-select-pendings.component';
+import { ThrowStmt } from '@angular/compiler';
 
 @Component({
   selector: 'ngx-advise',
@@ -263,10 +264,23 @@ export class AdviseComponent implements OnInit {
   }
 
   updatePendingAdvises(advise: Advise) {
-    if (this.pendingAdvises?.length && advise?._id) {
-      this.pendingAdvises = this.pendingAdvises.map(_ => {
-        return advise._id === _._id ? advise : _;
-      });
+    if (advise?._id) {
+      if (this.pendingAdvises?.length) {
+        let found = false;
+        this.pendingAdvises = this.pendingAdvises.map(_ => {
+          if (advise._id === _._id) {
+            found = true;
+            return advise;
+          } else {
+            return _;
+          }
+        });
+        if (!found) {
+          this.pendingAdvises.push(advise);
+        }
+      } else {
+        this.pendingAdvises = [advise];
+      }
       this.cd.markForCheck();
     }
   }
