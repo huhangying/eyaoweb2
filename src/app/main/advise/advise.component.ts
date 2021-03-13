@@ -20,6 +20,9 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CoreService } from '../../shared/service/core.service';
 import { AdviseSelectPendingsComponent } from './advise-select-pendings/advise-select-pendings.component';
 import { ThrowStmt } from '@angular/compiler';
+import { WeixinService } from '../../shared/service/weixin.service';
+import { WechatResponse } from '../../models/wechat-response.model';
+import { HospitalService } from '../../services/hospital.service';
 
 @Component({
   selector: 'ngx-advise',
@@ -50,6 +53,8 @@ export class AdviseComponent implements OnInit {
     private cd: ChangeDetectorRef,
     private userService: UserService,
     private coreService: CoreService,
+    private wxService: WeixinService,
+    private departmentService: HospitalService,
     private appStore: AppStoreService,
   ) {
     this.doctor = this.auth.doctor;
@@ -65,17 +70,17 @@ export class AdviseComponent implements OnInit {
 
     // load today's doctor pending
     this.adviseService.geDoctorPendingAdvises(this.doctor._id).pipe(
-        tap(pendings => {
-          if (pendings?.length) {
-            this.pendingAdvises = pendings;
-            if (pendings.length === 1) {
-              // pre-select and exit
-              this.loadAdvise(pendings[0]);
-              return;
-            }
-            // pop-up to select pending advises
-            this.swapPendingAdvises();
+      tap(pendings => {
+        if (pendings?.length) {
+          this.pendingAdvises = pendings;
+          if (pendings.length === 1) {
+            // pre-select and exit
+            this.loadAdvise(pendings[0]);
+            return;
           }
+          // pop-up to select pending advises
+          this.swapPendingAdvises();
+        }
       })
     ).subscribe();
   }
@@ -156,6 +161,9 @@ export class AdviseComponent implements OnInit {
           this.selectedPatient = result;
           const advise: Advise = {
             doctor: this.doctor._id,
+            doctorName: this.doctor.name,
+            doctorTitle: this.doctor.title,
+            // doctorDepartment: this.doctor.department;
             user: this.selectedPatient._id,
             name: this.selectedPatient.name,
             gender: this.selectedPatient.gender,
@@ -177,6 +185,8 @@ export class AdviseComponent implements OnInit {
 
     const advise: Advise = {
       doctor: this.doctor._id,
+      doctorName: this.doctor.name,
+      doctorTitle: this.doctor.title,
       name: '',
       gender: '',
       cell: '',
@@ -190,6 +200,18 @@ export class AdviseComponent implements OnInit {
     }
 
     this.loadAdvise(advise);
+  }
+
+  async finishAdvise() {
+    if (!this.advise) return;
+
+    // add departmentName to advise
+    const departmentName = (!this.advise.doctorDepartment) ?
+      (await this.departmentService.getDepartmentById(this.doctor.department).toPromise())?.name :
+      this.advise.doctorDepartment;
+    this.advise.doctorDepartment = departmentName;
+
+    this.saveAdvise(true);
   }
 
   saveAdvise(finished = false) {
@@ -213,6 +235,27 @@ export class AdviseComponent implements OnInit {
           this.cd.markForCheck();
 
           if (finished) {
+            const advise: Advise = this.form.value;
+            if (this.advise.user && this.selectedPatient?.link_id && advise.sendWxMessage) {
+              this.wxService.sendWechatMsg(this.selectedPatient.link_id,
+                '线下咨询完成',
+                `${this.doctor.name + ' ' + this.doctor.title} 给您发送了线下咨询消息`,
+                `${this.doctor.wechatUrl}advise?openid=${this.selectedPatient.link_id}&state=${this.auth.hid}&id=${result._id}`,
+                '',
+                this.doctor._id,
+                advise.name
+              ).pipe(
+                tap((rsp: WechatResponse) => {
+                  if (rsp?.errcode === 0) {
+                    this.message.success('微信信息发送成功！');
+                  } else {
+                    // save to wx message queue
+                    this.message.info('病患微信暂时不能接收该消息。消息已经保存，当病患再次使用服务号时重发。');
+                  }
+                })
+              ).subscribe();
+            }
+
             //close advise
             this.resetAdvise(result._id);
           } else {
@@ -225,7 +268,7 @@ export class AdviseComponent implements OnInit {
     ).subscribe();
   }
 
-  resetAdvise(adviseId?: string, toDelete=false) {
+  resetAdvise(adviseId?: string, toDelete = false) {
     this.selectedAdviseTemplate = undefined;
     this.selectedPatient = undefined;
     this.advise = undefined;

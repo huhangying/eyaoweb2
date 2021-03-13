@@ -4,6 +4,9 @@ export interface Advise {
   _id?: string;
   adviseTemplate?: string; // advise template id; +
   doctor: string; // id
+  doctorName?: string;
+  doctorTitle?: string;
+  doctorDepartment?: string;
 
   user?: string; //id
   name: string;
