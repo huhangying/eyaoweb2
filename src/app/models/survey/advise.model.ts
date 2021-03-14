@@ -22,6 +22,7 @@ export interface Advise {
   finished?: boolean;
 
   createdAt?: Date;
+  updatedAt?: Date;
 
   dirty?: boolean; // helper flag to save
   sendWxMessage?: boolean; // helper

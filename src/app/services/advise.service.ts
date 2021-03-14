@@ -42,9 +42,9 @@ export class AdviseService {
     return this.api.get<Advise[]>(`advises/doctor-pending/${doctorId}`);
   }
 
-  // getMyAdviseHistory(patientId: string) {
-  //   return this.api.get<Advise[]>(`myadvises/${patientId}`);
-  // }
+  geUserAdviseHistory(userId: string) {
+    return this.api.get<Advise[]>(`advises/user-history/${userId}`);
+  }
 
   updateAdvise(data: Advise) {
     return this.api.patch<Advise>('advise/' + data._id, data);

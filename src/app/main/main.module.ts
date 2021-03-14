@@ -43,6 +43,8 @@ import { SurveyQueryComponent } from './survey-query/survey-query.component';
 import { AdviseComponent } from './advise/advise.component';
 import { AdviseQuestionsEditComponent } from './advise/advise-questions-edit/advise-questions-edit.component';
 import { AdviseSelectPendingsComponent } from './advise/advise-select-pendings/advise-select-pendings.component';
+import { AdviseHistoryComponent } from './diagnose/patient-history/advise-history/advise-history.component';
+import { AdviseDetailsComponent } from './diagnose/patient-history/advise-history/advise-details/advise-details.component';
 
 @NgModule({
   declarations: [
@@ -87,6 +89,8 @@ import { AdviseSelectPendingsComponent } from './advise/advise-select-pendings/a
     AdviseComponent,
     AdviseQuestionsEditComponent,
     AdviseSelectPendingsComponent,
+    AdviseHistoryComponent,
+    AdviseDetailsComponent,
   ],
   imports: [
     SharedModule,

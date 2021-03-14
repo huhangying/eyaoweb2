@@ -1,0 +1,27 @@
+<nb-card accent="info">
+  <nb-card-header>
+    线下咨询详细
+    ({{advise.updatedAt | localDate}})
+    <button nbButton shape="round" size="tiny" class="float-right" mat-dialog-close>
+      <nb-icon icon="close"></nb-icon>
+    </button>
+  </nb-card-header>
+
+  <mat-dialog-content class="px-3 pt-1">
+    <ul class="list-group list-group-flush ">
+      <li class="list-group-item">
+        <label>科室：</label>
+        <span>{{advise.doctorDepartment}}</span>
+      </li>
+      <li class="list-group-item">
+        <label>药师：</label>
+        <span>{{advise.doctorName}} {{advise.doctorTitle}}</span>
+      </li>
+
+      <li class="list-group-item">
+        <label>咨询内容：</label>
+        <ngx-advise-questions-edit [questions]="advise.questions" [readonly]="true"></ngx-advise-questions-edit>
+      </li>
+    </ul>
+  </mat-dialog-content>
+</nb-card>

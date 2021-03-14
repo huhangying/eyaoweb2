@@ -1,0 +1,41 @@
+<ng-container *ngIf="dataSource?.data?.length">
+  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 table-striped table-hover">
+
+    <ng-container matColumnDef="doctorDepartment">
+      <th mat-header-cell *matHeaderCellDef> 专科 </th>
+      <td mat-cell *matCellDef="let element">
+        {{ (element.doctorDepartment) }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="doctorName">
+      <th mat-header-cell *matHeaderCellDef> 药师 </th>
+      <td mat-cell *matCellDef="let element">
+        {{element.doctorName}}
+      </td>
+    </ng-container>
+
+     <ng-container matColumnDef="updatedAt">
+      <th mat-header-cell *matHeaderCellDef> 咨询时间</th>
+      <td mat-cell *matCellDef="let element">
+        {{ element.updatedAt | localDate }} </td>
+    </ng-container>
+    <ng-container matColumnDef="_id">
+      <th mat-header-cell *matHeaderCellDef class="text-center"> 操作 </th>
+      <td mat-cell *matCellDef="let element" class="actions">
+        <button nbButton hero shape="round" size="tiny" status="info" (click)="viewAdviseDetails(element)">
+          <nb-icon icon="file-text-outline"></nb-icon> 查看咨询详细
+        </button>
+      </td>
+    </ng-container>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+  <div class="text-hint pt-3">* 包含该患者的所有线下咨询记录(过去的和已经发布的)。</div>
+</ng-container>
+
+<ng-container *ngIf="!dataSource?.data?.length">
+  <div class="alert alert-warning" role="alert">
+    暂无线下咨询历史记录。
+  </div>
+</ng-container>

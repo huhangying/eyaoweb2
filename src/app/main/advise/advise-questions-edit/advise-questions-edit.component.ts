@@ -18,6 +18,7 @@ export class AdviseQuestionsEditComponent implements OnInit {
   }
 
   changeRadioSelection(question: Question, index: number) {
+    if (this.readonly) return;
     // const checked = options[index].selected;
     question.options.forEach((option, i) => option.selected = i === index);
     this.markDirty();
@@ -26,11 +27,4 @@ export class AdviseQuestionsEditComponent implements OnInit {
   markDirty() {
     this.dirty.emit(true);
   }
-
-
-  test(question) {
-    console.log(question);
-
-  }
-
 }

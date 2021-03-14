@@ -1,5 +1,5 @@
 <ng-container *ngFor="let question of questions; let qIndex=index">
-  <h6 class="text-info px-2 pt-3 pb-1" (click)="test(question)">{{qIndex + 1}}. {{question.question}}</h6>
+  <h6 class="text-info px-2 pt-3 pb-1">{{qIndex + 1}}. {{question.question}}</h6>
   <ng-container *ngIf="question.answer_type === 0 || question.answer_type === 1">
     <mat-radio-group name="question-{{qIndex}}" [disabled]="readonly">
       <ng-container *ngFor="let option of question.options; let oIndex=index">
