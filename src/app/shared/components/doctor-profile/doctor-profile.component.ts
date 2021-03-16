@@ -64,7 +64,7 @@ export class DoctorProfileComponent implements OnInit, OnDestroy {
       user_id: ['', Validators.required],
       name: ['', Validators.required],
       department: ['', Validators.required],
-      title: ['', Validators.required],
+      title: [''],
       cell: ['', Validators.required],
       tel: [''],
       gender: [''],
