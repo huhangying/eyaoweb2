@@ -27,7 +27,6 @@ export class DoctorComponent implements OnInit, OnDestroy {
   dataSource: MatTableDataSource<Doctor>;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
-  selectedDepartment: Department;
 
   constructor(
     private fb: FormBuilder,
@@ -58,8 +57,15 @@ export class DoctorComponent implements OnInit, OnDestroy {
   }
 
   departmentSelected(department: Department) {
-    this.selectedDepartment = department;
-    if (!department?._id) {
+
+    if (!department) {
+      return this.doctorService.getAllCmsDoctors().subscribe(
+        data => {
+          this.loadData(data);
+        }
+      );
+    }
+    if (!department._id) {
       this.loadData([]);
       return;
     }

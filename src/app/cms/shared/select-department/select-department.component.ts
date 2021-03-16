@@ -12,6 +12,7 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class SelectDepartmentComponent implements OnInit, OnDestroy {
   @Input() departments: Department[]; // departmets have been pre-loaded!
+  @Input() allDepartmentOptions: boolean; //是否支持‘全部科室’选项
   @Output() departmentSelected = new EventEmitter<Department>();
   form: FormGroup;
   selectedDepartment: Department;
@@ -34,10 +35,14 @@ export class SelectDepartmentComponent implements OnInit, OnDestroy {
     this.departmentCtrl.valueChanges.pipe(
       startWith(this.route.snapshot.queryParams?.dep || ''),
       distinctUntilChanged(),
-      filter(_ => _),
+      // filter(_ => _),
       tap(departmentId => {
-        const selectedDepartment = this.departments?.find(_ => _._id === departmentId);
-        this.departmentSelected.emit(selectedDepartment);
+        if (departmentId === '') { // select all departments
+          this.departmentSelected.emit(null);
+        } else {
+          const selectedDepartment = this.departments?.find(_ => _._id === departmentId);
+          this.departmentSelected.emit(selectedDepartment);
+        }
 
       }),
       takeUntil(this.destroy$),

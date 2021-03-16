@@ -12,7 +12,8 @@
       </nb-form-field>
     </div>
 
-    <ngx-select-department [departments]="departments" (departmentSelected)="departmentSelected($event)">
+    <ngx-select-department [departments]="departments" [allDepartmentOptions]="true"
+      (departmentSelected)="departmentSelected($event)">
     </ngx-select-department>
   </nb-card-header>
 
