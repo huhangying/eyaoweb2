@@ -10,7 +10,7 @@ import { Doctor, DoctorBrief } from '../../../models/crm/doctor.model';
 import { User } from '../../../models/crm/user.model';
 import { Department } from '../../../models/hospital/department.model';
 import { Question } from '../../../models/survey/survey-template.model';
-import { Survey } from '../../../models/survey/survey.model';
+import { FlattenQuestionColumn, Survey } from '../../../models/survey/survey.model';
 import { SurveyService } from '../../../services/survey.service';
 import { LocalDatePipe } from '../../../shared/pipe/local-date.pipe';
 import { ReportSearchOutput, ChartGroup, ChartItem } from '../../models/report-search.model';
@@ -36,6 +36,7 @@ export class SurveyContentReportComponent implements OnInit, OnDestroy {
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   displayedColumns: string[] = ['department', 'doctor', 'user.name', 'type', 'name', 'questions', 'finished', 'updatedAt', '_id'];
+  questionColumns: FlattenQuestionColumn[];
 
   constructor(
     private route: ActivatedRoute,
@@ -56,9 +57,23 @@ export class SurveyContentReportComponent implements OnInit, OnDestroy {
     this.destroy$.unsubscribe();
   }
 
-  search(s) {
-    this.surveyService.surveyContentSearch(s).pipe(
+  search(searchOption: ReportSearchOutput) {
+    this.surveyService.surveyContentSearch(searchOption).pipe(
       tap(results => {
+        this.questionColumns = [];
+        if (results?.length) {
+          if (!searchOption.type) {
+            this.displayedColumns = ['department', 'doctor', 'user.name', 'type', 'name', 'questions', 'finished', 'updatedAt', '_id'];
+          } else {
+            this.displayedColumns = ['department', 'doctor', 'user.name', 'type', 'name'];
+            this.questionColumns = results[0].questions.map((_, index) => {
+              return { index: index, id: `${index}`, question: _.question};
+            });
+            this.displayedColumns = this.displayedColumns.concat(this.questionColumns.map(_ => _.id));
+            this.displayedColumns = this.displayedColumns.concat(['finished', 'updatedAt', '_id']);
+          }
+        }
+
         this.surveys = results;
         this.loadData();
       })
@@ -70,15 +85,14 @@ export class SurveyContentReportComponent implements OnInit, OnDestroy {
   }
 
   loadData() {
-    const data = this.surveys || [];
+    const data = (!this.questionColumns?.length) ? this.surveys || [] :
+      this.surveys;
     this.dataSource = new MatTableDataSource<Survey>(data);
     this.dataSource.sortingDataAccessor = (item, property) => {
-      switch (property) {
-        case 'user.name':
-          return (item.user as User)?.name || '不存在';
-        default:
-          return item[property];
+      if (property === 'user.name') {
+        return (item.user as User)?.name || '不存在';
       }
+      return item[property];
     };
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
@@ -104,6 +118,16 @@ export class SurveyContentReportComponent implements OnInit, OnDestroy {
       brief += `${index + 1}: ${question.question} ...\r\n`;
     });
     return brief;
+  }
+
+  getSurveyQuestionAnswer(question: Question) {
+    console.log(question);
+    if (question.answer_type === 3) {
+      return question.options[0]?.answer || '';
+    }
+    const option = question.options?.find(_ => _.selected);
+    if (!option) return '';
+    return (option.input_required) ? `${option.answer} (${option.input})` : option.answer;
   }
 
   view(data: Survey) {

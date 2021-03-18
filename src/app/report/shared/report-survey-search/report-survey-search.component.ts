@@ -52,6 +52,7 @@ export class ReportSurveySearchComponent implements OnInit {
 
     this.onOutput.emit({
       title: `${selectedDepartmentName}${selectedSurveyTypeName}${selectedDate}`,
+      type: mySearch.type,
     });
   }
 }

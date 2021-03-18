@@ -11,7 +11,8 @@ export interface ReportSearch {
 
 export interface ReportSearchOutput {
   title: string;
-  doctors?: Doctor[]
+  doctors?: Doctor[],
+  type?: number, // 问卷类别
 }
 
 export interface ChartGroup {

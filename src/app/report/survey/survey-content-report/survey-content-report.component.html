@@ -73,6 +73,13 @@
           </td>
         </ng-container>
 
+        <ng-container *ngFor="let question of questionColumns" [matColumnDef]="question.id">
+          <th mat-header-cell *matHeaderCellDef> 问题{{question.index + 1}}: {{question.question}} </th>
+          <td mat-cell *matCellDef="let element">
+            {{getSurveyQuestionAnswer(element.questions[question.index])}}
+          </td>
+        </ng-container>
+
         <ng-container matColumnDef="finished">
           <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 4rem;"> 状态 </th>
           <td mat-cell *matCellDef="let element">

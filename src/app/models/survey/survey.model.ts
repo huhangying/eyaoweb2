@@ -37,3 +37,10 @@ export interface SurveyReqest {
   createdAt?: Date;
   updatedAt?: Date;
 }
+
+export interface FlattenQuestionColumn {
+  index: number;
+  id: string;
+  question: string;
+  // answer: string;
+}
