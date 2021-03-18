@@ -112,7 +112,8 @@
             <div class="status-action d-flex flex-column justify-content-center pr-2">
               <div *ngIf="hasNewServices(selectedPatient?._id)">
                 <button mat-flat-button class="text-success" matTooltip="药师手动标识完成" (click)="markRead()">
-                  <mat-icon>check_circle</mat-icon> 标识完成
+                  <mat-icon>check_circle</mat-icon>
+                  {{this.type === NotificationType.consultChat ? '结束咨询': '标识完成'}}
                 </button>
               </div>
             </div>
@@ -261,16 +262,16 @@
           <div class="align-bottom d-flex text-right w-100">
             <textarea type="text" nbInput fullWidth autocomplete="off" fieldSize="small" placeholder="请输入..."
               cdkFocusInitial (keyup.enter)="send()" [(ngModel)]="myInput"></textarea>
-              <nb-button-group status="basic" nbSuffix>
-                <button nbButton hero status="info" matTooltip="发送" (click)="send()">
-                  <nb-icon icon="paper-plane-outline" class="mx-1"></nb-icon>
+            <nb-button-group status="basic" nbSuffix>
+              <button nbButton hero status="info" matTooltip="发送" (click)="send()">
+                <nb-icon icon="paper-plane-outline" class="mx-1"></nb-icon>
+              </button>
+              <ng-container *ngIf="type === NotificationType.chat">
+                <button nbButton hero status="info" matTooltip="发送（微信消息）" (click)="sendWithMessage()">
+                  <nb-icon icon="message-square-outline" class="mx-1"></nb-icon>
                 </button>
-                <ng-container *ngIf="type === NotificationType.chat">
-                  <button nbButton hero status="info" matTooltip="发送（微信消息）" (click)="sendWithMessage()">
-                    <nb-icon icon="message-square-outline" class="mx-1"></nb-icon>
-                  </button>
-                </ng-container>
-              </nb-button-group>
+              </ng-container>
+            </nb-button-group>
           </div>
 
           <div class="d-flex justify-content-between px-3">
