@@ -58,4 +58,8 @@ export class AdviseService {
     return this.api.delete<Advise>('advise/' + id);
   }
 
+  adviseSearch(doctorId: string) {
+    return this.api.get<Advise[]>(`advises/search/${doctorId}`);
+  }
+
 }

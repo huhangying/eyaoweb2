@@ -1,0 +1,10 @@
+<nb-card>
+  <nb-card-header>
+    门诊&预约 / 门诊就诊统计
+    <ngx-report-search [departments]="departments" [dateOnly]="!isCms" (onSearch)="search($event)" (onOutput)="onOutput($event)">
+    </ngx-report-search>
+  </nb-card-header>
+  <nb-card-body>
+  </nb-card-body>
+</nb-card>
+{{isCms}}

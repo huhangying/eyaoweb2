@@ -167,6 +167,11 @@ export function getMenuItems(role: number, queryParams: Params): NbMenuItem[] {
           icon: 'npm-outline',
           children: [
             {
+              title: '线下咨询统计',
+              link: '/cms/report/advise',
+              queryParams: queryParams,
+            },
+            {
               title: '免费咨询统计',
               link: '/cms/report/chat',
               queryParams: queryParams,

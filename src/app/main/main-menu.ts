@@ -108,5 +108,27 @@ export function getMenuItems(role: number, queryParams: Params, isCs = false): N
       link: '/main/msg-failed',
       queryParams: queryParams,
     },
+    {
+      title: '工作量统计',
+      icon: 'pie-chart-2',
+      children: [
+        {
+          title: '门诊',
+          link: '/main/work/diagnose',
+          queryParams: queryParams,
+        },
+        {
+          title: '线下咨询',
+          link: '/main/work/advise',
+          queryParams: queryParams,
+        },
+        {
+          title: '付费咨询',
+          link: '/main/work/consult',
+          queryParams: queryParams,
+        },
+
+      ],
+    },
   ];
 }

@@ -4,6 +4,8 @@ import { BriefDoctorsResolver } from '../services/resolvers/brief-doctors.resolv
 import { DepartmentResolver } from '../services/resolvers/department.resolver';
 import { MedicineReferencesResolver } from '../services/resolvers/medicine-references.resolver';
 import { PeriodsResolver } from '../services/resolvers/periods.resolver';
+
+import { AdviseReportComponent } from './advise-report/advise-report.component';
 import { ChatReportComponent } from './chat/chat-report/chat-report.component';
 import { ConsultReportComponent } from './chat/consult-report/consult-report.component';
 import { FeedbackReportComponent } from './chat/feedback-report/feedback-report.component';
@@ -111,6 +113,13 @@ const routes: Routes = [{
         departments: DepartmentResolver,
       }
     },
+    {
+      path: 'advise',
+      component: AdviseReportComponent,
+      resolve: {
+        departments: DepartmentResolver,
+      }
+    },
   ]
 }];
 
@@ -133,5 +142,6 @@ export const routedComponents = [
   PatientReportComponent,
   DoctorReportComponent,
   SurveyContentReportComponent,
+  AdviseReportComponent,
 ];
 

@@ -100,6 +100,11 @@ const routes: Routes = [{
         .then(m => m.CrmModule),
     },
     {
+      path: 'work',
+      loadChildren: () => import('../report/report.module')
+        .then(m => m.ReportModule),
+    },
+    {
       path: '',
       redirectTo: 'dashboard',
       pathMatch: 'full',

@@ -17,7 +17,7 @@ import { ReportSearch, ReportSearchOutput } from '../../models/report-search.mod
 })
 export class ReportSearchComponent implements OnInit, OnDestroy {
   @Input() departments: Department[]; // departmets have been pre-loaded!
-  @Input() dateOnly?: boolean;
+  @Input() dateOnly?: boolean; // 用于 显示/隐藏 科室和药师的 dropdowns
   @Output() onSearch = new EventEmitter<ReportSearch>();
   @Output() onOutput = new EventEmitter<ReportSearchOutput>();
   form: FormGroup;
