@@ -17,7 +17,7 @@ export class UserService {
 
   // 药师
   getUsers() {
-    return this.api.get<User[]>('users/1000'); //todo:
+    return this.api.get<User[]>('users/10000'); //todo:
   }
 
   getUsersByRole(role: number) { // 0 or 1
@@ -26,7 +26,7 @@ export class UserService {
 
   // for CMS
   getCmsUsers() {
-    return this.api.get<User[]>('users/cms/1000'); //todo:
+    return this.api.get<User[]>('users/cms/10000'); //todo:
   }
 
   getById(id: string) {
