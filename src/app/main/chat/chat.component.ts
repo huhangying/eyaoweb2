@@ -580,7 +580,6 @@ export class ChatComponent implements OnInit, OnDestroy {
         upload: imgPath,
         finished: true,
         status: 2,
-        createdAt: new Date()
       };
     } else {
       // Text
@@ -593,13 +592,11 @@ export class ChatComponent implements OnInit, OnDestroy {
         content: this.myInput,
         finished: true,
         status: 2,
-        createdAt: new Date()
       };
     }
-    this.consults.push(consult);
 
-    this.socketio.sendConsult(this.room, consult);
     this.consultService.sendConsult(consult).subscribe(consult => {
+      this.socketio.sendConsult(this.room, consult); //?remove?
       this.wxService.sendWechatMsg(this.selectedPatient.link_id,
         `${this.doctor.name}${this.doctor.title}咨询回复`,
         !imgPath ? consult.content : '药师发送图片，请点击查看。',
@@ -609,6 +606,8 @@ export class ChatComponent implements OnInit, OnDestroy {
         this.selectedPatient.name
       ).subscribe();
     });
+
+    this.consults.push({ ...consult, createdAt: new Date() });
     this.scrollBottom();
   }
 
@@ -746,7 +745,7 @@ export class ChatComponent implements OnInit, OnDestroy {
   }
 
   // 药师标识完成
-  markRead(noMessage=false) {
+  markRead(noMessage = false) {
     switch (this.type) {
       case NotificationType.chat: // NotificationType.customerService
         if (!this.isCs) {
@@ -796,7 +795,7 @@ export class ChatComponent implements OnInit, OnDestroy {
           id: this.existedConsultId,
         }
       });
-    } else if ( type === 1 || type === 6) {
+    } else if (type === 1 || type === 6) {
       // 付费电话咨询，到说明页面
       this.router.navigate(['/main/consult-phone'], {
         queryParams: {
