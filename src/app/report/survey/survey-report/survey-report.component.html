@@ -1,7 +1,7 @@
 <nb-card>
   <nb-card-header>
     问卷 / 问卷类别统计
-    <ngx-report-search [departments]="departments" (onSearch)="search($event)" (onOutput)="onOutput($event)">
+    <ngx-report-search [departments]="departments" [dateOnly]="!isCms" (onSearch)="search($event)" (onOutput)="onOutput($event)">
     </ngx-report-search>
   </nb-card-header>
 
@@ -17,10 +17,12 @@
           (click)="displayChartDataByType()">
           <span class="material-icons"> timeline </span>&nbsp; 按问卷类别统计
         </button>
-        <button nbButton hero status="info" outline size="small" class="mr-4" nbSuffix
-          (click)="displayChartDataByDoctor()">
-          <span class="material-icons"> timeline </span>&nbsp; 按药师统计
-        </button>
+        <ng-container *ngIf="isCms">
+          <button nbButton hero status="info" outline size="small" class="mr-4" nbSuffix
+            (click)="displayChartDataByDoctor()">
+            <span class="material-icons"> timeline </span>&nbsp; 按药师统计
+          </button>
+        </ng-container>
         <button nbButton hero status="primary" outline size="small" class="mr-4" nbSuffix
           (click)="displayPieChartDataByType()">
           <nb-icon icon="pie-chart-outline" pack="eva"></nb-icon> 按问卷类别统计

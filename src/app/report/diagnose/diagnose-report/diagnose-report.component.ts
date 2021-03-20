@@ -10,7 +10,9 @@ import { Doctor, DoctorBrief } from '../../../models/crm/doctor.model';
 import { Department } from '../../../models/hospital/department.model';
 import { DiagnoseService } from '../../../services/diagnose.service';
 import { LocalDatePipe } from '../../../shared/pipe/local-date.pipe';
-import { ChartGroup, ChartItem, ReportSearchOutput } from '../../models/report-search.model';
+import { AuthService } from '../../../shared/service/auth.service';
+import { AppStoreService } from '../../../shared/store/app-store.service';
+import { ChartGroup, ChartItem, ReportSearch, ReportSearchOutput } from '../../models/report-search.model';
 import { DiagnoseUsage } from '../../models/report-usage';
 import { LineChartsComponent } from '../../shared/line-charts/line-charts.component';
 import { PieChartsComponent } from '../../shared/pie-charts/pie-charts.component';
@@ -25,6 +27,8 @@ export class DiagnoseReportComponent implements OnInit, OnDestroy {
   destroy$ = new Subject<void>();
   departments: Department[];
   briefDoctors: DoctorBrief[];
+  doctorId: string;
+  isCms: boolean;
 
   diagnoses: DiagnoseUsage[];
   searchOutput: ReportSearchOutput;
@@ -36,13 +40,17 @@ export class DiagnoseReportComponent implements OnInit, OnDestroy {
 
   constructor(
     private route: ActivatedRoute,
+    private appStore: AppStoreService,
     private diagnoseService: DiagnoseService,
     private cd: ChangeDetectorRef,
     private localDate: LocalDatePipe,
     public dialog: MatDialog,
+    private auth: AuthService,
   ) {
+    this.isCms = this.appStore.cms;
     this.departments = this.route.snapshot.data.departments;
     this.briefDoctors = this.route.snapshot.data.briefDoctors;
+    this.doctorId = this.route.snapshot.queryParams?.doc || this.auth.doctor?._id || '';
   }
 
   ngOnInit(): void {
@@ -53,8 +61,12 @@ export class DiagnoseReportComponent implements OnInit, OnDestroy {
     this.destroy$.unsubscribe();
   }
 
-  search(s) {
-    this.diagnoseService.diagnoseSearch(s).pipe(
+  search(search: ReportSearch) {
+    if (!this.isCms) {
+      search = { ...search, doctor: this.doctorId };
+    }
+
+    this.diagnoseService.diagnoseSearch(search).pipe(
       tap(results => {
         this.diagnoses = results;
         this.loadData();

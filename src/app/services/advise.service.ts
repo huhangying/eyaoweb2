@@ -58,8 +58,8 @@ export class AdviseService {
     return this.api.delete<Advise>('advise/' + id);
   }
 
-  adviseSearch(doctorId: string) {
-    return this.api.get<Advise[]>(`advises/search/${doctorId}`);
+  adviseSearch(search: ReportSearch) {
+    return this.api.post<Advise[]>('advises/search', search) as Observable<Advise[]>;
   }
 
 }

@@ -10,11 +10,13 @@ import { Department } from '../../../models/hospital/department.model';
 import { Survey } from '../../../models/survey/survey.model';
 import { SurveyService } from '../../../services/survey.service';
 import { User } from '../../../models/crm/user.model';
-import { ChartGroup, ChartItem, ReportSearchOutput } from '../../models/report-search.model';
+import { ChartGroup, ChartItem, ReportSearch, ReportSearchOutput } from '../../models/report-search.model';
 import { LocalDatePipe } from '../../../shared/pipe/local-date.pipe';
 import { MatDialog } from '@angular/material/dialog';
 import { LineChartsComponent } from '../../shared/line-charts/line-charts.component';
 import { PieChartsComponent } from '../../shared/pie-charts/pie-charts.component';
+import { AppStoreService } from '../../../shared/store/app-store.service';
+import { AuthService } from '../../../shared/service/auth.service';
 
 @Component({
   selector: 'ngx-survey-report',
@@ -25,6 +27,8 @@ import { PieChartsComponent } from '../../shared/pie-charts/pie-charts.component
 export class SurveyReportComponent implements OnInit, OnDestroy {
   destroy$ = new Subject<void>();
   departments: Department[];
+  doctorId: string;
+  isCms: boolean;
 
   surveys: Survey[];
   searchOutput: ReportSearchOutput;
@@ -36,12 +40,16 @@ export class SurveyReportComponent implements OnInit, OnDestroy {
 
   constructor(
     private route: ActivatedRoute,
+    private appStore: AppStoreService,
+    private auth: AuthService,
     private surveyService: SurveyService,
     private cd: ChangeDetectorRef,
     private localDate: LocalDatePipe,
     public dialog: MatDialog,
   ) {
+    this.isCms = this.appStore.cms;
     this.departments = this.route.snapshot.data.departments;
+    this.doctorId = this.route.snapshot.queryParams?.doc || this.auth.doctor?._id || '';
   }
 
   ngOnInit(): void {
@@ -52,8 +60,12 @@ export class SurveyReportComponent implements OnInit, OnDestroy {
     this.destroy$.unsubscribe();
   }
 
-  search(s) {
-    this.surveyService.surveySearch(s).pipe(
+  search(search: ReportSearch) {
+    if (!this.isCms) {
+      search = { ...search, doctor: this.doctorId };
+    }
+
+    this.surveyService.surveySearch(search).pipe(
       tap(results => {
         this.surveys = results;
         this.loadData();
