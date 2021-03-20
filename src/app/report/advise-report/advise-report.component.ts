@@ -32,7 +32,7 @@ export class AdviseReportComponent implements OnInit {
   dataSource: MatTableDataSource<Advise>;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
-  displayedColumns: string[] = ['doctorDepartment', 'doctorName', 'name', 'questions', 'isPerformance', 'isOpen', 'finished', 'updatedAt'];
+  displayedColumns: string[] = ['doctorDepartment', 'doctorName', 'name', 'questions', 'isPerformance', 'isOpen', 'finished', 'updatedAt', 'score'];
 
   constructor(
     private appStore: AppStoreService,

@@ -202,20 +202,19 @@ export class AdviseComponent implements OnInit {
     this.loadAdvise(advise);
   }
 
-  async finishAdvise() {
+  finishAdvise() {
     if (!this.advise) return;
 
+    this.saveAdvise(true);
+  }
+
+  async saveAdvise(finished = false) {
+    if (!this.advise) return;
     // add departmentName to advise
     const departmentName = (!this.advise.doctorDepartment) ?
       (await this.departmentService.getDepartmentById(this.doctor.department).toPromise())?.name :
       this.advise.doctorDepartment;
     this.advise.doctorDepartment = departmentName;
-
-    this.saveAdvise(true);
-  }
-
-  saveAdvise(finished = false) {
-    if (!this.advise) return;
 
     this.advise = {
       ...this.advise,
