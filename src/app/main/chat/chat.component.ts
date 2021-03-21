@@ -64,6 +64,7 @@ export class ChatComponent implements OnInit, OnDestroy {
   existsConsult = false; // 存在付费咨询
   existedConsultType: number;
   existedConsultId: string;
+  hasErrorMessage = false;
 
   isMd: boolean; // greater than md
   showInSm: boolean; chatBodyHeight: string;
@@ -156,6 +157,12 @@ export class ChatComponent implements OnInit, OnDestroy {
       if (!found) {
         if (this.type === NotificationType.chat) {
           this.chatService.removeChatsFromNotificationList(this.doctor._id, pid);
+          this.message.info('该病患不再是药师的用户，或者病患已经取消关注。', '操作取消！');
+        } else if (this.type === NotificationType.consultChat) {
+          this.consultService.removeFromNotificationList(this.doctor._id, pid, this.type);
+          this.message.info('该病患不再是药师的用户，或者病患已经取消关注。', '操作取消！');
+        } else if (this.type === NotificationType.adverseReaction || this.type === NotificationType.doseCombination) {
+          this.feedbackService.removeFromNotificationList(this.doctor._id, pid, this.type);
           this.message.info('该病患不再是药师的用户，或者病患已经取消关注。', '操作取消！');
         }
       }
@@ -343,7 +350,10 @@ export class ChatComponent implements OnInit, OnDestroy {
   }
 
   selectPatient(patient: User) {
+    this.hasErrorMessage = false;
+
     if (this.type === NotificationType.chat) {
+      this.selectedPatient = patient;
       this.selectChatPatient(patient);
 
       if (!this.isCs) {
@@ -357,6 +367,7 @@ export class ChatComponent implements OnInit, OnDestroy {
         ).subscribe();
       }
 
+      //todo: remove
       if (this.consultEnabled) {
         // 付费咨询正在进行中
         this.consultService.checkConsultExistsByDoctorIdAndUserId(this.doctor._id, patient._id).pipe(
@@ -373,14 +384,20 @@ export class ChatComponent implements OnInit, OnDestroy {
         ).subscribe();
       }
     } else if (NotificationType.consultChat === this.type) {
-      this.selectConsultPatient(patient);
+      this.selectedPatient = patient;
+      const consultId = this.consultNotifications.find(_ => _.patientId === patient._id)?.keyId;
+      if (consultId) {
+        this.selectConsultGroup(consultId);
+      } else {
+        this.hasErrorMessage = true;
+      }
     } else if ([NotificationType.adverseReaction, NotificationType.doseCombination].indexOf(this.type) > -1) {
+      this.selectedPatient = patient;
       this.selectFeedbackPatient(patient, this.type);
     }
   }
 
   selectChatPatient(patient: User) {
-    this.selectedPatient = patient;
     this.showInSm = false;
 
     // get chat history
@@ -405,7 +422,6 @@ export class ChatComponent implements OnInit, OnDestroy {
   }
 
   selectFeedbackPatient(patient: User, type: number) {
-    this.selectedPatient = patient;
     this.showInSm = false;
 
     // get history
@@ -426,12 +442,10 @@ export class ChatComponent implements OnInit, OnDestroy {
     ).subscribe();
   }
 
-  selectConsultPatient(patient: User) {
-    this.selectedPatient = patient;
+  selectConsultGroup(consultId: string) {
     this.showInSm = false;
-
-    // get history
-    this.consultService.GetConsultsByDoctorIdAndUserId(this.doctor._id, patient._id).pipe(
+    // consult：从 consult id 获取consult group history
+    this.consultService.getAllConsultsByGroup(consultId).pipe(
       tap(results => {
         if (results?.length) {
           this.consults = results;
@@ -572,6 +586,7 @@ export class ChatComponent implements OnInit, OnDestroy {
     if (imgPath) {
       // Picture
       consult = {
+        parent: this.keyId,
         user: this.selectedPatient._id,
         doctor: this.doctor._id,
         // userName: this.selectedPatient.name, // 当前用是否有userName作为消息方向，更好的办法是用status
@@ -585,6 +600,7 @@ export class ChatComponent implements OnInit, OnDestroy {
       // Text
       if (this.myInput.trim() === '') return; // avoid sending empty
       consult = {
+        parent: this.keyId,
         user: this.selectedPatient._id,
         doctor: this.doctor._id,
         // userName: this.selectedPatient.name,
@@ -600,7 +616,7 @@ export class ChatComponent implements OnInit, OnDestroy {
       this.wxService.sendWechatMsg(this.selectedPatient.link_id,
         `${this.doctor.name}${this.doctor.title}咨询回复`,
         !imgPath ? consult.content : '药师发送图片，请点击查看。',
-        `${this.doctor.wechatUrl}consult-reply?doctorid=${this.doctor._id}&openid=${this.selectedPatient.link_id}&state=${this.auth.hid}&id=${consult._id}`,
+        `${this.doctor.wechatUrl}consult-reply?doctorid=${this.doctor._id}&openid=${this.selectedPatient.link_id}&state=${this.auth.hid}&id=${this.keyId}`,
         '',
         this.doctor._id,
         this.selectedPatient.name
@@ -644,6 +660,7 @@ export class ChatComponent implements OnInit, OnDestroy {
           this.consultService.removeFromNotificationList(this.doctor._id, this.selectedPatient._id, NotificationType.consultChat);
 
           const consult = {
+            parent: this.keyId,
             user: this.selectedPatient._id,
             doctor: this.doctor._id,
             type: 0, //this.type,

@@ -1,14 +1,15 @@
 <span class="text-muted small">发送于 {{ consult.createdAt | localDate: 'full'}}</span>
 <hr class="my-1">
-<div class="text-center" *ngIf="showType">
-  <span class="text-primary" *ngIf="consult.type === 0">
-    *** 付费图文咨询 {{!consult.finished ? '' : '(已完成)'}} ***
-  </span>
-  <span class="text-primary" *ngIf="consult.type === 1">*
-    ** 付费电话咨询 {{!consult.finished ? '' : '(已完成)'}} ***
-  </span>
-</div>
-<ng-container *ngIf="isConsultRequest">
+
+<ng-container *ngIf="!consult.parent">
+  <div class="text-center">
+    <span class="text-primary" *ngIf="consult.type === 0">
+      *** 付费图文咨询 {{!consult.finished ? '' : '(已完成)'}} ***
+    </span>
+    <span class="text-primary" *ngIf="consult.type === 1">*
+      ** 付费电话咨询 {{!consult.finished ? '' : '(已完成)'}} ***
+    </span>
+  </div>
   <div *ngIf="consult.userName">
     <span class="item-lable">咨询人：</span>
     {{consult.userName}}
@@ -31,7 +32,7 @@
   </div>
 </ng-container>
 
-<div *ngIf="!isConsultRequest" class="mb-1 text-break" [innerHTML]="translateEmoji(consult.content)">
+<div *ngIf="consult.parent" class="mb-1 text-break" [innerHTML]="translateEmoji(consult.content)">
 </div>
 <div *ngIf="consult.upload">
   <img [src]="consult.upload | imgPath" ngxImgClickView onerror="this.src='assets/images/no-image.png';this.onerror='';"

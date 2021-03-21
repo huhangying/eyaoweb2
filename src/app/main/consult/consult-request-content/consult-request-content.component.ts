@@ -8,14 +8,11 @@ import *  as qqface from 'wx-qqface';
   styleUrls: ['./consult-request-content.component.scss']
 })
 export class ConsultRequestContentComponent implements OnInit {
-  isConsultRequest: boolean;
   _consult: Consult;
   @Input() set consult(value: Consult) {
     this._consult = value;
-    this.isConsultRequest = value?.disease_types && value.disease_types.length > 0;
   }
   get consult() { return this._consult; }
-  @Input() showType?: boolean;
 
   constructor() { }
 

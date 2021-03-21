@@ -1,5 +1,6 @@
 export interface Consult {
   _id?: string;
+  parent?: string; // for group
   user: string;   // id
   userName?: string;
   doctor: string; // id

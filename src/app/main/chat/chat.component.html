@@ -93,243 +93,251 @@
       </div>
 
       <div class="col-12 col-md-8 col-xl-9">
-        <div class="card" [style.height]="chatBodyHeight" *ngIf="selectedPatient">
-          <div class="chat-header d-flex justify-content-between">
-            <div class="d-flex bd-highlight">
-              <div class="img_cont">
-                <img [src]="selectedPatient?.icon | imgPath:'person'" class="rounded-circle user_img">
-                <span class="online_icon"></span>
+        <ng-container *ngIf="!hasErrorMessage">
+          <div class="card" [style.height]="chatBodyHeight" *ngIf="selectedPatient">
+            <div class="chat-header d-flex justify-content-between">
+              <div class="d-flex bd-highlight">
+                <div class="img_cont">
+                  <img [src]="selectedPatient?.icon | imgPath:'person'" class="rounded-circle user_img">
+                  <span class="online_icon"></span>
+                </div>
+                <div class="user_info">
+                  <span>{{ selectedPatient?.name }}</span>
+                  <p>
+                    {{ selectedPatient?.gender | gender }} &nbsp;&nbsp;
+                    {{ selectedPatient?.birthdate ? '年龄：' + (selectedPatient.birthdate | localDate: 'age') : '' }} <br>
+                    {{ selectedPatient?.cell ? '电话：' + selectedPatient.cell : '' }}
+                  </p>
+                </div>
               </div>
-              <div class="user_info">
-                <span>{{ selectedPatient?.name }}</span>
-                <p>
-                  {{ selectedPatient?.gender | gender }} &nbsp;&nbsp;
-                  {{ selectedPatient?.birthdate ? '年龄：' + (selectedPatient.birthdate | localDate: 'age') : '' }} <br>
-                  {{ selectedPatient?.cell ? '电话：' + selectedPatient.cell : '' }}
-                </p>
+              <div class="status-action d-flex flex-column justify-content-center pr-2">
+                <div *ngIf="hasNewServices(selectedPatient?._id)">
+                  <button mat-flat-button class="text-success" matTooltip="药师手动标识完成" (click)="markRead()">
+                    <mat-icon>check_circle</mat-icon>
+                    {{this.type === NotificationType.consultChat ? '结束咨询': '标识完成'}}
+                  </button>
+                </div>
               </div>
             </div>
-            <div class="status-action d-flex flex-column justify-content-center pr-2">
-              <div *ngIf="hasNewServices(selectedPatient?._id)">
-                <button mat-flat-button class="text-success" matTooltip="药师手动标识完成" (click)="markRead()">
-                  <mat-icon>check_circle</mat-icon>
-                  {{this.type === NotificationType.consultChat ? '结束咨询': '标识完成'}}
-                </button>
-              </div>
-            </div>
-          </div>
 
-          <div class="card-body msg_card_body">
-            <ng-container *ngIf="type === 0">
-              <div *ngFor="let chat of chats" class="mb-2" [ngClass]="chat.sender === doctor._id ? ' sender': 'to'">
-                <ng-container *ngIf="chat.sender === doctor._id">
-                  <div class="d-flex align-items-end flex-row-reverse">
-                    <div class="img_cont_msg">
-                      <span class="triangle"></span>
-                      <img [src]="doctor?.icon | imgPath:'person'" class="rounded-circle user_img_msg">
-                    </div>
-                    <div class="msg-data" [ngSwitch]="chat.type">
-                      <div *ngSwitchCase="dataType.picture">
-                        <img [src]="chat.data | imgPath"
-                          onerror="this.src='assets/images/no-image.png';this.onerror='';"
-                          class="img-fluid img-thumbnail" ngxImgClickView>
-                      </div>
-                      <div *ngSwitchCase="dataType.command">
-                        **** {{translateCommand(chat.data)}} ****
-                      </div>
-                      <div *ngSwitchDefault class="text-break" [innerHTML]="translateEmoji(chat.data)">
-                      </div>
-                    </div>
-                  </div>
-                </ng-container>
-
-                <ng-container *ngIf="chat.sender !== doctor._id">
-                  <div class="d-flex align-items-start flex-row">
-                    <div class="img_cont_msg">
-                      <span class="triangle"></span>
-                      <img [src]="selectedPatient?.icon | imgPath:'person'" class="rounded-circle user_img_msg">
-                    </div>
-                    <div class="msg-data" [ngSwitch]="chat.type">
-                      <div *ngSwitchCase="dataType.picture">
-                        <img [src]="chat.data | imgPath"
-                          onerror="this.src='assets/images/no-image.png';this.onerror='';"
-                          class="img-fluid img-thumbnail" ngxImgClickView>
-                      </div>
-                      <div *ngSwitchDefault class="text-break" [innerHTML]="translateEmoji(chat.data)">
-                      </div>
-                    </div>
-                  </div>
-                </ng-container>
-
-                <div class="msg-time">{{chat.created | localDate: 'auto'}}</div>
-              </div>
-            </ng-container>
-
-            <ng-container *ngIf="type === 1 || type === 2">
-              <div *ngFor="let feedback of feedbacks" class="mx-2 my-3">
-                <ng-container *ngIf="feedback.status < 2">
-                  <div class="to">
-                    <div class="d-flex align-items-start">
-                      <div class="img_cont_msg">
-                        <span class="triangle"></span>
-                        <img [src]="selectedPatient?.icon | imgPath:'person'" class="rounded-circle user_img_msg">
-                      </div>
-                      <div class="msg-data text-break">
-                        <span class="text-muted small">发送于 {{ feedback.createdAt | localDate: 'full'}}</span>
-                        <hr class="my-2">
-                        <div class="mb-2">
-                          {{feedback.name}}
-                        </div>
-                        {{feedback.how}}
-                        <div class="text-muted small">
-                          开始日期: {{ feedback.startDate ? (feedback.startDate | localDate): '未设置' }}
-                        </div>
-                        <div class="text-muted small">
-                          结束日期: {{ feedback.endDate ? (feedback.endDate | localDate): '未设置' }}
-                        </div>
-                        <div *ngIf="feedback.upload">
-                          <img [src]="feedback.upload | imgPath" ngxImgClickView
-                            onerror="this.src='assets/images/no-image.png';this.onerror='';"
-                            class="img-fluid img-thumbnail">
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </ng-container>
-
-                <ng-container *ngIf="feedback.status >= 2">
-                  <div class="sender">
+            <div class="card-body msg_card_body">
+              <ng-container *ngIf="type === 0">
+                <div *ngFor="let chat of chats" class="mb-2" [ngClass]="chat.sender === doctor._id ? ' sender': 'to'">
+                  <ng-container *ngIf="chat.sender === doctor._id">
                     <div class="d-flex align-items-end flex-row-reverse">
                       <div class="img_cont_msg">
                         <span class="triangle"></span>
                         <img [src]="doctor?.icon | imgPath:'person'" class="rounded-circle user_img_msg">
                       </div>
-                      <div class="msg-data text-break">
-                        <div class="text-muted small">回复于
-                          {{ feedback.createdAt | localDate: 'full'}}
-                        </div>
-                        <hr class="my-2">
-                        <div class="mb-1 text-break" [innerHTML]="translateEmoji(feedback.name)">
-                        </div>
-                        <div *ngIf="feedback.upload">
-                          <img [src]="feedback.upload | imgPath" ngxImgClickView
+                      <div class="msg-data" [ngSwitch]="chat.type">
+                        <div *ngSwitchCase="dataType.picture">
+                          <img [src]="chat.data | imgPath"
                             onerror="this.src='assets/images/no-image.png';this.onerror='';"
-                            class="img-fluid img-thumbnail">
+                            class="img-fluid img-thumbnail" ngxImgClickView>
+                        </div>
+                        <div *ngSwitchCase="dataType.command">
+                          **** {{translateCommand(chat.data)}} ****
+                        </div>
+                        <div *ngSwitchDefault class="text-break" [innerHTML]="translateEmoji(chat.data)">
                         </div>
                       </div>
                     </div>
-                  </div>
-                </ng-container>
-              </div>
-            </ng-container>
+                  </ng-container>
 
-            <ng-container *ngIf="type === 5">
-              <div *ngFor="let consult of consults" class="mx-2 my-3">
-                <ng-container *ngIf="consult.userName">
-                  <div class="to">
-                    <div class="d-flex align-items-start">
+                  <ng-container *ngIf="chat.sender !== doctor._id">
+                    <div class="d-flex align-items-start flex-row">
                       <div class="img_cont_msg">
                         <span class="triangle"></span>
                         <img [src]="selectedPatient?.icon | imgPath:'person'" class="rounded-circle user_img_msg">
                       </div>
-                      <div class="msg-data text-break">
-                        <ngx-consult-request-content [consult]="consult" [showType]="true">
-                        </ngx-consult-request-content>
+                      <div class="msg-data" [ngSwitch]="chat.type">
+                        <div *ngSwitchCase="dataType.picture">
+                          <img [src]="chat.data | imgPath"
+                            onerror="this.src='assets/images/no-image.png';this.onerror='';"
+                            class="img-fluid img-thumbnail" ngxImgClickView>
+                        </div>
+                        <div *ngSwitchDefault class="text-break" [innerHTML]="translateEmoji(chat.data)">
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </ng-container>
+                  </ng-container>
 
-                <ng-container *ngIf="!consult.userName">
-                  <div class="sender">
-                    <div class="d-flex align-items-end flex-row-reverse">
-                      <div class="img_cont_msg">
-                        <span class="triangle"></span>
-                        <img [src]="doctor?.icon | imgPath:'person'" class="rounded-circle user_img_msg">
-                      </div>
-                      <div class="msg-data text-break">
-                        <ngx-consult-request-content [consult]="consult"></ngx-consult-request-content>
+                  <div class="msg-time">{{chat.created | localDate: 'auto'}}</div>
+                </div>
+              </ng-container>
+
+              <ng-container *ngIf="type === 1 || type === 2">
+                <div *ngFor="let feedback of feedbacks" class="mx-2 my-3">
+                  <ng-container *ngIf="feedback.status < 2">
+                    <div class="to">
+                      <div class="d-flex align-items-start">
+                        <div class="img_cont_msg">
+                          <span class="triangle"></span>
+                          <img [src]="selectedPatient?.icon | imgPath:'person'" class="rounded-circle user_img_msg">
+                        </div>
+                        <div class="msg-data text-break">
+                          <span class="text-muted small">发送于 {{ feedback.createdAt | localDate: 'full'}}</span>
+                          <hr class="my-2">
+                          <div class="mb-2">
+                            {{feedback.name}}
+                          </div>
+                          {{feedback.how}}
+                          <div class="text-muted small">
+                            开始日期: {{ feedback.startDate ? (feedback.startDate | localDate): '未设置' }}
+                          </div>
+                          <div class="text-muted small">
+                            结束日期: {{ feedback.endDate ? (feedback.endDate | localDate): '未设置' }}
+                          </div>
+                          <div *ngIf="feedback.upload">
+                            <img [src]="feedback.upload | imgPath" ngxImgClickView
+                              onerror="this.src='assets/images/no-image.png';this.onerror='';"
+                              class="img-fluid img-thumbnail">
+                          </div>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </ng-container>
+                  </ng-container>
 
+                  <ng-container *ngIf="feedback.status >= 2">
+                    <div class="sender">
+                      <div class="d-flex align-items-end flex-row-reverse">
+                        <div class="img_cont_msg">
+                          <span class="triangle"></span>
+                          <img [src]="doctor?.icon | imgPath:'person'" class="rounded-circle user_img_msg">
+                        </div>
+                        <div class="msg-data text-break">
+                          <div class="text-muted small">回复于
+                            {{ feedback.createdAt | localDate: 'full'}}
+                          </div>
+                          <hr class="my-2">
+                          <div class="mb-1 text-break" [innerHTML]="translateEmoji(feedback.name)">
+                          </div>
+                          <div *ngIf="feedback.upload">
+                            <img [src]="feedback.upload | imgPath" ngxImgClickView
+                              onerror="this.src='assets/images/no-image.png';this.onerror='';"
+                              class="img-fluid img-thumbnail">
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </ng-container>
+                </div>
+              </ng-container>
+
+              <ng-container *ngIf="type === 5">
+                <div *ngFor="let consult of consults" class="mx-2 my-3">
+                  <ng-container *ngIf="consult.userName">
+                    <div class="to">
+                      <div class="d-flex align-items-start">
+                        <div class="img_cont_msg">
+                          <span class="triangle"></span>
+                          <img [src]="selectedPatient?.icon | imgPath:'person'" class="rounded-circle user_img_msg">
+                        </div>
+                        <div class="msg-data text-break">
+                          <ngx-consult-request-content [consult]="consult">
+                          </ngx-consult-request-content>
+                        </div>
+                      </div>
+                    </div>
+                  </ng-container>
+
+                  <ng-container *ngIf="!consult.userName">
+                    <div class="sender">
+                      <div class="d-flex align-items-end flex-row-reverse">
+                        <div class="img_cont_msg">
+                          <span class="triangle"></span>
+                          <img [src]="doctor?.icon | imgPath:'person'" class="rounded-circle user_img_msg">
+                        </div>
+                        <div class="msg-data text-break">
+                          <ngx-consult-request-content [consult]="consult"></ngx-consult-request-content>
+                        </div>
+                      </div>
+                    </div>
+                  </ng-container>
+
+                </div>
+              </ng-container>
+              <div id="chat-bottom" class="position-relative"></div>
+            </div>
+
+            <div class="align-bottom d-flex text-right w-100">
+              <textarea type="text" nbInput fullWidth autocomplete="off" fieldSize="small" placeholder="请输入..."
+                cdkFocusInitial (keyup.enter)="send()" [(ngModel)]="myInput"></textarea>
+              <nb-button-group status="basic" nbSuffix>
+                <button nbButton hero status="info" matTooltip="发送" (click)="send()">
+                  <nb-icon icon="paper-plane-outline" class="mx-1"></nb-icon>
+                </button>
+                <ng-container *ngIf="type === NotificationType.chat">
+                  <button nbButton hero status="info" matTooltip="发送（微信消息）" (click)="sendWithMessage()">
+                    <nb-icon icon="message-square-outline" class="mx-1"></nb-icon>
+                  </button>
+                </ng-container>
+              </nb-button-group>
+            </div>
+
+            <div class="d-flex justify-content-between px-3">
+              <div>
+                <button mat-icon-button color="primary" class="mr-2" (click)="toggleEmoji()">
+                  <mat-icon>insert_emoticon</mat-icon>
+                </button>
+                <input hidden="true" type="file" accept="image/*" (change)="imageUpload($event)" #fileInput>
+                <button mat-icon-button color="primary" class="mr-2" (click)="fileInput.click()">
+                  <mat-icon>insert_photo</mat-icon>
+                </button>
+                <button mat-icon-button [matMenuTriggerFor]="shortcutList" color="primary" class="mr-2">
+                  <mat-icon>reply</mat-icon>
+                </button>
+                <mat-menu #shortcutList="matMenu" yPosition="above">
+                  <ng-container *ngIf="doctor.shortcuts">
+                    <button mat-menu-item *ngFor="let shortcut of doctor.shortcuts.split('|')"
+                      (click)="inputFromShortcut(shortcut)">
+                      {{shortcut}}
+                    </button>
+                  </ng-container>
+                  <ng-container *ngIf="!doctor.shortcuts">
+                    <div class="alert alert-warning">
+                      您还没有设置，请先到“快捷回复管理”中添加。
+                    </div>
+                  </ng-container>
+                </mat-menu>
               </div>
-            </ng-container>
-            <div id="chat-bottom" class="position-relative"></div>
-          </div>
-
-          <div class="align-bottom d-flex text-right w-100">
-            <textarea type="text" nbInput fullWidth autocomplete="off" fieldSize="small" placeholder="请输入..."
-              cdkFocusInitial (keyup.enter)="send()" [(ngModel)]="myInput"></textarea>
-            <nb-button-group status="basic" nbSuffix>
-              <button nbButton hero status="info" matTooltip="发送" (click)="send()">
-                <nb-icon icon="paper-plane-outline" class="mx-1"></nb-icon>
-              </button>
-              <ng-container *ngIf="type === NotificationType.chat">
-                <button nbButton hero status="info" matTooltip="发送（微信消息）" (click)="sendWithMessage()">
-                  <nb-icon icon="message-square-outline" class="mx-1"></nb-icon>
-                </button>
-              </ng-container>
-            </nb-button-group>
-          </div>
-
-          <div class="d-flex justify-content-between px-3">
-            <div>
-              <button mat-icon-button color="primary" class="mr-2" (click)="toggleEmoji()">
-                <mat-icon>insert_emoticon</mat-icon>
-              </button>
-              <input hidden="true" type="file" accept="image/*" (change)="imageUpload($event)" #fileInput>
-              <button mat-icon-button color="primary" class="mr-2" (click)="fileInput.click()">
-                <mat-icon>insert_photo</mat-icon>
-              </button>
-              <button mat-icon-button [matMenuTriggerFor]="shortcutList" color="primary" class="mr-2">
-                <mat-icon>reply</mat-icon>
-              </button>
-              <mat-menu #shortcutList="matMenu" yPosition="above">
-                <ng-container *ngIf="doctor.shortcuts">
-                  <button mat-menu-item *ngFor="let shortcut of doctor.shortcuts.split('|')"
-                    (click)="inputFromShortcut(shortcut)">
-                    {{shortcut}}
+              <div class="status-action align-self-center">
+                <ng-container *ngIf="!isCs && type === 0 && consultEnabled && !existsConsult">
+                  <mat-slide-toggle [checked]="setCharged" (toggleChange)="toggleSetCharge()">
+                    <span class="small">设置收费</span>
+                  </mat-slide-toggle>
+                </ng-container>
+                <ng-container *ngIf="type === 0 && consultEnabled && existsConsult">
+                  <button mat-flat-button class="text-success" matTooltip="回到病患付费咨询页面" (click)="goBackConsult()">
+                    <mat-icon>arrow_back</mat-icon> 返回付费咨询
                   </button>
                 </ng-container>
-                <ng-container *ngIf="!doctor.shortcuts">
-                  <div class="alert alert-warning">
-                    您还没有设置，请先到“快捷回复管理”中添加。
-                  </div>
-                </ng-container>
-              </mat-menu>
-            </div>
-            <div class="status-action align-self-center">
-              <ng-container *ngIf="!isCs && type === 0 && consultEnabled && !existsConsult">
-                <mat-slide-toggle [checked]="setCharged" (toggleChange)="toggleSetCharge()">
-                  <span class="small">设置收费</span>
-                </mat-slide-toggle>
-              </ng-container>
-              <ng-container *ngIf="type === 0 && consultEnabled && existsConsult">
-                <button mat-flat-button class="text-success" matTooltip="回到病患付费咨询页面" (click)="goBackConsult()">
-                  <mat-icon>arrow_back</mat-icon> 返回付费咨询
-                </button>
-              </ng-container>
-              <ng-container *ngIf="type === 5 && hasNewServices(selectedPatient?._id)">
-                <button mat-flat-button class="text-warning" matTooltip="药师拒绝本次服务" (click)="consultReject()">
-                  <mat-icon>cancel</mat-icon> 咨询拒绝
-                </button>
-              </ng-container>
-            </div>
-          </div>
-          <div *ngIf="showEmoji">
-            <div class="qqface">
-              <ng-container *ngFor="let code of qqfaces; let i=index">
-                <ng-container *ngIf="i<90">
-                  <button mat-icon-button (click)="addEmoji(code)">
-                    <img [src]="'assets/qqface/' + code + '.gif'" />
+                <ng-container *ngIf="type === 5 && hasNewServices(selectedPatient?._id)">
+                  <button mat-flat-button class="text-warning" matTooltip="药师拒绝本次服务" (click)="consultReject()">
+                    <mat-icon>cancel</mat-icon> 咨询拒绝
                   </button>
                 </ng-container>
-              </ng-container>
+              </div>
+            </div>
+            <div *ngIf="showEmoji">
+              <div class="qqface">
+                <ng-container *ngFor="let code of qqfaces; let i=index">
+                  <ng-container *ngIf="i<90">
+                    <button mat-icon-button (click)="addEmoji(code)">
+                      <img [src]="'assets/qqface/' + code + '.gif'" />
+                    </button>
+                  </ng-container>
+                </ng-container>
+              </div>
             </div>
           </div>
-        </div>
+        </ng-container>
+
+        <ng-container *ngIf="hasErrorMessage">
+          <div class="alert alert-warning" role="alert">
+            选择的病患无法操作。
+          </div>
+        </ng-container>
       </div>
     </div>
 
