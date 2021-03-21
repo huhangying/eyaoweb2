@@ -15,23 +15,29 @@
 
         <ng-container *ngIf="isCms">
           <button nbButton hero status="info" outline size="small" class="mr-4" nbSuffix (click)="displayChartDataByDoctor()">
-            <span class="material-icons"> timeline </span>&nbsp; 按药师统计
+            <span class="material-icons"> timeline </span>&nbsp; 按药师
           </button>
         </ng-container>
 
         <button nbButton hero status="primary" outline size="small" class="mr-4" nbSuffix (click)="displayPieChartDataByIsFinished()">
-          <nb-icon icon="pie-chart-outline" pack="eva"></nb-icon> 按是否完成统计
+          <nb-icon icon="pie-chart-outline" pack="eva"></nb-icon> 按是否完成
         </button>
         <button nbButton hero status="primary" outline size="small" class="mr-4" nbSuffix (click)="displayPieChartDataByIsOpen()">
-          <nb-icon icon="pie-chart-outline" pack="eva"></nb-icon> 按记录是否开放统计
+          <nb-icon icon="pie-chart-outline" pack="eva"></nb-icon> 按记录是否开放
         </button>
         <button nbButton hero status="primary" outline size="small" class="mr-4" nbSuffix (click)="displayPieChartDataByIsPerformance()">
-          <nb-icon icon="pie-chart-outline" pack="eva"></nb-icon> 按是否申报绩效统计
+          <nb-icon icon="pie-chart-outline" pack="eva"></nb-icon> 按是否申报绩效
+        </button>
+        <button nbButton hero status="primary" outline size="small" class="mr-4" nbSuffix (click)="displayPieChartDataByAdviseTemplate()">
+          <nb-icon icon="pie-chart-outline" pack="eva"></nb-icon> 按模板
+        </button>
+        <button nbButton hero status="primary" outline size="small" class="mr-4" nbSuffix (click)="displayPieChartDataByUser()">
+          <nb-icon icon="pie-chart-outline" pack="eva"></nb-icon> 按病患是否注册
         </button>
 
         <ng-container *ngIf="isCms">
           <button nbButton hero status="primary" outline size="small" class="mr-4" nbSuffix (click)="displayPieChartDataByDoctor()">
-            <nb-icon icon="pie-chart-outline" pack="eva"></nb-icon> 按药师统计
+            <nb-icon icon="pie-chart-outline" pack="eva"></nb-icon> 按药师
           </button>
         </ng-container>
       </div>

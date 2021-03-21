@@ -6,6 +6,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute } from '@angular/router';
 import { tap } from 'rxjs/operators';
 import { Department } from '../../models/hospital/department.model';
+import { AdviseTemplate } from '../../models/survey/advise-template.model';
 import { Advise } from '../../models/survey/advise.model';
 import { AdviseService } from '../../services/advise.service';
 import { LocalDatePipe } from '../../shared/pipe/local-date.pipe';
@@ -24,6 +25,7 @@ import { PieChartsComponent } from '../shared/pie-charts/pie-charts.component';
 export class AdviseReportComponent implements OnInit {
   departments: Department[];
   doctorId: string;
+  departmentId: string;
   isCms: boolean;
 
   advises: Advise[];
@@ -33,6 +35,8 @@ export class AdviseReportComponent implements OnInit {
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   displayedColumns: string[] = ['doctorDepartment', 'doctorName', 'name', 'questions', 'isPerformance', 'isOpen', 'finished', 'updatedAt', 'score'];
+
+  adviseTemplates: AdviseTemplate[];
 
   constructor(
     private appStore: AppStoreService,
@@ -46,6 +50,24 @@ export class AdviseReportComponent implements OnInit {
     this.isCms = this.appStore.cms;
     this.departments = this.route.snapshot.data.departments;
     this.doctorId = this.route.snapshot.queryParams?.doc || this.auth.doctor?._id || '';
+    this.departmentId = this.route.snapshot.queryParams?.dep || this.auth.doctor?.department || '';
+    if (this.isCms) {
+      this.adviseService.getAllAdviseTemplates().pipe(
+        tap(results => {
+          if (results?.length) {
+            this.adviseTemplates = results;
+          }
+        })
+      ).subscribe();
+    } else {
+      this.adviseService.getAdviseTemplatesByDepartmentId(this.departmentId).pipe(
+        tap(results => {
+          if (results?.length) {
+            this.adviseTemplates = results;
+          }
+        })
+      ).subscribe();
+    }
   }
 
   ngOnInit(): void {
@@ -77,10 +99,13 @@ export class AdviseReportComponent implements OnInit {
   }
 
   ///////////////////////////////////// Report
-
+  getAdviseTemplateNameById(id: string) {
+    if(!this.adviseTemplates?.length) return '无模板';
+    return this.adviseTemplates.find(_ => _._id === id)?.name || '无线下咨询模板';
+  }
 
   displayChartDataByDoctor() {
-    console.log(this.dataSource.data);
+    // console.log(this.dataSource.data);
     const keys: string[] = []; // key = doctor + 日期
     const chartData = this.dataSource.data.reduce((chartGroups: ChartGroup[], item: Advise) => {
       const date = this.localDate.transform(item.updatedAt, 'sort-date');
@@ -124,11 +149,77 @@ export class AdviseReportComponent implements OnInit {
   }
 
   // pie
+
+  // 按模板的次数统计
+  displayPieChartDataByAdviseTemplate() {
+    const keys: string[] = [];
+    const chartData = this.dataSource.data.reduce((chartItems: ChartItem[], item: Advise) => {
+
+      const key = item.adviseTemplate;
+      if (keys.indexOf(key) === -1) {
+        keys.push(key);
+        chartItems.push({
+          type: key,
+          name: this.getAdviseTemplateNameById(key),
+          value: 1,
+        });
+        return chartItems;
+      }
+      chartItems = chartItems.map((group) => {
+        if (group.type === key) {
+          group.value += 1;
+        }
+        return group;
+      });
+      return chartItems;
+    }, []);
+
+    this.dialog.open(PieChartsComponent, {
+      data: {
+        title: '模板使用情况统计',
+        chartData: chartData,
+        isPercentage: true,
+      }
+    });
+  }
+
+  displayPieChartDataByUser() {
+    const keys: string[] = [];
+    const chartData = this.dataSource.data.reduce((chartItems: ChartItem[], item: Advise) => {
+
+      const key = !item.user ? '0' : '1'; // 0: new user; 1: old user
+      if (keys.indexOf(key) === -1) {
+        keys.push(key);
+        chartItems.push({
+          type: key,
+          name: key === '1' ? '注册病患' : '未注册病患',
+          value: 1,
+        });
+        return chartItems;
+      }
+      chartItems = chartItems.map((group) => {
+        if (group.type === key) {
+          group.value += 1;
+        }
+        return group;
+      });
+      return chartItems;
+    }, []);
+
+    this.dialog.open(PieChartsComponent, {
+      data: {
+        title: '是否注册用户统计',
+        chartData: chartData,
+        isPercentage: true,
+      }
+    });
+  }
+
   displayPieChartDataByIsFinished() {
     const keys: string[] = [];
     const chartData = this.dataSource.data.reduce((chartItems: ChartItem[], item: Advise) => {
 
-      const key = !item.finished? '0' : '1'; // 0: new user; 1: old user
+      const key = !item.finished ? '0' : '1'; // 0: new user; 1: old user
       if (keys.indexOf(key) === -1) {
         keys.push(key);
         chartItems.push({

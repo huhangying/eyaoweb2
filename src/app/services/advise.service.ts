@@ -17,6 +17,10 @@ export class AdviseService {
   ) { }
 
   // Advise Template
+  getAllAdviseTemplates() {
+    return this.api.get<AdviseTemplate[]>('advisetemplates');
+  }
+
   getAdviseTemplatesByDepartmentId(department: string) {
     return this.api.get<AdviseTemplate[]>(`advisetemplates/department/${department}`); // department 'none' is for hospital-level
   }
