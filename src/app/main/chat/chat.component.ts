@@ -744,6 +744,7 @@ export class ChatComponent implements OnInit, OnDestroy {
     if (this.currentConsult?._id) {
       this.consultService.updateConsultById(this.currentConsult._id, { ...this.currentConsult, setCharged: this.setCharged }).pipe(
         tap(result => {
+          // this.currentConsult = result;
           this.setChatChargedStatus(result?.setCharged);
         })
       ).subscribe();
@@ -755,6 +756,7 @@ export class ChatComponent implements OnInit, OnDestroy {
         setCharged: this.setCharged
       }).pipe(
         tap(result => {
+          this.currentConsult = result;
           this.setChatChargedStatus(result?.setCharged);
         })
       ).subscribe();
