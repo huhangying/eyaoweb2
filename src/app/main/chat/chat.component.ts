@@ -367,7 +367,7 @@ export class ChatComponent implements OnInit, OnDestroy {
         ).subscribe();
       }
 
-      //todo: remove
+      //
       if (this.consultEnabled) {
         // 付费咨询正在进行中
         this.consultService.checkConsultExistsByDoctorIdAndUserId(this.doctor._id, patient._id).pipe(
