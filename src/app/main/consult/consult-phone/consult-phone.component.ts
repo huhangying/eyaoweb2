@@ -4,6 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { tap } from 'rxjs/operators';
 import { Consult } from '../../../models/consult/consult.model';
 import { Doctor } from '../../../models/crm/doctor.model';
+import { User } from '../../../models/crm/user.model';
 import { NotificationType } from '../../../models/io/notification.model';
 import { ConsultService } from '../../../services/consult.service';
 import { UserService } from '../../../services/user.service';
@@ -25,6 +26,9 @@ export class ConsultPhoneComponent implements OnInit {
   patientId: string;
   done: number; // 1: finish; 2: reject
 
+  consults: Consult[];
+  selectedPatient: User;
+
   constructor(
     private route: ActivatedRoute,
     private auth: AuthService,
@@ -39,16 +43,31 @@ export class ConsultPhoneComponent implements OnInit {
     this.route.queryParams.pipe(
       tap(params => {
         this.patientId = params.pid;
-        this.consultId = params.id;
-
-        this.consultService.getConsultById(this.consultId).pipe(
-          tap(result => {
-            this.consult = result;
-            if (result) {
-              this.done = result.finished ? 1 : 0;
+        this.userService.getById(this.patientId).pipe(
+          tap(user => {
+            if (user?._id) {
+              this.selectedPatient = user;
             }
           })
         ).subscribe();
+
+        this.consultId = params.id;
+
+        // consult：从 consult id 获取consult group history
+        this.consultService.getAllConsultsByGroup(this.consultId).pipe(
+          tap(results => {
+            if (results?.length) {
+              this.consults = results;
+              this.consult = results.find(_ => !_.parent);
+              if (this.consult) {
+                this.done = this.consult.finished ? 1 : 0;
+              }
+            } else {
+              this.consults = [];
+            }
+          }),
+        ).subscribe();
+
       })
     ).subscribe();
   }
@@ -57,31 +76,26 @@ export class ConsultPhoneComponent implements OnInit {
   }
 
   markDone(isReject = false) {
-    this.userService.getById(this.patientId).pipe(
-      tap(user => {
-        if (user?._id) {
-          const openid = user.link_id;
-          this.consultService.removeFromNotificationList(this.doctor._id, this.patientId, NotificationType.consultPhone);
 
-          if (!isReject) {
-            this.wxService.sendWechatMsg(openid,
-              '药师咨询完成',
-              `${this.doctor.name}${this.doctor.title}已完成咨询。请点击查看，并建议和评价药师。`,
-              `${this.doctor.wechatUrl}consult-finish?doctorid=${this.doctor._id}&openid=${openid}&state=${this.auth.hid}&id=${this.consultId}&type=1`,
-              '',
-              this.doctor._id,
-              user.name
-            ).subscribe();
+    const openid = this.selectedPatient.link_id;
+    this.consultService.removeFromNotificationList(this.doctor._id, this.patientId, NotificationType.consultPhone);
 
-            this.message.success('药师标记电话咨询已经完成！');
-            this.done = 1;
-          } else {
-            this.message.success('药师已经拒绝本次服务并退款！');
-            this.done = 2;
-          }
-        }
-      })
-    ).subscribe();
+    if (!isReject) {
+      this.wxService.sendWechatMsg(openid,
+        '药师咨询完成',
+        `${this.doctor.name}${this.doctor.title}已完成咨询。请点击查看，并建议和评价药师。`,
+        `${this.doctor.wechatUrl}consult-finish?doctorid=${this.doctor._id}&openid=${openid}&state=${this.auth.hid}&id=${this.consultId}&type=1`,
+        '',
+        this.doctor._id,
+        this.selectedPatient.name
+      ).subscribe();
+
+      this.message.success('药师标记电话咨询已经完成！');
+      this.done = 1;
+    } else {
+      this.message.success('药师已经拒绝本次服务并退款！');
+      this.done = 2;
+    }
   }
 
   consultReject() {

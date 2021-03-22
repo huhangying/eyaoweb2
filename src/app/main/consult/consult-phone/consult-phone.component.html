@@ -10,9 +10,7 @@
       </div>
     </ng-container>
     <ng-container *ngIf="consult?._id">
-      <div class="px-4 py-2 mb-3 bg-light">
-        <ngx-consult-request-content [consult]="consult"></ngx-consult-request-content>
-      </div>
+      <ngx-consult-chat [consults]="consults" [selectedPatient]="selectedPatient" [doctor]="doctor"></ngx-consult-chat>
 
       <div class="alert alert-primary" role="alert">
         请拨打 <b>{{consult.userName}}</b> 的手机号码 <b>{{consult.cell}}</b> 进行咨询。

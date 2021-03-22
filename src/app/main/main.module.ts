@@ -45,6 +45,7 @@ import { AdviseQuestionsEditComponent } from './advise/advise-questions-edit/adv
 import { AdviseSelectPendingsComponent } from './advise/advise-select-pendings/advise-select-pendings.component';
 import { AdviseHistoryComponent } from './diagnose/patient-history/advise-history/advise-history.component';
 import { AdviseDetailsComponent } from './diagnose/patient-history/advise-history/advise-details/advise-details.component';
+import { ConsultChatComponent } from './consult/consult-chat/consult-chat.component';
 
 @NgModule({
   declarations: [
@@ -91,6 +92,7 @@ import { AdviseDetailsComponent } from './diagnose/patient-history/advise-histor
     AdviseSelectPendingsComponent,
     AdviseHistoryComponent,
     AdviseDetailsComponent,
+    ConsultChatComponent,
   ],
   imports: [
     SharedModule,
