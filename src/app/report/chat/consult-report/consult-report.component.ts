@@ -11,6 +11,8 @@ import { DoctorBrief } from '../../../models/crm/doctor.model';
 import { Department } from '../../../models/hospital/department.model';
 import { ConsultService } from '../../../services/consult.service';
 import { LocalDatePipe } from '../../../shared/pipe/local-date.pipe';
+import { AuthService } from '../../../shared/service/auth.service';
+import { AppStoreService } from '../../../shared/store/app-store.service';
 import { ReportSearchOutput, ReportSearch, ChartGroup, ChartItem } from '../../models/report-search.model';
 import { LineChartsComponent } from '../../shared/line-charts/line-charts.component';
 import { PieChartsComponent } from '../../shared/pie-charts/pie-charts.component';
@@ -24,6 +26,8 @@ export class ConsultReportComponent implements OnInit, OnDestroy {
   destroy$ = new Subject<void>();
   departments: Department[];
   briefDoctors: DoctorBrief[];
+  doctorId: string;
+  isCms: boolean;
 
   type: number;  // 0: 图文咨询； 1：电话咨询
   consults: Consult[];
@@ -40,9 +44,13 @@ export class ConsultReportComponent implements OnInit, OnDestroy {
     private cd: ChangeDetectorRef,
     private localDate: LocalDatePipe,
     public dialog: MatDialog,
+    private appStore: AppStoreService,
+    private auth: AuthService,
   ) {
+    this.isCms = this.appStore.cms;
     this.departments = this.route.snapshot.data.departments;
-    this.briefDoctors = this.route.snapshot.data.briefDoctors;
+    // this.briefDoctors = this.route.snapshot.data.briefDoctors;
+    this.doctorId = this.route.snapshot.queryParams?.doc || this.auth.doctor?._id || '';
 
     this.route.queryParams.pipe(
       tap(queryParams => {
@@ -63,8 +71,11 @@ export class ConsultReportComponent implements OnInit, OnDestroy {
     this.destroy$.unsubscribe();
   }
 
-  search(s: ReportSearch) {
-    this.consultService.consultSearch(s).pipe(
+  search(search: ReportSearch) {
+    if (!this.isCms) {
+      search = { ...search, doctor: this.doctorId };
+    }
+    this.consultService.consultSearch(search).pipe(
       tap(results => {
         this.consults = results;
         this.loadData();
@@ -85,12 +96,18 @@ export class ConsultReportComponent implements OnInit, OnDestroy {
   }
 
   getDepartmentLabel(room: string) {
+    if (room === this.auth.doctor?._id) {
+      return this.departments.find(item => item._id === this.auth.doctor.department)?.name;
+    }
     if (!this.searchOutput?.doctors?.length) return '';
     const doctor = this.searchOutput.doctors.find(item => item._id === room);
     return doctor?._id ? this.departments.find(item => item._id === doctor.department)?.name : '';
   }
 
   getDoctorLabel(room: string) {
+    if (room === this.auth.doctor?._id) {
+      return this.auth.doctor?.name;
+    }
     if (!this.searchOutput?.doctors?.length) return '';
     return this.searchOutput.doctors.find(item => item._id === room)?.name;
   }
