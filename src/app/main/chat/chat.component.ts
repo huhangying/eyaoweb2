@@ -385,7 +385,7 @@ export class ChatComponent implements OnInit, OnDestroy {
       }
     } else if (NotificationType.consultChat === this.type) {
       this.selectedPatient = patient;
-      const consultId = this.consultNotifications.find(_ => _.patientId === patient._id)?.keyId;
+      const consultId = this.consultNotifications.find(_ => _.patientId === patient._id && _.type === this.type && _.keyId)?.keyId;
       if (consultId) {
         this.selectConsultGroup(consultId);
       } else {

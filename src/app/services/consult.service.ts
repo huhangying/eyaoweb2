@@ -81,7 +81,7 @@ export class ConsultService {
           type: type,
           name: consult.userName || '',
           count: 1,
-          keyId: consult._id,
+          keyId: consult.parent || consult._id,
           created: consult.createdAt
         });
         return notis;
