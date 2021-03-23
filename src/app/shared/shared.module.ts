@@ -56,7 +56,7 @@ import { TimeFormatPipe } from './pipe/time-format.pipe';
 import { MouseWheelDirective } from './directive/mouse-wheel.directive';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { AdviseDetailsComponent } from './components/advise-details/advise-details.component';
-import { AdviseQuestionsEditComponent } from '../main/advise/advise-questions-edit/advise-questions-edit.component';
+import { AdviseQuestionsEditComponent } from './components/advise-questions-edit/advise-questions-edit.component';
 
 @NgModule({
   imports: [
