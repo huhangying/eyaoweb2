@@ -41,7 +41,6 @@ import { ConsultRequestContentComponent } from './consult/consult-request-conten
 import { ConsultRejectComponent } from './consult/consult-reject/consult-reject.component';
 import { SurveyQueryComponent } from './survey-query/survey-query.component';
 import { AdviseComponent } from './advise/advise.component';
-import { AdviseQuestionsEditComponent } from './advise/advise-questions-edit/advise-questions-edit.component';
 import { AdviseSelectPendingsComponent } from './advise/advise-select-pendings/advise-select-pendings.component';
 import { AdviseHistoryComponent } from './diagnose/patient-history/advise-history/advise-history.component';
 import { AdviseDetailsComponent } from './diagnose/patient-history/advise-history/advise-details/advise-details.component';
@@ -88,7 +87,6 @@ import { ConsultChatComponent } from './consult/consult-chat/consult-chat.compon
     ConsultRejectComponent,
     SurveyQueryComponent,
     AdviseComponent,
-    AdviseQuestionsEditComponent,
     AdviseSelectPendingsComponent,
     AdviseHistoryComponent,
     AdviseDetailsComponent,

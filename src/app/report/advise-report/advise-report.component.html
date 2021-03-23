@@ -1,7 +1,8 @@
 <nb-card>
   <nb-card-header>
-    门诊&预约 / 门诊就诊统计
-    <ngx-report-search [departments]="departments" [dateOnly]="!isCms" (onSearch)="search($event)" (onOutput)="onOutput($event)">
+    咨询服务 / 线下咨询统计
+    <ngx-report-search [departments]="departments" [dateOnly]="!isCms" (onSearch)="search($event)"
+      (onOutput)="onOutput($event)">
     </ngx-report-search>
   </nb-card-header>
   <nb-card-body>
@@ -14,29 +15,36 @@
         </button>
 
         <ng-container *ngIf="isCms">
-          <button nbButton hero status="info" outline size="small" class="mr-4" nbSuffix (click)="displayChartDataByDoctor()">
+          <button nbButton hero status="info" outline size="small" class="mr-4" nbSuffix
+            (click)="displayChartDataByDoctor()">
             <span class="material-icons"> timeline </span>&nbsp; 按药师
           </button>
         </ng-container>
 
-        <button nbButton hero status="primary" outline size="small" class="mr-4" nbSuffix (click)="displayPieChartDataByIsFinished()">
+        <button nbButton hero status="primary" outline size="small" class="mr-4" nbSuffix
+          (click)="displayPieChartDataByIsFinished()">
           <nb-icon icon="pie-chart-outline" pack="eva"></nb-icon> 按是否完成
         </button>
-        <button nbButton hero status="primary" outline size="small" class="mr-4" nbSuffix (click)="displayPieChartDataByIsOpen()">
+        <button nbButton hero status="primary" outline size="small" class="mr-4" nbSuffix
+          (click)="displayPieChartDataByIsOpen()">
           <nb-icon icon="pie-chart-outline" pack="eva"></nb-icon> 按记录是否开放
         </button>
-        <button nbButton hero status="primary" outline size="small" class="mr-4" nbSuffix (click)="displayPieChartDataByIsPerformance()">
+        <button nbButton hero status="primary" outline size="small" class="mr-4" nbSuffix
+          (click)="displayPieChartDataByIsPerformance()">
           <nb-icon icon="pie-chart-outline" pack="eva"></nb-icon> 按是否申报绩效
         </button>
-        <button nbButton hero status="primary" outline size="small" class="mr-4" nbSuffix (click)="displayPieChartDataByAdviseTemplate()">
+        <button nbButton hero status="primary" outline size="small" class="mr-4" nbSuffix
+          (click)="displayPieChartDataByAdviseTemplate()">
           <nb-icon icon="pie-chart-outline" pack="eva"></nb-icon> 按模板
         </button>
-        <button nbButton hero status="primary" outline size="small" class="mr-4" nbSuffix (click)="displayPieChartDataByUser()">
+        <button nbButton hero status="primary" outline size="small" class="mr-4" nbSuffix
+          (click)="displayPieChartDataByUser()">
           <nb-icon icon="pie-chart-outline" pack="eva"></nb-icon> 按病患是否注册
         </button>
 
         <ng-container *ngIf="isCms">
-          <button nbButton hero status="primary" outline size="small" class="mr-4" nbSuffix (click)="displayPieChartDataByDoctor()">
+          <button nbButton hero status="primary" outline size="small" class="mr-4" nbSuffix
+            (click)="displayPieChartDataByDoctor()">
             <nb-icon icon="pie-chart-outline" pack="eva"></nb-icon> 按药师
           </button>
         </ng-container>
@@ -63,7 +71,7 @@
         </ng-container>
 
         <ng-container matColumnDef="questions">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> 问题个数 </th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> 咨询问题 </th>
           <td mat-cell *matCellDef="let element">
             {{element.questions?.length}}
           </td>
@@ -88,7 +96,7 @@
         <ng-container matColumnDef="finished">
           <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 6rem;"> 状态 </th>
           <td mat-cell *matCellDef="let element">
-            {{element.finished ? '已完成':  '未完成'}}
+            {{element.finished ? '已完成': '未完成'}}
           </td>
         </ng-container>
 
@@ -106,6 +114,14 @@
               <span [matTooltip]="'病患评价: ' + element.comment || '无'">{{ element.score }} / 5</span>
             </ng-container>
           </td>
+        </ng-container>
+
+        <ng-container matColumnDef="_id">
+          <th mat-header-cell *matHeaderCellDef class="text-center"> 操作 </th>
+          <td mat-cell *matCellDef="let element" class="actions">
+            <button nbButton hero shape="round" size="tiny" status="info" title="查看咨询问题" (click)="view(element)">
+              <nb-icon icon="list-outline"></nb-icon>
+            </button>
         </ng-container>
 
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

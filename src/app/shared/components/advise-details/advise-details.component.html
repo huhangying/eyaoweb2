@@ -1,0 +1,31 @@
+<nb-card [status]="data ? 'info' : 'success'">
+  <nb-card-header>
+    线下咨询问题详情
+    <button nbButton shape="round" size="tiny" class="float-right" mat-dialog-close>
+      <nb-icon icon="close"></nb-icon>
+    </button>
+  </nb-card-header>
+
+  <nb-card-body>
+    <div class="pb-2">
+      <label class="text-muted">病患：</label>
+      {{advise.name}}
+      <ng-container *ngIf="advise.gender">
+        ({{ advise.gender | gender}})
+      </ng-container>
+      <ng-container *ngIf="advise.age">
+        , {{ advise.age}} 岁
+      </ng-container>
+    </div>
+    <div class="pb-2">
+      <label class="text-muted">药师：</label>
+      {{advise.doctorName}}{{advise.doctorTitle}}
+      <ng-container *ngIf="advise.doctorDepartment">
+        ({{ advise.doctorDepartment}})
+      </ng-container>
+    </div>
+    <mat-divider></mat-divider>
+    <ngx-advise-questions-edit [questions]="advise.questions" [readonly]="true"></ngx-advise-questions-edit>
+  </nb-card-body>
+</nb-card>
+

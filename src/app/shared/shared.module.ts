@@ -55,6 +55,8 @@ import { DoctorConsultPricesComponent } from './components/doctor-profile/doctor
 import { TimeFormatPipe } from './pipe/time-format.pipe';
 import { MouseWheelDirective } from './directive/mouse-wheel.directive';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { AdviseDetailsComponent } from './components/advise-details/advise-details.component';
+import { AdviseQuestionsEditComponent } from '../main/advise/advise-questions-edit/advise-questions-edit.component';
 
 @NgModule({
   imports: [
@@ -137,6 +139,8 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
     SelectPatientComponent,
     // SelectDoctorPatientsComponent,
     InputChipsCardComponent,
+    AdviseDetailsComponent,
+    AdviseQuestionsEditComponent,
 
     ImageCropperModule,
     ImageUploaderComponent,
@@ -178,6 +182,8 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
     InputChipsCardComponent,
     DoctorConsultPricesComponent,
     MouseWheelDirective,
+    AdviseDetailsComponent,
+    AdviseQuestionsEditComponent,
   ],
   providers: [
     MatDatepickerModule,

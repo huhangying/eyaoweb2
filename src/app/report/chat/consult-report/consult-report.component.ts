@@ -112,11 +112,6 @@ export class ConsultReportComponent implements OnInit, OnDestroy {
     return this.searchOutput.doctors.find(item => item._id === room)?.name;
   }
 
-  // getDoctorLabel(room: string) {
-  //   if (!this.briefDoctors?.length) return '';
-  //   return this.briefDoctors.find(item => item._id === room)?.name;
-  // }
-
   getTypeLabel(type: number, isReply: boolean) {
     if (isReply) { return '药师回复'; }
     return type === 0 ? '图文咨询' : (type === 1 ? '电话咨询' : '咨询');

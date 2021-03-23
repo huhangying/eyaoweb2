@@ -9,6 +9,7 @@ import { Department } from '../../models/hospital/department.model';
 import { AdviseTemplate } from '../../models/survey/advise-template.model';
 import { Advise } from '../../models/survey/advise.model';
 import { AdviseService } from '../../services/advise.service';
+import { AdviseDetailsComponent } from '../../shared/components/advise-details/advise-details.component';
 import { LocalDatePipe } from '../../shared/pipe/local-date.pipe';
 import { AuthService } from '../../shared/service/auth.service';
 import { AppStoreService } from '../../shared/store/app-store.service';
@@ -34,7 +35,7 @@ export class AdviseReportComponent implements OnInit {
   dataSource: MatTableDataSource<Advise>;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
-  displayedColumns: string[] = ['doctorDepartment', 'doctorName', 'name', 'questions', 'isPerformance', 'isOpen', 'finished', 'updatedAt', 'score'];
+  displayedColumns: string[] = ['doctorDepartment', 'doctorName', 'name', 'questions', 'isPerformance', 'isOpen', 'finished', 'updatedAt', 'score', '_id'];
 
   adviseTemplates: AdviseTemplate[];
 
@@ -96,6 +97,12 @@ export class AdviseReportComponent implements OnInit {
 
   onOutput(output: ReportSearchOutput) {
     this.searchOutput = output;
+  }
+
+  view(data?: Advise) {
+    this.dialog.open(AdviseDetailsComponent, {
+      data,
+    });
   }
 
   ///////////////////////////////////// Report
