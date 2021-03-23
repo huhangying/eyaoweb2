@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import * as moment from 'moment';
 import { Subject } from 'rxjs';
 import { startWith, tap, takeUntil } from 'rxjs/operators';
 import { Doctor } from '../../../models/crm/doctor.model';
@@ -88,6 +89,11 @@ export class ReportSearchComponent implements OnInit, OnDestroy {
 
   search() {
     const mySearch: ReportSearch = this.form.value;
+    if (mySearch.end) {
+      // adjust end date to 0:00 of the next day
+      mySearch.end = moment(mySearch.end).add(1, 'days').toDate();
+    }
+
     if(!this.dateOnly) {
       this.onSearch.emit(mySearch);
     } else {
