@@ -48,7 +48,7 @@ export class AdviseTemplateEditComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-
+    this.dialogRef.updateSize('85%');
   }
 
   ngOnDestroy() {

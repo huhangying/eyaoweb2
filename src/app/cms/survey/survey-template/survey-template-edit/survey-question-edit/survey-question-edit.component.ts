@@ -42,6 +42,7 @@ export class SurveyQuestionEditComponent implements OnInit, OnDestroy {
   get answerNumberCtrl() { return this.form.get('answer_number'); }
 
   ngOnInit(): void {
+    this.dialogRef.updateSize('80%');
 
     if (this.data) {
       this.form.patchValue({ ...this.data });

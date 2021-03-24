@@ -48,7 +48,7 @@ export class SurveyTemplateEditComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-
+    this.dialogRef.updateSize('80%');
   }
 
   ngOnDestroy() {
