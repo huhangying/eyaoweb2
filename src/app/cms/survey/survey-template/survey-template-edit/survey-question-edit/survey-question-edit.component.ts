@@ -30,7 +30,7 @@ export class SurveyQuestionEditComponent implements OnInit, OnDestroy {
     this.form = this.fb.group({
       question: ['', Validators.required],
       answer_type: ['', Validators.required],
-      answer_number: 1,
+      answer_number: this.options.length || 1,
       weight: 0,
       order: 0,
       required: false,
