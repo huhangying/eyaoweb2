@@ -10,6 +10,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { DialogService } from '../../../../shared/service/dialog.service';
 import { SurveyQuestionEditComponent } from './survey-question-edit/survey-question-edit.component';
 import { MatSort, MatSortable } from '@angular/material/sort';
+import { CoreService } from '../../../../shared/service/core.service';
 
 @Component({
   selector: 'ngx-survey-template-edit',
@@ -33,6 +34,7 @@ export class SurveyTemplateEditComponent implements OnInit, OnDestroy {
     public dialog: MatDialog,
     private dialogService: DialogService,
     private surveyService: SurveyService,
+    private coreService: CoreService,
     private message: MessageService,
   ) {
     this.loadQuestions(this.data.surveyTemplate?.questions || []);
@@ -57,8 +59,8 @@ export class SurveyTemplateEditComponent implements OnInit, OnDestroy {
   }
 
   loadQuestions(data: Question[]) {
-    this.questions = data;
-    this.dataSource = new MatTableDataSource<Question>(data);
+    this.questions = this.coreService.deepClone(data);
+    this.dataSource = new MatTableDataSource<Question>(this.questions);
     this.dataSource.sort = this.sort;
     this.cd.markForCheck();
   }
@@ -98,6 +100,14 @@ export class SurveyTemplateEditComponent implements OnInit, OnDestroy {
 
 
   update() {
+    // update question order
+    if (this.questions.length > 1) {
+      this.questions = this.questions.sort((a, b) => ((a.order || 0) > (b.order || 0)) ? 1 : -1)
+        .map((item, i) => {
+          item.order = i + 1;
+          return item;
+        });
+    }
     const response = this.data.surveyTemplate?._id ?
       // update
       this.surveyService.updateSurveyTemplate({

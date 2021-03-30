@@ -8,6 +8,7 @@ import { tap, catchError, takeUntil } from 'rxjs/operators';
 import { AdviseTemplate } from '../../../../models/survey/advise-template.model';
 import { Question } from '../../../../models/survey/survey-template.model';
 import { AdviseService } from '../../../../services/advise.service';
+import { CoreService } from '../../../../shared/service/core.service';
 import { DialogService } from '../../../../shared/service/dialog.service';
 import { MessageService } from '../../../../shared/service/message.service';
 import { SurveyQuestionEditComponent } from '../../survey-template/survey-template-edit/survey-question-edit/survey-question-edit.component';
@@ -34,6 +35,7 @@ export class AdviseTemplateEditComponent implements OnInit, OnDestroy {
     public dialog: MatDialog,
     private dialogService: DialogService,
     private adviseService: AdviseService,
+    private coreService: CoreService,
     private message: MessageService,
   ) {
     this.loadQuestions(this.data.adviseTemplate?.questions || []);
@@ -57,8 +59,8 @@ export class AdviseTemplateEditComponent implements OnInit, OnDestroy {
   }
 
   loadQuestions(data: Question[]) {
-    this.questions = data;
-    this.dataSource = new MatTableDataSource<Question>(data);
+    this.questions = this.coreService.deepClone(data);
+    this.dataSource = new MatTableDataSource<Question>(this.questions);
     this.dataSource.sort = this.sort;
     this.cd.markForCheck();
   }
@@ -98,6 +100,14 @@ export class AdviseTemplateEditComponent implements OnInit, OnDestroy {
 
 
   update() {
+    // update question order
+    if (this.questions.length > 1) {
+      this.questions = this.questions.sort((a, b) => ((a.order || 0) > (b.order || 0)) ? 1 : -1)
+        .map((item, i) => {
+          item.order = i + 1;
+          return item;
+        });
+    }
     const response = this.data.adviseTemplate?._id ?
       // update
       this.adviseService.updateAdviseTemplate({
