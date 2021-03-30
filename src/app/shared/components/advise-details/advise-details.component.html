@@ -24,8 +24,24 @@
         ({{ advise.doctorDepartment}})
       </ng-container>
     </div>
+    <div class="d-flex flex-row justify-content-between">
+      <div>
+        <label class="text-muted">时间：</label>
+        {{advise.createdAt | localDate: 'full'}}
+      </div>
+      <div>
+        <mat-checkbox [checked]="advise.finished" class="question-option px-3" disabled>
+          已完成
+        </mat-checkbox>
+        <mat-checkbox [checked]="advise.isOpen" class="question-option px-3" disabled>
+          对其他药师可见
+        </mat-checkbox>
+        <mat-checkbox [checked]="advise.isPerformance" class="question-option" disabled>
+          申报绩效
+        </mat-checkbox>
+      </div>
+    </div>
     <mat-divider></mat-divider>
     <ngx-advise-questions-edit [questions]="advise.questions" [readonly]="true"></ngx-advise-questions-edit>
   </nb-card-body>
 </nb-card>
-

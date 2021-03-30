@@ -121,4 +121,13 @@ export class SurveyTemplateEditComponent implements OnInit, OnDestroy {
     ).subscribe();
   }
 
+
+  getQuestionTypeLabel(type: number) {
+    return type === 0 ? '是非题' : (
+      type === 1 ? '单选题' : (
+        type === 2 ? '多选题' : (
+          type === 3 ? '填空' : ''
+        )));
+  }
+
 }

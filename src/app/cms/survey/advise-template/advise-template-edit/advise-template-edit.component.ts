@@ -22,7 +22,7 @@ export class AdviseTemplateEditComponent implements OnInit, OnDestroy {
   form: FormGroup;
   destroy$ = new Subject<void>();
   questions: Question[];
-  displayedColumns: string[] = ['order', 'question', 'answer_type', 'options', 'weight', 'apply', 'required'];
+  displayedColumns: string[] = ['order', 'question', 'answer_type', 'options', 'apply', 'required'];
   dataSource: MatTableDataSource<Question>;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
 
@@ -118,6 +118,14 @@ export class AdviseTemplateEditComponent implements OnInit, OnDestroy {
       catchError(rsp => this.message.updateErrorHandle(rsp)),
       takeUntil(this.destroy$)
     ).subscribe();
+  }
+
+  getQuestionTypeLabel(type: number) {
+    return type === 0 ? '是非题' : (
+      type === 1 ? '单选题' : (
+        type === 2 ? '多选题' : (
+          type === 3 ? '填空' : ''
+        )));
   }
 
 }
