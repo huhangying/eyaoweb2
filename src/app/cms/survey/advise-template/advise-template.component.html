@@ -18,7 +18,7 @@
         <label class="col-3 text-right">科室:</label>
         <nb-form-field class="col-7">
           <nb-select hero fullWidth placeholder="选择医院科室" formControlName="department">
-            <nb-option value="none">无 (医院级别线下咨询模版)</nb-option>
+            <nb-option value="none" ngxDisableByRole [requireRole]="2">无 (医院级别线下咨询模版)</nb-option>
             <nb-option *ngFor="let dep of departments" [value]="dep._id" ngxDisableByRole [requireRole]="2">
               {{ dep.name }}</nb-option>
           </nb-select>
