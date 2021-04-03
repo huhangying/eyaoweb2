@@ -228,7 +228,7 @@ export class DiagnoseReportComponent implements OnInit, OnDestroy {
         keys.push(key);
         chartItems.push({
           type: key,
-          name: item.status >= 3 ? '已完成' : '未完成',
+          name: this.diagnoseService.getStatusName(item.status),
           value: 1,
         });
         return chartItems;

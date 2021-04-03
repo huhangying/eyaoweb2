@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from '../shared/service/api.service';
-import { Diagnose } from '../models/diagnose/diagnose.model';
+import { Diagnose, DiagnoseStatus } from '../models/diagnose/diagnose.model';
 import { Observable } from 'rxjs';
 import { ReportSearch } from '../report/models/report-search.model';
 import { DiagnoseUsage, MedicineUsage, MedicineUsageFlat, TestUsage, TestUsageFlat } from '../report/models/report-usage';
@@ -104,6 +104,21 @@ export class DiagnoseService {
         return flattens;
       })
     ) as Observable<TestUsageFlat[]>;
+  }
+
+  getStatusName(status: DiagnoseStatus) {
+    switch(status) {
+      case DiagnoseStatus.assignedToUser:
+        return '未完成（病患预约）';
+      case DiagnoseStatus.userFinished:
+        return '未完成（病患完成问卷）';
+      case DiagnoseStatus.doctorSaved:
+        return '未完成（药师保存）';
+      case DiagnoseStatus.archived:
+        return '已完成';
+      default:
+        return '';
+    }
   }
 
 }
