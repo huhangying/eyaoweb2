@@ -10,5 +10,5 @@ export const environment = {
   imageServer: 'http://timebox.i234.me/images/',
   socketUrl: 'http://timebox.i234.me:3000',
   wechatServer: 'http://timebox.i234.me/wechat/',
-  appVersion: '1.0.3'
+  appVersion: '1.0.4'
 };
