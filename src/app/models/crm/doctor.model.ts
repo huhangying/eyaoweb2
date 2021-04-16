@@ -30,10 +30,10 @@ export interface Doctor {
   token?: string; // temp
   hospitalName?: string;  // for localstorage
   wechatUrl?: string;     // for localstorage
+  serverIp?: string; // for localstorage
+  cs?: boolean; // if customer service doctor // for localstorage
 
   prices?: ConsultServicePrice[];
-
-  cs?: boolean; // if customer service doctor // for localstorage
 }
 
 export interface DoctorBrief {

@@ -56,10 +56,14 @@ export class AuthService {
     if (!this.doctor) return '';
     if (this.doctor.icon) {
       if (this.doctor.icon.match('^http(s)?://')?.length) return this.doctor.icon;
-      return environment.imageServer + this.doctor.icon;
+      return this.getImageServer() + this.doctor.icon;
     }
     return this.getDoctorIconByRole(this.doctor.role);
 
+  }
+
+  getImageServer() {
+    return `http://${this.doctor.serverIp || environment.defaultServer}/images/`;
   }
 
 }

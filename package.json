@@ -1,6 +1,6 @@
 {
   "name": "eyaoweb",
-  "version": "2.0.5",
+  "version": "2.1.0",
   "description": "新华e药2.0 Web",
   "license": "MIT",
   "repository": {
@@ -9,7 +9,7 @@
   },
   "scripts": {
     "ng": "ng",
-    "start": "ng serve --open",
+    "start": "ng serve --port=80 --open",
     "build": "ng build",
     "build:prod": "ng build --prod --aot",
     "build:dev": "ng build --configuration dev --aot",

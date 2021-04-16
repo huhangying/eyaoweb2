@@ -5,10 +5,7 @@
  */
 export const environment = {
   production: false,
-  fontUrl: 'http://timebox.i234.me/assets/FZYTK.TTF',
+  defaultServer: 'timebox.i234.me',
   apiUrl: 'api/',
-  imageServer: 'http://timebox.i234.me/images/',
-  socketUrl: 'ws://timebox.i234.me:3000',
-  wechatServer: 'http://timebox.i234.me/wechat/',
   appVersion: '1.0.6'
 };

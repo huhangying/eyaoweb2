@@ -28,7 +28,7 @@ export class DoctorProfileComponent implements OnInit, OnDestroy {
       this.user_id = value.user_id; // in case of field disabled and cannot copy
       this._id = value._id;
       if (data.icon) {
-        this.avatar = environment.imageServer + data.icon;
+        this.avatar = `http://${data.serverIp || environment.defaultServer}/images/` + data.icon;
       }
       if (data.qrcode) {
         this.qrcode = data.qrcode;

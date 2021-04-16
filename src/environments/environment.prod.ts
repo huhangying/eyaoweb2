@@ -5,10 +5,7 @@
  */
 export const environment = {
   production: true,
-  fontUrl: 'http://www.zhaoyaoshi885.cn/assets/FZYTK.TTF',
+  defaultServer: 'www.zhaoyaoshi885.cn', // www.zhaoyaoshi885.cn, 163.53.170.122
   apiUrl: 'api/',
-  imageServer: 'http://www.zhaoyaoshi885.cn/images/',
-  socketUrl: 'http://www.zhaoyaoshi885.cn:3000',
-  wechatServer: 'http://www.zhaoyaoshi885.cn/wechat/',
   appVersion: '1.0.6'
 };

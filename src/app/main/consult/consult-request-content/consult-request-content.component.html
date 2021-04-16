@@ -36,5 +36,5 @@
 </div>
 <div *ngIf="consult.upload">
   <img [src]="consult.upload | imgPath" ngxImgClickView onerror="this.src='assets/images/no-image.png';this.onerror='';"
-    class="img-fluid img-thumbnail">
+    class="img-fluid img-thumbnail" alt="">
 </div>

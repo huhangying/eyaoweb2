@@ -141,7 +141,7 @@ export class SurveysComponent implements OnInit {
       openid,
       surveyName,
       `${this.doctor.name + this.doctor.title}给您发送了问卷， 请配合填写, 谢谢！`,
-      `${environment.wechatServer}survey-start?openid=${openid}&state=${this.doctor.hid}&doctorid=${this.doctor._id}&type=${surveyType}&date=${moment().toISOString()}`,
+      `${this.doctor.wechatUrl}survey-start?openid=${openid}&state=${this.doctor.hid}&doctorid=${this.doctor._id}&type=${surveyType}&date=${moment().toISOString()}`,
       '',
       this.doctor._id,
       this.patient.name

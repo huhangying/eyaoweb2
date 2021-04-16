@@ -98,7 +98,7 @@
             <div class="chat-header d-flex justify-content-between">
               <div class="d-flex bd-highlight">
                 <div class="img_cont">
-                  <img [src]="selectedPatient?.icon | imgPath:'person'" class="rounded-circle user_img">
+                  <img [src]="selectedPatient?.icon | imgPath:'person'" class="rounded-circle user_img" alt="">
                   <span class="online_icon"></span>
                 </div>
                 <div class="user_info">
@@ -127,13 +127,13 @@
                     <div class="d-flex align-items-end flex-row-reverse">
                       <div class="img_cont_msg">
                         <span class="triangle"></span>
-                        <img [src]="doctor?.icon | imgPath:'person'" class="rounded-circle user_img_msg">
+                        <img [src]="doctor?.icon | imgPath:'person'" class="rounded-circle user_img_msg" alt="">
                       </div>
                       <div class="msg-data" [ngSwitch]="chat.type">
                         <div *ngSwitchCase="dataType.picture">
                           <img [src]="chat.data | imgPath"
                             onerror="this.src='assets/images/no-image.png';this.onerror='';"
-                            class="img-fluid img-thumbnail" ngxImgClickView>
+                            class="img-fluid img-thumbnail" alt="" ngxImgClickView>
                         </div>
                         <div *ngSwitchCase="dataType.command">
                           **** {{translateCommand(chat.data)}} ****
@@ -148,13 +148,13 @@
                     <div class="d-flex align-items-start flex-row">
                       <div class="img_cont_msg">
                         <span class="triangle"></span>
-                        <img [src]="selectedPatient?.icon | imgPath:'person'" class="rounded-circle user_img_msg">
+                        <img [src]="selectedPatient?.icon | imgPath:'person'" class="rounded-circle user_img_msg" alt="">
                       </div>
                       <div class="msg-data" [ngSwitch]="chat.type">
                         <div *ngSwitchCase="dataType.picture">
                           <img [src]="chat.data | imgPath"
                             onerror="this.src='assets/images/no-image.png';this.onerror='';"
-                            class="img-fluid img-thumbnail" ngxImgClickView>
+                            class="img-fluid img-thumbnail" alt="" ngxImgClickView>
                         </div>
                         <div *ngSwitchDefault class="text-break" [innerHTML]="translateEmoji(chat.data)">
                         </div>
@@ -173,7 +173,7 @@
                       <div class="d-flex align-items-start">
                         <div class="img_cont_msg">
                           <span class="triangle"></span>
-                          <img [src]="selectedPatient?.icon | imgPath:'person'" class="rounded-circle user_img_msg">
+                          <img [src]="selectedPatient?.icon | imgPath:'person'" class="rounded-circle user_img_msg" alt="">
                         </div>
                         <div class="msg-data text-break">
                           <span class="text-muted small">发送于 {{ feedback.createdAt | localDate: 'full'}}</span>
@@ -191,7 +191,7 @@
                           <div *ngIf="feedback.upload">
                             <img [src]="feedback.upload | imgPath" ngxImgClickView
                               onerror="this.src='assets/images/no-image.png';this.onerror='';"
-                              class="img-fluid img-thumbnail">
+                              class="img-fluid img-thumbnail" alt="">
                           </div>
                         </div>
                       </div>
@@ -203,7 +203,7 @@
                       <div class="d-flex align-items-end flex-row-reverse">
                         <div class="img_cont_msg">
                           <span class="triangle"></span>
-                          <img [src]="doctor?.icon | imgPath:'person'" class="rounded-circle user_img_msg">
+                          <img [src]="doctor?.icon | imgPath:'person'" class="rounded-circle user_img_msg" alt="">
                         </div>
                         <div class="msg-data text-break">
                           <div class="text-muted small">回复于
@@ -215,7 +215,7 @@
                           <div *ngIf="feedback.upload">
                             <img [src]="feedback.upload | imgPath" ngxImgClickView
                               onerror="this.src='assets/images/no-image.png';this.onerror='';"
-                              class="img-fluid img-thumbnail">
+                              class="img-fluid img-thumbnail" alt="">
                           </div>
                         </div>
                       </div>

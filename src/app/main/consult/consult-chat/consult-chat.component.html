@@ -4,7 +4,7 @@
       <div class="d-flex align-items-start">
         <div class="img_cont_msg">
           <span class="triangle"></span>
-          <img [src]="selectedPatient?.icon | imgPath:'person'" class="rounded-circle user_img_msg">
+          <img [src]="selectedPatient?.icon | imgPath:'person'" class="rounded-circle user_img_msg" alt="">
         </div>
         <div class="msg-data text-break">
           <ngx-consult-request-content [consult]="consult">
@@ -19,7 +19,7 @@
       <div class="d-flex align-items-end flex-row-reverse">
         <div class="img_cont_msg">
           <span class="triangle"></span>
-          <img [src]="doctor?.icon | imgPath:'person'" class="rounded-circle user_img_msg">
+          <img [src]="doctor?.icon | imgPath:'person'" class="rounded-circle user_img_msg" alt="image" alt="">
         </div>
         <div class="msg-data text-break">
           <ngx-consult-request-content [consult]="consult"></ngx-consult-request-content>

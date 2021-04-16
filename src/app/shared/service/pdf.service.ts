@@ -12,6 +12,7 @@ import { Medicine } from '../../models/hospital/medicine.model';
 import { MedicinePeriod } from '../../models/hospital/medicine-references.model';
 import { MedicineService } from '../../services/medicine.service';
 import { HospitalService } from '../../services/hospital.service';
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -23,12 +24,14 @@ export class PdfService {
     private gender: GenderPipe,
     private surveyService: SurveyService,
     private medicineService: MedicineService,
-    private departmentService: HospitalService
+    private departmentService: HospitalService,
+    private auth: AuthService,
   ) {
+    const fontUrl = `http://${auth.doctor?.serverIp || environment.defaultServer}/assets/FZYTK.TTF`;
     pdfMake.fonts = {
       fzytk: {
-        normal: environment.fontUrl,
-        bold: environment.fontUrl,
+        normal: fontUrl,
+        bold: fontUrl,
       }
     };
   }
