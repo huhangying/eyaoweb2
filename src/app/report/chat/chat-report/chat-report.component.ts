@@ -11,6 +11,8 @@ import { Department } from '../../../models/hospital/department.model';
 import { Chat } from '../../../models/io/chat.model';
 import { ChatService } from '../../../services/chat.service';
 import { LocalDatePipe } from '../../../shared/pipe/local-date.pipe';
+import { AuthService } from '../../../shared/service/auth.service';
+import { AppStoreService } from '../../../shared/store/app-store.service';
 import { ChartGroup, ChartItem, ReportSearch, ReportSearchOutput } from '../../models/report-search.model';
 import { LineChartsComponent } from '../../shared/line-charts/line-charts.component';
 import { PieChartsComponent } from '../../shared/pie-charts/pie-charts.component';
@@ -27,9 +29,11 @@ export class ChatReportComponent implements OnInit, OnDestroy {
   briefDoctors: DoctorBrief[];
 
   type: number;
-  cs: boolean;
+  isCs: boolean;
   chats: Chat[];
   searchOutput: ReportSearchOutput;
+  doctorId: string;
+  isCms: boolean;
 
   dataSource: MatTableDataSource<Chat>;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
@@ -41,15 +45,19 @@ export class ChatReportComponent implements OnInit, OnDestroy {
     private chatService: ChatService,
     private cd: ChangeDetectorRef,
     private localDate: LocalDatePipe,
+    private appStore: AppStoreService,
+    private auth: AuthService,
     public dialog: MatDialog,
   ) {
     this.departments = this.route.snapshot.data.departments;
     this.briefDoctors = this.route.snapshot.data.briefDoctors;
+    this.doctorId = this.route.snapshot.queryParams?.doc || this.auth.doctor?._id || '';
+    this.isCms = this.appStore.cms;
 
     this.route.queryParams.pipe(
       tap(queryParams => {
         this.type = +queryParams?.type;
-        this.cs = queryParams?.cs || false;
+        this.isCs = queryParams?.cs || false;
         this.displayedColumns = ['room', 'senderName', 'to', 'type', 'data', 'created'];
         this.chats = [];
         this.loadData();
@@ -66,9 +74,13 @@ export class ChatReportComponent implements OnInit, OnDestroy {
     this.destroy$.unsubscribe();
   }
 
-  search(s: ReportSearch) {
-    s.cs = this.cs;
-    this.chatService.chatSearch(s).pipe(
+  search(search: ReportSearch) {
+    if (!this.isCms) {
+      search = { ...search, doctor: this.doctorId };
+    } else {
+      search.cs = this.isCs;
+    }
+    this.chatService.chatSearch(search).pipe(
       tap(results => {
         this.chats = results;
         this.loadData();
@@ -104,7 +116,7 @@ export class ChatReportComponent implements OnInit, OnDestroy {
   }
 
   getTitle() {
-    return !this.cs ? '免费咨询' : '客服咨询';
+    return !this.isCs ? '免费咨询' : '客服咨询';
   }
 
   //===================================================

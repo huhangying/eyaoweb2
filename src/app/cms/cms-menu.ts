@@ -177,14 +177,14 @@ export function getMenuItems(role: number, queryParams: Params): NbMenuItem[] {
               queryParams: queryParams,
             },
             {
-              title: '付费咨询统计',
-              link: '/cms/report/consult',
-              queryParams: queryParams,
-            },
-            {
               title: '客服咨询统计',
               link: '/cms/report/chat',
               queryParams: { ...queryParams, cs: true },
+            },
+            {
+              title: '付费咨询统计',
+              link: '/cms/report/consult',
+              queryParams: queryParams,
             },
             {
               title: '付费咨询对帐单',

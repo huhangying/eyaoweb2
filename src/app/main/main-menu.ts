@@ -123,6 +123,11 @@ export function getMenuItems(role: number, queryParams: Params, isCs = false): N
           queryParams: queryParams,
         },
         {
+          title: '免费线上咨询',
+          link: '/main/work/chat',
+          queryParams: queryParams,
+        },
+        {
           title: '付费咨询',
           link: '/main/work/consult',
           queryParams: queryParams,

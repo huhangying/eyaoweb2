@@ -1,7 +1,7 @@
 <nb-card>
   <nb-card-header>
     咨询服务统计 / {{getTitle()}}
-    <ngx-report-search [departments]="departments" [dateOnly]="cs" (onSearch)="search($event)" (onOutput)="onOutput($event)">
+    <ngx-report-search [departments]="departments" [dateOnly]="isCs || !isCms" (onSearch)="search($event)" (onOutput)="onOutput($event)">
     </ngx-report-search>
   </nb-card-header>
 
