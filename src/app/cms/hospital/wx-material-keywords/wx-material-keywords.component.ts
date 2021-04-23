@@ -25,7 +25,7 @@ export class WxMaterialKeywordsComponent implements OnInit, OnDestroy {
   destroy$ = new Subject<void>();
   currentUpdatedAt: Date;
 
-  displayedColumns: string[] = ['name', 'title', 'updatedAt', 'keywords', '_id'];
+  displayedColumns: string[] = ['name', 'title', 'createdAt', 'keywords', '_id'];
   dataSource: MatTableDataSource<ArticleSearch>;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
@@ -143,7 +143,7 @@ export class WxMaterialKeywordsComponent implements OnInit, OnDestroy {
         if (count < 5) { // last request
           this.needContinue = false;
         }
-        list.item.map(item => {
+        list.item?.map(item => {
           if (!this.currentUpdatedAt || (new Date(this.currentUpdatedAt)).getTime() / 1000 < item.update_time + 1) {
             item.content.news_item.map(news => {
               if (news?.title) {

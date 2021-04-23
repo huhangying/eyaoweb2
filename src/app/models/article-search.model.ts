@@ -11,6 +11,7 @@ export interface ArticleSearch {
   digest?: string; // wx
   update_time?: number; // wx
   updatedAt?: Date;
+  createdAt?: Date;
 }
 
 
