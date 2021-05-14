@@ -152,7 +152,7 @@ export class PatientReportComponent implements OnInit, OnDestroy {
 
     this.dialog.open(PieChartsComponent, {
       data: {
-        title: '性别',
+        title: '审核状态',
         chartData: chartData,
         isPercentage: true,
       }

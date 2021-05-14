@@ -31,6 +31,7 @@ export interface Doctor {
   hospitalName?: string;  // for localstorage
   wechatUrl?: string;     // for localstorage
   serverIp?: string; // for localstorage
+  record?: string; // for localstorage
   cs?: boolean; // if customer service doctor // for localstorage
 
   prices?: ConsultServicePrice[];
