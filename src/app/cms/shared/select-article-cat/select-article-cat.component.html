@@ -2,17 +2,17 @@
   <div class="pb-2">
     请按顺序选择医院科室和宣教材料类别
   </div>
-  <div class="d-flex pt-2 row">
-    <label class="col-3 col-sm-2 text-right">科室:</label>
-    <nb-form-field class="col-9 col-sm-4">
-      <nb-select hero fullWidth placeholder="选择医院科室" formControlName="department">
+  <div class="d-flex pt-1 row">
+    <label class="col-3 col-md-2 text-right pt-2">科室:</label>
+    <nb-form-field class="col-9 col-md-4">
+      <nb-select hero placeholder="选择医院科室" formControlName="department">
         <nb-option *ngFor="let dep of departments" [value]="dep._id" ngxDisableByRole [requireRole]="2">{{ dep.name }}
         </nb-option>
       </nb-select>
     </nb-form-field>
-    <label class="col-3 col-sm-2 text-right">类别:</label>
-    <nb-form-field class="col-9 col-sm-4">
-      <nb-select hero fullWidth placeholder="选择宣教材料类别" formControlName="articleCat">
+    <label class="col-3 col-md-2 text-right pt-2">类别:</label>
+    <nb-form-field class="col-9 col-md-4">
+      <nb-select hero placeholder="选择宣教材料类别" formControlName="articleCat">
         <nb-option *ngFor="let cat of articleCats" [value]="cat._id">{{ cat.name }}</nb-option>
       </nb-select>
     </nb-form-field>

@@ -14,10 +14,10 @@
       <div class="pb-2">
         请选择医院科室 <span class="font-weight-light">（医院级别模板请选择‘无’）</span>
       </div>
-      <div class="d-flex pt-2 row">
-        <label class="col-3 text-right">科室:</label>
+      <div class="d-flex pt-1 row">
+        <label class="col-3 text-right pt-2">科室:</label>
         <nb-form-field class="col-7">
-          <nb-select hero fullWidth placeholder="选择医院科室" formControlName="department">
+          <nb-select hero placeholder="选择医院科室" formControlName="department">
             <nb-option value="none" ngxDisableByRole [requireRole]="2">无 (医院级别线下咨询模版)</nb-option>
             <nb-option *ngFor="let dep of departments" [value]="dep._id" ngxDisableByRole [requireRole]="2">
               {{ dep.name }}</nb-option>

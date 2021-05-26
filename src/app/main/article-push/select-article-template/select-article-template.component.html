@@ -43,9 +43,11 @@
       <div class="px-3" [innerHtml]="selectedTemplate.content"></div>
     </ng-container>
 
-    <div *ngIf="!selectedTemplate" class="blockquote pt-3 pl-2">
-      编辑文章以前, 请先选择一个模版。
-    </div>
+    <ng-container *ngIf="!selectedTemplate">
+      <div class="alert alert-warning" role="alert">
+        编辑文章以前, 请先选择一个模版。
+      </div>
+    </ng-container>
   </mat-dialog-content>
 
   <nb-card-footer class="d-block">
