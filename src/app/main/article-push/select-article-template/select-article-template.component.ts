@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Inject, Optional, SkipSelf } from '@angular/core';
+import { Component, OnInit, OnDestroy, Inject, Optional, SkipSelf, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { ArticleTemplate } from '../../../models/education/article-template.model';
 import { Subject } from 'rxjs';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
@@ -11,7 +11,8 @@ import { FormGroup, FormBuilder } from '@angular/forms';
 @Component({
   selector: 'ngx-select-article-template',
   templateUrl: './select-article-template.component.html',
-  styleUrls: ['./select-article-template.component.scss']
+  styleUrls: ['./select-article-template.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SelectArticleTemplateComponent implements OnInit, OnDestroy {
   destroy$ = new Subject<void>();
@@ -27,15 +28,34 @@ export class SelectArticleTemplateComponent implements OnInit, OnDestroy {
     private fb: FormBuilder,
     private articleService: ArticleService,
     private message: MessageService,
+    private cd: ChangeDetectorRef,
   ) {
     this.articleService.getCatsByDepartmentId(data.departmentId).pipe(
-      tap(items => {
-        if (!items?.length) {
-          this.message.warning('没有可用的模块！请联系管理员, 先在管理后台中添加专科模版。');
+      tap(cats => {
+        if (!cats?.length) {
+          this.message.warning('没有可用的模块！请联系管理员, 先在管理后台中添加科室宣教材料类别。');
           this.dialogRef.close();
           return;
         }
-        this.articleCats = items;
+        this.articleCats = cats;
+        this.cd.markForCheck();
+        //
+        this.articleService.getTemplatesByDepartmentId(data.departmentId).pipe(
+          tap(templates => {
+            if (!templates?.length) { // no template
+              this.message.warning('没有可用的模块！请联系管理员, 先在管理后台科室宣教材料类别中添加模版。');
+              this.dialogRef.close();
+              return;
+            }
+            this.templates = templates;
+            // 只显示有模板的宣教材料类别
+            this.articleCats = this.articleCats.filter(cat => {
+              return templates.findIndex(_ => cat._id === _.cat) > -1;
+            });
+            this.cd.markForCheck();
+          }),
+          takeUntil(this.destroy$)
+        ).subscribe();
       }),
       takeUntil(this.destroy$)
     ).subscribe();
@@ -44,18 +64,6 @@ export class SelectArticleTemplateComponent implements OnInit, OnDestroy {
       articleCat: '',
       template: ''
     });
-
-    this.articleService.getTemplatesByDepartmentId(data.departmentId).pipe(
-      tap(items => {
-        if (!items?.length) { // no template
-          this.message.warning('没有可用的模块！请联系管理员, 先在管理后台中添加专科模版。');
-          this.dialogRef.close();
-          return;
-        }
-        this.templates = items;
-      }),
-      takeUntil(this.destroy$)
-    ).subscribe();
   }
 
   get articleCatCtrl() { return this.form.get('articleCat'); }
@@ -68,6 +76,9 @@ export class SelectArticleTemplateComponent implements OnInit, OnDestroy {
       tap(cat => {
         if (!cat) return;
         this.filteredTemplates = this.templates.filter(_ => _.cat === cat);
+        this.templateCtrl.patchValue('');
+        this.selectedTemplate = null;
+        this.cd.markForCheck();
       }),
       takeUntil(this.destroy$)
     ).subscribe();
@@ -76,6 +87,7 @@ export class SelectArticleTemplateComponent implements OnInit, OnDestroy {
       tap(template => {
         if (!template) return;
         this.selectedTemplate = this.filteredTemplates.find(_ => _._id === template);
+        this.cd.markForCheck();
       }),
       takeUntil(this.destroy$)
     ).subscribe();

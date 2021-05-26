@@ -68,7 +68,7 @@ export class ArticleTemplateEditComponent implements OnInit, OnDestroy {
     const updatedBy = this.auth.doctor?._id;
     let title_image = this.titleImage;
     // upload image first if needed
-    if (this.titleImage.indexOf('data:') === 0 && !!this.cropped) {
+    if (this.titleImage?.indexOf('data:') === 0 && !!this.cropped) {
       const newImage: any = await this.upload.uploadTemplateDir(this.data.cat._id, 'title', this.cropped, '.png').toPromise();
       if (newImage?.path) {
         title_image = newImage.path;
