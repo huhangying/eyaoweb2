@@ -140,8 +140,13 @@ export class DoctorProfileComponent implements OnInit, OnDestroy {
     this.updateDoctor({ user_id: this.user_id, password: passwd });
   }
 
+  updateServicePrices(prices) {
+    this.servicePrices = prices;
+    this.updateProfile();
+  }
+
   updateProfile() {
-    const profile = { ...this.form.getRawValue() };
+    const profile = { ...this.form.getRawValue(), qrcode: this.qrcode, prices: this.servicePrices };
     delete profile.password;
     delete profile.passwordConfirm;
     this.updateDoctor(profile, this.mode === 0); // 只有在自己修改时才更新localstorage

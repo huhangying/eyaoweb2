@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ChangeDetectionStrategy, ChangeDetectorRef, OnDestroy } from '@angular/core';
+import { Component, OnInit, Input, ChangeDetectionStrategy, ChangeDetectorRef, OnDestroy, EventEmitter, Output } from '@angular/core';
 import { ConsultServicePrice } from '../../../../models/consult/doctor-consult.model';
 import { DoctorService } from '../../../../services/doctor.service';
 import { MessageService } from '../../../service/message.service';
@@ -23,6 +23,7 @@ export class DoctorConsultPricesComponent implements OnInit, OnDestroy {
     }
   }
   @Input() mode: number; // 0: normal profile; 1: add doctor; 2: edit doctor
+  @Output() save = new EventEmitter<ConsultServicePrice[]>();
 
   constructor(
     private doctorService: DoctorService,
@@ -148,6 +149,8 @@ export class DoctorConsultPricesComponent implements OnInit, OnDestroy {
     this.doctorService.updateDoctor({ user_id: this.userId, prices: servicePrices }).pipe(
       tap(result => {
         if (result) {
+          // 更新
+          this.save.emit(result.prices);
           // 只有在自己修改时才更新localstorage
           if (this.mode === 0) {
             this.appStore.updateDoctor(result);
