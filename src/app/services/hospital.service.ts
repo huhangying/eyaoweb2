@@ -6,6 +6,7 @@ import { Const } from '../models/hospital/const.model';
 import { ApiService } from '../shared/service/api.service';
 import { Doctor } from '../models/crm/doctor.model';
 import { ArticleSearch } from '../models/article-search.model';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -110,8 +111,8 @@ export class HospitalService {
     return this.api.delete<any>('keywordsearch/' + id);
   }
 
-  createArticleSearch(data: ArticleSearch) {
-    return this.api.post<ArticleSearch>('keywordsearch', data);
+  createArticleSearch(data: ArticleSearch): Observable<ArticleSearch> {
+    return this.api.post<ArticleSearch>('keywordsearch', data) as Observable<ArticleSearch>;
   }
 
   updateArticleSearch(data: ArticleSearch) {

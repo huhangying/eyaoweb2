@@ -9,7 +9,7 @@ export interface ArticleSearch {
   keywords?: string; // separated by |
   author?: string; // wx
   digest?: string; // wx
-  update_time?: number; // wx
+  update_time?: number; // wx, in second
   updatedAt?: Date;
   createdAt?: Date;
 }

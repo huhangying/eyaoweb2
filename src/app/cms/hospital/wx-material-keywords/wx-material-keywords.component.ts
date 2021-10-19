@@ -5,8 +5,8 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute } from '@angular/router';
-import { Subject } from 'rxjs';
-import { tap, catchError, takeUntil } from 'rxjs/operators';
+import { forkJoin, from, Observable, Subject } from 'rxjs';
+import { tap, catchError, takeUntil, concatMap } from 'rxjs/operators';
 import { ArticleSearch, WxMaterialNewsItem } from '../../../models/article-search.model';
 import { HospitalService } from '../../../services/hospital.service';
 import { AuthService } from '../../../shared/service/auth.service';
@@ -30,7 +30,6 @@ export class WxMaterialKeywordsComponent implements OnInit, OnDestroy {
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
 
-  needContinue = true;
   newsItems: ArticleSearch[] = [];
 
   constructor(
@@ -131,44 +130,57 @@ export class WxMaterialKeywordsComponent implements OnInit, OnDestroy {
   }
 
   fetchWxMaterial(pageIndex = 0) {
+    let needContinue = true;
+    // 如果currentUpdatedAt 没有值，则设定一个最小的 date
+    this.currentUpdatedAt = this.currentUpdatedAt || new Date('2000-01-01');
+
     // 不断获取直到 currentUpdatedAt
     if (pageIndex === 0) {
-      this.needContinue = false;
       this.newsItems = [];
     }
-    // const list = await this.wxService.getWxMaterialList(this.auth.hid, pageIndex).toPromise();
-    return this.wxService.getWxMaterialList(this.auth.hid, pageIndex).toPromise().then(
-      list => {
-        const count = list.item?.length || 0;
-        if (count < 5) { // last request
-          this.needContinue = false;
-        }
-        list.item?.map(item => {
-          if (!this.currentUpdatedAt || (new Date(this.currentUpdatedAt)).getTime() / 1000 < item.update_time + 1) {
-            item.content.news_item.map(news => {
-              if (news?.title) {
-                // convert WxMaterialNewsItem to ArticleSearch
-                const newItem = {
-                  name: news.title,
-                  author: news.title,
-                  title_image: news.thumb_url,
-                  targetUrl: news.url,
-                  title: news.digest,
-                  update_time: item.update_time
-                };
-                this.newsItems.push(newItem);
-                // this.hospitalService.createArticleSearch(newItem).subscribe();
-              }
-            });
-          } else {
-            this.needContinue = false;
+    this.wxService.getWxMaterialList(this.auth.hid, pageIndex).toPromise().then(list => {
+      const count = list?.item?.length || 0;
+      if (count < 5) { // last request
+        needContinue = false;
+        if (count === 0) {
+          //end
+          if (pageIndex) { // pageIndex > 0
+            this.loadData([...this.newsItems, ...this.dataSource.data]); // remove from list
+            this.message.success(`更新了 ${this.newsItems.length} 篇微信文章。`);
+            this.currentUpdatedAt = new Date();
+          } else { // pageIndex === 0
+            this.message.info('您的微信文章列表已经是最新的。');
           }
-        });
-        if (this.needContinue) {
-          pageIndex++;
-          // trigger next
-          return this.fetchWxMaterial(pageIndex);
+          return;
         }
+      }
+
+      const toSaveRequestList: Observable<ArticleSearch>[] = [];
+      list.item.map(item => {
+        const hasOldItemToInput = (new Date(this.currentUpdatedAt)).getTime() < (item.update_time + 30) * 1000; // 30s should be min gap between publish and fetch
+        if (hasOldItemToInput) {
+          item.content.news_item.map(news => {
+            if (news?.title) {
+              // convert WxMaterialNewsItem to ArticleSearch
+              const newItem = {
+                name: news.title,
+                author: news.author,
+                title_image: news.thumb_url,
+                targetUrl: news.url,
+                title: news.digest || news.title,
+                // digest: news.digest,
+                update_time: item.update_time
+              };
+              toSaveRequestList.push(this.hospitalService.createArticleSearch(newItem));
+            }
+          });
+        } else {
+          // any item reach the currentUpdatedAt will end the next fetch
+          needContinue = false;
+        }
+      });
+
+      if (toSaveRequestList.length === 0) {
         //end
         if (this.newsItems.length) {
           this.loadData([...this.newsItems, ...this.dataSource.data]); // remove from list
@@ -177,9 +189,27 @@ export class WxMaterialKeywordsComponent implements OnInit, OnDestroy {
         } else {
           this.message.info('您的微信文章列表已经是最新的。');
         }
+        return;
       }
-    );
-  }
 
+      forkJoin(toSaveRequestList).toPromise().then(results => {
+        this.newsItems = [...this.newsItems, ...results];
+        if (needContinue) {
+          // trigger next
+          const nextPageIndex = pageIndex++;
+          this.fetchWxMaterial(nextPageIndex);
+        } else {
+          //end
+          if (this.newsItems.length) {
+            this.loadData([...this.newsItems, ...this.dataSource.data]); // remove from list
+            this.message.success(`更新了 ${this.newsItems.length} 篇微信文章。`);
+            this.currentUpdatedAt = new Date();
+          } else {
+            this.message.info('您的微信文章列表已经是最新的。');
+          }
+        }
+      });
+    });
+  }
 }
 

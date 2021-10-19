@@ -14,7 +14,7 @@
   <nb-card-body>
     <div class="mb-2">
       <button mat-stroked-button class="text-success" (click)="fetchWxMaterial()">更新微信文章</button>
-      <span class="ml-3 text-muted" *ngIf="currentUpdatedAt">(最近更新时间是{{currentUpdatedAt|localDate}}。)</span>
+      <span class="ml-3 text-muted" *ngIf="currentUpdatedAt">(最近更新时间是{{currentUpdatedAt | localDate}}。)</span>
     </div>
 
     <div [class.d-none]="!dataSource?.data?.length">
@@ -39,7 +39,10 @@
 
         <ng-container matColumnDef="createdAt">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> 创建时间 </th>
-          <td mat-cell *matCellDef="let element"> {{element.createdAt | localDate}} </td>
+          <td mat-cell *matCellDef="let element">
+            <ng-container *ngIf="element.update_time">{{element.update_time | localDate: 'wx'}}</ng-container>
+            <ng-container *ngIf="!element.update_time">{{element.createdAt | localDate}}</ng-container>
+          </td>
         </ng-container>
 
         <ng-container matColumnDef="_id">
